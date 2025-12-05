@@ -244,7 +244,7 @@ class MagneticActuationSystem():
 
 if __name__ == "__main__":
     # 测试类 MagneticActuationSystem
-    calib_file = "calib/mpem_calibration_file_sp=40_order=1.yaml"
+    calib_file = "../calib/mpem_calibration_file_sp=40_order=1.yaml"
     currents_vector = np.array([30., -30., 40., -10., -40., 50., -21., 11.], dtype=np.float64)
 
     mas = MagneticActuationSystem(calib_file=calib_file)

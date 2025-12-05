@@ -58,10 +58,9 @@ numpy、matplotlib 以及本项目中的 basic_utils、segments、equilibrium_so
 import numpy as np
 import matplotlib.pyplot as plt
 
-from basic_utils import GL3_A, GL3_B, GL3_C
-from segments import FlexibleSegment, RigidSegment
-from equilibrium_solver import EquilibriumSolver
-from catheter import RodMesh
+from module.segments import FlexibleSegment, RigidSegment
+from module.equilibrium_solver import SingleSegmentEquilibriumSolver
+from module.catheter import RodMesh
 
 
 def compute_catheter_points(
@@ -126,7 +125,7 @@ def demo_one_flex_one_rigid():
     tau_ext_rigid = np.array([0., 0., 0.])
 
     # 5. 构造 solver
-    solver = EquilibriumSolver(
+    solver = SingleSegmentEquilibriumSolver(
         mesh=mesh,
         rigid_seg=rigid,
         p0_target=p0_target,

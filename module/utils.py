@@ -1,12 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import Callable, Optional, Tuple, TYPE_CHECKING
+from typing import Callable, Optional, Tuple, TYPE_CHECKING, List
 from basic_utils import skew, quat_to_rotmat, quat_derivative, GL3_A, GL3_B, GL3_C
+from catheter import RodMesh
 from segments import FlexibleSegment, RigidSegment
 
 if TYPE_CHECKING:
     from catheter import RodMesh
-    from equilibrium_solver import EquilibriumSolver
+    from equilibrium_solver import SingleSegmentEquilibriumSolver
 
 # -------- 工具函数 --------
 
@@ -99,7 +100,7 @@ def make_C_BV_distal_free_tip():
     return C_BV_fun
 
 
-def make_initial_guess(mesh: "RodMesh", rigid: RigidSegment):
+def make_initial_guess_single(mesh: "RodMesh", rigid: RigidSegment):
     """
     根据 mesh (M 个区间) 构造一个简单的初始猜测:
     - 柔性段 M+1 个网格点沿 z 轴直线伸出
@@ -108,7 +109,7 @@ def make_initial_guess(mesh: "RodMesh", rigid: RigidSegment):
     """
     # 延迟导入以避免循环依赖
     from catheter import RodMesh
-    from equilibrium_solver import EquilibriumSolver
+    from equilibrium_solver import SingleSegmentEquilibriumSolver
     
     M = mesh.M
     Lf = mesh.flex_seg.length
@@ -140,7 +141,7 @@ def make_initial_guess(mesh: "RodMesh", rigid: RigidSegment):
     k_array = np.zeros((M, 3, 13))
 
     # 打包 z0
-    solver_dummy = EquilibriumSolver(
+    solver_dummy = SingleSegmentEquilibriumSolver(
         mesh=mesh,
         rigid_seg=rigid,
         p0_target=np.array([0.0, 0.0, 0.0]),
@@ -150,6 +151,83 @@ def make_initial_guess(mesh: "RodMesh", rigid: RigidSegment):
     )
     z0 = solver_dummy.pack_z(x_nodes, k_array, x_rigid)
     return z0, solver_dummy  # 返回一个临时 solver，只是为了用它的 pack_z
+
+
+def make_initial_guess_multi(
+    flex_segs: List[FlexibleSegment],
+    meshes: List[RodMesh],
+    rigid_segs: List[RigidSegment],
+) -> Tuple[np.ndarray, List[np.ndarray], List[np.ndarray], List[np.ndarray]]:
+    """
+    构造 3F+3R（或通用 N 对）的初始猜测:
+    - 整根沿 z 轴直线展开
+    - 每段柔性在自己的 sigma_nodes 上均匀拉直
+    - 每个刚性段在前一段末端基础上增加其 length
+    - 内力/内矩和所有 k 全部设为 0
+    返回：
+    - z0
+    - x_nodes_list, k_array_list, x_rigid_list （方便你单独用来做可视化等）
+    """
+    from catheter import RodMesh
+    from equilibrium_solver import MultiSegmentEquilibriumSolver
+
+    N = len(flex_segs)
+    assert len(flex_segs) == len(meshes) == len(rigid_segs)
+
+    x_nodes_list: List[np.ndarray] = []
+    k_array_list: List[np.ndarray] = []
+    x_rigid_list: List[np.ndarray] = []
+
+    z_base = 0.0   # 全局 z 坐标累计
+    Q0 = np.array([1.0, 0.0, 0.0, 0.0])
+
+    # 1) 柔性 + 刚性依次排布
+    for i in range(N):
+        flex = flex_segs[i]
+        mesh = meshes[i]
+        rigid = rigid_segs[i]
+
+        M = mesh.M
+        sigmas = mesh.sigma_nodes
+
+        # 柔性段节点
+        x_nodes = np.zeros((M + 1, 13))
+        for n in range(M + 1):
+            p = np.array([0.0, 0.0, z_base + sigmas[n]])
+            f = np.zeros(3)
+            tau = np.zeros(3)
+            x_nodes[n] = np.concatenate([p, Q0, f, tau])
+        x_nodes_list.append(x_nodes)
+
+        # 柔性段结束后，更新 z_base
+        z_base += flex.length
+
+        # 刚性段末端
+        p_rigid_end = np.array([0.0, 0.0, z_base + rigid.length])
+        fR = np.zeros(3)
+        tauR = np.zeros(3)
+        xR = np.concatenate([p_rigid_end, Q0, fR, tauR])
+        x_rigid_list.append(xR)
+
+        # 刚性段结束后，继续更新 z_base
+        z_base += rigid.length
+
+        # k_array 初始为 0
+        k_array = np.zeros((M, 3, 13))
+        k_array_list.append(k_array)
+
+    # 2) 打包成 z0（用 MultiSegmentEquilibriumSolver.pack_z）
+    dummy_solver = MultiSegmentEquilibriumSolver(
+        flex_segs=flex_segs,
+        meshes=meshes,
+        rigid_segs=rigid_segs,
+        p0_target=np.array([0.0, 0.0, 0.0]),
+        Q0_target=Q0,
+        f_ext_list=[np.zeros(3) for _ in range(N)],
+        tau_ext_list=[np.zeros(3) for _ in range(N)],
+    )
+    z0 = dummy_solver.pack_z(x_nodes_list, k_array_list, x_rigid_list)
+    return z0, x_nodes_list, k_array_list, x_rigid_list
 
 
 # ------------------- 绘制 -------------------
