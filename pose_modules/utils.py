@@ -1,15 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import Callable, Optional, Tuple, TYPE_CHECKING, List
-from basic_utils import skew, quat_to_rotmat, quat_derivative, GL3_A, GL3_B, GL3_C
-from catheter import RodMesh
-from segments import FlexibleSegment, RigidSegment
+from .basics import skew, quat_to_rotmat, quat_derivative, GL3_A, GL3_B, GL3_C
+from .rod_mesh import RodMesh
+from .segments import FlexibleSegment, RigidSegment
+from .external_wrench import GravityLineDensity, GravityRigid
 
-if TYPE_CHECKING:
-    from catheter import RodMesh
-    from equilibrium_solver import SingleSegmentEquilibriumSolver
 
-# -------- 工具函数 --------
+# -------- LM算法工具函数 --------
 
 
 def make_C_S_flexible(env_constraint: Optional[Callable[[np.ndarray], np.ndarray]] = None):
@@ -50,6 +48,7 @@ def make_C_S_rigid(
     - 施加 x_{n+1} - x_rigid(L) = 0
     - 施加单位四元数约束
     """
+
     def C_S_fun(x_n: np.ndarray, x_np1: np.ndarray) -> np.ndarray:
         x_rigid_end = rigid_seg.propagate(x_n, f_ext_total, tau_ext_total)
 
@@ -68,12 +67,12 @@ def make_C_S_rigid(
     return C_S_fun
 
 
-
 def make_C_BV_proximal_pose(p0_target: np.ndarray, Q0_target: np.ndarray):
     """
     固定近端位置和姿态:
     p(0) = p0_target, Q(0) = Q0_target
     """
+
     def C_BV_fun(x_n: np.ndarray, x_np1: np.ndarray) -> np.ndarray:
         # 这个函数会在包含 proximal 状态的那个小区间里被调用
         # 约束 x_n
@@ -81,9 +80,10 @@ def make_C_BV_proximal_pose(p0_target: np.ndarray, Q0_target: np.ndarray):
         Q = x_n[3:7]
 
         res_p = p - p0_target
-        res_Q = Q - Q0_target   # 也可以只用单位四元数 + 方向约束的形式
+        res_Q = Q - Q0_target  # 也可以只用单位四元数 + 方向约束的形式
 
         return np.concatenate([res_p, res_Q])
+
     return C_BV_fun
 
 
@@ -92,71 +92,20 @@ def make_C_BV_distal_free_tip():
     distal 端零 wrench 条件:
     f(L) = 0, tau(L) = 0
     """
+
     def C_BV_fun(x_n: np.ndarray, x_np1: np.ndarray) -> np.ndarray:
         # 在 distal 端所在的区间上调用: 约束 x_{n+1} 的 wrench
         f = x_np1[7:10]
         tau = x_np1[10:13]
         return np.concatenate([f, tau])
+
     return C_BV_fun
 
 
-def make_initial_guess_single(mesh: "RodMesh", rigid: RigidSegment):
-    """
-    根据 mesh (M 个区间) 构造一个简单的初始猜测:
-    - 柔性段 M+1 个网格点沿 z 轴直线伸出
-    - 刚性段继续沿 z 轴
-    - 内力/内矩、k 都先设为 0
-    """
-    # 延迟导入以避免循环依赖
-    from catheter import RodMesh
-    from equilibrium_solver import SingleSegmentEquilibriumSolver
-    
-    M = mesh.M
-    Lf = mesh.flex_seg.length
-    Lr = rigid.length
-
-    # 近端位置在原点，沿 z 方向展开
-    # 我们用 sigma_nodes / Lf 的比例决定每个节点的位置
-    sigmas = mesh.sigma_nodes
-    z_positions = sigmas / Lf * Lf  # 其实就是 sigmas，本例里就是 0..Lf
-
-    # 统一的四元数
-    Q0 = np.array([1.0, 0.0, 0.0, 0.0])
-
-    x_nodes = np.zeros((M + 1, 13))
-    for n in range(M + 1):
-        p = np.array([0.0, 0.0, z_positions[n]])
-        f = np.zeros(3)
-        tau = np.zeros(3)
-        x_nodes[n] = np.concatenate([p, Q0, f, tau])
-
-    # 刚性段末端：在柔性段末端基础上再往 z 方向延 Lr
-    p_flex_end = x_nodes[-1][:3]
-    p_rigid_end = p_flex_end + np.array([0.0, 0.0, Lr])
-    f_rigid = np.zeros(3)
-    tau_rigid = np.zeros(3)
-    x_rigid = np.concatenate([p_rigid_end, Q0, f_rigid, tau_rigid])
-
-    # k_array: 全零
-    k_array = np.zeros((M, 3, 13))
-
-    # 打包 z0
-    solver_dummy = SingleSegmentEquilibriumSolver(
-        mesh=mesh,
-        rigid_seg=rigid,
-        p0_target=np.array([0.0, 0.0, 0.0]),
-        Q0_target=Q0,
-        f_ext_rigid=np.zeros(3),
-        tau_ext_rigid=np.zeros(3),
-    )
-    z0 = solver_dummy.pack_z(x_nodes, k_array, x_rigid)
-    return z0, solver_dummy  # 返回一个临时 solver，只是为了用它的 pack_z
-
-
 def make_initial_guess_multi(
-    flex_segs: List[FlexibleSegment],
-    meshes: List[RodMesh],
-    rigid_segs: List[RigidSegment],
+        flex_segs: List[FlexibleSegment],
+        meshes: List[RodMesh],
+        rigid_segs: List[RigidSegment],
 ) -> Tuple[np.ndarray, List[np.ndarray], List[np.ndarray], List[np.ndarray]]:
     """
     构造 3F+3R（或通用 N 对）的初始猜测:
@@ -168,8 +117,8 @@ def make_initial_guess_multi(
     - z0
     - x_nodes_list, k_array_list, x_rigid_list （方便你单独用来做可视化等）
     """
-    from catheter import RodMesh
-    from equilibrium_solver import MultiSegmentEquilibriumSolver
+    from .rod_mesh import RodMesh
+    from .equilibrium_solver import MultiSegmentEquilibriumSolver
 
     N = len(flex_segs)
     assert len(flex_segs) == len(meshes) == len(rigid_segs)
@@ -178,7 +127,7 @@ def make_initial_guess_multi(
     k_array_list: List[np.ndarray] = []
     x_rigid_list: List[np.ndarray] = []
 
-    z_base = 0.0   # 全局 z 坐标累计
+    z_base = 0.0  # 全局 z 坐标累计
     Q0 = np.array([1.0, 0.0, 0.0, 0.0])
 
     # 1) 柔性 + 刚性依次排布
@@ -216,7 +165,7 @@ def make_initial_guess_multi(
         k_array = np.zeros((M, 3, 13))
         k_array_list.append(k_array)
 
-    # 2) 打包成 z0（用 MultiSegmentEquilibriumSolver.pack_z）
+    # 2) 打包成 z0
     dummy_solver = MultiSegmentEquilibriumSolver(
         flex_segs=flex_segs,
         meshes=meshes,
@@ -230,13 +179,114 @@ def make_initial_guess_multi(
     return z0, x_nodes_list, k_array_list, x_rigid_list
 
 
+# ------------------- 材料工具函数 -------------------
+
+
+# def build_k_matrices_for_pdms(d_outer: float) -> tuple[np.ndarray, np.ndarray]:
+#     """
+#     根据 PDMS 材料和圆截面直径，构造柔性段的 K_se, K_bt.
+#     假定:
+#       - E = 1.8 MPa
+#       - G = 0.6 MPa
+#       - 截面直径 d_outer (m)
+#
+#     K_se = diag(GA, EA, EA)
+#     K_bt = diag(EI_xx, EI_yy, EI_zz)
+#     """
+#     E = 0.9e6      # Pa
+#     G = 0.3e6      # Pa
+#     r = d_outer / 2.0
+#     A = np.pi * r**2
+#
+#     # 面积矩: 圆截面
+#     Ixx = Iyy = np.pi * r**4 / 4.0
+#     Izz = np.pi * r**4 / 2.0   # 极惯性矩
+#
+#     K_se = np.diag([G * A, E * A, E * A])
+#     K_bt = np.diag([E * Ixx, E * Iyy, E * Izz])
+#
+#     return K_se, K_bt
+
+
+def build_k_matrices_for_pdms(d_outer: float):
+    """
+    PDMS flexible segment stiffness matrices (Cosserat rod).
+
+    Parameters
+    ----------
+    d_outer : float
+        Outer diameter [m]
+
+    Assumptions
+    -----------
+    E = 1.8 MPa
+    G = 0.6 MPa
+    Circular cross-section
+    """
+
+    E = 1.8e6  # Pa
+    G = 0.6e6  # Pa
+
+    r = d_outer / 2.0
+    A = np.pi * r**2
+
+    Ixx = Iyy = np.pi * r**4 / 4.0
+    J   = np.pi * r**4 / 2.0
+
+    K_se = np.diag([G * A, G * A, E * A])
+    K_bt = np.diag([E * Ixx, E * Iyy, G * J])
+
+    return K_se, K_bt
+
+
+
+def build_gravity_line_density_for_pdms(d_outer: float) -> GravityLineDensity:
+    """
+    PDMS 柔性段重力线密度：
+      - ρ = 970 kg/m^3
+      - A = π r^2
+      - line_mass = ρ A
+      - line_force = line_mass * g
+      - g_vec = [0, 0, -1] （方向），rhoA 里已经乘 9.81
+    """
+    rho = 970.0  # kg/m^3
+    r = d_outer / 2.0
+    A = np.pi * r**2
+    line_mass = rho * A         # kg/m
+    rhoA = line_mass * 9.81     # N/m
+    g_vec = np.array([0.0, 0.0, -1.0])
+
+    return GravityLineDensity(rhoA=rhoA, g_vec=g_vec)
+
+
+def build_gravity_rigid_for_ndfeb(d_outer: float, length: float) -> GravityRigid:
+    """
+    NdFeB 刚体段重力：
+      - ρ = 7500 kg/m^3
+      - A = π r^2
+      - V = A * L
+      - mass = ρ V
+      - g_world = [0, 0, -9.81]
+      - r_cm_body = [0, 0, L/2]
+    """
+    rho = 7500.0  # kg/m^3
+    r = d_outer / 2.0
+    A = np.pi * r**2
+    V = A * length
+    mass = rho * V
+    g_world = np.array([0.0, 0.0, -9.81])
+    r_cm_body = np.array([0.0, 0.0, length / 2.0])
+
+    return GravityRigid(mass=mass, g_world=g_world, r_cm_body=r_cm_body)
+
+
 # ------------------- 绘制 -------------------
 
 def plot_catheter_3d(
         mesh: RodMesh,
         rigid: RigidSegment,
-        x_nodes_star: np.ndarray,   # (M+1, 13) 柔性段网格点解
-        x_rigid_star: np.ndarray,   # (13,) 刚性段末端解
+        x_nodes_star: np.ndarray,  # (M+1, 13) 柔性段网格点解
+        x_rigid_star: np.ndarray,  # (13,) 刚性段末端解
         f_ext_rigid: np.ndarray,
         tau_ext_rigid: np.ndarray,
         n_samples_rigid: int = 10,
@@ -248,10 +298,10 @@ def plot_catheter_3d(
     """
 
     # 1. 柔性段所有网格点的位置
-    p_flex = x_nodes_star[:, :3]        # shape (M+1, 3)
+    p_flex = x_nodes_star[:, :3]  # shape (M+1, 3)
 
     # 2. 刚性段采样若干点
-    x_flex_end = x_nodes_star[-1]       # 刚性段起点状态
+    x_flex_end = x_nodes_star[-1]  # 刚性段起点状态
     Lr = rigid.length
     sigmas_rigid = np.linspace(0.0, Lr, n_samples_rigid + 1)  # 包含起点和末端
 
@@ -265,11 +315,11 @@ def plot_catheter_3d(
         )
         p_rigid_list.append(x_s[:3])
 
-    p_rigid = np.array(p_rigid_list)    # shape (n_samples_rigid, 3)
+    p_rigid = np.array(p_rigid_list)  # shape (n_samples_rigid, 3)
 
     # 3. 拼接整根导管的所有点
     #    注意顺序：柔性段所有点 + 刚性段采样点
-    P = np.vstack([p_flex, p_rigid])    # shape (M+1 + n_samples_rigid, 3)
+    P = np.vstack([p_flex, p_rigid])  # shape (M+1 + n_samples_rigid, 3)
 
     # 4. 三维绘图
     fig = plt.figure()
@@ -283,7 +333,7 @@ def plot_catheter_3d(
     ax.set_title('Catheter configuration')
 
     ax.view_init(elev=30, azim=-60)  # 可以随时调整观察角度
-    ax.set_box_aspect([1, 1, 1])     # 使 xyz 比例一致
+    ax.set_box_aspect([1, 1, 1])  # 使 xyz 比例一致
 
     # 设置x轴范围
     ax.set_xlim([-0.15, 0.15])

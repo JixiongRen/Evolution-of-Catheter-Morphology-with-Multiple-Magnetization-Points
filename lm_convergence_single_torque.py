@@ -31,9 +31,9 @@ python lm_convergence_single_torque.py
 import numpy as np
 import matplotlib.pyplot as plt
 
-from module.segments import FlexibleSegment, RigidSegment
-from module.equilibrium_solver import SingleSegmentEquilibriumSolver
-from module.catheter import RodMesh
+from pose_modules.segments import FlexibleSegment, RigidSegment
+from pose_modules.equilibrium_solver import MultiSegmentEquilibriumSolver
+from pose_modules.rod_mesh import RodMesh
 
 
 def compute_catheter_points(
@@ -91,13 +91,14 @@ def lm_convergence_demo():
     tau_vec = np.array([0., 15., 0.0])  # 可修改力矩方向/大小
 
     # 4) 构造求解器（仅用其中的残差/雅可比函数）
-    solver = SingleSegmentEquilibriumSolver(
-        mesh=mesh,
-        rigid_seg=rigid,
+    solver = MultiSegmentEquilibriumSolver(
+        flex_segs=[flex],
+        meshes=[mesh],
+        rigid_segs=[rigid],
         p0_target=p0_target,
         Q0_target=Q0_target,
-        f_ext_rigid=f_ext_rigid,
-        tau_ext_rigid=tau_vec,
+        f_ext_list=[f_ext_rigid],
+        tau_ext_list=[tau_vec],
         max_iter=20000,
         tol=1e-5,
         lm_damping=1e-3,
@@ -164,7 +165,7 @@ def lm_convergence_demo():
         P = compute_catheter_points(
             mesh=mesh,
             rigid=rigid,
-            x_nodes=x_nodes_i,
+            x_nodes=x_nodes_i[0],
             f_ext_rigid=f_ext_rigid,
             tau_ext_rigid=tau_vec,
             n_samples_rigid=20,
@@ -174,8 +175,8 @@ def lm_convergence_demo():
     # 标注初末状态
     x_nodes_first, _, _ = solver.unpack_z(z_history[idx_pick[0]])
     x_nodes_last, _, _ = solver.unpack_z(z_history[idx_pick[-1]])
-    P_first = compute_catheter_points(mesh, rigid, x_nodes_first, f_ext_rigid, tau_vec, 20)
-    P_last = compute_catheter_points(mesh, rigid, x_nodes_last, f_ext_rigid, tau_vec, 20)
+    P_first = compute_catheter_points(mesh, rigid, x_nodes_first[0], f_ext_rigid, tau_vec, 20)
+    P_last = compute_catheter_points(mesh, rigid, x_nodes_last[0], f_ext_rigid, tau_vec, 20)
     ax.scatter(P_first[-1, 0], P_first[-1, 1], P_first[-1, 2], c='red', s=40, label='start tip')
     ax.scatter(P_last[-1, 0], P_last[-1, 1], P_last[-1, 2], c='green', s=40, label='final tip')
 

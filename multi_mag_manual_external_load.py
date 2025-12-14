@@ -1,5 +1,3 @@
-# multi_segment_equilibrium_solver.py
-
 from __future__ import annotations
 from typing import List
 
@@ -7,14 +5,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from pose_modules.equilibrium_solver import MultiSegmentEquilibriumSolver
+from pose_modules.segments import RigidSegment, FlexibleSegment
 from pose_modules.segments import RigidSegment
 from pose_modules.rod_mesh import RodMesh
 from pose_modules.utils import (
     make_initial_guess_multi,
+    build_k_matrices_for_pdms
 )
 
 
-# ------------------- 可视化：多段导管最终姿态 -------------------
 def plot_catheter_3d_multiseg(
     meshes: List[RodMesh],
     rigid_segs: List[RigidSegment],
@@ -72,49 +71,65 @@ def plot_catheter_3d_multiseg(
     ax.set_title('Multi-segment catheter final configuration')
     ax.view_init(elev=30, azim=-60)
     ax.set_box_aspect([1, 1, 1])
-    ax.set_xlim([-0.15, 0.15])
-    ax.set_ylim([-0.15, 0.15])
-    ax.set_zlim([0, 0.25])
+    ax.set_xlim([-0.1, 0.1])
+    ax.set_ylim([-0.1, 0.1])
+    ax.set_zlim([-0.04, 0.1])
     plt.tight_layout()
     plt.show()
 
 
 if __name__ == "__main__":
-    # 1) 构建 3 段柔性 + 3 段刚性
-    from pose_modules.segments import FlexibleSegment, RigidSegment
-    from pose_modules.rod_mesh import RodMesh
+    # 材料 & 几何参数
+    d_outer = 1.5e-3  # m
 
-    # 你可以根据论文设定更真实的长度/刚度
-    flex1 = FlexibleSegment(length=0.06, K_se=np.eye(3), K_bt=np.eye(3))
-    flex2 = FlexibleSegment(length=0.06, K_se=np.eye(3), K_bt=np.eye(3))
-    flex3 = FlexibleSegment(length=0.06, K_se=np.eye(3), K_bt=np.eye(3))
+    # 柔性段长度
+    Lf1 = 0.05
+    Lf2 = 0.03
+    Lf3 = 0.01
 
-    # 每段柔性都各自有一个 RodMesh（GL3 区间数可以各不相同）
+    # NdFeB 刚体段长度
+    Lr1 = Lr2 = Lr3 = 0.03
+
+    # 柔性段刚度矩阵
+    # 采用物理真实的材料, Kse 和 Kbt 数量级差距大, LM算法收敛困难
+    # 为了验证这一点, 可以将两个矩阵置为eye, 收敛稳定
+
+    K_se_pdms, K_bt_pdms = build_k_matrices_for_pdms(d_outer)
+    print(f"K_se_pdms:\n{K_se_pdms}; K_bt_pdms:\n{K_bt_pdms}")
+
+    # flex1 = FlexibleSegment(length=Lf1, K_se=K_se_pdms, K_bt=K_bt_pdms)
+    # flex2 = FlexibleSegment(length=Lf2, K_se=K_se_pdms, K_bt=K_bt_pdms)
+    # flex3 = FlexibleSegment(length=Lf3, K_se=K_se_pdms, K_bt=K_bt_pdms)
+
+    flex1 = FlexibleSegment(length=Lf1, K_se=np.eye(3), K_bt=np.eye(3))
+    flex2 = FlexibleSegment(length=Lf2, K_se=np.eye(3), K_bt=np.eye(3))
+    flex3 = FlexibleSegment(length=Lf3, K_se=np.eye(3), K_bt=np.eye(3))
+
     mesh1 = RodMesh(flex_seg=flex1, n_intervals=4)
     mesh2 = RodMesh(flex_seg=flex2, n_intervals=4)
     mesh3 = RodMesh(flex_seg=flex3, n_intervals=4)
 
-    rigid1 = RigidSegment(length=0.01, v_star=np.array([0., 0., 1.]))
-    rigid2 = RigidSegment(length=0.01, v_star=np.array([0., 0., 1.]))
-    rigid3 = RigidSegment(length=0.01, v_star=np.array([0., 0., 1.]))
+    rigid1 = RigidSegment(length=0.003, v_star=np.array([0., 0., 1.]))
+    rigid2 = RigidSegment(length=0.003, v_star=np.array([0., 0., 1.]))
+    rigid3 = RigidSegment(length=0.003, v_star=np.array([0., 0., 1.]))
 
     flex_segs = [flex1, flex2, flex3]
     meshes = [mesh1, mesh2, mesh3]
     rigid_segs = [rigid1, rigid2, rigid3]
 
-    # 2) 边界条件：近端 pose 固定
+    # 2) 边界条件: 近端 pose 固定
     p0_target = np.array([0.0, 0.0, 0.0])
     Q0_target = np.array([1.0, 0.0, 0.0, 0.0])
 
-    # 3) 每段刚体上的外载（这里随便设一个例子：只在每段上给一点扭矩）
+    # 3) 每段刚体上的外载
     f_ext_list = [
-        np.array([3.4, -3.7, 0.4]) * 1e-3,
-        np.array([-8.5, 2.1, 3.3]) * 1e-3,
-        np.array([6.0, -1.3, -2.1]) * 1e-3,
+        np.array([3.4, -3.7, 0.4]) * 1e-6,
+        np.array([-8.5, 2.1, 3.3]) * 1e-6,
+        np.array([6.0, -1.3, -2.1]) * 1e-6,
     ]
     tau_ext_list = [
-        np.array([-18.9, 4.7, 13.4]),
-        np.array([-1.3, -19.1, 8.9]),
+        np.array([-18.9, 4.7, -13.4]),
+        np.array([-10.3, -9.1, 28.9]),
         np.array([19.4, 0.7, 12.6]),
     ]
 

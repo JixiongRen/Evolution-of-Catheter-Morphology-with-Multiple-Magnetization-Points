@@ -58,9 +58,9 @@ numpy、matplotlib 以及本项目中的 basic_utils、segments、equilibrium_so
 import numpy as np
 import matplotlib.pyplot as plt
 
-from module.segments import FlexibleSegment, RigidSegment
-from module.equilibrium_solver import SingleSegmentEquilibriumSolver
-from module.catheter import RodMesh
+from pose_modules.segments import FlexibleSegment, RigidSegment
+from pose_modules.equilibrium_solver import MultiSegmentEquilibriumSolver
+from pose_modules.rod_mesh import RodMesh
 
 
 def compute_catheter_points(
@@ -122,16 +122,17 @@ def demo_one_flex_one_rigid():
     Q0_target = np.array([1.0, 0.0, 0.0, 0.0])
 
     f_ext_rigid = np.array([0., 0., 0.])
-    tau_ext_rigid = np.array([0., 0., 0.])
+    tau_ext_rigid = np.array([30., 0., 0.])
 
     # 5. 构造 solver
-    solver = SingleSegmentEquilibriumSolver(
-        mesh=mesh,
-        rigid_seg=rigid,
+    solver = MultiSegmentEquilibriumSolver(
+        meshes=[mesh],
+        rigid_segs=[rigid],
+        flex_segs=[flex],
         p0_target=p0_target,
         Q0_target=Q0_target,
-        f_ext_rigid=f_ext_rigid,
-        tau_ext_rigid=tau_ext_rigid,
+        f_ext_list=[f_ext_rigid],
+        tau_ext_list=[tau_ext_rigid],
         max_iter=20000,
         tol=1e-5,
         lm_damping=1e-3,
@@ -188,7 +189,7 @@ def demo_one_flex_one_rigid():
         P = compute_catheter_points(
             mesh=mesh,
             rigid=rigid,
-            x_nodes_star=x_nodes_star,
+            x_nodes_star=x_nodes_star[0],
             f_ext_rigid=f_ext_rigid,
             tau_ext_rigid=tau_i,
             n_samples_rigid=20,
@@ -201,7 +202,7 @@ def demo_one_flex_one_rigid():
         # 下一个方向用当前解热启动
         z_init = z_star
 
-    # 用虚线连接末端轨迹（闭合）
+    # 用虚线连接末端轨迹
     end_points = np.array(end_points)
     end_points_closed = np.vstack([end_points, end_points[0]])
     ax.plot(end_points_closed[:, 0], end_points_closed[:, 1], end_points_closed[:, 2], 'k--', linewidth=1.5, label='end-tip trajectory')

@@ -2,15 +2,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 import numpy as np
+from .segments import FlexibleSegment
 
-from basic_utils import quat_to_rotmat
-
-from segments import FlexibleSegment
 
 @dataclass
 class RodMesh:
     """
-    只针对当前这一段 FlexibleSegment 的离散网格管理：
+    只针对当前一段FlexibleSegment的离散网格管理:
     - 把 [0, L_flex] 划分为 n_intervals 个小区间
     - 或者传入自定义的 sigma_nodes
     """

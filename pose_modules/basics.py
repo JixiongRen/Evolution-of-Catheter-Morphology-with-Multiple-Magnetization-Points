@@ -1,6 +1,8 @@
 import numpy as np
 
 # -------- Gauss-Legendre 6 点积分参数 --------
+
+
 GL3_C = np.array([
     0.5 - np.sqrt(15)/10,
     0.5,
@@ -13,14 +15,16 @@ GL3_B = np.array([
     5/18,
     ])
 
-# 3×3 a_ij 矩阵
+# 3x3 a_ij 矩阵
 GL3_A = np.array([
     [5/36,  2/9 - np.sqrt(15)/15,  5/36 - np.sqrt(15)/30],
     [5/36 + np.sqrt(15)/24,  2/9,  5/36 - np.sqrt(15)/24],
     [5/36 + np.sqrt(15)/30,  2/9 + np.sqrt(15)/15,  5/36],
 ])
 
+
 # -------- 基础工具函数 --------
+
 
 def skew(v: np.ndarray) -> np.ndarray:
     """
@@ -33,6 +37,7 @@ def skew(v: np.ndarray) -> np.ndarray:
     """
     vx, vy, vz = v
     return np.array([[0, -vz, vy], [vz, 0, -vx], [-vy, vx, 0]])
+
 
 def quat_to_rotmat(Q: np.ndarray) -> np.ndarray:
     """

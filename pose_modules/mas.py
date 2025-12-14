@@ -1,16 +1,16 @@
-from mag_manip import mag_manip
-from mag_manip.mag_manip import ForwardModelMPEM, ForwardModelLinearRBF, ForwardModelLinearVField, BackwardModelMPEML2, \
-    BackwardModelLinearRBFL2, BackwardModelLinearVFieldL2
+from mag_manip.mag_manip import ForwardModelMPEM
 import numpy as np
-import scipy
 import matplotlib.pyplot as plt
+from typing import Tuple, Dict
+from dataclasses import dataclass
+from .external_wrench import MagneticModel
+
 
 class MagneticActuationSystem():
     def __init__(self, calib_file: str):
         self.calib_file = calib_file
         self.mas_forward_model = ForwardModelMPEM()
         self.mas_forward_model.setCalibrationFile(self.calib_file)
-
 
     def b_field(self, position: np.ndarray, currents_vector: np.ndarray):
         """
@@ -30,7 +30,6 @@ class MagneticActuationSystem():
         """
         return self.mas_forward_model.computeFieldFromCurrents(position, currents_vector).flatten()
 
-
     def b_field_gradient(self, position: np.ndarray, currents_vector: np.ndarray):
         """
         计算给定位置由一组电流产生的磁场梯度
@@ -48,7 +47,6 @@ class MagneticActuationSystem():
             在给定位置计算的磁场梯度
         """
         return self.mas_forward_model.computeGradient5FromCurrents(position, currents_vector).flatten()
-        
 
     def magnetic_wrench(self, pose_list: list, magnetic_moment: np.ndarray, currents_vector: np.ndarray):
         """
@@ -89,25 +87,25 @@ class MagneticActuationSystem():
             m = magnetic_moment[:, i]
 
             # 磁场和磁场梯度
-            B = self.b_field(pos, currents_vector)              # [Bx, By, Bz]
-            G5 = self.b_field_gradient(pos, currents_vector)    # [dBxdx, dBxdy, dBxdz, dBydy, dBzdz]
+            B = self.b_field(pos, currents_vector)  # [Bx, By, Bz]
+            G5 = self.b_field_gradient(pos, currents_vector)  # [dBxdx, dBxdy, dBxdz, dBydy, dBzdz]
 
             mx, my, mz = m
 
             # 根据公式 F_m = (m · ∇)B
             force_matrix = np.array([
-                [mx,  my,  mz,   0,   0],
-                [0,   mx,  0,   my,  mz],
-                [-mz,  0,  mx, -mz,  my],
+                [mx, my, mz, 0, 0],
+                [0, mx, 0, my, mz],
+                [-mz, 0, mx, -mz, my],
             ], dtype=np.float64)
 
             Fm = force_matrix @ G5
 
             # 根据公式 T_m = m × B
             torque_matrix = np.array([
-                [0,   -mz,  my],
-                [mz,   0,  -mx],
-                [-my,  mx,  0],
+                [0, -mz, my],
+                [mz, 0, -mx],
+                [-my, mx, 0],
             ], dtype=np.float64)
 
             Tm = torque_matrix @ B
@@ -116,7 +114,6 @@ class MagneticActuationSystem():
             wrench[3:, i] = Tm
 
         return wrench
-
 
     def visualize_magnetic_wrench(self, pose_list: list, magnetic_moment: np.ndarray, currents_vector: np.ndarray):
         """
@@ -242,33 +239,38 @@ class MagneticActuationSystem():
         plt.show()
 
 
-if __name__ == "__main__":
-    # 测试类 MagneticActuationSystem
-    calib_file = "../calib/mpem_calibration_file_sp=40_order=1.yaml"
-    currents_vector = np.array([30., -30., 40., -10., -40., 50., -21., 11.], dtype=np.float64)
+@dataclass
+class SupieeMagneticModel(MagneticModel):
+    """
+    用 Supiee 的 MagneticActuationSystem 实现 external_wrench.MagneticModel 接口
 
-    mas = MagneticActuationSystem(calib_file=calib_file)
-    
-    position = np.array([0., 0., 0.1,], dtype=np.float64)
+    约定 magnet_params 至少包含:
+    - "m_body": np.ndarray shape (3,), 刚体坐标系下的磁矩向量
+    """
 
-    print(f"Original Point b_field: {mas.b_field(position, currents_vector)}")
-    print(f"Original Point b_field_gradient: {mas.b_field_gradient(position, currents_vector)}")
+    mas: MagneticActuationSystem
 
-    # 测试 magnetic_wrench
-    # 多个位姿和磁矩, n = 3
-    pose_list = np.array([
-        [0.0, 0.0, 0.12],
-        [0.1, 0.07, 0.0],
-        [0.05, 0.10, 0.15],
-    ], dtype=np.float64)  # 形状 (3, 3)
+    def wrench_on_magnet(
+            self,
+            position_world: np.ndarray,
+            R_world_from_body: np.ndarray,
+            magnet_params: Dict,
+            coil_currents: np.ndarray,
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        # 1) 取出刚体坐标系下的磁矩 m_body
+        m_body = np.asarray(magnet_params["m_body"]).reshape(3)
 
-    magnetic_moment = np.array([
-        [1e-3, 1e-3, 1e-3],
-        [2e-3, 2e-3, 2e-3],
-        [-1e-3, -1e-3, -1e-3],
-    ], dtype=np.float64)  # 形状 (3, 3)
+        # 2) 转到世界坐标系
+        m_world = R_world_from_body @ m_body
 
-    wrench = mas.magnetic_wrench(pose_list, magnetic_moment, currents_vector)
-    print(f"Magnetic wrench for n=3 points (rows: Fx,Fy,Fz,Tx,Ty,Tz):\n{wrench}")
-
-    mas.visualize_magnetic_wrench(pose_list, magnetic_moment, currents_vector)
+        # 3) 调用你原来的磁力/力矩接口
+        #    magnetic_wrench 接受 (3, n) 形式, 这里 n = 1
+        pose = position_world.reshape(3, 1)
+        m_vec = m_world.reshape(3, 1)
+        wrench = self.mas.magnetic_wrench(pose_list=pose,
+                                          magnetic_moment=m_vec,
+                                          currents_vector=coil_currents)
+        # wrench shape (6,1)
+        F_world = wrench[:3, 0]
+        Tau_world = wrench[3:, 0]
+        return F_world, Tau_world
