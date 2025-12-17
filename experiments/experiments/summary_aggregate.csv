@@ -1,0 +1,5 @@
+scenario,scale,n_intervals,coil_amp,solver,n_trials,success_rate,iters_median,iters_q1,iters_q3,time_median,time_q1,time_q3
+gravity_only,balanced,3,50.0,baseline,1,1.000,3,nan,nan,5.616613264006446,nan,nan
+gravity_only,balanced,3,50.0,nondim,1,1.000,4,nan,nan,8.52473716098757,nan,nan
+simple_uniform_B,balanced,3,50.0,baseline,1,1.000,37,nan,nan,58.83302811300382,nan,nan
+simple_uniform_B,balanced,3,50.0,nondim,1,1.000,13,nan,nan,23.78057937900303,nan,nan

@@ -1,0 +1,8 @@
+scenario,simple_uniform_B
+scale,balanced
+n_intervals,5
+coil_amp,50.0
+tol,0.005
+max_iter,2000
+seed,1001
+timestamp,20251215_164942

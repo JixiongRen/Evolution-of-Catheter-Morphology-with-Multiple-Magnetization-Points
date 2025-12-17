@@ -1,0 +1,3 @@
+solver,success,time_sec,iters
+baseline,True,58.83302811300382,37
+nondim,True,23.78057937900303,13
