@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Callable, Optional, Tuple, Protocol
+from typing import Callable, Optional, Tuple, Protocol, Literal
 import numpy as np
 from .segments import quat_to_rotmat
 
@@ -80,6 +80,78 @@ class MagneticModel(Protocol):
 # -------- 3. 柔性段外力/外力矩密度 --------
 
 
+# def make_external_wrench_density_flexible(
+#         gravity: Optional[GravityLineDensity] = None,
+#         magnetic_density_fun: Optional[
+#             Callable[[np.ndarray, float], Tuple[np.ndarray, np.ndarray]]
+#         ] = None,
+# ):
+#     """
+#     生成 (fext_density, tauext_density) 两个函数, 给 FlexibleSegment 使用
+#
+#     参数
+#     ----
+#     gravity : GravityLineDensity or None
+#         若不为 None, 则在整段上施加世界坐标系下的均匀重力线密度, 并转到杆坐标。
+#     magnetic_density_fun : callable or None
+#         若不为 None, 则应接受 (x, sigma) -> (f_mag_body, tau_mag_body)
+#         其中:
+#           - x: 当前状态向量 (13,)
+#           - sigma: 当前弧长位置
+#         返回:
+#           - f_mag_body : (3,) 在杆局部坐标中的力密度
+#           - tau_mag_body : (3,) 在杆局部坐标中的力矩密度
+#     """
+#
+#     def fext_density(x: np.ndarray, sigma: float) -> np.ndarray:
+#         """
+#         杆坐标系下的柔性段外力密度
+#         """
+#
+#         # 获取当前姿态 R
+#         Q = x[3:7]
+#         Q = Q / np.linalg.norm(Q)
+#         R = quat_to_rotmat(Q)
+#
+#         f_total_body = np.zeros(3)
+#
+#         # 1) 重力: world -> body
+#         if gravity is not None:
+#             f_g_world = gravity.force_world()  # (3,)
+#             f_g_body = R.T @ f_g_world
+#             f_total_body += f_g_body
+#
+#         # 2) 磁力密度: 柔性段一般不受到磁力作用
+#         # 但如果给出, 直接认为 magnetic_density_fun 已经给的是 body frame
+#         if magnetic_density_fun is not None:
+#             f_mag_body, _ = magnetic_density_fun(x, sigma)
+#             f_total_body += f_mag_body
+#
+#         return f_total_body
+#
+#
+#     def tauext_density(x: np.ndarray, sigma: float) -> np.ndarray:
+#         """
+#         杆坐标系下的柔性段外力矩密度
+#         """
+#
+#         tau_total_body = np.zeros(3)
+#
+#         # 对于均匀质量杆, 重力分布作用在杆中心线上, 不会产生外力矩
+#
+#         # 磁力矩密度: 柔性段一般不受到磁力作用
+#         # 但如果给出, 直接认为 magnetic_density_fun 已经给的是 body frame
+#         if magnetic_density_fun is not None:
+#             _, tau_mag_body = magnetic_density_fun(x, sigma)
+#             tau_total_body += tau_mag_body
+#
+#         return tau_total_body
+#
+#     return fext_density, tauext_density
+
+
+# -------- 4. 刚性段受到集中外力/外力矩 --------
+
 def make_external_wrench_density_flexible(
         gravity: Optional[GravityLineDensity] = None,
         magnetic_density_fun: Optional[
@@ -87,70 +159,46 @@ def make_external_wrench_density_flexible(
         ] = None,
 ):
     """
-    生成 (fext_density, tauext_density) 两个函数, 给 FlexibleSegment 使用
-
-    参数
-    ----
-    gravity : GravityLineDensity or None
-        若不为 None, 则在整段上施加世界坐标系下的均匀重力线密度, 并转到杆坐标。
-    magnetic_density_fun : callable or None
-        若不为 None, 则应接受 (x, sigma) -> (f_mag_body, tau_mag_body)
-        其中:
-          - x: 当前状态向量 (13,)
-          - sigma: 当前弧长位置
-        返回:
-          - f_mag_body : (3,) 在杆局部坐标中的力密度
-          - tau_mag_body : (3,) 在杆局部坐标中的力矩密度
+    返回的 fext_density / tauext_density **均为 world frame**，
+    与 FlexibleSegment 中 f,tau 的状态定义（world）保持一致。
     """
 
     def fext_density(x: np.ndarray, sigma: float) -> np.ndarray:
-        """
-        杆坐标系下的柔性段外力密度
-        """
-
-        # 获取当前姿态 R
         Q = x[3:7]
         Q = Q / np.linalg.norm(Q)
-        R = quat_to_rotmat(Q)
+        R = quat_to_rotmat(Q)  # world_from_body
 
-        f_total_body = np.zeros(3)
+        f_total_world = np.zeros(3)
 
-        # 1) 重力: world -> body
+        # 1) 重力：直接用 world
         if gravity is not None:
-            f_g_world = gravity.force_world()  # (3,)
-            f_g_body = R.T @ f_g_world
-            f_total_body += f_g_body
+            f_total_world += gravity.force_world()  # (3,) world
 
-        # 2) 磁力密度: 柔性段一般不受到磁力作用
-        # 但如果给出, 直接认为 magnetic_density_fun 已经给的是 body frame
+        # 2) 可选磁力密度：若 magnetic_density_fun 给的是 body，则转到 world
         if magnetic_density_fun is not None:
             f_mag_body, _ = magnetic_density_fun(x, sigma)
-            f_total_body += f_mag_body
+            f_total_world += R @ np.asarray(f_mag_body, dtype=float).reshape(3)
 
-        return f_total_body
-
+        return f_total_world
 
     def tauext_density(x: np.ndarray, sigma: float) -> np.ndarray:
-        """
-        杆坐标系下的柔性段外力矩密度
-        """
+        Q = x[3:7]
+        Q = Q / np.linalg.norm(Q)
+        R = quat_to_rotmat(Q)  # world_from_body
 
-        tau_total_body = np.zeros(3)
+        tau_total_world = np.zeros(3)
 
-        # 对于均匀质量杆, 重力分布作用在杆中心线上, 不会产生外力矩
+        # 重力分布作用在中心线上通常不产生外力矩密度（保持 0）
 
-        # 磁力矩密度: 柔性段一般不受到磁力作用
-        # 但如果给出, 直接认为 magnetic_density_fun 已经给的是 body frame
+        # 若 magnetic_density_fun 给的是 body torque density，则转到 world
         if magnetic_density_fun is not None:
             _, tau_mag_body = magnetic_density_fun(x, sigma)
-            tau_total_body += tau_mag_body
+            tau_total_world += R @ np.asarray(tau_mag_body, dtype=float).reshape(3)
 
-        return tau_total_body
+        return tau_total_world
 
     return fext_density, tauext_density
 
-
-# -------- 4. 刚性段受到集中外力/外力矩 --------
 
 
 def compute_external_wrench_total_rigid(
