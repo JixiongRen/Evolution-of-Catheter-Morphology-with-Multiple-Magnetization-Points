@@ -99,12 +99,12 @@ def main():
     # 单位电流组
     currents = generate_unit_currents(n_coils=8, dtype=np.float64)  # (8,8)
 
-    # 生成网格 (10,10,10,3) 以及坐标轴
-    grid_xyz, xs, ys, zs = generate_grid(side=0.6, num=10, dtype=np.float64)
+    # 生成网格以及坐标轴
+    grid_xyz, xs, ys, zs = generate_grid(side=0.6, num=30, dtype=np.float64)
     nx, ny, nz, _ = grid_xyz.shape
     C = currents.shape[0]  # 8
 
-    # 结果张量: [10, 10, 10, 8, 3]
+    # 结果张量
     B_tensor = np.empty((nx, ny, nz, C, 3), dtype=np.float64)
 
     # 逐点逐电流计算 B 场
@@ -120,13 +120,13 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = (out_dir / "unit_current_impact.pkl").resolve()
     payload = {
-        "B": B_tensor,               # (10,10,10,8,3)
+        "B": B_tensor,               #
         "x": xs, "y": ys, "z": zs,   # 各轴坐标
         "currents": currents,        # (8,8) 单位电流组
         "meta": {
             "units": {"length": "m", "current": "A", "B": "T"},
             "side": 0.6,
-            "num_per_edge": 10,
+            "num_per_edge": 30,
             "shape": list(B_tensor.shape),
             "description": "Unit-current magnetic field impact tensor over a cubic grid centered at origin.",
         }
@@ -136,7 +136,7 @@ def main():
         pickle.dump(payload, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     print(f"已保存到: {out_path}")
-    print(f"B 张量形状: {B_tensor.shape} (应为 [10, 10, 10, 8, 3])")
+    print(f"B 张量形状: {B_tensor.shape} (应为 [{nx}, {ny}, {nz}, 8, 3])")
 
 
 if __name__ == "__main__":
