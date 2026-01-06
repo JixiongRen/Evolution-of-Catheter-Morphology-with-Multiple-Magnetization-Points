@@ -270,7 +270,6 @@ def build_gravity_rigid_jax(
 # Backward-compatible convenience wrappers (defaults)
 # ---------------------------------------------------------------------
 def build_k_matrices_for_pdms_jax(d_outer: float) -> tuple[Array, Array]:
-    # PDMS defaults (editable via CLI in example.py)
     return build_k_matrices_circular_jax(d_outer=float(d_outer), E=1.8e6, G=0.6e6)
 
 
