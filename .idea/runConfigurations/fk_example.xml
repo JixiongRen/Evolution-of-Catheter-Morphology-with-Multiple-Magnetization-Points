@@ -1,0 +1,27 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="fk_example" type="PythonConfigurationType" factoryName="Python">
+    <module name="Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points" />
+    <option name="ENV_FILES" value="" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+    </envs>
+    <option name="SDK_HOME" value="" />
+    <option name="SDK_NAME" value="evolution_of_mcrs WSL (Ubuntu22.04): (null)" />
+    <option name="WORKING_DIRECTORY" value="" />
+    <option name="IS_MODULE_SDK" value="false" />
+    <option name="ADD_CONTENT_ROOTS" value="true" />
+    <option name="ADD_SOURCE_ROOTS" value="true" />
+    <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+    <option name="RUN_TOOL" value="" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/forward_kinematics/fk_example.py" />
+    <option name="PARAMETERS" value="--flex_lengths=0.03,0.03,0.03 --rigid_lengths=0.003,0.003,0.003 --M_list=5,5,5 --enable_gravity --enable_magnetics --calib_file=/abs/path/calibration.json --coil_currents=10.8655,-28.2910,-19.5483,24.4924,7.0786,6.9155,-3.7355,12.4761 --m_body_list=&quot;0,0,-0.005301; 0,0,0.005301; 0.005301,0,0&quot; --p0=0,0,0 --Q0=0.70710678,0,0.70710678,0 --axis_body=0,0,1 --plot" />
+    <option name="SHOW_COMMAND_LINE" value="false" />
+    <option name="EMULATE_TERMINAL" value="false" />
+    <option name="MODULE_MODE" value="false" />
+    <option name="REDIRECT_INPUT" value="false" />
+    <option name="INPUT_FILE" value="" />
+    <method v="2" />
+  </configuration>
+</component>
