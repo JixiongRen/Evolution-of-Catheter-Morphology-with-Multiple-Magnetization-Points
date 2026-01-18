@@ -439,7 +439,7 @@ def build_argparser() -> argparse.ArgumentParser:
     # Solver
     p.add_argument("--max_iter", type=int, default=100000)
     p.add_argument("--tol", type=float, default=1e-6)
-    p.add_argument("--lm_damping", type=float, default=1e-1)
+    p.add_argument("--lm_damping", type=float, default=1e-3)
     p.add_argument("--jac_method", type=str, default="fwd", choices=["fwd", "rev"])
     p.add_argument("--plot", action="store_true", help="Plot converged pose (matplotlib).")
     return p

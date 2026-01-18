@@ -6,10 +6,7 @@ from typing import Optional, Callable, Dict, Tuple
 import jax
 import jax.numpy as jnp
 
-try:
-    from nondim import NondimScales, x_bar_to_dim, rhs_dim_to_rhs_bar_dsbar
-except ImportError:  # standalone execution
-    from nondim import NondimScales, x_bar_to_dim, rhs_dim_to_rhs_bar_dsbar
+from nondim import NondimScales, x_bar_to_dim, rhs_dim_to_rhs_bar_dsbar
 from segments_nondim import (
     FlexibleParams,
     RigidParams,
@@ -614,7 +611,7 @@ class MultiSegmentEquilibriumSolverNondimJAX:
         abs_cost_tol: float = 1e-18,
         patience: int = 20,
         reject_patience: int = 10,
-        gtol: float = 1e-8,
+        gtol: float = 1e-12,
         xtol: float = 1e-12,
         lam_max: float = 1e10,
     ):
@@ -731,13 +728,13 @@ class MultiSegmentEquilibriumSolverNondimJAX:
                         no_improve += 1
 
                     # print every 500 iterations
-                    if it % 500 == 0:
-                        print(
-                            f"[Multi-LM-JAX] iter={it+1}, ||E||={normE:.3e}, lambda={lam:.3e} {status}, "
-                            f"rho={rho:.2f}, no_improve={no_improve}/{patience}"
-                        )
-                        if callback is not None:
-                            callback(it + 1, jnp.array(z), normE)
+                    # if it % 500 == 0:
+                    print(
+                        f"[Multi-LM-JAX] iter={it+1}, ||E||={normE:.3e}, lambda={lam:.3e} {status}, "
+                        f"rho={rho:.2f}, no_improve={no_improve}/{patience}"
+                    )
+                    if callback is not None:
+                        callback(it + 1, jnp.array(z), normE)
 
                     # (E) stagnation stop
                     if no_improve >= patience:

@@ -4,6 +4,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Optional, Tuple, List, Sequence, Any
 
+from nondim import NondimScales
+from basics_nondim import quat_normalize, quat_to_rotmat
+from external_wrench_nondim import GravityLineDensity, GravityRigid
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -13,20 +17,6 @@ import jax.numpy as jnp
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
 
-try:
-    from nondim import NondimScales
-except ImportError:  # standalone execution
-    from nondim import NondimScales
-
-try:
-    from basics_nondim import quat_normalize, quat_to_rotmat
-except ImportError:  # standalone execution
-    from basics_nondim import quat_normalize, quat_to_rotmat
-
-try:
-    from external_wrench_nondim import GravityLineDensity, GravityRigid
-except ImportError:  # standalone execution
-    from external_wrench_nondim import GravityLineDensity, GravityRigid
 
 
 # ---------------------------------------------------------------------

@@ -6,10 +6,7 @@ from typing import Callable, Dict, Optional, Protocol, Tuple
 import jax
 import jax.numpy as jnp
 
-try:
-    from basics_nondim import quat_normalize, quat_to_rotmat
-except ImportError:  # standalone execution
-    from basics_nondim import quat_normalize, quat_to_rotmat
+from basics_nondim import quat_normalize, quat_to_rotmat
 
 jax.config.update("jax_enable_x64", True)
 

@@ -17,7 +17,11 @@ from nondim import NondimScales, x_bar_to_dim
 from basics_nondim import quat_normalize
 from segments_nondim import FlexibleParams, RigidParams
 from external_wrench_nondim import GravityRigid, MagneticModel, compute_external_wrench_total_rigid
-from equilibrium_solver_nondim import SolverParams, MultiSegmentEquilibriumSolverNondimJAX
+from equilibrium_solver_nondim import (
+    SolverParams,
+    MultiSegmentEquilibriumSolverNondimJAX,
+    print_top_blocks_jax,   # 新增：直接打印Top blocks
+)
 from utils_nondim import (
     make_initial_guess_multi_bar_jax,
     unpack_z_bar_jax,
@@ -463,7 +467,7 @@ def build_argparser() -> argparse.ArgumentParser:
 
     # Solver
     p.add_argument("--max_iter", type=int, default=100000)
-    p.add_argument("--tol", type=float, default=1e-5)
+    p.add_argument("--tol", type=float, default=1e-7)
     p.add_argument("--lm_damping", type=float, default=1e-1)
     p.add_argument("--jac_method", type=str, default="fwd", choices=["fwd", "rev"])
     p.add_argument("--plot", action="store_true", help="Plot converged pose (matplotlib).")
@@ -475,6 +479,130 @@ def load_config_file(path: Optional[str]) -> Dict[str, Any]:
         return {}
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def create_iteration_callback(
+    params: SolverParams,
+    scales: NondimScales,
+    *,
+    every: int = 10,
+    n_samples_rigid: int = 10,
+    save_every: int = 100,
+    save_dir: Optional[str] = None,
+    save_npz: bool = True,
+):
+    """
+    在 LM 迭代过程中周期性（every 步）绘制当前姿态：
+      - 柔性段：不透明蓝色（节点，单位米）
+      - 刚性段：红色（段内采样，单位米）
+    并且每隔 save_every 轮将当前回调结果保存至磁盘（PNG，且可选NPZ）。
+    """
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(111, projection="3d")
+    ax.set_xlabel("X [m]")
+    ax.set_ylabel("Y [m]")
+    ax.set_title("Convergence (live)")
+    ax.view_init(elev=30, azim=-60)
+    ax.set_box_aspect([1, 1, 1])
+    ax.set_xlim([-0.1, 0.1])
+    ax.set_ylim([-0.1, 0.1])
+    ax.set_zlim([-0.05, 0.05])
+
+    from pathlib import Path
+    out_dir = Path(save_dir) if save_dir is not None else Path("callback_out")
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    def cb(iter_num: int, z: Array, normE: float):
+        if (iter_num % every) != 0:
+            return
+
+        # 清除先前的内容并重设坐标轴属性
+        ax.cla()
+        ax.set_xlabel("X [m]")
+        ax.set_ylabel("Y [m]")
+        ax.set_title("Convergence (live)")
+        ax.view_init(elev=30, azim=30)
+        ax.set_box_aspect([1, 1, 1])
+        ax.set_xlim([-0.1, 0.1])
+        ax.set_ylim([-0.1, 0.1])
+        ax.set_zlim([-0.05, 0.08])
+
+        x_nodes_list_bar, _, _ = unpack_z_bar_jax(z, M_list=params.M_list)
+
+        # 柔段使用不透明蓝色
+        flex_color = "blue"
+        flex_alpha = 1.0
+        # 刚段不透明度可随残差略变（可选）
+        if normE > 1e-2:
+            rigid_alpha = 0.9
+        elif normE > 1e-3:
+            rigid_alpha = 0.7
+        elif normE > 1e-4:
+            rigid_alpha = 0.5
+        else:
+            rigid_alpha = 0.4
+
+        for i in range(len(params.flex)):
+            # 柔性段：节点（bar->SI）
+            p_flex_bar = x_nodes_list_bar[i][:, 0:3]
+            p_flex_dim = p_flex_bar * scales.L_ref
+            ax.plot(p_flex_dim[:, 0], p_flex_dim[:, 1], p_flex_dim[:, 2],
+                    color=flex_color, alpha=flex_alpha, linewidth=1.8)
+
+            # 刚性段：解析推进并采样
+            rigidp = params.rigid[i]
+            Lr = float(rigidp.length)
+            if Lr <= 0.0 or n_samples_rigid <= 0:
+                continue
+
+            x_prox_dim = x_bar_to_dim(x_nodes_list_bar[i][-1], scales)
+
+            f_total_dim, tau_total_dim = compute_external_wrench_total_rigid(
+                x_proximal=x_prox_dim,
+                rigid_length=Lr,
+                gravity=params.gravity_rigid_list[i],
+                magnetic_model=params.magnetic_model,
+                magnet_params=params.magnet_params_list[i],
+                coil_currents=params.coil_currents,
+            )
+
+            from pose_modules_nondim_jax.segments_nondim_jax import rigid_state_along_dim
+
+            sigmas = np.linspace(0.0, Lr, int(n_samples_rigid) + 1)[1:]
+            p_rigid = []
+            for s in sigmas:
+                x_s = rigid_state_along_dim(
+                    x_prox_dim=x_prox_dim,
+                    sigma=float(s),
+                    rigid=rigidp,
+                    f_ext_total_dim=f_total_dim,
+                    tau_ext_total_dim=tau_total_dim,
+                )
+                p_rigid.append(np.asarray(x_s[0:3]))
+            if p_rigid:
+                pr = np.asarray(p_rigid)
+                ax.plot(pr[:, 0], pr[:, 1], pr[:, 2], "-o", color="r", markersize=2.0, linewidth=1.5, alpha=rigid_alpha)
+
+        ax.set_title(f"Convergence (iter={iter_num}, ||E||={normE:.3e})")
+        plt.tight_layout()
+        plt.pause(0.01)
+
+        # 间隔保存当前图像和可选中间解
+        if save_every > 0 and (iter_num % save_every) == 0:
+            png_path = out_dir / f"callback_iter_{iter_num:06d}.png"
+            try:
+                fig.savefig(png_path, dpi=150)
+                print(f"[callback] saved {png_path}")
+            except Exception as e:
+                print(f"[callback] save png failed: {e}")
+            if save_npz:
+                npz_path = out_dir / f"callback_iter_{iter_num:06d}.npz"
+                try:
+                    np.savez(npz_path, z=np.asarray(z), iter=iter_num, normE=float(normE))
+                except Exception as e:
+                    print(f"[callback] save npz failed: {e}")
+
+    return cb
 
 
 def main():
@@ -583,12 +711,137 @@ def main():
     print("JAX devices:", jax.devices())
     solver = MultiSegmentEquilibriumSolverNondimJAX(params)
 
+    # ===================== DIAG PATCH BEGIN =====================
+    # 你希望检查 it=1 和 it=5001；注意：solve_lm 的 callback 会收到它自己打印的迭代号
+    #（你的日志里 DIAG it=1 / 5001 已经验证这个编号是对齐的）
+    debug_iters = {1, 5001}
+
+    # 你关心的“具体块”：可按需改
+    # 建议至少包含：平台期 state 最大的块（例如 seg0 interval1/2）以及段间连接 BV（seg1/seg2 的 interval0）
+    watch_flex = [
+        (0, 1),
+        (0, 2),
+        (1, 0),
+        (2, 0),
+    ]
+
+    def _norm(x: Array) -> float:
+        return float(jnp.linalg.norm(x))
+
+    def _maxabs(x: Array) -> float:
+        return float(jnp.max(jnp.abs(x))) if x.size > 0 else 0.0
+
+    def _flex_block_index(seg: int, interval: int) -> int:
+        # 全局 flex block idx = sum_{s<seg} M_list[s] + interval
+        return int(sum(int(params.M_list[s]) for s in range(seg)) + int(interval))
+
+    def _print_state_breakdown(vec13: Array, prefix: str = "") -> None:
+        p = vec13[0:3]
+        Q = vec13[3:7]
+        f = vec13[7:10]
+        tau = vec13[10:13]
+        print(
+            f"{prefix}state breakdown | "
+            f"p={_norm(p):.3e} (max={_maxabs(p):.3e}), "
+            f"Q={_norm(Q):.3e} (max={_maxabs(Q):.3e}), "
+            f"f={_norm(f):.3e} (max={_maxabs(f):.3e}), "
+            f"tau={_norm(tau):.3e} (max={_maxabs(tau):.3e})"
+        )
+
+    def _print_bv_breakdown(bv: Array, prefix: str = "") -> None:
+        ln = int(bv.size)
+        if ln == 0:
+            print(f"{prefix}BV breakdown | (empty)")
+            return
+
+        if ln == 7:
+            p = bv[0:3]
+            Q = bv[3:7]
+            print(
+                f"{prefix}BV breakdown (len=7: p,Q) | "
+                f"p={_norm(p):.3e} (max={_maxabs(p):.3e}), "
+                f"Q={_norm(Q):.3e} (max={_maxabs(Q):.3e})"
+            )
+            return
+
+        if ln == 13:
+            print(f"{prefix}BV breakdown (len=13: p,Q,f,tau) | total={_norm(bv):.3e} (max={_maxabs(bv):.3e})")
+            _print_state_breakdown(bv, prefix=prefix + "  ")
+            return
+
+        # 兜底：未知长度直接报数值
+        print(f"{prefix}BV breakdown (len={ln}) | total={_norm(bv):.3e} (max={_maxabs(bv):.3e})")
+
+    def _print_flex_block_details(E: Array, seg: int, interval: int, prefix: str = "") -> None:
+        cs_len = int(params.cs_len)
+        idx = _flex_block_index(seg, interval)
+        off = int(params.flex_block_offsets[idx])
+        ln = int(params.flex_block_lens[idx])
+        blk = E[off:off + ln]
+
+        C_S = blk[:cs_len]
+        state = blk[cs_len:cs_len + 13]
+        ks = blk[cs_len + 13:cs_len + 13 + 39]
+        BV = blk[cs_len + 13 + 39:]
+
+        # ks 分 3 个 stage
+        ks0 = ks[0:13]
+        ks1 = ks[13:26]
+        ks2 = ks[26:39]
+
+        print(f"{prefix}[FLEX-DETAIL] seg={seg} interval={interval} idx={idx} off={off} len={ln}")
+        print(
+            f"{prefix}  norms | total={_norm(blk):.3e} (max={_maxabs(blk):.3e}), "
+            f"C_S={_norm(C_S):.3e}, state={_norm(state):.3e}, "
+            f"ks={_norm(ks):.3e} (stages [{_norm(ks0):.3e}, {_norm(ks1):.3e}, {_norm(ks2):.3e}]), "
+            f"BV={_norm(BV):.3e} (bv_len={int(BV.size)})"
+        )
+        _print_state_breakdown(state, prefix=prefix + "  ")
+        _print_bv_breakdown(BV, prefix=prefix + "  ")
+
+    def lm_callback(it: int, z_bar: Array, normE: float) -> None:
+        # 只在你关心的迭代点打印
+        if it not in debug_iters:
+            return
+
+        # 计算当前残差（会触发同步；但你只打印两次，所以成本可接受）
+        E = solver.residual_jit(z_bar)
+
+        print("\n" + "=" * 88)
+        print(f"[DIAG] it={it}  ||E||={float(jnp.linalg.norm(E)):.6e}  (solver_normE={float(normE):.6e})")
+
+        # 1) 原有总览（与你现在看到的一致）
+        print_top_blocks_jax(
+            E,
+            params,
+            topk_flex=12,
+            topk_rigid=6,
+            verbose=True,
+            title_prefix=f"[DIAG it={it}] ",
+        )
+
+        # 2) 你指定的“重点块”做更细的 state / BV 分解
+        print(f"[DIAG it={it}] Focused flex block decomposition:")
+        for (seg, interval) in watch_flex:
+            try:
+                _print_flex_block_details(E, seg=int(seg), interval=int(interval), prefix=f"[DIAG it={it}] ")
+            except Exception as ex:
+                print(f"[DIAG it={it}]  (seg={seg}, interval={interval}) failed to parse: {ex}")
+
+        print("=" * 88 + "\n")
+
+    # ===================== DIAG PATCH END =====================
+
+    cb = create_iteration_callback(params, scales, every=100, n_samples_rigid=10, save_every=100,
+                                   save_dir="callback_snaps", save_npz=True)
+
     z_star, ok = solver.solve_lm(
         z0_bar,
         max_iter=int(_get("max_iter", args.max_iter)),
         tol=float(_get("tol", args.tol)),
         lm_damping=float(_get("lm_damping", args.lm_damping)),
         jac_method=str(_get("jac_method", args.jac_method)),
+        callback=cb,
     )
     print("Converged:", ok)
 

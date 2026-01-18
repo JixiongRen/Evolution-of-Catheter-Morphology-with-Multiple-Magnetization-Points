@@ -6,10 +6,7 @@ from typing import Optional, Callable
 import jax
 import jax.numpy as jnp
 
-try:
-    from basics_nondim import skew, quat_to_rotmat, quat_derivative, quat_normalize, GL3_A, GL3_B, GL3_C
-except ImportError:  # standalone execution
-    from basics_nondim import skew, quat_to_rotmat, quat_derivative, quat_normalize, GL3_A, GL3_B, GL3_C
+from basics_nondim import skew, quat_to_rotmat, quat_derivative, quat_normalize, GL3_A, GL3_B, GL3_C
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
