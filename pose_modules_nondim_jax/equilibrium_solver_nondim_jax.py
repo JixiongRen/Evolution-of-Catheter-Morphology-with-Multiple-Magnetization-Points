@@ -610,7 +610,7 @@ class MultiSegmentEquilibriumSolverNondimJAX:
         abs_cost_tol: float = 1e-18,
         patience: int = 20,
         reject_patience: int = 10,
-        gtol: float = 1e-8,
+        gtol: float = 1e-12,
         xtol: float = 1e-12,
         lam_max: float = 1e10,
     ):

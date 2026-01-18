@@ -336,7 +336,7 @@ def build_gravity_line_density_for_pdms_jax(d_outer: float) -> GravityLineDensit
     force line density = rho * A * g_world  [N/m]
     """
     rho = 970.0  # kg/m^3
-    g_world = jnp.array([0.0, 0.0, 9.81], dtype=jnp.float64)
+    g_world = jnp.array([0.0, 0.0, -9.81], dtype=jnp.float64)
 
     d_outer = jnp.asarray(d_outer, dtype=jnp.float64)
     r = d_outer / 2.0
