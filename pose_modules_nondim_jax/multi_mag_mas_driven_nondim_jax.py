@@ -808,7 +808,7 @@ def main():
     #         check_last_rigid_bv_sensitivity(solver, z, seg=last, eps=1e-6, label=f"[it={it}] ")
 
     # 可视化收敛过程：每 10 步绘制一次
-    cb = create_iteration_callback(params, scales, every=100, n_samples_rigid=10, save_every=100, save_dir="callback_snaps", save_npz=True)
+    cb = create_iteration_callback(params, scales, every=100, n_samples_rigid=10, save_every=100, save_dir="../callback_snaps", save_npz=True)
 
     z_star, ok = solver.solve_lm(
         z0_bar,

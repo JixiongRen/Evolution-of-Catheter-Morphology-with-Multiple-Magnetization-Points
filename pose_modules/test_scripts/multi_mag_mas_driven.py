@@ -278,7 +278,7 @@ if __name__ == "__main__":
     ]
 
     # Supiee: 磁力模型 & 磁场参数 & 输入电流
-    calib_file = "calib/mpem_calibration_file_sp=40_order=1.yaml"
+    calib_file = "../../calib/mpem_calibration_file_sp=40_order=1.yaml"
     mas = MagneticActuationSystem(calib_file=calib_file)
     supiee_model = SupieeMagneticModel(mas=mas)
 
