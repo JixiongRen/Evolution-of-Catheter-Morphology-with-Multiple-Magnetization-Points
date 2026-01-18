@@ -571,7 +571,7 @@ def plot_converged_pose_3d(
     ax.set_xlabel("X [m]")
     ax.set_ylabel("Y [m]")
     ax.set_title("Converged catheter pose (meters)")
-    ax.view_init(elev=30, azim=-60)
+    ax.view_init(elev=30, azim=30)
     ax.set_box_aspect([1, 1, 1])
     plt.tight_layout()
 
@@ -591,11 +591,15 @@ def create_iteration_callback(
     *,
     every: int = 10,
     n_samples_rigid: int = 10,
+    save_every: int = 100,
+    save_dir: Optional[str] = None,
+    save_npz: bool = True,
 ):
     """
     在 LM 迭代过程中周期性（every 步）绘制当前姿态：
-      - 柔性段：蓝色（节点，单位米）
+      - 柔性段：不透明蓝色（节点，单位米）
       - 刚性段：红色（段内采样，单位米）
+    并且每隔 save_every 轮将当前回调结果保存至磁盘（PNG，且可选NPZ）。
     """
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111, projection="3d")
@@ -608,6 +612,10 @@ def create_iteration_callback(
     ax.set_ylim([-0.1, 0.1])
     ax.set_zlim([-0.05, 0.05])
 
+    from pathlib import Path
+    out_dir = Path(save_dir) if save_dir is not None else Path("callback_out")
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     def cb(iter_num: int, z: Array, normE: float):
         if (iter_num % every) != 0:
             return
@@ -617,7 +625,7 @@ def create_iteration_callback(
         ax.set_xlabel("X [m]")
         ax.set_ylabel("Y [m]")
         ax.set_title("Convergence (live)")
-        ax.view_init(elev=30, azim=-60)
+        ax.view_init(elev=30, azim=30)
         ax.set_box_aspect([1, 1, 1])
         ax.set_xlim([-0.1, 0.1])
         ax.set_ylim([-0.1, 0.1])
@@ -625,22 +633,25 @@ def create_iteration_callback(
 
         x_nodes_list_bar, _, _ = unpack_z_bar_jax(z, M_list=params.M_list)
 
-        # 透明度映射
+        # 柔段使用不透明蓝色
+        flex_color = "blue"
+        flex_alpha = 1.0
+        # 刚段不透明度可随残差略变（可选）
         if normE > 1e-2:
-            alpha = 0.9
+            rigid_alpha = 0.9
         elif normE > 1e-3:
-            alpha = 0.6
+            rigid_alpha = 0.7
         elif normE > 1e-4:
-            alpha = 0.3
+            rigid_alpha = 0.5
         else:
-            alpha = 0.15
+            rigid_alpha = 0.4
 
         for i in range(len(params.flex)):
             # 柔性段：节点（bar->SI）
             p_flex_bar = x_nodes_list_bar[i][:, 0:3]
             p_flex_dim = p_flex_bar * scales.L_ref
             ax.plot(p_flex_dim[:, 0], p_flex_dim[:, 1], p_flex_dim[:, 2],
-                    color="b", alpha=alpha, linewidth=1.5)
+                    color=flex_color, alpha=flex_alpha, linewidth=1.8)
 
             # 刚性段：解析推进并采样
             rigidp = params.rigid[i]
@@ -674,11 +685,26 @@ def create_iteration_callback(
                 p_rigid.append(np.asarray(x_s[0:3]))
             if p_rigid:
                 pr = np.asarray(p_rigid)
-                ax.plot(pr[:, 0], pr[:, 1], pr[:, 2], "-o", color="r", markersize=2.0, linewidth=1.5, alpha=alpha)
+                ax.plot(pr[:, 0], pr[:, 1], pr[:, 2], "-o", color="r", markersize=2.0, linewidth=1.5, alpha=rigid_alpha)
 
         ax.set_title(f"Convergence (iter={iter_num}, ||E||={normE:.3e})")
         plt.tight_layout()
         plt.pause(0.01)
+
+        # 间隔保存当前图像和可选中间解
+        if save_every > 0 and (iter_num % save_every) == 0:
+            png_path = out_dir / f"callback_iter_{iter_num:06d}.png"
+            try:
+                fig.savefig(png_path, dpi=150)
+                print(f"[callback] saved {png_path}")
+            except Exception as e:
+                print(f"[callback] save png failed: {e}")
+            if save_npz:
+                npz_path = out_dir / f"callback_iter_{iter_num:06d}.npz"
+                try:
+                    np.savez(npz_path, z=np.asarray(z), iter=iter_num, normE=float(normE))
+                except Exception as e:
+                    print(f"[callback] save npz failed: {e}")
 
     return cb
 
@@ -689,7 +715,7 @@ def main():
     d_outer = 0.0015  # [m]
 
     # Three flex + three rigid example (edit)
-    flex_lengths = [0.03, 0.03, 0.03]       # [m]
+    flex_lengths = [0.05, 0.03, 0.03]       # [m]
     rigid_lengths = [0.003, 0.003, 0.003]   # [m]
     M_list = [5, 5, 5]                   # intervals per flex
 
@@ -697,22 +723,22 @@ def main():
     scales = compute_scales_pdms(d_outer=d_outer, L_ref=total_L)
 
     # ---- Set proximal initial position in SI (meters) ----
-    p0_dim = jnp.array([0.0, 0.0, -0.0], dtype=jnp.float64)
+    p0_dim = jnp.array([0.0, 0.0, -0.05], dtype=jnp.float64)
 
     # ---- Magnetics (example) ----
     enable_magnetics = True
     calib_file = "/path/to/your/calibration.json"  # TODO: set
     actuation_table_pkl = None                     # or set explicit pkl
     # coil_currents = jnp.zeros((8,), dtype=jnp.float64)  # TODO: set your 8-coil currents
-    coil_currents = jnp.array([3.3832,24.4370,-30.7323,-2.5516,-20.1070,44.8393,23.1883,-35.1559], dtype=jnp.float64)
+    coil_currents = jnp.array([10.8655,-28.2910,-19.5483,24.4924,7.0786,6.9155,-3.7355,12.4761], dtype=jnp.float64)
     # coil_currents = jnp.array([5, 0, 0, 0, 0, 0, 0, 0], dtype=jnp.float64)
 
     # Example magnet moments in BODY frame for each rigid (A·m^2) - TODO: set real
     m_mag = 0.005301  # A·m^2
     m_body_list = [
-        jnp.array([m_mag, 0.0, 0.0], dtype=jnp.float64),
-        jnp.array([0.0, 0.0, m_mag], dtype=jnp.float64),
         jnp.array([0.0, 0.0, -m_mag], dtype=jnp.float64),
+        jnp.array([0.0, 0.0, m_mag], dtype=jnp.float64),
+        jnp.array([m_mag, 0.0, 0.0], dtype=jnp.float64),
     ]
 
     # ---- Gravity on (per your statement) ----
@@ -782,12 +808,12 @@ def main():
     #         check_last_rigid_bv_sensitivity(solver, z, seg=last, eps=1e-6, label=f"[it={it}] ")
 
     # 可视化收敛过程：每 10 步绘制一次
-    cb = create_iteration_callback(params, scales, every=100, n_samples_rigid=10)
+    cb = create_iteration_callback(params, scales, every=100, n_samples_rigid=10, save_every=100, save_dir="callback_snaps", save_npz=True)
 
     z_star, ok = solver.solve_lm(
         z0_bar,
         max_iter=600000,
-        tol=1e-5,
+        tol=1e-7,
         lm_damping=1e-3,
         jac_method="fwd",  # "rev" is sometimes better for very large z
         callback=cb,
