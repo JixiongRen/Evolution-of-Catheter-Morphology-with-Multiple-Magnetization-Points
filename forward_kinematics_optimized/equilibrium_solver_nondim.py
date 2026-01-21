@@ -1034,7 +1034,7 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                 # reject
                 consecutive_reject += 1
                 lam = min(lam * 10.0, lam_max)
-                if verbose:
+                if verbose and (it + 1) % 1000 == 0:
                     print(f"[Multi-LM-JAX] iter={it+1}, reject, ||E||={normE:.3e}, lambda={lam:.3e}, rho={rho:.2f}")
 
                 if consecutive_reject >= reject_patience:
