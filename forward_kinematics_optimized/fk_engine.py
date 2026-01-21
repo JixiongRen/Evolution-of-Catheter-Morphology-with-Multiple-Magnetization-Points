@@ -296,6 +296,73 @@ class ForwardKinematicsEngine:
 
         return z_star_bar, params, meshes, bool(ok), stats
 
+
+    def query_sites(
+            self,
+            *,
+            z_bar: Array,
+            scales: NondimScales,
+    ) -> Dict[str, Array]:
+        """Extract observable poses from a packed equilibrium state.
+
+        This is a *read-only* helper intended for IK and debugging. It does not
+        modify the engine state.
+
+        Conventions (dimensional outputs):
+          - tip pose: distal node of the last flexible segment (same as ``_extract_tip_pose_dim``)
+          - magnet sites: *midpoints of each rigid segment* (one state per rigid segment)
+
+        Args:
+            z_bar: packed decision vector returned by :meth:`solve` / :meth:`solve_with_stats`.
+            scales: nondimensional scales used for this ``z_bar`` (typically ``params.scales``).
+
+        Returns:
+            dict with keys:
+              - tip_p_dim: (3,)
+              - tip_Q_wxyz: (4,)
+              - rigid_mid_p_dim: (N,3) where N=len(rigid_lengths)
+              - rigid_mid_Q_wxyz: (N,4)
+
+        Notes:
+            In this codebase, each rigid segment is represented by a single state
+            ``x_rigid`` whose pose corresponds to the rigid segment midpoint.
+            Returning these poses therefore matches the “magnet sites at rigid
+            midpoints” convention requested by IK.
+        """
+        z_bar = jnp.asarray(z_bar, dtype=jnp.float64)
+
+        # Tip
+        tip_p_dim, tip_Q_wxyz = self._extract_tip_pose_dim(z_bar, scales)
+
+        # Rigid midpoints (one state per rigid segment)
+        _x_nodes_list_bar, _k_list_bar, x_rigid_list_bar = unpack_z_bar_jax(z_bar, M_list=self.M_list)
+
+        def _one_rigid_to_dim(xR_bar: Array):
+            xR_dim = x_bar_to_dim(xR_bar, scales)
+            p = xR_dim[0:3]
+            Q = xR_dim[3:7]
+            return p, Q
+
+        if len(x_rigid_list_bar) == 0:
+            rigid_p = jnp.zeros((0, 3), dtype=jnp.float64)
+            rigid_Q = jnp.zeros((0, 4), dtype=jnp.float64)
+        else:
+            p_list = []
+            q_list = []
+            for xR_bar in x_rigid_list_bar:
+                p, Q = _one_rigid_to_dim(xR_bar)
+                p_list.append(p)
+                q_list.append(Q)
+            rigid_p = jnp.stack(p_list, axis=0)
+            rigid_Q = jnp.stack(q_list, axis=0)
+
+        return {
+            'tip_p_dim': tip_p_dim,
+            'tip_Q_wxyz': tip_Q_wxyz,
+            'rigid_mid_p_dim': rigid_p,
+            'rigid_mid_Q_wxyz': rigid_Q,
+        }
+
     def reset_warm_start(self) -> None:
         """Clear cached warm-start state."""
         self._last_z_bar = None
@@ -453,4 +520,7 @@ if __name__ == "__main__":
         warm_start=True,
     )
 
-    test = engine._rescale_z_bar(z_bar_old=z_star_bar, s_old=engine._scales, s_new=engine._scales, M_list=engine.M_list)
+    # Example: rescale cached state between identical scales (no-op)
+    _ = engine._rescale_z_bar(z_bar_old=z_star_bar, s_old=params.scales, s_new=params.scales, M_list=engine.M_list)
+    obs = engine.query_sites(z_bar=z_star_bar, scales=params.scales)
+    print("tip_p_dim:", obs["tip_p_dim"])
