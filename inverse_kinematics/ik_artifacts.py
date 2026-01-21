@@ -28,8 +28,8 @@ import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
 
-from nondim import x_bar_to_dim
-from utils_nondim import unpack_z_bar_jax
+from forward_kinematics_optimized.nondim import x_bar_to_dim
+from forward_kinematics_optimized.utils_nondim import unpack_z_bar_jax
 
 Array = jnp.ndarray
 
