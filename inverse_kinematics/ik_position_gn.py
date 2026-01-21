@@ -59,7 +59,7 @@ def build_argparser() -> argparse.ArgumentParser:
 
     # --- IK specific ---
     p.add_argument("--p_des", type=str, required=True, help="Desired tip position [m], format x,y,z")
-    p.add_argument("--eps_p", type=float, default=5e-3, help="Position tolerance [m]. Default 1mm")
+    p.add_argument("--eps_p", type=float, default=10e-3, help="Position tolerance [m]. Default 1mm")
 
     p.add_argument("--I_min", type=float, default=-50.0, help="Lower bound for every coil current [A]")
     p.add_argument("--I_max", type=float, default=50.0, help="Upper bound for every coil current [A]")
