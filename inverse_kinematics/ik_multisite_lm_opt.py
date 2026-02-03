@@ -101,7 +101,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--x_ref", type=float, default=None, help="Reference insertion depth for regularization. Default: x0.")
 
     # Outer LM settings
-    p.add_argument("--outer_max_iter", type=int, default=70, help="Max outer LM iterations")
+    p.add_argument("--outer_max_iter", type=int, default=7000, help="Max outer LM iterations")
     p.add_argument("--lam_init", type=float, default=1e-2, help="Initial LM damping (outer)")
     p.add_argument("--lam_up", type=float, default=10.0, help="Multiply lambda on reject")
     p.add_argument("--lam_down", type=float, default=0.3, help="Multiply lambda on good accept")
@@ -409,37 +409,41 @@ def _compute_dp_dx_fd(
     h: float,
     z0_bar: Optional[Array],
     clip_bounds: Tuple[float, float],
+    debug_flag: bool = False,
 ) -> Array:
     """Finite difference dp_tip/dx along x, returns (3,)."""
-    x_min, x_max = clip_bounds
-    h = float(h)
-    if h <= 0.0:
-        raise ValueError("fd step h must be > 0")
-    xp = min(float(x_max), float(x) + h)
-    xm = max(float(x_min), float(x) - h)
-    if abs(xp - xm) < 1e-12:
+    if not debug_flag:
+        x_min, x_max = clip_bounds
+        h = float(h)
+        if h <= 0.0:
+            raise ValueError("fd step h must be > 0")
+        xp = min(float(x_max), float(x) + h)
+        xm = max(float(x_min), float(x) - h)
+        if abs(xp - xm) < 1e-12:
+            return jnp.zeros((3,), dtype=jnp.float64)
+
+        zp, params_p, _, _, _ = engine.solve_with_stats(
+            coil_currents=I,
+            L_protrude=float(xp),
+            warm_start=True,
+            override_z0_bar=z0_bar,
+            return_stats=True,
+        )
+        zm, params_m, _, _, _ = engine.solve_with_stats(
+            coil_currents=I,
+            L_protrude=float(xm),
+            warm_start=True,
+            override_z0_bar=z0_bar,
+            return_stats=True,
+        )
+
+        pp = jnp.asarray(engine.query_sites(z_bar=zp, scales=params_p.scales)["tip_p_dim"], dtype=jnp.float64)
+        pm = jnp.asarray(engine.query_sites(z_bar=zm, scales=params_m.scales)["tip_p_dim"], dtype=jnp.float64)
+        dpdx = (pp - pm) / float(xp - xm)
+        return jnp.asarray(dpdx, dtype=jnp.float64)
+    else:
+        # 返回全0向量
         return jnp.zeros((3,), dtype=jnp.float64)
-
-    zp, params_p, _, _, _ = engine.solve_with_stats(
-        coil_currents=I,
-        L_protrude=float(xp),
-        warm_start=True,
-        override_z0_bar=z0_bar,
-        return_stats=True,
-    )
-    zm, params_m, _, _, _ = engine.solve_with_stats(
-        coil_currents=I,
-        L_protrude=float(xm),
-        warm_start=True,
-        override_z0_bar=z0_bar,
-        return_stats=True,
-    )
-
-    pp = jnp.asarray(engine.query_sites(z_bar=zp, scales=params_p.scales)["tip_p_dim"], dtype=jnp.float64)
-    pm = jnp.asarray(engine.query_sites(z_bar=zm, scales=params_m.scales)["tip_p_dim"], dtype=jnp.float64)
-    dpdx = (pp - pm) / float(xp - xm)
-    return jnp.asarray(dpdx, dtype=jnp.float64)
-
 
 def main(argv: Optional[Sequence[str]] = None) -> None:
     args = build_argparser().parse_args(argv)
@@ -535,6 +539,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         rigid_lengths=rigid_lengths,
         M_list=M_list,
         L1_min=L1_min,
+        L_protrude_max=x_max,
         flex_d_outer=flex_d_outer,
         flex_E=flex_E,
         flex_G=flex_G,
@@ -719,6 +724,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             h=fd_x_eps,
             z0_bar=z_warm,
             clip_bounds=(x_min, x_max),
+            debug_flag=False,
         )  # (3,)
 
         # 2) Build Jacobian wrt u

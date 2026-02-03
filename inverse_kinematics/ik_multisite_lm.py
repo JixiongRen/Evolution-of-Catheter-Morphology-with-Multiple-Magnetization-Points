@@ -448,6 +448,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         rigid_lengths=rigid_lengths,
         M_list=M_list,
         L1_min=L1_min,
+        L_protrude_max=x_max,
         flex_d_outer=flex_d_outer,
         flex_E=flex_E,
         flex_G=flex_G,

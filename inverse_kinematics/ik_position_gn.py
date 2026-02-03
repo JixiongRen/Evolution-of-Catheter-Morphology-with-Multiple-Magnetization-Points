@@ -333,6 +333,7 @@ def main() -> None:
         rigid_lengths=rigid_lengths,
         M_list=M_list,
         L1_min=float(_get("L1_min", args.L1_min)),
+        L_protrude_max=float(L_protrude),
         flex_d_outer=flex_d_outer,
         flex_E=flex_E,
         flex_G=flex_G,
