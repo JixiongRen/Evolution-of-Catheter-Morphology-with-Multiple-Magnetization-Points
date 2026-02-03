@@ -26,28 +26,16 @@ Array = jnp.ndarray
 
 
 def with_coil_currents(params: "SolverParams", coil_currents: Array | None) -> "SolverParams":
-    """Return a new :class:`SolverParams` with updated ``coil_currents``.
-
-    Motivation
-    ----------
-    In the current FK implementation, the equilibrium residual is evaluated as
-    ``E(z, params)`` where the coil currents are stored inside ``params``.
-
-    For implicit differentiation / gradient-based IK, we need an explicit
-    interface ``E(z, I)`` so that JAX can compute ``dE/dI``. This helper
-    enables that with minimal, well-scoped changes.
-
-    Notes
-    -----
-    - ``SolverParams`` is registered as a PyTree (see ``tree_flatten``).
-      The coil currents are included in the children tuple, so replacing it
-      keeps the structure compatible with JAX transforms.
-    - This function is *pure*: it does not mutate ``params``.
-    """
     children, aux = params.tree_flatten()
-    # children layout ends with coil_currents
     *rest, _old_I = children
     new_children = tuple(rest) + (coil_currents,)
+    return SolverParams.tree_unflatten(aux, new_children)
+
+
+def with_L1_dim(params: "SolverParams", L1_dim: Array) -> "SolverParams":
+    children, aux = params.tree_flatten()
+    *rest, _old_L1, old_I = children
+    new_children = tuple(rest) + (jnp.asarray(L1_dim, dtype=jnp.float64).reshape(()), old_I)
     return SolverParams.tree_unflatten(aux, new_children)
 
 
@@ -75,6 +63,7 @@ class SolverParams:
     sbar_nodes: Tuple[Array, ...]
     hbar_list: Tuple[Array, ...]
     M_list: Tuple[int, ...]
+    L1_dim: Array
 
     p0_bar: Array
     Q0: Array
@@ -91,10 +80,9 @@ class SolverParams:
 
     gravity_rigid_list: Tuple[Optional[GravityRigid], ...]
     magnet_params_list: Tuple[Optional[Dict], ...]
+    scales: NondimScales
     coil_currents: Optional[Array]
     magnetic_model: Optional[MagneticModel]
-
-    scales: NondimScales
 
     # residual layout (must match numpy assembly order)
     cs_len: int
@@ -112,12 +100,13 @@ class SolverParams:
             self.f_ext_list, self.tau_ext_list,
             self.flex_f_line_world_list, self.flex_tau_line_world_list,
             self.gravity_rigid_list, self.magnet_params_list,
+            self.scales,
+            self.L1_dim,
             self.coil_currents,
         )
         aux = dict(
             M_list=self.M_list,
             magnetic_model=self.magnetic_model,
-            scales=self.scales,
             cs_len=self.cs_len,
             flex_block_offsets=self.flex_block_offsets,
             flex_block_lens=self.flex_block_lens,
@@ -134,6 +123,8 @@ class SolverParams:
             f_ext_list, tau_ext_list,
             flex_f_line_world_list, flex_tau_line_world_list,
             gravity_rigid_list, magnet_params_list,
+            scales,
+            L1_dim,
             coil_currents
         ) = children
         return cls(
@@ -142,6 +133,7 @@ class SolverParams:
             sbar_nodes=tuple(sbar_nodes),
             hbar_list=tuple(hbar_list),
             M_list=tuple(aux["M_list"]),
+            L1_dim=jnp.asarray(L1_dim, dtype=jnp.float64).reshape(()),
             p0_bar=p0_bar,
             Q0=Q0,
             f_ext_list=tuple(f_ext_list),
@@ -150,9 +142,9 @@ class SolverParams:
             flex_tau_line_world_list=tuple(flex_tau_line_world_list),
             gravity_rigid_list=tuple(gravity_rigid_list),
             magnet_params_list=tuple(magnet_params_list),
+            scales=scales,
             coil_currents=coil_currents,
             magnetic_model=aux["magnetic_model"],
-            scales=aux["scales"],
             cs_len=int(aux["cs_len"]),
             flex_block_offsets=tuple(aux["flex_block_offsets"]),
             flex_block_lens=tuple(aux["flex_block_lens"]),
@@ -214,7 +206,10 @@ def residual_bar(z_bar: Array, params: SolverParams) -> Array:
         x_nodes = x_nodes_list[i]
         k_arr = k_array_list[i]
         M = params.M_list[i]
-        L_seg = float(flexp.length)
+        if i == 0:
+            L_seg = jnp.asarray(params.L1_dim, dtype=jnp.float64).reshape(())
+        else:
+            L_seg = float(flexp.length)
 
         def rhs_bar(x_stage_bar: Array, sbar_stage: float) -> Array:
             sigma = sbar_stage * L_seg
@@ -1165,6 +1160,7 @@ def build_solver_params_from_numpy_solver(
         sbar_nodes=tuple(sbar_nodes),
         hbar_list=tuple(hbar_list),
         M_list=tuple(M_list),
+        L1_dim=jnp.asarray(float(flex_params[0].length), dtype=jnp.float64).reshape(()),
         p0_bar=p0_bar,
         Q0=Q0,
         f_ext_list=f_ext_list,

@@ -15,7 +15,8 @@ from advancer_nondim import apply_advancer_protrude_length
 from nondim import NondimScales, x_bar_to_dim, x_dim_to_bar
 from utils_nondim import unpack_z_bar_jax, pack_z_bar_jax, make_initial_guess_multi_bar_jax
 from fk import compute_scales_from_flex, build_solver_params  # reuse exact FK construction logic
-from equilibrium_solver_nondim import MultiSegmentEquilibriumSolverNondimJAXCached, with_coil_currents
+from equilibrium_solver_nondim import MultiSegmentEquilibriumSolverNondimJAXCached, with_coil_currents, with_L1_dim
+from rod_mesh_nondim import build_uniform_mesh
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
@@ -79,10 +80,11 @@ class ForwardKinematicsEngine:
             actuation_table_pkl: Optional[str] = None,
             m_body_list: Optional[Sequence[Sequence[float]]] = None,  # N rigid magnets: each (3,)
             # LM / Jacobian settings
-            max_iter: int = 100000,
+            max_iter: int = 5000,
             tol: float = 1e-5,
             lm_damping: float = 1e-1,
             jac_method: str = "fwd",
+            L_protrude_max: Optional[float] = None,
     ) -> None:
         self.flex_lengths_tail = tuple(float(x) for x in flex_lengths_tail)
         self.rigid_lengths = tuple(float(x) for x in rigid_lengths)
@@ -119,18 +121,20 @@ class ForwardKinematicsEngine:
             raise ValueError("jac_method must be 'fwd' or 'rev'")
         self.jac_method = jac_method
 
+        self.L_protrude_max = None if L_protrude_max is None else float(L_protrude_max)
+
+        self._L_fixed = float(self._flex_tail_total() + sum(self.rigid_lengths))
+
         # Warm-start cache
         self._last_z_bar: Optional[Array] = None
         self._last_scales: Optional[NondimScales] = None
         self._last_flex_lengths: Optional[Tuple[float, ...]] = None
         self._last_rigid_lengths: Optional[Tuple[float, ...]] = None
 
-        # FK static-cache (avoid rebuilding params/solver each IK iteration)
-        self._cached_L_protrude: Optional[float] = None
-        self._cached_params_static: Optional[Any] = None
-        self._cached_meshes: Optional[Any] = None
-        self._cached_scales: Optional[NondimScales] = None
-        self._cached_flex_lengths: Optional[Tuple[float, ...]] = None
+        self._params_static_base: Optional[Any] = None
+        self._meshes_ref: Optional[Any] = None
+        self._scales_ref: Optional[NondimScales] = None
+        self._L1_ref: Optional[float] = None
 
         # One reusable solver instance to share XLA compilation
         self._solver_cached = MultiSegmentEquilibriumSolverNondimJAXCached()
@@ -164,22 +168,21 @@ class ForwardKinematicsEngine:
         coil_currents = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1, )
         if coil_currents.size == 0:
             raise ValueError("coil_currents is empty")
-        # Compute updated flexible lengths using advancer (only L1 changes)
+        self._ensure_static_initialized(L_protrude=float(L_protrude))
+
         flex_lengths = self._compute_flex_lengths(L_protrude=float(L_protrude))
+        L1_dim = float(flex_lengths[0])
 
-        total_L = float(sum(flex_lengths) + sum(self.rigid_lengths))
-        scales_tmp = compute_scales_from_flex(
-            L_ref=total_L,
-            d_outer=float(self.flex_d_outer[0]),
-            E=float(self.flex_E[0]),
-            G=float(self.flex_G[0]),
-        )
+        assert self._params_static_base is not None
+        assert self._meshes_ref is not None
 
-        params_static, meshes = self._get_or_build_static_params(L_protrude=float(L_protrude), scales=scales_tmp)
-        # IMPORTANT: use the *cached* scales instance from params to avoid any
-        # mismatch between z0 construction and residual evaluation.
-        scales = params_static.scales
-        params = with_coil_currents(params_static, coil_currents)
+        params = with_coil_currents(self._params_static_base, coil_currents)
+        params = with_L1_dim(params, jnp.asarray(L1_dim, dtype=jnp.float64))
+
+        meshes = list(self._meshes_ref)
+        meshes[0] = build_uniform_mesh(float(L1_dim), int(self.M_list[0]))
+
+        scales = params.scales
 
         flex_segs = list(params.flex)
         rigid_segs = list(params.rigid)
@@ -188,7 +191,7 @@ class ForwardKinematicsEngine:
         if override_z0_bar is not None:
             z0_bar = jnp.asarray(override_z0_bar, dtype=jnp.float64)
         elif warm_start and self._last_z_bar is not None and self._last_scales is not None:
-            z0_bar = self._rescale_z_bar(self._last_z_bar, self._last_scales, scales, self.M_list)
+            z0_bar = jnp.asarray(self._last_z_bar, dtype=jnp.float64)
         else:
             z0_bar, *_ = make_initial_guess_multi_bar_jax(
                 flex_segs=flex_segs,
@@ -235,18 +238,21 @@ class ForwardKinematicsEngine:
             (z_star_bar, params, meshes, ok, lm_stats)
         """
         coil_currents = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1, )
-        flex_lengths = self._compute_flex_lengths(L_protrude=float(L_protrude))
-        total_L = float(sum(flex_lengths) + sum(self.rigid_lengths))
-        scales_tmp = compute_scales_from_flex(
-            L_ref=total_L,
-            d_outer=float(self.flex_d_outer[0]),
-            E=float(self.flex_E[0]),
-            G=float(self.flex_G[0]),
-        )
+        self._ensure_static_initialized(L_protrude=float(L_protrude))
 
-        params_static, meshes = self._get_or_build_static_params(L_protrude=float(L_protrude), scales=scales_tmp)
-        scales = params_static.scales
-        params = with_coil_currents(params_static, coil_currents)
+        flex_lengths = self._compute_flex_lengths(L_protrude=float(L_protrude))
+        L1_dim = float(flex_lengths[0])
+
+        assert self._params_static_base is not None
+        assert self._meshes_ref is not None
+
+        params = with_coil_currents(self._params_static_base, coil_currents)
+        params = with_L1_dim(params, jnp.asarray(L1_dim, dtype=jnp.float64))
+
+        meshes = list(self._meshes_ref)
+        meshes[0] = build_uniform_mesh(float(L1_dim), int(self.M_list[0]))
+
+        scales = params.scales
 
         flex_segs = list(params.flex)
         rigid_segs = list(params.rigid)
@@ -254,7 +260,7 @@ class ForwardKinematicsEngine:
         if override_z0_bar is not None:
             z0_bar = jnp.asarray(override_z0_bar, dtype=jnp.float64)
         elif warm_start and self._last_z_bar is not None and self._last_scales is not None:
-            z0_bar = self._rescale_z_bar(self._last_z_bar, self._last_scales, scales, self.M_list)
+            z0_bar = jnp.asarray(self._last_z_bar, dtype=jnp.float64)
         else:
             z0_bar, *_ = make_initial_guess_multi_bar_jax(
                 flex_segs=flex_segs,
@@ -373,16 +379,76 @@ class ForwardKinematicsEngine:
         # Do not clear static-cache by default; callers may still want compilation reuse.
 
     def reset_static_cache(self) -> None:
-        """Clear cached static FK objects (params/meshes) so that they are rebuilt on next call."""
-        self._cached_L_protrude = None
-        self._cached_params_static = None
-        self._cached_meshes = None
-        self._cached_scales = None
-        self._cached_flex_lengths = None
+        """Clear cached static FK objects so that they are rebuilt on next call."""
+        self._params_static_base = None
+        self._meshes_ref = None
+        self._scales_ref = None
+        self._L1_ref = None
 
     # ---------------------------
     # Internals
     # ---------------------------
+    def _flex_tail_total(self) -> float:
+        """Return sum(L2..LN) based on flex_lengths_tail semantics."""
+        N = len(self.rigid_lengths)
+        if len(self.flex_lengths_tail) == N - 1:
+            tail = self.flex_lengths_tail
+        elif len(self.flex_lengths_tail) == N:
+            tail = self.flex_lengths_tail[1:]
+        else:
+            raise ValueError(
+                f"flex_lengths_tail must have N or N-1 values where N=len(rigid_lengths)={N}; got {len(self.flex_lengths_tail)}"
+            )
+        return float(sum(tail))
+
+    def _ensure_static_initialized(self, *, L_protrude: float) -> None:
+        if self._params_static_base is not None and self._meshes_ref is not None and self._scales_ref is not None:
+            return
+
+        L_protrude_max = float(L_protrude) if self.L_protrude_max is None else float(self.L_protrude_max)
+        L1_ref = float(L_protrude_max) - float(self._L_fixed)
+        if L1_ref < float(self.L1_min):
+            raise ValueError(
+                f"Infeasible L_protrude_max={L_protrude_max:.6g}: inferred L1_ref={L1_ref:.6g} < L1_min={float(self.L1_min):.6g}"
+            )
+
+        flex_lengths_ref = [float(L1_ref)] + list(self._compute_flex_lengths(L_protrude=float(L_protrude_max)))[1:]
+
+        scales_ref = compute_scales_from_flex(
+            L_ref=float(L_protrude_max),
+            d_outer=float(self.flex_d_outer[0]),
+            E=float(self.flex_E[0]),
+            G=float(self.flex_G[0]),
+        )
+
+        params_base, meshes_ref = build_solver_params(
+            flex_lengths=list(flex_lengths_ref),
+            rigid_lengths=list(self.rigid_lengths),
+            M_list=list(self.M_list),
+            flex_d_outer=list(self.flex_d_outer),
+            flex_E=list(self.flex_E),
+            flex_G=list(self.flex_G),
+            flex_rho=list(self.flex_rho),
+            rigid_d_outer=list(self.rigid_d_outer),
+            rigid_rho=list(self.rigid_rho),
+            p0_dim=self.p0_dim,
+            Q0=self.Q0,
+            axis_body=self.axis_body,
+            enable_gravity=self.enable_gravity,
+            g_world=self.g_world,
+            enable_magnetics=self.enable_magnetics,
+            calib_file=self.calib_file,
+            actuation_table_pkl=self.actuation_table_pkl,
+            coil_currents=jnp.zeros((8,), dtype=jnp.float64),
+            m_body_list=self.m_body_list,
+            scales=scales_ref,
+        )
+
+        self._params_static_base = params_base
+        self._meshes_ref = meshes_ref
+        self._scales_ref = params_base.scales
+        self._L1_ref = float(L1_ref)
+
     def _compute_flex_lengths(self, *, L_protrude: float) -> Tuple[float, ...]:
         """Return full flex lengths [L1, L2, ... LN] given L_protrude.
 
@@ -408,52 +474,11 @@ class ForwardKinematicsEngine:
         return tuple(float(x) for x in flex_out)
 
     def _get_or_build_static_params(self, *, L_protrude: float, scales: NondimScales):
-        """Return (params_static, meshes), caching by L_protrude.
-
-        We treat the following as *static* within a typical IK run:
-          - discretization (M_list)
-          - geometry/materials
-          - L_protrude (thus flex_lengths and scales)
-
-        With fixed L_protrude, we can build SolverParams and meshes once, then only
-        update coil currents via :func:`with_coil_currents` on each FK call.
-        """
-        # Cache hit
-        if (self._cached_params_static is not None) and (self._cached_meshes is not None) and (self._cached_L_protrude is not None):
-            if float(L_protrude) == float(self._cached_L_protrude):
-                return self._cached_params_static, self._cached_meshes
-
-        flex_lengths = self._compute_flex_lengths(L_protrude=float(L_protrude))
-        params, meshes = build_solver_params(
-            flex_lengths=list(flex_lengths),
-            rigid_lengths=list(self.rigid_lengths),
-            M_list=list(self.M_list),
-            flex_d_outer=list(self.flex_d_outer),
-            flex_E=list(self.flex_E),
-            flex_G=list(self.flex_G),
-            flex_rho=list(self.flex_rho),
-            rigid_d_outer=list(self.rigid_d_outer),
-            rigid_rho=list(self.rigid_rho),
-            p0_dim=self.p0_dim,
-            Q0=self.Q0,
-            axis_body=self.axis_body,
-            enable_gravity=self.enable_gravity,
-            g_world=self.g_world,
-            enable_magnetics=self.enable_magnetics,
-            calib_file=self.calib_file,
-            actuation_table_pkl=self.actuation_table_pkl,
-            # placeholder currents to keep leaf shapes stable
-            coil_currents=jnp.zeros((8,), dtype=jnp.float64),
-            m_body_list=self.m_body_list,
-            scales=scales,
-        )
-
-        self._cached_L_protrude = float(L_protrude)
-        self._cached_params_static = params
-        self._cached_meshes = meshes
-        self._cached_scales = scales
-        self._cached_flex_lengths = tuple(float(x) for x in flex_lengths)
-        return params, meshes
+        """Backward-compatible wrapper (no longer caches by L_protrude)."""
+        self._ensure_static_initialized(L_protrude=float(L_protrude))
+        assert self._params_static_base is not None
+        assert self._meshes_ref is not None
+        return self._params_static_base, self._meshes_ref
 
     def _extract_tip_pose_dim(self, z_bar: Array, scales: NondimScales) -> Tuple[Array, Array]:
         """Extract tip position/quaternion (dim) from packed z_bar.

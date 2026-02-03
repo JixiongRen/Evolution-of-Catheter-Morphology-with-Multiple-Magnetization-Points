@@ -392,6 +392,7 @@ def build_solver_params(
         sbar_nodes=tuple(m.sbar_nodes for m in meshes),
         hbar_list=tuple(m.hbar_list for m in meshes),
         M_list=tuple(int(m.M) for m in meshes),
+        L1_dim=jnp.asarray(float(flex_lengths[0]), dtype=jnp.float64).reshape(()),
         p0_bar=p0_bar,
         Q0=Q0,
         f_ext_list=f_ext_list,

@@ -178,7 +178,7 @@ def make_initial_guess_multi_bar_jax(
         x_nodes_list_bar.append(x_nodes_bar)
 
         # advance by flexible length
-        s_base += float(flex_segs[i].length)
+        s_base += float(sigmas[-1])
 
         # rigid distal end in SI then scale
         p_rigid_end = p0_dim + (s_base + float(rigid.length)) * t_world
