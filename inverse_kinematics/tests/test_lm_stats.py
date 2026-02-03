@@ -33,6 +33,7 @@ def main() -> None:
         rigid_lengths=fk_cli._parse_csv_floats(args.rigid_lengths),
         M_list=fk_cli._parse_csv_ints(args.M_list),
         L1_min=float(args.L1_min),
+        L_protrude_max=float(args.L_protrude),
         flex_d_outer=fk_cli._parse_csv_floats(args.flex_d_outer),
         flex_E=fk_cli._parse_csv_floats(args.flex_E),
         flex_G=fk_cli._parse_csv_floats(args.flex_G),
