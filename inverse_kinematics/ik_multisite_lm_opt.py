@@ -45,6 +45,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -52,10 +53,12 @@ from typing import Any, Optional, Sequence, Tuple
 
 import jax
 import jax.numpy as jnp
+import numpy as np
 
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from ik_diff import compute_dp_dI_via_lm_adjoint
+from ik_artifacts import extract_centerline_dim, save_centerline, save_history_json
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
@@ -79,12 +82,34 @@ def _make_run_dir(out_dir: str, run_name: Optional[str]) -> Path:
     return run
 
 
+def _atomic_write_json(path: Path, data: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    try:
+        os.replace(str(tmp), str(path))
+    except OSError:
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _update_run_config(run_config_path: Path, *, updates: dict) -> None:
+    if run_config_path.exists():
+        try:
+            cfg = json.loads(run_config_path.read_text(encoding="utf-8"))
+        except Exception:
+            cfg = {}
+    else:
+        cfg = {}
+    cfg.update(updates)
+    _atomic_write_json(run_config_path, cfg)
+
+
 def build_argparser() -> argparse.ArgumentParser:
     p = fk_cli.build_argparser()
 
     # IK targets
     p.add_argument("--p_des", type=str, required=True, help="Desired tip position [m], format x,y,z")
-    p.add_argument("--eps_p", type=float, default=1e-3, help="Stop if ||p_tip - p_des|| <= eps_p [m].")
+    p.add_argument("--eps_p", type=float, default=10e-3, help="Stop if ||p_tip - p_des|| <= eps_p [m].")
     p.add_argument(
         "--sigma_p",
         type=float,
@@ -120,6 +145,31 @@ def build_argparser() -> argparse.ArgumentParser:
         type=float,
         default=20e-3,
         help="Max insertion step |Δx| [m] per outer iteration (physical clipping).",
+    )
+
+    p.add_argument(
+        "--pred_red_tol",
+        type=float,
+        default=1e-10,
+        help="Stop if predicted reduction is below this threshold (numerical floor).",
+    )
+    p.add_argument(
+        "--step_I_tol",
+        type=float,
+        default=1e-6,
+        help="Stop if max |ΔI_i| is below this threshold [A] (effective step is zero).",
+    )
+    p.add_argument(
+        "--step_x_tol",
+        type=float,
+        default=1e-9,
+        help="Stop if |Δx| is below this threshold [m] (effective step is zero).",
+    )
+    p.add_argument(
+        "--act_red_tol",
+        type=float,
+        default=1e-10,
+        help="Treat |act_red| below this threshold as numerical noise when pred_red is tiny.",
     )
 
     # Regularization weights (now interpreted as inverse scales)
@@ -451,6 +501,13 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         print("[IK-LM] JAX devices:", jax.devices())
 
     run_dir = _make_run_dir(args.out_dir, args.run_name)
+    run_config_path = run_dir / "run_config.json"
+    poses_dir = (run_dir / "poses")
+    poses_trial_dir = (poses_dir / "trial")
+    poses_accept_dir = (poses_dir / "accept")
+    poses_trial_dir.mkdir(parents=True, exist_ok=True)
+    poses_accept_dir.mkdir(parents=True, exist_ok=True)
+    history_path = run_dir / "history.json"
     cfg = fk_cli.load_config_file(args.config)
 
     def _get(name: str, default):
@@ -607,7 +664,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     u = _Ix_to_u(I0, x0, I_max=I_max, x_min=x_min, x_max=x_max)
 
     # Save run config
-    (run_dir / "run_config.json").write_text(
+    run_config_path.write_text(
         json.dumps(
             {
                 "argv": vars(args),
@@ -633,6 +690,28 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         ),
         encoding="utf-8",
     )
+
+    history: dict = {
+        "meta": {
+            "run_dir": str(run_dir),
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "p_des": [float(v) for v in p_des.tolist()],
+            "eps_p_m": float(eps_p),
+            "sigma_p_m": float(sigma_p),
+        },
+        "outer": [],
+    }
+
+    def _save_pose(*, which: str, iter_idx: int, pack: EvalPack) -> Path:
+        cl = extract_centerline_dim(pack.z_star_bar, M_list=engine.M_list, scales=pack.params.scales)
+        out_dir = poses_accept_dir if which == "accept" else poses_trial_dir
+        out_path = out_dir / f"centerline_iter_{int(iter_idx):04d}.npy"
+        save_centerline(cl, out_path)
+        return out_path
+
+    def _append_history(*, d: dict) -> None:
+        history["outer"].append(d)
+        save_history_json(history, history_path)
 
     def _safe_sigma(w: float) -> str:
         if w <= 0:
@@ -691,6 +770,51 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         override_z0_bar=z_warm,
     )
     z_warm = cur.z_star_bar
+
+    init_pose_path = _save_pose(which="accept", iter_idx=0, pack=cur)
+    _update_run_config(
+        run_config_path,
+        updates={
+            "p_des": [float(v) for v in p_des.tolist()],
+            "init": {
+                "x_m": float(cur.x),
+                "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+                "p_tip_m": [float(v) for v in np.asarray(jax.device_get(cur.p_tip)).reshape(3,).tolist()],
+                "err_m": float(cur.err),
+                "centerline_npy": str(init_pose_path.relative_to(run_dir)),
+            },
+        },
+    )
+
+    _append_history(
+        d={
+            "iter": 0,
+            "status": "INIT",
+            "accept": True,
+            "lam": float(lam),
+            "rho": None,
+            "pred_red": None,
+            "act_red": None,
+            "du_eff_norm": 0.0,
+            "dI_max_abs": 0.0,
+            "dI_norm": 0.0,
+            "dx_m": 0.0,
+            "dx_abs_m": 0.0,
+            "x_m": float(cur.x),
+            "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+            "dI_A": [0.0 for _ in range(int(n_coils))],
+            "p_tip_m": [float(v) for v in np.asarray(jax.device_get(cur.p_tip)).reshape(3,).tolist()],
+            "err_m": float(cur.err),
+            "err_mm": float(cur.err * 1e3),
+            "cost": float(cur.cost),
+            "cls": str(cur.cls),
+            "normE": float(cur.normE),
+            "pose": {
+                "centerline_npy": str(init_pose_path.relative_to(run_dir)),
+                "which": "accept",
+            },
+        }
+    )
 
     print(
         f"[IK-LM] iter=000 cls={cur.cls:<5s} ok_strict={cur.ok_strict} ||E||={cur.normE:.3e} "
@@ -809,9 +933,19 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         dx_abs = abs(dx_clip)
         du_eff_norm = float(jnp.linalg.norm(du_eff))
 
-        # Predicted reduction using linear model with du_eff
         r_lin = r + J @ du_eff
         pred_red = 0.5 * float(jnp.dot(r, r) - jnp.dot(r_lin, r_lin))
+
+        if (dI_max_abs <= float(args.step_I_tol)) and (dx_abs <= float(args.step_x_tol)):
+            print(
+                f"[IK-LM] stop: effective step is zero (|dI|_max={dI_max_abs:.3e}A, |dx|={dx_abs:.3e}m). "
+                f"Likely parameter saturation / clipping / numerical floor."
+            )
+            break
+
+        if pred_red <= float(args.pred_red_tol):
+            print(f"[IK-LM] stop: pred_red={pred_red:.3e} <= pred_red_tol={float(args.pred_red_tol):.3e}")
+            break
 
         # 5) Evaluate candidate
         trial = _fk_eval(
@@ -839,8 +973,44 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         act_red = float(cur.cost - trial.cost)
         rho = act_red / max(pred_red, 1e-18)
 
-        accept = (trial.cost < cur.cost) and (rho > 0.0) and (trial.cls != "REJECT")
+        if (pred_red <= 10.0 * float(args.pred_red_tol)) and (abs(act_red) <= float(args.act_red_tol)):
+            accept = (trial.cls != "REJECT")
+        else:
+            accept = (trial.cost < cur.cost) and (rho > 0.0) and (trial.cls != "REJECT")
         status = "ACCEPT" if accept else "REJECT"
+
+        trial_pose_path = _save_pose(which="trial", iter_idx=k, pack=trial)
+
+        _append_history(
+            d={
+                "iter": int(k),
+                "status": str(status),
+                "accept": bool(accept),
+                "lam": float(lam),
+                "rho": float(rho),
+                "pred_red": float(pred_red),
+                "act_red": float(act_red),
+                "du_eff_norm": float(du_eff_norm),
+                "dI_max_abs": float(dI_max_abs),
+                "dI_norm": float(dI_norm),
+                "dx_m": float(dx_clip),
+                "dx_abs_m": float(dx_abs),
+                "x_m": float(trial.x),
+                "I_A": [float(v) for v in np.asarray(jax.device_get(I_trial)).reshape(-1,).tolist()],
+                "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
+                "p_tip_m": [float(v) for v in np.asarray(jax.device_get(trial.p_tip)).reshape(3,).tolist()],
+                "err_m": float(trial.err),
+                "err_mm": float(trial.err * 1e3),
+                "cost": float(trial.cost),
+                "cls": str(trial.cls),
+                "normE": float(trial.normE),
+                "pose": {
+                    "centerline_npy": str(trial_pose_path.relative_to(run_dir)),
+                    "which": "trial",
+                },
+            }
+        )
+
         print(
             f"[IK-LM] iter={k:03d} lam={lam:.2e} rho={rho:.3f} {status} "
             f"du_eff={du_eff_norm:.2e} |dI|_max={dI_max_abs:.3f}A ||dI||={dI_norm:.3f}A |dx|={dx_abs*1e3:.3f}mm "
@@ -853,6 +1023,21 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             u = u_trial
             cur = trial
             z_warm = cur.z_star_bar
+
+            acc_pose_path = _save_pose(which="accept", iter_idx=k, pack=cur)
+            _update_run_config(
+                run_config_path,
+                updates={
+                    "last_accept": {
+                        "iter": int(k),
+                        "x_m": float(cur.x),
+                        "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+                        "p_tip_m": [float(v) for v in np.asarray(jax.device_get(cur.p_tip)).reshape(3,).tolist()],
+                        "err_m": float(cur.err),
+                        "centerline_npy": str(acc_pose_path.relative_to(run_dir)),
+                    }
+                },
+            )
 
             # update "previous accepted" reference (for dI/dx residuals)
             I_prev = jnp.asarray(cur.I, dtype=jnp.float64)
@@ -871,6 +1056,44 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     # Final summary
     I_fin, x_fin, _, _ = _u_to_Ix(u, I_max=I_max, x_min=x_min, x_max=x_max)
+
+    try:
+        fin_pack = _fk_eval(
+            engine,
+            I=jnp.asarray(I_fin, dtype=jnp.float64),
+            x=float(x_fin),
+            p_des=p_des,
+            sigma_p=sigma_p,
+            tol_good=tol_good,
+            tol_weak=tol_weak,
+            tol_bad=tol_bad,
+            penalty_bad=penalty_bad,
+            w_I=w_I,
+            w_x=w_x,
+            x_ref=x_ref,
+            I_prev=I_prev,
+            x_prev=x_prev,
+            w_dI=w_dI,
+            w_dx=w_dx,
+            w_Ix=w_Ix,
+            dx_floor=dx_floor,
+            override_z0_bar=z_warm,
+        )
+        fin_pose_path = _save_pose(which="accept", iter_idx=int(len(history.get("outer", []))), pack=fin_pack)
+        _update_run_config(
+            run_config_path,
+            updates={
+                "final": {
+                    "x_m": float(fin_pack.x),
+                    "I_A": [float(v) for v in np.asarray(jax.device_get(fin_pack.I)).reshape(-1,).tolist()],
+                    "p_tip_m": [float(v) for v in np.asarray(jax.device_get(fin_pack.p_tip)).reshape(3,).tolist()],
+                    "err_m": float(fin_pack.err),
+                    "centerline_npy": str(fin_pose_path.relative_to(run_dir)),
+                }
+            },
+        )
+    except Exception as e:
+        print(f"[IK-LM] WARNING: failed to save final snapshot: {repr(e)}")
     (run_dir / "result.json").write_text(
         json.dumps(
             {
