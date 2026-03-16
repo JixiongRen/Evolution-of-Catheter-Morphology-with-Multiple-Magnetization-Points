@@ -79,7 +79,7 @@ def main():
         G=float(_first(cfg["flex_G"])),
         enable_magnetics=bool(cfg.get("enable_magnetics", True)),
         calib_file=cfg.get("calib_file", None),
-        coil_currents=jnp.zeros((8,), dtype=jnp.float64),   #TODO
+        coil_currents=jnp.zeros((8,), dtype=jnp.float64),
         m_body_list=m_body_list,
         p0_dim=p0_dim,
         Q0=Q0,
