@@ -32,7 +32,7 @@ small currents and a preferred insertion depth.
 
 Usage (example)
 --------------
-python inverse_kinematics/ik_multisite_lm.py \
+python inverse_kinematics_bak/ik_multisite_lm.py \
   --enable_magnetics --calib_file=/abs/path/calibration.json \
   --m_body_list=0,0,-0.005301;0,0,0.005301;0.005301,0,0 \
   --p_des=0.05,0.01,0.04 \
@@ -59,8 +59,8 @@ import jax.numpy as jnp
 
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
-from ik_diff import compute_dp_dI_via_lm_adjoint
-from ik_artifacts import (
+from .ik_diff import compute_dp_dI_via_lm_adjoint
+from .ik_artifacts import (
     extract_centerline_dim,
     plot_centerlines_3d,
     plot_metrics,
