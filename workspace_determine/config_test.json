@@ -1,0 +1,30 @@
+{
+  "flex_lengths": [0.04, 0.03, 0.03],
+  "rigid_lengths": [0.003, 0.003, 0.003],
+  "M_list": [5, 5, 5],
+
+  "flex_d_outer": [0.0012],
+  "flex_E": [900000.0],
+  "flex_G": [300000.0],
+  "flex_rho": [1000.0],
+
+  "rigid_d_outer": [0.0012],
+  "rigid_rho": [1000.0],
+
+  "p0_dim": [-0.025, 0.0, 0.0],
+  "Q0": [0.70710678,0,0.70710678,0],
+  "axis_body": [0.0, 0.0, 1.0],
+
+  "enable_gravity": true,
+  "g_world": [0.0, 0.0, -9.81],
+
+  "enable_magnetics": true,
+  "calib_file": "path/to/supiee_calib.json",
+  "m_body_list": [[0,0,-0.005301], [0,0,0.005301], [0.005301,0,0]],
+
+  "max_iter": 500000,
+  "lm_lambda_init": 1e-3,
+  "verbose": true,
+
+  "L_ref": 0.11
+}
