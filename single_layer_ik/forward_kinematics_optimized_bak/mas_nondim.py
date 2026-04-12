@@ -96,7 +96,7 @@ def _magnetic_wrench_core(
 class MagneticActuationSystem:
     def __init__(
         self,
-        calib_file: str,
+        calib_file: str | None = None,
         *,
         actuation_table_pkl: str | None = None,
         dtype=jnp.float32,

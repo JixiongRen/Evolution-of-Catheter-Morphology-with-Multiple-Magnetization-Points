@@ -5,3 +5,6 @@
 /callback_snaps/
 /ik_out/
 /workspace_determine/workspace_out/
+
+*.pyc
+*.bak*

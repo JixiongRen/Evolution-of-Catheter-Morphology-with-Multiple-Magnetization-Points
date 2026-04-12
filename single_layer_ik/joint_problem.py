@@ -16,7 +16,7 @@ from .forward_kinematics_optimized_bak.equilibrium_solver_nondim import (
     with_L1_dim,
 )
 from .forward_kinematics_optimized_bak.fk import build_solver_params, compute_scales_from_flex
-from .forward_kinematics_optimized_bak.nondim import NondimScales, x_bar_to_dim
+from .forward_kinematics_optimized_bak.nondim import NondimScales
 from .forward_kinematics_optimized_bak.utils_nondim import make_initial_guess_multi_bar_jax, unpack_z_bar_jax
 
 
@@ -68,19 +68,25 @@ def u_to_Ix(
     I_max: float,
     x_min: float,
     x_max: float,
+    I_scale: float = 1.0,
 ) -> tuple[Array, Array]:
     """Map unconstrained u -> (I, x) with box constraints.
 
     u layout:
       - u[0:8]: currents params
       - u[8]: insertion param
+
+    I_scale > 1 amplifies the Jacobian dI/du near I=0, making the
+    LM solver more willing to change coil currents.  Physically the
+    mapping is the same; only the curvature of the parameterisation
+    changes.
     """
     u = jnp.asarray(u, dtype=jnp.float64).reshape(-1,)
 
     uI = u[0:8]
     ux = u[8]
 
-    I = jnp.asarray(I_max, dtype=jnp.float64) * jnp.tanh(uI)
+    I = jnp.asarray(I_max, dtype=jnp.float64) * jnp.tanh(jnp.asarray(I_scale, dtype=jnp.float64) * uI)
     x = jnp.asarray(x_min, dtype=jnp.float64) + (jnp.asarray(x_max, dtype=jnp.float64) - jnp.asarray(x_min, dtype=jnp.float64)) * _sigmoid(ux)
     return jnp.asarray(I, dtype=jnp.float64), jnp.asarray(x, dtype=jnp.float64).reshape(())
 
@@ -92,6 +98,7 @@ def Ix_to_u(
     I_max: float,
     x_min: float,
     x_max: float,
+    I_scale: float = 1.0,
     eps: float = 1e-12,
 ) -> Array:
     """Inverse mapping for initialization.
@@ -104,7 +111,7 @@ def Ix_to_u(
         raise ValueError(f"I must have size 8, got {int(I.size)}")
 
     I_clip = jnp.clip(I / float(I_max), -1.0 + eps, 1.0 - eps)
-    uI = jnp.arctanh(I_clip)
+    uI = jnp.arctanh(I_clip) / jnp.asarray(max(I_scale, eps), dtype=jnp.float64)
 
     x_clip = min(max(float(x), float(x_min) + eps), float(x_max) - eps)
     t = (x_clip - float(x_min)) / max(float(x_max) - float(x_min), eps)
@@ -240,10 +247,108 @@ def extract_tip_p_dim(*, z_bar: Array, scales: NondimScales, M_list: Sequence[in
 
     This mirrors `ForwardKinematicsEngine._extract_tip_pose_dim`, but does not depend on engine state.
     """
-    x_nodes_list_bar, _, _ = unpack_z_bar_jax(jnp.asarray(z_bar, dtype=jnp.float64), M_list=tuple(int(m) for m in M_list))
-    x_tip_bar = x_nodes_list_bar[-1][-1]
-    x_tip_dim = x_bar_to_dim(x_tip_bar, scales)
-    return jnp.asarray(x_tip_dim[0:3], dtype=jnp.float64)
+    z_bar = jnp.asarray(z_bar, dtype=jnp.float64).reshape(-1,)
+    offset = 0
+    tip_idx = 0
+    for m in M_list:
+        Mi = int(m)
+        tip_idx = offset + Mi * 13
+        offset += (Mi + 1) * 13
+        offset += Mi * 39
+        offset += 13
+    idx = jnp.asarray([tip_idx + 0, tip_idx + 1, tip_idx + 2], dtype=jnp.int32)
+    return jnp.asarray(z_bar[idx] * float(scales.L_ref), dtype=jnp.float64)
+
+
+def extract_interface_position_gaps_dim(
+    *,
+    z_bar: Array,
+    scales: NondimScales,
+    M_list: Sequence[int],
+) -> Array:
+    x_nodes_list_bar, _k_list_bar, x_rigid_list_bar = unpack_z_bar_jax(jnp.asarray(z_bar, dtype=jnp.float64), M_list=M_list)
+    gaps: list[Array] = []
+    for seg_idx in range(1, len(x_nodes_list_bar)):
+        prev_rigid_p = jnp.asarray(x_rigid_list_bar[seg_idx - 1][0:3] * float(scales.L_ref), dtype=jnp.float64)
+        curr_prox_p = jnp.asarray(x_nodes_list_bar[seg_idx][0, 0:3] * float(scales.L_ref), dtype=jnp.float64)
+        gaps.append(curr_prox_p - prev_rigid_p)
+    if not gaps:
+        return jnp.zeros((0, 3), dtype=jnp.float64)
+    return jnp.stack(gaps, axis=0)
+
+
+def _centerline_position_indices(M_list: Sequence[int], *, include_rigid: bool) -> list[int]:
+    idxs: list[int] = []
+    offset = 0
+    for m in M_list:
+        Mi = int(m)
+        for node in range(Mi + 1):
+            base = offset + node * 13
+            idxs.extend([base + 0, base + 1, base + 2])
+        offset += (Mi + 1) * 13
+        offset += Mi * 39
+        if include_rigid:
+            idxs.extend([offset + 0, offset + 1, offset + 2])
+        offset += 13
+    return idxs
+
+
+def extract_centerline_p_dim(
+    *,
+    z_bar: Array,
+    scales: NondimScales,
+    M_list: Sequence[int],
+    include_rigid: bool = True,
+    rigid_sample_count: int = 0,
+    drop_duplicate_interfaces: bool = False,
+) -> Array:
+    """Extract the dimensional centerline points used for plotting and smoothing."""
+    x_nodes_list_bar, _k_list_bar, x_rigid_list_bar = unpack_z_bar_jax(jnp.asarray(z_bar, dtype=jnp.float64), M_list=M_list)
+    pts: list[Array] = []
+    sample_count = max(int(rigid_sample_count), 0)
+    for seg_idx, x_nodes_bar in enumerate(x_nodes_list_bar):
+        node_pts = jnp.asarray(x_nodes_bar[:, 0:3] * float(scales.L_ref), dtype=jnp.float64)
+        if drop_duplicate_interfaces and seg_idx > 0:
+            node_pts = node_pts[1:, :]
+        if int(node_pts.shape[0]) > 0:
+            pts.append(node_pts)
+        if include_rigid:
+            prox_p = jnp.asarray(x_nodes_bar[-1, 0:3] * float(scales.L_ref), dtype=jnp.float64)
+            dist_p = jnp.asarray(x_rigid_list_bar[seg_idx][0:3] * float(scales.L_ref), dtype=jnp.float64)
+            alphas = jnp.linspace(0.0, 1.0, sample_count + 2, dtype=jnp.float64)[1:]
+            rigid_pts = prox_p[None, :] + alphas[:, None] * (dist_p - prox_p)[None, :]
+            pts.append(rigid_pts)
+    if not pts:
+        return jnp.zeros((0, 3), dtype=jnp.float64)
+    return jnp.concatenate(pts, axis=0)
+
+
+def extract_shape_smooth_residual(
+    *,
+    z_bar: Array,
+    scales: NondimScales,
+    M_list: Sequence[int],
+    include_rigid: bool = True,
+    rigid_sample_count: int = 0,
+) -> Array:
+    """Second-difference position residual to suppress nonphysical sharp bends."""
+    centerline = extract_centerline_p_dim(
+        z_bar=z_bar,
+        scales=scales,
+        M_list=M_list,
+        include_rigid=include_rigid,
+        rigid_sample_count=rigid_sample_count,
+        drop_duplicate_interfaces=True,
+    )
+    if int(centerline.shape[0]) < 3:
+        return jnp.zeros((0,), dtype=jnp.float64)
+
+    edges = centerline[1:, :] - centerline[:-1, :]
+    edge_norm = jnp.linalg.norm(edges, axis=1, keepdims=True)
+    edge_norm = jnp.clip(edge_norm, a_min=1e-12)
+    tangents = edges / edge_norm
+    tangent_diff = tangents[1:, :] - tangents[:-1, :]
+    return jnp.asarray(tangent_diff.reshape(-1,), dtype=jnp.float64)
 
 
 def make_initial_z0_bar(static_fk: StaticFK) -> Array:
@@ -279,6 +384,107 @@ def build_params_for_y(
     return p
 
 
+def joint_residual_components(
+    y: Array,
+    *,
+    static_fk: StaticFK,
+    p_des: Array,
+    I_max: float,
+    x_min: float,
+    x_max: float,
+    w_E: float,
+    sigma_p: float,
+    w_I: float,
+    w_x: float,
+    w_smooth: float = 0.0,
+    x_ref: float,
+    smooth_include_rigid: bool = True,
+    w_gap: float = 0.0,
+    sigma_gap: float = 1e-3,
+    centerline_rigid_samples: int = 0,
+    I_scale: float = 1.0,
+    I_ref: Optional[Array] = None,
+) -> dict:
+    """Compute decoded controls, raw equilibrium residual, and weighted residual blocks.
+
+    This helper is intended for diagnostics/logging and mirrors the logic used by
+    :func:`joint_residual`.
+    """
+    y = jnp.asarray(y, dtype=jnp.float64).reshape(-1,)
+    nZ = int(static_fk.z_len)
+
+    z_bar = y[0:nZ]
+    u = y[nZ:]
+
+    I, x = u_to_Ix(u, I_max=float(I_max), x_min=float(x_min), x_max=float(x_max), I_scale=float(I_scale))
+
+    x = jnp.asarray(x, dtype=jnp.float64).reshape(())
+    L1_raw_dim = x - jnp.asarray(static_fk.L_fixed, dtype=jnp.float64)
+    L1_dim = jnp.maximum(L1_raw_dim, jnp.asarray(static_fk.L1_min, dtype=jnp.float64))
+    params = build_params_for_y(static_fk, I=I, x=x)
+
+    E = residual_bar(z_bar, params)
+    r_E = jnp.asarray(w_E, dtype=jnp.float64) * E
+
+    p_des = jnp.asarray(p_des, dtype=jnp.float64).reshape(3,)
+    p_tip = extract_tip_p_dim(z_bar=z_bar, scales=params.scales, M_list=params.M_list)
+    r_p = (p_tip - p_des) / jnp.asarray(sigma_p, dtype=jnp.float64)
+
+    _I_ref = jnp.zeros(8, dtype=jnp.float64) if I_ref is None else jnp.asarray(I_ref, dtype=jnp.float64).reshape(8,)
+    r_I = jnp.asarray(w_I, dtype=jnp.float64) * (I - _I_ref)
+    r_x = (jnp.asarray(w_x, dtype=jnp.float64) * (x - jnp.asarray(x_ref, dtype=jnp.float64))).reshape((1,))
+    interface_gap_p = extract_interface_position_gaps_dim(
+        z_bar=z_bar,
+        scales=params.scales,
+        M_list=params.M_list,
+    )
+    r_gap = jnp.asarray(w_gap, dtype=jnp.float64) * (
+        interface_gap_p.reshape(-1,) / jnp.asarray(sigma_gap, dtype=jnp.float64)
+    )
+    smooth_raw = extract_shape_smooth_residual(
+        z_bar=z_bar,
+        scales=params.scales,
+        M_list=params.M_list,
+        include_rigid=bool(smooth_include_rigid),
+        rigid_sample_count=int(centerline_rigid_samples),
+    )
+    r_smooth = jnp.asarray(w_smooth, dtype=jnp.float64) * smooth_raw
+    centerline_p = extract_centerline_p_dim(
+        z_bar=z_bar,
+        scales=params.scales,
+        M_list=params.M_list,
+        include_rigid=bool(smooth_include_rigid),
+        rigid_sample_count=int(centerline_rigid_samples),
+    )
+    smooth_metric = jnp.linalg.norm(smooth_raw) if smooth_raw.size else jnp.asarray(0.0, dtype=jnp.float64)
+    interface_gap_norms = jnp.linalg.norm(interface_gap_p, axis=1) if interface_gap_p.size else jnp.zeros((0,), dtype=jnp.float64)
+    max_interface_gap = jnp.max(interface_gap_norms) if interface_gap_norms.size else jnp.asarray(0.0, dtype=jnp.float64)
+
+    return {
+        "z_bar": z_bar,
+        "u": u,
+        "I": I,
+        "x": x,
+        "params": params,
+        "E": E,
+        "p_tip": p_tip,
+        "r_E": r_E,
+        "r_p": r_p,
+        "r_I": r_I,
+        "r_x": r_x,
+        "r_gap": r_gap,
+        "r_smooth": r_smooth,
+        "interface_gap_p": interface_gap_p,
+        "interface_gap_norms": interface_gap_norms,
+        "max_interface_gap": max_interface_gap,
+        "smooth_raw": smooth_raw,
+        "smooth_metric": smooth_metric,
+        "centerline_p": centerline_p,
+        "L1_raw_dim": L1_raw_dim,
+        "L1_dim": L1_dim,
+    }
+
+
 def joint_residual(
     y: Array,
     *,
@@ -291,7 +497,14 @@ def joint_residual(
     sigma_p: float,
     w_I: float,
     w_x: float,
+    w_smooth: float = 0.0,
     x_ref: float,
+    smooth_include_rigid: bool = True,
+    w_gap: float = 0.0,
+    sigma_gap: float = 1e-3,
+    centerline_rigid_samples: int = 0,
+    I_scale: float = 1.0,
+    I_ref: Optional[Array] = None,
 ) -> Array:
     """Unified residual R(y) for single-layer joint IK.
 
@@ -313,7 +526,7 @@ def joint_residual(
     z_bar = y[0:nZ]
     u = y[nZ:]
 
-    I, x = u_to_Ix(u, I_max=float(I_max), x_min=float(x_min), x_max=float(x_max))
+    I, x = u_to_Ix(u, I_max=float(I_max), x_min=float(x_min), x_max=float(x_max), I_scale=float(I_scale))
     params = build_params_for_y(static_fk, I=I, x=x)
 
     E = residual_bar(z_bar, params)
@@ -323,7 +536,25 @@ def joint_residual(
     p_tip = extract_tip_p_dim(z_bar=z_bar, scales=params.scales, M_list=params.M_list)
     r_p = (p_tip - p_des) / jnp.asarray(sigma_p, dtype=jnp.float64)
 
-    r_I = jnp.asarray(w_I, dtype=jnp.float64) * I
+    _I_ref = jnp.zeros(8, dtype=jnp.float64) if I_ref is None else jnp.asarray(I_ref, dtype=jnp.float64).reshape(8,)
+    r_I = jnp.asarray(w_I, dtype=jnp.float64) * (I - _I_ref)
     r_x = (jnp.asarray(w_x, dtype=jnp.float64) * (x - jnp.asarray(x_ref, dtype=jnp.float64))).reshape((1,))
+    
+    interface_gap_p = extract_interface_position_gaps_dim(
+        z_bar=z_bar,
+        scales=params.scales,
+        M_list=params.M_list,
+    )
+    r_gap = jnp.asarray(w_gap, dtype=jnp.float64) * (
+        interface_gap_p.reshape(-1,) / jnp.asarray(sigma_gap, dtype=jnp.float64)
+    )
+    
+    r_smooth = jnp.asarray(w_smooth, dtype=jnp.float64) * extract_shape_smooth_residual(
+        z_bar=z_bar,
+        scales=params.scales,
+        M_list=params.M_list,
+        include_rigid=bool(smooth_include_rigid),
+        rigid_sample_count=int(centerline_rigid_samples),
+    )
 
-    return jnp.concatenate([r_E, r_p, r_I, r_x], axis=0)
+    return jnp.concatenate([r_E, r_p, r_I, r_x, r_gap, r_smooth], axis=0)

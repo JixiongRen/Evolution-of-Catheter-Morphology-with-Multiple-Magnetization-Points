@@ -9,7 +9,7 @@ import numpy as np
 
 import matplotlib
 
-matplotlib.use("TkAgg")
+# matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 
@@ -68,8 +68,27 @@ def _stack_vec(trace: List[Dict[str, Any]], key: str, n: int) -> np.ndarray:
     return arr
 
 
-def plot_3d_convergence(run_dir: Path, *, out_path: Path, max_lines: int = 200) -> None:
+def _trace_tip_path(trace: List[Dict[str, Any]]) -> np.ndarray:
+    pts: List[np.ndarray] = []
+    for d in trace:
+        v = d.get("p_tip_m", None)
+        if v is None:
+            continue
+        try:
+            p = np.asarray(v, dtype=np.float64).reshape(3,)
+        except Exception:
+            continue
+        if np.all(np.isfinite(p)):
+            pts.append(p)
+    if not pts:
+        return np.zeros((0, 3), dtype=np.float64)
+    return np.stack(pts, axis=0)
+
+
+def plot_3d_convergence(run_dir: Path, *, out_path: Path, max_lines: int = 200, show_plot: bool = True) -> None:
     cfg = _read_json(run_dir / "run_config.json")
+    trace_rel = _maybe_get(cfg, ["trace", "path"], "trace.jsonl")
+    trace = _read_trace_jsonl(run_dir / trace_rel)
 
     p_des = _maybe_get(cfg, ["target", "p_des_m"], _maybe_get(cfg, ["p_des"], None))
     p_des_np = None if p_des is None else np.asarray(p_des, dtype=np.float64).reshape(3,)
@@ -104,15 +123,20 @@ def plot_3d_convergence(run_dir: Path, *, out_path: Path, max_lines: int = 200) 
         ax.plot(cl[:, 0], cl[:, 1], cl[:, 2], linewidth=1.0, alpha=0.18, c="k")
 
     if init_cl is not None and init_cl.size != 0:
-        ax.plot(init_cl[:, 0], init_cl[:, 1], init_cl[:, 2], linewidth=2.2, alpha=0.9, c="r", label="init")
-        ax.scatter([init_cl[-1, 0]], [init_cl[-1, 1]], [init_cl[-1, 2]], c="r", s=35)
+        ax.plot(init_cl[:, 0], init_cl[:, 1], init_cl[:, 2], linewidth=2.2, alpha=0.9, c="r", label="init centerline")
+        ax.scatter([init_cl[-1, 0]], [init_cl[-1, 1]], [init_cl[-1, 2]], c="r", s=80, marker="o", edgecolors="darkred", linewidths=1.5, label="init tip")
 
     if fin_cl is not None and fin_cl.size != 0:
-        ax.plot(fin_cl[:, 0], fin_cl[:, 1], fin_cl[:, 2], linewidth=2.2, alpha=0.9, c="g", label="final")
-        ax.scatter([fin_cl[-1, 0]], [fin_cl[-1, 1]], [fin_cl[-1, 2]], c="g", s=35)
+        ax.plot(fin_cl[:, 0], fin_cl[:, 1], fin_cl[:, 2], linewidth=2.2, alpha=0.9, c="g", label="final centerline")
+        ax.scatter([fin_cl[-1, 0]], [fin_cl[-1, 1]], [fin_cl[-1, 2]], c="g", s=80, marker="s", edgecolors="darkgreen", linewidths=1.5, label="final tip")
 
     if p_des_np is not None and np.all(np.isfinite(p_des_np)):
         ax.scatter([p_des_np[0]], [p_des_np[1]], [p_des_np[2]], c="b", s=70, marker="*", label="target")
+
+    tip_path = _trace_tip_path(trace)
+    if tip_path.size != 0:
+        ax.plot(tip_path[:, 0], tip_path[:, 1], tip_path[:, 2], linewidth=1.6, alpha=0.8, c="tab:orange", label="tip path")
+        ax.scatter([tip_path[-1, 0]], [tip_path[-1, 1]], [tip_path[-1, 2]], c="tab:orange", s=40, label="tip final")
 
     ax.set_xlabel("x (m)")
     ax.set_ylabel("y (m)")
@@ -126,8 +150,43 @@ def plot_3d_convergence(run_dir: Path, *, out_path: Path, max_lines: int = 200) 
     fig.tight_layout()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_path, dpi=220)
-    plt.show()
-    # plt.close(fig)
+    if show_plot:
+        fig.show()
+        input("Press Enter to close the plot window...")
+    plt.close(fig)
+
+
+def plot_tip_target_3d(run_dir: Path, *, out_path: Path) -> None:
+    cfg = _read_json(run_dir / "run_config.json")
+    trace_rel = _maybe_get(cfg, ["trace", "path"], "trace.jsonl")
+    trace = _read_trace_jsonl(run_dir / trace_rel)
+    if not trace:
+        return
+
+    tip_path = _trace_tip_path(trace)
+    if tip_path.size == 0:
+        return
+
+    p_des = _maybe_get(cfg, ["target", "p_des_m"], _maybe_get(cfg, ["p_des"], None))
+    p_des_np = None if p_des is None else np.asarray(p_des, dtype=np.float64).reshape(3,)
+
+    fig = plt.figure(figsize=(8, 6))
+    ax = fig.add_subplot(111, projection="3d")
+    ax.plot(tip_path[:, 0], tip_path[:, 1], tip_path[:, 2], linewidth=1.8, alpha=0.85, c="tab:orange", label="actual tip path")
+    ax.scatter([tip_path[0, 0]], [tip_path[0, 1]], [tip_path[0, 2]], c="r", s=35, label="tip init")
+    ax.scatter([tip_path[-1, 0]], [tip_path[-1, 1]], [tip_path[-1, 2]], c="g", s=45, label="tip final")
+    if p_des_np is not None and np.all(np.isfinite(p_des_np)):
+        ax.scatter([p_des_np[0]], [p_des_np[1]], [p_des_np[2]], c="b", s=75, marker="*", label="target")
+
+    ax.set_xlabel("x (m)")
+    ax.set_ylabel("y (m)")
+    ax.set_zlabel("z (m)")
+    ax.set_title("Expected target vs actual tip path")
+    ax.legend(loc="best")
+    fig.tight_layout()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, dpi=220)
+    plt.close(fig)
 
 
 def plot_timeseries(run_dir: Path, *, out_dir: Path) -> None:
@@ -142,6 +201,8 @@ def plot_timeseries(run_dir: Path, *, out_dir: Path) -> None:
     dist_mm = _stack(trace, "dist_to_target_mm")
     normR = _stack(trace, "normR")
     cost = _stack(trace, "cost")
+    normE = _stack(trace, "norm_E_raw")
+    smooth_metric = _stack(trace, "smooth_metric_raw")
 
     x_m = _stack(trace, "x_m")
     dx_m = _stack(trace, "dx_m")
@@ -154,7 +215,7 @@ def plot_timeseries(run_dir: Path, *, out_dir: Path) -> None:
 
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1) distance + normR + cost
+    # 1) distance + normR + cost + normE
     fig, ax1 = plt.subplots(figsize=(9.0, 4.8))
     ax1.plot(k, dist_mm, label="||p_tip - p_des|| (mm)")
     ax1.set_xlabel("IK iter")
@@ -164,6 +225,7 @@ def plot_timeseries(run_dir: Path, *, out_dir: Path) -> None:
     ax2 = ax1.twinx()
     ax2.plot(k, normR, color="tab:orange", alpha=0.75, label="||R||")
     ax2.plot(k, cost, color="tab:green", alpha=0.55, label="cost")
+    ax2.plot(k, normE, color="tab:red", alpha=0.55, label="||E||")
     ax2.set_ylabel("norm/cost")
 
     lines, labels = ax1.get_legend_handles_labels()
@@ -172,6 +234,18 @@ def plot_timeseries(run_dir: Path, *, out_dir: Path) -> None:
 
     fig.tight_layout()
     fig.savefig(out_dir / "ts_dist_normR_cost.png", dpi=220)
+    plt.close(fig)
+
+    # 1b) smoothness
+    fig, ax = plt.subplots(figsize=(9.0, 4.8))
+    ax.plot(k, smooth_metric, color="tab:brown", label="smooth metric")
+    ax.set_xlabel("IK iter")
+    ax.set_ylabel("smooth metric")
+    ax.set_title("Centerline smoothness metric")
+    ax.grid(True, alpha=0.3)
+    ax.legend(loc="best")
+    fig.tight_layout()
+    fig.savefig(out_dir / "ts_smooth_metric.png", dpi=220)
     plt.close(fig)
 
     # 2) insertion depth and increment
@@ -245,12 +319,14 @@ def main() -> None:
     ap.add_argument("--run_dir", type=str, required=True, help="ik_out/run_*/ directory")
     ap.add_argument("--out_dir", type=str, default=None, help="output dir for plots (default: <run_dir>/plots)")
     ap.add_argument("--max_lines", type=int, default=200, help="max centerlines drawn in 3D plot")
+    ap.add_argument("--show", action="store_true", help="show interactive plot windows")
     args = ap.parse_args()
 
     run_dir = Path(args.run_dir)
     out_dir = Path(args.out_dir) if args.out_dir is not None else (run_dir / "plots")
 
-    plot_3d_convergence(run_dir, out_path=out_dir / "centerline_3d.png", max_lines=int(args.max_lines))
+    plot_3d_convergence(run_dir, out_path=out_dir / "centerline_3d.png", max_lines=int(args.max_lines), show_plot=args.show)
+    plot_tip_target_3d(run_dir, out_path=out_dir / "tip_target_3d.png")
     plot_timeseries(run_dir, out_dir=out_dir)
 
 

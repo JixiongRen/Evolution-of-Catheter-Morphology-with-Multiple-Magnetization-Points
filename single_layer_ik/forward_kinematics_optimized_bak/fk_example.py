@@ -321,8 +321,8 @@ def build_solver_params(
     coil_currents_out = None
 
     if enable_magnetics:
-        if calib_file is None:
-            raise ValueError("enable_magnetics=True but calib_file is None.")
+        if calib_file is None and actuation_table_pkl is None:
+            raise ValueError("enable_magnetics=True but neither calib_file nor actuation_table_pkl is provided.")
         if coil_currents is None:
             raise ValueError("enable_magnetics=True but coil_currents is None.")
         if m_body_list is None:

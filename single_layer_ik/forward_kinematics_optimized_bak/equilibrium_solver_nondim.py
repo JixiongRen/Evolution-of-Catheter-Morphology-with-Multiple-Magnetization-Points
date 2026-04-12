@@ -622,6 +622,78 @@ def print_top_blocks_jax(
 
 
 
+def summarize_top_blocks_jax(
+    E: Array,
+    params: SolverParams,
+    *,
+    topk_flex: int = 3,
+    topk_rigid: int = 3,
+) -> Dict[str, Any]:
+    """Return a machine-readable summary of the dominant residual blocks."""
+    cs_len = int(params.cs_len)
+    N = len(params.flex)
+
+    flex_stats = []
+    flex_block_idx = 0
+    for seg in range(N):
+        M = int(params.M_list[seg])
+        for interval in range(M):
+            off = int(params.flex_block_offsets[flex_block_idx])
+            ln = int(params.flex_block_lens[flex_block_idx])
+            blk = E[off:off + ln]
+
+            C_S = blk[:cs_len]
+            state = blk[cs_len:cs_len + 13]
+            ks = blk[cs_len + 13:cs_len + 13 + 39]
+            BV = blk[cs_len + 13 + 39:]
+
+            flex_stats.append({
+                "seg": int(seg),
+                "interval": int(interval),
+                "idx": int(flex_block_idx),
+                "len": int(ln),
+                "norm": float(_scalar_norm(blk)),
+                "maxabs": float(_scalar_maxabs(blk)),
+                "components": {
+                    "C_S": float(_scalar_norm(C_S)),
+                    "state": float(_scalar_norm(state)),
+                    "ks": float(_scalar_norm(ks)),
+                    "BV": float(_scalar_norm(BV)),
+                },
+            })
+            flex_block_idx += 1
+
+    flex_stats.sort(key=lambda d: d["norm"], reverse=True)
+
+    rigid_stats = []
+    for seg in range(N):
+        off = int(params.rigid_block_offsets[seg])
+        ln = int(params.rigid_block_lens[seg])
+        blk = E[off:off + ln]
+        core = blk[:13]
+        quat = blk[13:14]
+        BV = blk[14:]
+        rigid_stats.append({
+            "seg": int(seg),
+            "len": int(ln),
+            "norm": float(_scalar_norm(blk)),
+            "maxabs": float(_scalar_maxabs(blk)),
+            "components": {
+                "core": float(_scalar_norm(core)),
+                "quat": float(_scalar_norm(quat)),
+                "BV": float(_scalar_norm(BV)),
+            },
+        })
+
+    rigid_stats.sort(key=lambda d: d["norm"], reverse=True)
+
+    return {
+        "total_norm": float(_scalar_norm(E)),
+        "top_flex": flex_stats[: max(int(topk_flex), 0)],
+        "top_rigid": rigid_stats[: max(int(topk_rigid), 0)],
+    }
+
+
 @dataclass
 class LMStats:
     """Diagnostics and linearization artifacts returned by :meth:`solve_lm`.
