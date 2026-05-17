@@ -103,9 +103,9 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--accept_kappa_E", type=float, default=1.05)  # 恢复exp2配置
     p.add_argument("--accept_eps_E", type=float, default=1e-4)  # 恢复exp2配置
     p.add_argument("--accept_eps_smooth", type=float, default=0.0)  # 恢复exp2配置
-    p.add_argument("--stage1_sigma_scale", type=float, default=5.0)
-    p.add_argument("--stage1_w_smooth_scale", type=float, default=1.5)
-    p.add_argument("--stage1_block_clip_scale", type=float, default=0.5)
+    p.add_argument("--stage1_sigma_scale", type=float, default=2.5)
+    p.add_argument("--stage1_w_smooth_scale", type=float, default=0.8)
+    p.add_argument("--stage1_block_clip_scale", type=float, default=0.75)
     p.add_argument("--stage1_max_iter", type=int, default=0)
     p.add_argument("--trace_block_topk", type=int, default=0)
     p.add_argument("--trace_block_every", type=int, default=0)
