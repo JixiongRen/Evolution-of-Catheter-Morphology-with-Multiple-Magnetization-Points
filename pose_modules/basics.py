@@ -1,6 +1,7 @@
+"""Basic quaternion and linear-algebra helpers."""
+
 import numpy as np
 
-# -------- Gauss-Legendre 6 点积分参数 --------
 
 
 GL3_C = np.array([
@@ -15,7 +16,6 @@ GL3_B = np.array([
     5/18,
     ])
 
-# 3x3 a_ij 矩阵
 GL3_A = np.array([
     [5/36,  2/9 - np.sqrt(15)/15,  5/36 - np.sqrt(15)/30],
     [5/36 + np.sqrt(15)/24,  2/9,  5/36 - np.sqrt(15)/24],
@@ -23,31 +23,16 @@ GL3_A = np.array([
 ])
 
 
-# -------- 基础工具函数 --------
 
 
 def skew(v: np.ndarray) -> np.ndarray:
-    """
-    计算向量 v 的反对称矩阵
-
-    参数
-    ----------
-    v : numpy.array of shape (3,)
-        向量
-    """
+    """Return the skew-symmetric matrix of a 3D vector."""
     vx, vy, vz = v
     return np.array([[0, -vz, vy], [vz, 0, -vx], [-vy, vx, 0]])
 
 
 def quat_to_rotmat(Q: np.ndarray) -> np.ndarray:
-    """
-    计算四元数 Q 对应的旋转矩阵
-
-    参数
-    ----------
-    Q : numpy.array of shape (4,)
-        四元数
-    """
+    """Convert a quaternion in ``wxyz`` order to a rotation matrix."""
     qr = Q[0]
     q = Q[1:].reshape(3)
     I = np.eye(3)
@@ -56,16 +41,7 @@ def quat_to_rotmat(Q: np.ndarray) -> np.ndarray:
 
 
 def quat_derivative(Q: np.ndarray, Omega: np.ndarray) -> np.ndarray:
-    """
-    计算四元数 Q 对应的旋转矩阵的导数
-
-    参数
-    ----------
-    Q : numpy.array of shape (4,)
-        四元数
-    Omega : numpy.array of shape (3,)
-        角速度
-    """
+    """Compute the quaternion derivative for a given angular velocity."""
     qr = Q[0]
     q = Q[1:].reshape(3)
     upper = -q.reshape(1, 3)

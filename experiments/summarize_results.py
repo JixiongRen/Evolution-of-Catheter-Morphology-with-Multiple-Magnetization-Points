@@ -18,7 +18,6 @@ def parse_meta(meta_path: str) -> dict:
                 continue
             k, v = row[0], row[1]
             d[k] = v
-    # 类型转换
     if "n_intervals" in d:
         d["n_intervals"] = int(d["n_intervals"])  # type: ignore
     if "coil_amp" in d:
@@ -43,7 +42,6 @@ def parse_summary(summary_path: str) -> dict:
 
 
 def aggregate(root: str, out_path: str):
-    # 兼容两种目录：experiments/results 与 experiments/experiments/results
     candidates = []
     for base in (root, os.path.join(root, "experiments", "results")):
         if os.path.isdir(base):
@@ -59,14 +57,12 @@ def aggregate(root: str, out_path: str):
         print("No summary files found.")
         return
 
-    # 分组键：scenario, scale, n_intervals, coil_amp
     groups = defaultdict(lambda: {"baseline": [], "nondim": []})
 
     for sfile in summary_files:
         tag = os.path.basename(sfile).replace("_summary.csv", "")
         meta_path = os.path.join(os.path.dirname(sfile), f"{tag}_meta.csv")
         if not os.path.isfile(meta_path):
-            # 跳过无 meta 的样本
             continue
 
         meta = parse_meta(meta_path)
@@ -83,7 +79,6 @@ def aggregate(root: str, out_path: str):
             if solver in summary:
                 groups[key][solver].append(summary[solver])
 
-    # 写聚合结果
     with open(out_path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow([

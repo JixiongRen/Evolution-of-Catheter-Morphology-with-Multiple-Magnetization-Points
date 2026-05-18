@@ -11,7 +11,6 @@ from pose_modules_nondim.segments_nondim import RigidSegment, FlexibleSegment
 from pose_modules_nondim.rod_mesh_nondim import RodMesh
 from pose_modules_nondim.nondim import compute_default_scales, NondimScales, x_bar_to_dim
 
-# external_wrench / mas：保持 SI 物理逻辑不变
 try:
     from pose_modules_nondim.external_wrench_nondim import (
         GravityRigid,
@@ -19,7 +18,6 @@ try:
         compute_external_wrench_total_rigid,
     )
 except Exception:
-    # 如果你暂时没做 external_wrench_nondim 的 re-export 壳，则回退到原版
     from pose_modules.external_wrench import (
         GravityRigid,
         make_external_wrench_density_flexible,
@@ -31,8 +29,6 @@ try:
 except Exception:
     from pose_modules.mas import MagneticActuationSystem, SupieeMagneticModel
 
-# utils：这里会用到 PDMS/磁体的材料-几何构造 helper
-# 强烈建议你在 utils_nondim.py 里 re-export 这些 helper；此处做了兼容回退
 try:
     from pose_modules_nondim.utils_nondim import (
         build_k_matrices_for_pdms,
@@ -61,12 +57,7 @@ def extract_catheter_points_bar(
         scales: NondimScales,
         n_samples_rigid: int = 10,
 ) -> np.ndarray:
-    """
-    从无量纲解 (bar) 提取导管三维点坐标（单位：m），用于绘图。
-
-    返回：
-    - P: (N_points, 3) 导管上所有采样点的坐标（SI, meters）
-    """
+    """Load extract catheter points bar ."""
     N = len(rigid_segs)
     P_all = []
 
@@ -77,13 +68,11 @@ def extract_catheter_points_bar(
         gravity_rigid_i = gravity_rigid_list[i]
         magnet_params_i = magnet_params_list[i]
 
-        # 柔性段：p_bar -> p_dim (m)
         p_flex_i = x_nodes_i_bar[:, :3] * scales.L_ref
         if i > 0:
             p_flex_i = p_flex_i[1:, :]
         P_all.append(p_flex_i)
 
-        # 刚性段：需要在 SI 下计算外载并采样
         x_flex_end_bar = x_nodes_i_bar[-1]
         x_flex_end_dim = x_bar_to_dim(x_flex_end_bar, scales)
 
@@ -127,7 +116,7 @@ scales: Optional[NondimScales] = None
 
 
 def iteration_callback(iter_num, z, normE):
-    """每次迭代的回调函数：每10步绘制一次导管姿态（以 SI 米制绘图）。"""
+    """Render the current centerline every few LM iterations."""
     global solver, meshes, rigid_segs, gravity_rigid_list, supiee_model, magnet_params_list, coil_currents, ax, scales
     if iter_num % 10 != 0:
         return
@@ -149,7 +138,6 @@ def iteration_callback(iter_num, z, normE):
 
     iteration_history.append({'iter': iter_num, 'P': P.copy(), 'normE': normE})
 
-    # 透明度映射（保持你原逻辑）
     if normE > 1e-2:
         alpha = 0.9
     elif normE > 1e-3:
@@ -187,9 +175,7 @@ def plot_catheter_3d_multiseg_with_magnetics_bar(
         scales: NondimScales,
         n_samples_rigid: int = 10,
 ):
-    """
-    使用最终无量纲解 (bar)，在 SI 单位下重新计算每个刚性段总外载并采样，绘制最终姿态。
-    """
+    """Plot the final nondimensional magnetic-actuation solution in 3D."""
     from mpl_toolkits.mplot3d import Axes3D  # noqa
 
     N = len(rigid_segs)
@@ -201,13 +187,11 @@ def plot_catheter_3d_multiseg_with_magnetics_bar(
         gravity_rigid_i = gravity_rigid_list[i]
         magnet_params_i = magnet_params_list[i]
 
-        # 柔性段点：bar -> meters
         p_flex_i = x_nodes_i_bar[:, :3] * scales.L_ref
         if i > 0:
             p_flex_i = p_flex_i[1:, :]
         P_all.append(p_flex_i)
 
-        # 刚性段近端：flex 末端（SI）
         x_flex_end_dim = x_bar_to_dim(x_nodes_i_bar[-1], scales)
 
         f_ext_total_i, tau_ext_total_i = compute_external_wrench_total_rigid(

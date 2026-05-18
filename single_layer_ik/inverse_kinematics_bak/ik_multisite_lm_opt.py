@@ -492,7 +492,6 @@ def _compute_dp_dx_fd(
         dpdx = (pp - pm) / float(xp - xm)
         return jnp.asarray(dpdx, dtype=jnp.float64)
     else:
-        # 返回全0向量
         return jnp.zeros((3,), dtype=jnp.float64)
 
 def main(argv: Optional[Sequence[str]] = None) -> None:

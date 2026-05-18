@@ -1,10 +1,4 @@
-"""
-此脚本用于验证 actuation_interpolator 的准确性
-给定一组电流向量
-1. 在 x in [-0.2, 0.2]m, y in [-0.2, 0.2]m, z in [-0.2, 0.2]m 的范围内
-    1.1 使用mag_manip和我们的插值函数分别计算驱动矩阵
-    1.2 分析驱动矩阵的误差
-"""
+"""Validate the accuracy of the actuation interpolator."""
 
 from mag_manip import mag_manip
 from mag_manip.mag_manip import ForwardModelMPEM

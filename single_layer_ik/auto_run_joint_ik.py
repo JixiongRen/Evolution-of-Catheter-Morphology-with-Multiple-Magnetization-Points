@@ -50,15 +50,15 @@ def build_argparser() -> argparse.ArgumentParser:
 
     p.add_argument("--flex_lengths_tail", type=str, default="0.03,0.03")
     p.add_argument("--rigid_lengths", type=str, default="0.003,0.003,0.003")
-    p.add_argument("--M_list", type=str, default="3,2,2")  # 保持较低离散化以加快速度
+    p.add_argument("--M_list", type=str, default="3,2,2")
     p.add_argument("--x_min", type=float, default=0.06)
     p.add_argument("--x_max", type=float, default=0.18)
     p.add_argument("--L_protrude_max", type=float, default=0.18)
     p.add_argument("--L1_min", type=float, default=1e-6)
     p.add_argument("--x_init", type=float, default=0.1)
     p.add_argument("--init_mode", type=str, default="equilibrium", choices=["geometry", "equilibrium"])
-    p.add_argument("--init_fk_max_iter", type=int, default=300)  # 降低初始化迭代次数
-    p.add_argument("--init_fk_tol", type=float, default=1e-4)  # 放宽初始化容差
+    p.add_argument("--init_fk_max_iter", type=int, default=300)
+    p.add_argument("--init_fk_tol", type=float, default=1e-4)
     p.add_argument("--init_fk_lm_damping", type=float, default=1e-2)
 
     p.add_argument("--Q0_wxyz", type=str, default="1,0,0,0")
@@ -74,9 +74,9 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--w_x", type=float, default=0.001)
     p.add_argument("--x_ref", type=float, default=0.1)
     p.add_argument("--I_scale", type=float, default=1.0)
-    p.add_argument("--w_smooth", type=float, default=0.2)  # 恢复exp2配置
-    p.add_argument("--w_smooth_baseline", type=float, default=0.2)  # 恢复exp2配置
-    p.add_argument("--w_gap", type=float, default=2.0)  # 恢复exp2配置
+    p.add_argument("--w_smooth", type=float, default=0.2)
+    p.add_argument("--w_smooth_baseline", type=float, default=0.2)
+    p.add_argument("--w_gap", type=float, default=2.0)
     p.add_argument("--sigma_gap", type=float, default=5e-4)
     p.add_argument("--centerline_rigid_samples", type=int, default=2)
 
@@ -100,9 +100,9 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--block_clip_dz", type=float, default=20.0)
     p.add_argument("--block_clip_dI", type=float, default=10.0)
     p.add_argument("--block_clip_dx", type=float, default=0.015)
-    p.add_argument("--accept_kappa_E", type=float, default=1.05)  # 恢复exp2配置
-    p.add_argument("--accept_eps_E", type=float, default=1e-4)  # 恢复exp2配置
-    p.add_argument("--accept_eps_smooth", type=float, default=0.0)  # 恢复exp2配置
+    p.add_argument("--accept_kappa_E", type=float, default=1.05)
+    p.add_argument("--accept_eps_E", type=float, default=1e-4)
+    p.add_argument("--accept_eps_smooth", type=float, default=0.0)
     p.add_argument("--stage1_sigma_scale", type=float, default=2.5)
     p.add_argument("--stage1_w_smooth_scale", type=float, default=0.8)
     p.add_argument("--stage1_block_clip_scale", type=float, default=0.75)

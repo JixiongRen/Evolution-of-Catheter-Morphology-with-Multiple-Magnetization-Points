@@ -7,11 +7,7 @@ from .segments import FlexibleSegment
 
 @dataclass
 class RodMesh:
-    """
-    只针对当前一段FlexibleSegment的离散网格管理:
-    - 把 [0, L_flex] 划分为 n_intervals 个小区间
-    - 或者传入自定义的 sigma_nodes
-    """
+    """Discretize a single flexible segment along arc length."""
 
     flex_seg: FlexibleSegment
     n_intervals: int = 1
@@ -20,7 +16,6 @@ class RodMesh:
     def __post_init__(self):
         L = self.flex_seg.length
         if self.sigma_nodes is None:
-            # 均匀划分
             self.sigma_nodes = np.linspace(0.0, L, self.n_intervals + 1)
         else:
             self.sigma_nodes = np.asarray(self.sigma_nodes).ravel()
@@ -28,10 +23,9 @@ class RodMesh:
             assert self.sigma_nodes[-1] == L
             self.n_intervals = self.sigma_nodes.size - 1
 
-        # 每个小区间长度 h_n
         self.h_list = self.sigma_nodes[1:] - self.sigma_nodes[:-1]
 
     @property
     def M(self) -> int:
-        """柔性段区间数量"""
+        """Return the number of mesh intervals."""
         return self.n_intervals

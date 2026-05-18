@@ -88,9 +88,8 @@ def main() -> None:
     Pm = np.asarray(mag["P"], dtype=np.float64)
     Pj = np.asarray(jax["P"], dtype=np.float64)
     if Pm.shape != Pj.shape or not np.allclose(Pm, Pj, rtol=0.0, atol=0.0):
-        raise ValueError("P 不匹配，请确保 jax 采样读取的是 mag 的 npz 文件")
+        raise ValueError("Point arrays do not match. Ensure the JAX samples were generated from the magnetic reference NPZ file.")
 
-    # 参考与预测的 8 分量
     Bm = np.asarray(mag["B"], dtype=np.float64)
     Gm = np.asarray(mag["G5"], dtype=np.float64)
     Bp = np.asarray(jax["B"], dtype=np.float64)
@@ -120,7 +119,6 @@ def main() -> None:
         denom = np.maximum(np.abs(ref8[:, k]), taus[k])
         rel_err8[:, k] = abs_err8[:, k] / (denom + 1e-12)
 
-    # 逐分量统计（mean_abs/max_abs/rmse/corr 基于绝对误差；mean_rel/max_rel 基于 floor-relative）
     comp_stats: Dict[str, Dict[str, float]] = {}
     for k, name in enumerate(COMP_NAMES):
         s = _summary_stats(ref8[:, k], pred8[:, k])
@@ -150,13 +148,11 @@ def main() -> None:
             w_mean_abs.append(float(np.sum(weights * abs_err8[:, k])))
             w_mean_rel.append(float(np.sum(weights * rel_err8[:, k])))
 
-    # 汇总柱状图数据
     mean_abs = [comp_stats[n]["mean_abs"] for n in COMP_NAMES]
     max_abs = [comp_stats[n]["max_abs"] for n in COMP_NAMES]
     mean_rel = [comp_stats[n]["mean_rel"] for n in COMP_NAMES]
     max_rel = [comp_stats[n]["max_rel"] for n in COMP_NAMES]
 
-    # 可视化 1：绝对误差热力图（8 分量，2x4）
     extent = [float(zs[0]), float(zs[-1]), float(ys[0]), float(ys[-1])]
     fig1, axes1 = plt.subplots(2, 4, figsize=(18, 8), constrained_layout=True)
     ims1 = []
@@ -178,10 +174,8 @@ def main() -> None:
     fig1.savefig(out1, dpi=int(args.dpi))
     plt.close(fig1)
 
-    # 可视化 2：相对误差热力图（按 p99 截断）
     fig2, axes2 = plt.subplots(2, 4, figsize=(18, 8), constrained_layout=True)
     ims2 = []
-    # 先计算全量 floor-relative 误差用于统一色阶
     rel_all = rel_err8.reshape(-1)
     finite_rel = rel_all[np.isfinite(rel_all)]
     if finite_rel.size == 0:
@@ -208,7 +202,6 @@ def main() -> None:
     fig2.savefig(out2, dpi=int(args.dpi))
     plt.close(fig2)
 
-    # 可视化 3：误差汇总柱状图（绝对/相对）
     x = np.arange(len(COMP_NAMES))
     width = 0.28
 
@@ -267,7 +260,6 @@ def main() -> None:
         else:
             angle_stats = {"p50": float("nan"), "p90": float("nan"), "p95": float("nan"), "p99": float("nan")}
 
-    # 保存数值指标（json + csv）
     out_json = (Path(args.out_prefix).resolve().parent / (Path(args.out_prefix).name + "_metrics.json")).resolve()
     with open(out_json, "w", encoding="utf-8") as f:
         payload = {
@@ -296,7 +288,6 @@ def main() -> None:
             ]
             f.write(",".join(row) + "\n")
 
-    # 也保存 npz 便于后续复用
     out_npz = (Path(args.out_prefix).resolve().parent / (Path(args.out_prefix).name + "_errors.npz")).resolve()
     abs_err8 = np.abs(pred8 - ref8)
     rel_err8 = _safe_rel_err(abs_err8, ref8)

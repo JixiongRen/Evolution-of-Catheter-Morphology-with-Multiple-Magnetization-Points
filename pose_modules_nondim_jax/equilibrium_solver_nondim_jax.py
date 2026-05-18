@@ -195,7 +195,7 @@ def residual_bar(z_bar: Array, params: SolverParams) -> Array:
             x_n = x_nodes[n]
             x_np1 = x_nodes[n + 1]
             # k_n = k_arr[n]
-            k_n = k_arr[n].reshape((3, 13))  # <-- 关键修复：恢复 stage×state
+            k_n = k_arr[n].reshape((3, 13))
             sbar_n = sbar_nodes[n]
             hbar = hbar_list[n]
 

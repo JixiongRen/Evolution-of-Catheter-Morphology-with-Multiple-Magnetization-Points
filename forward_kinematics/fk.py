@@ -20,7 +20,7 @@ from external_wrench_nondim import GravityRigid, MagneticModel, compute_external
 from equilibrium_solver_nondim import (
     SolverParams,
     MultiSegmentEquilibriumSolverNondimJAX,
-    print_top_blocks_jax,   # 新增：直接打印Top blocks
+    print_top_blocks_jax,
 )
 from utils_nondim import (
     make_initial_guess_multi_bar_jax,
@@ -491,12 +491,7 @@ def create_iteration_callback(
     save_dir: Optional[str] = None,
     save_npz: bool = True,
 ):
-    """
-    在 LM 迭代过程中周期性（every 步）绘制当前姿态：
-      - 柔性段：不透明蓝色（节点，单位米）
-      - 刚性段：红色（段内采样，单位米）
-    并且每隔 save_every 轮将当前回调结果保存至磁盘（PNG，且可选NPZ）。
-    """
+    """Build create iteration callback ."""
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111, projection="3d")
     ax.set_xlabel("X [m]")
@@ -516,7 +511,6 @@ def create_iteration_callback(
         if (iter_num % every) != 0:
             return
 
-        # 清除先前的内容并重设坐标轴属性
         ax.cla()
         ax.set_xlabel("X [m]")
         ax.set_ylabel("Y [m]")
@@ -529,10 +523,8 @@ def create_iteration_callback(
 
         x_nodes_list_bar, _, _ = unpack_z_bar_jax(z, M_list=params.M_list)
 
-        # 柔段使用不透明蓝色
         flex_color = "blue"
         flex_alpha = 1.0
-        # 刚段不透明度可随残差略变（可选）
         if normE > 1e-2:
             rigid_alpha = 0.9
         elif normE > 1e-3:
@@ -543,13 +535,11 @@ def create_iteration_callback(
             rigid_alpha = 0.4
 
         for i in range(len(params.flex)):
-            # 柔性段：节点（bar->SI）
             p_flex_bar = x_nodes_list_bar[i][:, 0:3]
             p_flex_dim = p_flex_bar * scales.L_ref
             ax.plot(p_flex_dim[:, 0], p_flex_dim[:, 1], p_flex_dim[:, 2],
                     color=flex_color, alpha=flex_alpha, linewidth=1.8)
 
-            # 刚性段：解析推进并采样
             rigidp = params.rigid[i]
             Lr = float(rigidp.length)
             if Lr <= 0.0 or n_samples_rigid <= 0:
@@ -587,7 +577,6 @@ def create_iteration_callback(
         plt.tight_layout()
         plt.pause(0.01)
 
-        # 间隔保存当前图像和可选中间解
         if save_every > 0 and (iter_num % save_every) == 0:
             png_path = out_dir / f"callback_iter_{iter_num:06d}.png"
             try:
@@ -712,12 +701,8 @@ def main():
     solver = MultiSegmentEquilibriumSolverNondimJAX(params)
 
     # ===================== DIAG PATCH BEGIN =====================
-    # 你希望检查 it=1 和 it=5001；注意：solve_lm 的 callback 会收到它自己打印的迭代号
-    #（你的日志里 DIAG it=1 / 5001 已经验证这个编号是对齐的）
     debug_iters = {1, 5001}
 
-    # 你关心的“具体块”：可按需改
-    # 建议至少包含：平台期 state 最大的块（例如 seg0 interval1/2）以及段间连接 BV（seg1/seg2 的 interval0）
     watch_flex = [
         (0, 1),
         (0, 2),
@@ -732,7 +717,6 @@ def main():
         return float(jnp.max(jnp.abs(x))) if x.size > 0 else 0.0
 
     def _flex_block_index(seg: int, interval: int) -> int:
-        # 全局 flex block idx = sum_{s<seg} M_list[s] + interval
         return int(sum(int(params.M_list[s]) for s in range(seg)) + int(interval))
 
     def _print_state_breakdown(vec13: Array, prefix: str = "") -> None:
@@ -769,7 +753,6 @@ def main():
             _print_state_breakdown(bv, prefix=prefix + "  ")
             return
 
-        # 兜底：未知长度直接报数值
         print(f"{prefix}BV breakdown (len={ln}) | total={_norm(bv):.3e} (max={_maxabs(bv):.3e})")
 
     def _print_flex_block_details(E: Array, seg: int, interval: int, prefix: str = "") -> None:
@@ -784,7 +767,6 @@ def main():
         ks = blk[cs_len + 13:cs_len + 13 + 39]
         BV = blk[cs_len + 13 + 39:]
 
-        # ks 分 3 个 stage
         ks0 = ks[0:13]
         ks1 = ks[13:26]
         ks2 = ks[26:39]
@@ -800,17 +782,14 @@ def main():
         _print_bv_breakdown(BV, prefix=prefix + "  ")
 
     def lm_callback(it: int, z_bar: Array, normE: float) -> None:
-        # 只在你关心的迭代点打印
         if it not in debug_iters:
             return
 
-        # 计算当前残差（会触发同步；但你只打印两次，所以成本可接受）
         E = solver.residual_jit(z_bar)
 
         print("\n" + "=" * 88)
         print(f"[DIAG] it={it}  ||E||={float(jnp.linalg.norm(E)):.6e}  (solver_normE={float(normE):.6e})")
 
-        # 1) 原有总览（与你现在看到的一致）
         print_top_blocks_jax(
             E,
             params,
@@ -820,7 +799,6 @@ def main():
             title_prefix=f"[DIAG it={it}] ",
         )
 
-        # 2) 你指定的“重点块”做更细的 state / BV 分解
         print(f"[DIAG it={it}] Focused flex block decomposition:")
         for (seg, interval) in watch_flex:
             try:

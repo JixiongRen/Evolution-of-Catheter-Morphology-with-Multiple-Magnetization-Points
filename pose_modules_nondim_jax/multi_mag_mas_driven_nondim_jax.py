@@ -93,11 +93,9 @@ def print_rigid_state_fields(z_bar, params, seg: int, *, label: str = "", raise_
     print(f"{label}  f={np.asarray(jax.device_get(f))}")
     print(f"{label}  tau={np.asarray(jax.device_get(tau))}")
 
-    # 断言：有限值
     if raise_on_fail and not finite_ok:
         raise AssertionError(f"Non-finite xR_var detected at seg={seg}")
 
-    # 断言：四元数范数不应离谱（初值/收敛后一般接近1）
     if raise_on_fail and not (0.5 < qnorm < 1.5):
         raise AssertionError(f"Quaternion norm^2 abnormal at seg={seg}: {qnorm}")
 
@@ -139,7 +137,6 @@ def check_last_rigid_bv_sensitivity(solver, z_bar, *, seg: int, eps: float = 1e-
     print(f"{label}  ||BV(z+eps_f) - BV(z)|| = {dBV_f:.6g}   (expected ~ O(eps))")
     print(f"{label}  ||BV(z+eps_tau) - BV(z)|| = {dBV_t:.6g} (expected ~ O(eps))")
 
-    # 断言：如果是末段，BV 长度应该是 6，且敏感度不应接近 0
     if seg == len(p.rigid) - 1:
         if int(BV0.size) != 6:
             raise AssertionError(f"Last seg BV length expected 6, got {int(BV0.size)}")
@@ -216,8 +213,6 @@ def build_solver_params(
     actuation_table_pkl: Optional[str] = None,
     coil_currents: Optional[Array] = None,
     m_body_list: Optional[List[Array]] = None,
-    # 用户可选：设置近端初始位置
-    # 传 SI (米) 用 p0_dim；或直接传无量纲的 p0_bar
     p0_dim: Optional[Array] = None,
     p0_bar: Optional[Array] = None,
 ) -> Tuple[SolverParams, List[UniformMesh]]:
@@ -261,7 +256,6 @@ def build_solver_params(
         )
 
     # --- Proximal BC target ---
-    # 优先级：p0_bar（直接使用）> p0_dim（用 L_ref 归一化）> 默认 0
     if p0_bar is not None:
         p0_bar = jnp.asarray(p0_bar, dtype=jnp.float64).reshape(3,)
     elif p0_dim is not None:
@@ -470,14 +464,7 @@ def plot_converged_pose_3d(
     save_path: Optional[str] = None,
     show: bool = True,
 ) -> None:
-    """
-    绘制收敛后的三维姿态（柔段节点 + 刚段采样点），单位为米。
-
-    - 柔段：直接使用节点位置（bar -> SI）。
-    - 刚段：基于解析 rigid_state_along 在段内均匀采样（SI）。
-    - 外载：使用 compute_external_wrench_total_rigid 在刚段近端计算总合力/力矩（SI）。
-    """
-    # 解包
+    """Plot the converged 3D catheter pose."""
     x_nodes_list_bar, _, _ = unpack_z_bar_jax(z_bar, M_list=params.M_list)
 
     N = len(params.flex)
@@ -487,7 +474,6 @@ def plot_converged_pose_3d(
     any_plotted = False
 
     for i in range(N):
-        # 柔段节点（bar -> SI）
         x_nodes_bar = jnp.asarray(x_nodes_list_bar[i])  # (M+1, 13)
         p_flex_m = np.asarray(x_nodes_bar[:, 0:3] * float(scales.L_ref))
 
@@ -518,20 +504,17 @@ def plot_converged_pose_3d(
             ax.plot(p_flex_m[:, 0], p_flex_m[:, 1], p_flex_m[:, 2], "-o", color="b", markersize=2.5, linewidth=1.5)
             any_plotted = True
 
-        # 刚段采样
         rigidp = params.rigid[i]
         Lr = float(rigidp.length)
         if Lr <= 0.0 or n_samples_rigid <= 0:
             continue
 
-        # 刚段近端的 SI 状态（柔段末端）
         from pose_modules_nondim_jax.nondim_jax import x_bar_to_dim
         from pose_modules_nondim_jax.segments_nondim_jax import rigid_state_along_dim
         from pose_modules_nondim_jax.external_wrench_nondim_jax import compute_external_wrench_total_rigid
 
         x_prox_dim = x_bar_to_dim(x_nodes_bar[-1], scales)
 
-        # 计算刚段总外载（SI，关于近端）
         f_total_dim, tau_total_dim = compute_external_wrench_total_rigid(
             x_proximal=x_prox_dim,
             rigid_length=Lr,
@@ -541,7 +524,6 @@ def plot_converged_pose_3d(
             coil_currents=params.coil_currents,
         )
 
-        # 沿刚段采样位置（排除近端以避免重复点）
         sigmas = np.linspace(0.0, Lr, int(n_samples_rigid) + 1)[1:]
         p_rigid = []
         for s in sigmas:
@@ -563,7 +545,6 @@ def plot_converged_pose_3d(
         plt.close(fig)
         return
 
-    # 限制轴范围
     ax.set_xlim([-0.1, 0.1])
     ax.set_ylim([-0.1, 0.1])
     ax.set_zlim([-0.05, 0.05])
@@ -595,12 +576,7 @@ def create_iteration_callback(
     save_dir: Optional[str] = None,
     save_npz: bool = True,
 ):
-    """
-    在 LM 迭代过程中周期性（every 步）绘制当前姿态：
-      - 柔性段：不透明蓝色（节点，单位米）
-      - 刚性段：红色（段内采样，单位米）
-    并且每隔 save_every 轮将当前回调结果保存至磁盘（PNG，且可选NPZ）。
-    """
+    """Build create iteration callback ."""
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111, projection="3d")
     ax.set_xlabel("X [m]")
@@ -620,7 +596,6 @@ def create_iteration_callback(
         if (iter_num % every) != 0:
             return
 
-        # 清除先前的内容并重设坐标轴属性
         ax.cla()
         ax.set_xlabel("X [m]")
         ax.set_ylabel("Y [m]")
@@ -633,10 +608,8 @@ def create_iteration_callback(
 
         x_nodes_list_bar, _, _ = unpack_z_bar_jax(z, M_list=params.M_list)
 
-        # 柔段使用不透明蓝色
         flex_color = "blue"
         flex_alpha = 1.0
-        # 刚段不透明度可随残差略变（可选）
         if normE > 1e-2:
             rigid_alpha = 0.9
         elif normE > 1e-3:
@@ -647,13 +620,11 @@ def create_iteration_callback(
             rigid_alpha = 0.4
 
         for i in range(len(params.flex)):
-            # 柔性段：节点（bar->SI）
             p_flex_bar = x_nodes_list_bar[i][:, 0:3]
             p_flex_dim = p_flex_bar * scales.L_ref
             ax.plot(p_flex_dim[:, 0], p_flex_dim[:, 1], p_flex_dim[:, 2],
                     color=flex_color, alpha=flex_alpha, linewidth=1.8)
 
-            # 刚性段：解析推进并采样
             rigidp = params.rigid[i]
             Lr = float(rigidp.length)
             if Lr <= 0.0 or n_samples_rigid <= 0:
@@ -691,7 +662,6 @@ def create_iteration_callback(
         plt.tight_layout()
         plt.pause(0.01)
 
-        # 间隔保存当前图像和可选中间解
         if save_every > 0 and (iter_num % save_every) == 0:
             png_path = out_dir / f"callback_iter_{iter_num:06d}.png"
             try:
@@ -788,7 +758,6 @@ def main():
     # last = len(params.rigid) - 1
     # print_rigid_state_fields(z0_bar, params, last, label="[preLM] ", raise_on_fail=True)
 
-    # 敏感度检查很关键
     # check_last_rigid_bv_sensitivity(solver, z0_bar, seg=last, eps=1e-6, label="[preLM] ")
 
     # def cb(it, z, normE):
@@ -797,7 +766,6 @@ def main():
     #                                 title_prefix=f"[it={it}] ")
 
     # def cb(it, z, normE):
-    #     # 建议：前几步 + 每隔若干步打印一次，避免拖慢
     #     if it in (0, 1, 2, 3, 5, 10, 20) or (it % 5 == 0):
     #         audit_last_rigid_force_identity(z, solver.params, it=it, seg_idx=None, print_vectors=False)
     #         solver.print_top_blocks(z, it=it, topk=10, verbose=True)
@@ -807,7 +775,6 @@ def main():
     #         print_rigid_state_fields(z, params, last, label=f"[it={it}] ", raise_on_fail=False)
     #         check_last_rigid_bv_sensitivity(solver, z, seg=last, eps=1e-6, label=f"[it={it}] ")
 
-    # 可视化收敛过程：每 10 步绘制一次
     cb = create_iteration_callback(params, scales, every=100, n_samples_rigid=10, save_every=100, save_dir="../callback_snaps", save_npz=True)
 
     z_star, ok = solver.solve_lm(

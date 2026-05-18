@@ -524,7 +524,7 @@ class ForwardKinematicsEngine:
 
 if __name__ == "__main__":
     engine = ForwardKinematicsEngine(
-        flex_lengths_tail=[0.03, 0.03],  # 这里按你的使用：L2..LN
+        flex_lengths_tail=[0.03, 0.03],
         rigid_lengths=[0.003, 0.003, 0.003],
         M_list=[10, 5, 5],
         enable_gravity=True,
@@ -534,7 +534,6 @@ if __name__ == "__main__":
         p0_dim=(0, 0, 0),
         Q0_wxyz=(0.70710678, 0, 0.70710678, 0),
         axis_body=(0, 0, 1),
-        # 其余材料/LM参数保持默认或按需传入
     )
 
     z_star_bar, params, meshes, ok = engine.solve(

@@ -370,7 +370,5 @@ def build_gravity_rigid_for_ndfeb_jax(d_outer: float, length: float) -> GravityR
 
     r_cm_body = jnp.array([0.0, 0.0, 0.5], dtype=jnp.float64) * length
 
-    # GravityRigid.mass 在我给你的 JAX 外载实现里是 float；这里用 float(mass) 固化为 Python float
-    # 这样更利于作为“静态参数”参与 JIT（避免 mass 变成 traced array）。
     return GravityRigid(mass=float(mass), g_world=g_world, r_cm_body=r_cm_body)
 

@@ -507,7 +507,6 @@ class MultiSegmentEquilibriumSolverNondim:
         # else:
         #     print("  flex.fext_density is None (good)")
 
-    # --- (下面保留你已有的 residual_block_report / print_top_blocks_verbose / print_defect_components 原样) ---
 
     def residual_block_report(self, z: np.ndarray, cs_min_len: int = 2) -> dict:
         x_nodes_list_bar, k_array_list_bar, x_rigid_list_bar = self.unpack_z(z)
