@@ -5,6 +5,10 @@
 /callback_snaps/
 /ik_out/
 /workspace_determine/workspace_out/
+/.agents/
+.env
+skills-lock.json
+.codex
 
 *.pyc
 *.bak*
