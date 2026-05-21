@@ -3,10 +3,13 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional, Sequence, Tuple
 
+import jax
 import jax.numpy as jnp
 import numpy as np
 
 from supiee_auto_diff.actuation_interpolator_jax import load_actuation_table, interpolate_A_checked
+
+jax.config.update("jax_enable_x64", True)
 
 
 ArrayLike = Sequence[float] | np.ndarray

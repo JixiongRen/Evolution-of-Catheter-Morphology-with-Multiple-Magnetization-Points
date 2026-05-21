@@ -93,6 +93,10 @@ def _safe_float(v: Any, default: float = float("nan")) -> float:
         return float(default)
 
 
+def _is_success_stop_reason(stop_reason: str) -> bool:
+    return str(stop_reason) in {"converged", "dist_tol"}
+
+
 def _build_stage_configs(args: argparse.Namespace) -> list[StageConfig]:
     if str(args.run_mode) == "baseline":
         return [
@@ -199,6 +203,15 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--max_iter", type=int, default=50)
     p.add_argument("--tol", type=float, default=1e-6)
     p.add_argument("--dist_tol_mm", type=float, default=1.0, help="Stop early when dist_to_target_mm is below this threshold; <=0 disables")
+    p.add_argument("--bound_stall_patience", type=int, default=20, help="Stop if x stays pinned at a bound with low current utilization for too many accepted steps")
+    p.add_argument("--bound_stall_dist_mm", type=float, default=20.0, help="Only trigger bound-stall stop when distance remains above this threshold [mm]")
+    p.add_argument("--bound_stall_current_util", type=float, default=0.15, help="Only trigger bound-stall stop when max current utilization stays below this threshold")
+    p.add_argument("--bound_stall_eps_x", type=float, default=1e-4, help="Tolerance for treating x as pinned at a bound [m]")
+    p.add_argument("--progress_stall_patience", type=int, default=30, help="Accepted-step window for detecting slow progress in stage-2 rescue scenarios")
+    p.add_argument("--progress_stall_dist_mm", type=float, default=20.0, help="Only trigger progress-stall stop when distance remains above this threshold [mm]")
+    p.add_argument("--progress_stall_min_delta_mm", type=float, default=6.0, help="Minimum distance reduction required across the progress-stall window [mm]")
+    p.add_argument("--progress_stall_min_x_ratio", type=float, default=0.75, help="Only trigger progress-stall stop when x has entered this fraction of the feasible insertion range")
+    p.add_argument("--progress_stall_max_current_util", type=float, default=0.1, help="Only trigger progress-stall stop when current utilization remains below this threshold")
     p.add_argument("--lm_damping", type=float, default=1e-3)
     p.add_argument("--lam_max", type=float, default=1e10)
     p.add_argument("--gtol", type=float, default=1e-12)
@@ -458,8 +471,20 @@ def main() -> None:
 
     def _make_stop_fn(stage: StageConfig):
         dist_tol_mm = float(args.dist_tol_mm)
-        if dist_tol_mm <= 0.0:
+        bound_stall_patience = int(args.bound_stall_patience)
+        bound_stall_dist_mm = float(args.bound_stall_dist_mm)
+        bound_stall_current_util = float(args.bound_stall_current_util)
+        bound_stall_eps_x = float(args.bound_stall_eps_x)
+        progress_stall_patience = int(args.progress_stall_patience)
+        progress_stall_dist_mm = float(args.progress_stall_dist_mm)
+        progress_stall_min_delta_mm = float(args.progress_stall_min_delta_mm)
+        progress_stall_min_x_ratio = float(args.progress_stall_min_x_ratio)
+        progress_stall_max_current_util = float(args.progress_stall_max_current_util)
+        if dist_tol_mm <= 0.0 and bound_stall_patience <= 0 and progress_stall_patience <= 0:
             return None
+
+        bound_stall_count = 0
+        progress_window: list[float] = []
 
         def _stop(rec: Dict[str, Any]) -> tuple[bool, str, Dict[str, Any]]:
             y = jnp.asarray(rec["y"], dtype=jnp.float64).reshape(-1,)
@@ -474,6 +499,59 @@ def main() -> None:
                     "dist_tol_mm": float(dist_tol_mm),
                     "stage": stage.name,
                 }
+            nonlocal bound_stall_count
+            x_now = float(jax.device_get(parts["x"]))
+            I_now = _to_numpy(parts["I"], shape=(8,))
+            current_util = float(np.max(np.abs(I_now)) / max(float(args.I_max), 1e-12))
+            pinned_low = abs(x_now - float(x_min_opt)) <= bound_stall_eps_x
+            pinned_high = abs(x_now - float(x_max_opt)) <= bound_stall_eps_x
+            pinned = pinned_low or pinned_high
+            if (
+                bound_stall_patience > 0
+                and pinned
+                and current_util <= bound_stall_current_util
+                and dist_mm >= bound_stall_dist_mm
+            ):
+                bound_stall_count += 1
+                if bound_stall_count >= bound_stall_patience:
+                    return True, "bound_stall", {
+                        "dist_to_target_mm": float(dist_mm),
+                        "x_m": float(x_now),
+                        "x_min_m": float(x_min_opt),
+                        "x_max_m": float(x_max_opt),
+                        "current_utilization": float(current_util),
+                        "bound_side": "low" if pinned_low else "high",
+                        "stage": stage.name,
+                    }
+            else:
+                bound_stall_count = 0
+
+            if bool(rec.get("accepted", False)):
+                progress_window.append(float(dist_mm))
+                if len(progress_window) > max(progress_stall_patience, 1):
+                    progress_window.pop(0)
+            if (
+                progress_stall_patience > 0
+                and stage.name == "stage2_refine"
+                and len(progress_window) >= progress_stall_patience
+            ):
+                x_ratio = (x_now - float(x_min_opt)) / max(float(x_max_opt - x_min_opt), 1e-12)
+                recent_delta_mm = float(progress_window[0] - progress_window[-1])
+                if (
+                    dist_mm >= progress_stall_dist_mm
+                    and x_ratio >= progress_stall_min_x_ratio
+                    and current_util <= progress_stall_max_current_util
+                    and recent_delta_mm < progress_stall_min_delta_mm
+                ):
+                    return True, "progress_stall", {
+                        "dist_to_target_mm": float(dist_mm),
+                        "recent_delta_mm": float(recent_delta_mm),
+                        "window": int(progress_stall_patience),
+                        "x_m": float(x_now),
+                        "x_ratio": float(x_ratio),
+                        "current_utilization": float(current_util),
+                        "stage": stage.name,
+                    }
             return False, "", {}
 
         return _stop
@@ -648,7 +726,7 @@ def main() -> None:
                     "accept_eps_smooth": float(stage.accept_eps_smooth),
                 },
                 "stats": {
-                    "success": bool(stats.ok),
+                    "success": bool(_is_success_stop_reason(str(stats.stop_reason))),
                     "stop_reason": str(stats.stop_reason),
                     "n_iter": int(stats.n_iter),
                     "normR": float(stats.normR),
@@ -712,7 +790,7 @@ def main() -> None:
     (out_dir / "result.json").write_text(
         json.dumps(
             {
-                "success": bool(final_output["stats"]["success"]),
+                "success": bool(_is_success_stop_reason(str(final_output["stats"]["stop_reason"]))),
                 "stop_reason": str(final_output["stats"]["stop_reason"]),
                 "n_iter": int(sum(int(s["stats"]["n_iter"]) for s in stage_outputs)),
                 "normR": float(final_output["stats"]["normR"]),

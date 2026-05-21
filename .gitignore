@@ -1,6 +1,8 @@
 /.vscode/
 /.idea/
-/docs/
+/docs/*
+!/docs/experiment_records/
+!/docs/experiment_records/**
 /calib/
 /callback_snaps/
 /ik_out/
