@@ -7,6 +7,7 @@ from typing import Optional, Sequence, Tuple
 import jax
 import jax.numpy as jnp
 
+from .jax_config import configure_jax_enable_x64
 
 from .forward_kinematics_optimized_bak.advancer_nondim import apply_advancer_protrude_length
 from .forward_kinematics_optimized_bak.equilibrium_solver_nondim import (
@@ -19,8 +20,7 @@ from .forward_kinematics_optimized_bak.fk import build_solver_params, compute_sc
 from .forward_kinematics_optimized_bak.nondim import NondimScales
 from .forward_kinematics_optimized_bak.utils_nondim import make_initial_guess_multi_bar_jax, unpack_z_bar_jax
 
-
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 

@@ -6,9 +6,10 @@ from typing import Callable, Dict, Optional, Protocol, Tuple
 import jax
 import jax.numpy as jnp
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 from .basics_nondim import quat_normalize, quat_to_rotmat
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 
 Array = jnp.ndarray
 

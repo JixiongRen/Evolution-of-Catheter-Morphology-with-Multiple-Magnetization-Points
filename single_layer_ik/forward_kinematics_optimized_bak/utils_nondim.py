@@ -14,7 +14,9 @@ import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
 
-jax.config.update("jax_enable_x64", True)
+from single_layer_ik.jax_config import configure_jax_enable_x64
+
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 

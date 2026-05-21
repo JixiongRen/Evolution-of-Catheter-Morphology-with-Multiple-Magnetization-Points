@@ -126,8 +126,14 @@ def main() -> None:
     }
 
     child_env = dict(os.environ)
+    child_env["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
     if args.cpu_only:
         child_env["JAX_PLATFORMS"] = "cpu"
+    summary["child_env"] = {
+        "XLA_PYTHON_CLIENT_PREALLOCATE": child_env["XLA_PYTHON_CLIENT_PREALLOCATE"],
+        "JAX_PLATFORMS": child_env.get("JAX_PLATFORMS"),
+        "MCRS_JAX_ENABLE_X64": child_env.get("MCRS_JAX_ENABLE_X64"),
+    }
 
     for case in cases:
         case_name = str(case["name"])

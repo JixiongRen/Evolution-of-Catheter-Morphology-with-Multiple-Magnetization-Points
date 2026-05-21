@@ -16,11 +16,12 @@ from __future__ import annotations
 import jax
 import jax.numpy as jnp
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.equilibrium_solver_nondim import residual_bar, residual_bar_zI
 from forward_kinematics_optimized.utils_nondim import make_initial_guess_multi_bar_jax
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 
 
 def main() -> None:

@@ -12,6 +12,7 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 
+from .jax_config import configure_jax_enable_x64
 from .forward_kinematics_optimized_bak.equilibrium_solver_nondim import summarize_top_blocks_jax
 from .forward_kinematics_optimized_bak.fk_engine import ForwardKinematicsEngine
 from .joint_lm_solver import JointLMSolver
@@ -26,7 +27,7 @@ from .joint_problem import (
     u_to_Ix,
 )
 
-jax.config.update("jax_enable_x64", True)
+JAX_ENABLE_X64 = configure_jax_enable_x64()
 Array = jnp.ndarray
 
 
@@ -239,6 +240,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--stage1_max_iter", type=int, default=0, help="Stage-1 max_iter in v1_staged mode; <=0 uses max(10, max_iter//3)")
     p.add_argument("--trace_block_topk", type=int, default=0, help="If >0, record top residual blocks into trace/result")
     p.add_argument("--trace_block_every", type=int, default=0, help="Iteration interval for block summaries; 0 disables per-iter block logging")
+    p.add_argument("--pose_save_every", type=int, default=10, help="Save intermediate centerline NPZ every N solver callbacks; <=0 disables intermediate saves")
 
     p.add_argument("--out_dir", type=str, default=None, help="Output directory; default ik_out/run_YYYYMMDD_HHMMSS")
     return p
@@ -629,7 +631,9 @@ def main() -> None:
             block_summary = _maybe_block_summary(stage_iter, parts)
 
             global_iter += 1
-            np.savez_compressed(poses_dir / f"iter_{global_iter:04d}.npz", centerline=centerline)
+            pose_save_every = int(args.pose_save_every)
+            if pose_save_every > 0 and global_iter % pose_save_every == 0:
+                np.savez_compressed(poses_dir / f"iter_{global_iter:04d}.npz", centerline=centerline)
 
             record = {
                 "iter": int(global_iter),
@@ -815,6 +819,9 @@ def main() -> None:
     run_cfg = {
         "created_at": datetime.now().isoformat(timespec="seconds"),
         "argv": vars(args),
+        "runtime": {
+            "jax_enable_x64": bool(JAX_ENABLE_X64),
+        },
         "mode": {
             "run_mode": str(args.run_mode),
             "p_des": [float(v) for v in _to_numpy(p_des, shape=(3,)).tolist()],
@@ -882,6 +889,10 @@ def main() -> None:
             "centerline_rigid_samples": int(args.centerline_rigid_samples),
         },
         "trace": {"path": "trace.jsonl", "poses_dir": "poses"},
+        "storage": {
+            "pose_save_every": int(args.pose_save_every),
+            "intermediate_pose_pattern": "poses/iter_*.npz",
+        },
     }
     (out_dir / "run_config.json").write_text(
         json.dumps(run_cfg, indent=2),

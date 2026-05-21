@@ -6,6 +6,7 @@ from typing import Optional, Callable, Dict, Tuple
 import jax
 import jax.numpy as jnp
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 from .nondim import NondimScales, x_bar_to_dim, rhs_dim_to_rhs_bar_dsbar
 from .segments_nondim import (
     FlexibleParams,
@@ -21,7 +22,7 @@ from .external_wrench_nondim import (
     compute_external_wrench_total_rigid,
 )
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 

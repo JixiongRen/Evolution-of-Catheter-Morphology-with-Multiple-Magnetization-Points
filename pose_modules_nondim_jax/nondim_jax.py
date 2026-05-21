@@ -4,7 +4,9 @@ from dataclasses import dataclass
 import jax
 import jax.numpy as jnp
 
-jax.config.update("jax_enable_x64", True)
+from .jax_config import configure_jax_enable_x64
+
+configure_jax_enable_x64()
 
 @dataclass(frozen=True)
 class NondimScales:

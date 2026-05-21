@@ -8,7 +8,9 @@ import numpy as np
 from pathlib import Path
 import json
 
-jax.config.update("jax_enable_x64", True)
+from single_layer_ik.jax_config import configure_jax_enable_x64
+
+configure_jax_enable_x64()
 
 def check_gpu_availability():
     """Print basic JAX device information."""

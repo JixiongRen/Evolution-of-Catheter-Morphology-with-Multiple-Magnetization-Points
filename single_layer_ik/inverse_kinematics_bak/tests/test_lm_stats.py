@@ -19,10 +19,11 @@ from __future__ import annotations
 import jax
 import jax.numpy as jnp
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 import forward_kinematics_optimized.fk as fk_cli
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 
 
 def main() -> None:

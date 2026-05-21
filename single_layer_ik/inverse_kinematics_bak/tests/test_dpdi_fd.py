@@ -23,11 +23,12 @@ import argparse
 import jax
 import jax.numpy as jnp
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from ..ik_diff import compute_dp_dI_via_lm_adjoint, extract_tip_p_dim
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 
 
 def build_argparser() -> argparse.ArgumentParser:

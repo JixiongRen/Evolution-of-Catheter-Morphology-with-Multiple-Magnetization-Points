@@ -9,6 +9,7 @@ import os, sys
 import jax
 import jax.numpy as jnp
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 from .advancer_nondim import apply_advancer_protrude_length
 from .nondim import NondimScales, x_bar_to_dim, x_dim_to_bar
 from .utils_nondim import unpack_z_bar_jax, pack_z_bar_jax, make_initial_guess_multi_bar_jax
@@ -16,7 +17,7 @@ from .fk import compute_scales_from_flex, build_solver_params  # reuse exact FK 
 from .equilibrium_solver_nondim import MultiSegmentEquilibriumSolverNondimJAXCached, with_coil_currents, with_L1_dim
 from .rod_mesh_nondim import build_uniform_mesh
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 

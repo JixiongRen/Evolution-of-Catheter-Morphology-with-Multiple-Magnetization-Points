@@ -4,7 +4,9 @@ from __future__ import annotations
 import jax
 import jax.numpy as jnp
 
-jax.config.update("jax_enable_x64", True)
+from single_layer_ik.jax_config import configure_jax_enable_x64
+
+configure_jax_enable_x64()
 
 def skew(v: jnp.ndarray) -> jnp.ndarray:
     v = jnp.asarray(v).reshape(3,)

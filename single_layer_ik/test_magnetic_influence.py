@@ -5,6 +5,7 @@ from __future__ import annotations
 import subprocess
 import sys
 import json
+import os
 from pathlib import Path
 import numpy as np
 
@@ -42,7 +43,9 @@ def run_ik_experiment(exp_name: str, m_body_list: str, p_des: str = "0.068,-0.03
     print(f"{'='*60}\n")
     
     try:
-        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+        env = dict(os.environ)
+        env["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
+        result = subprocess.run(cmd, check=True, capture_output=True, text=True, env=env)
         print(result.stdout)
         if result.stderr:
             print("STDERR:", result.stderr)

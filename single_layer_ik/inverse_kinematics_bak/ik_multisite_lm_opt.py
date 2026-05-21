@@ -55,12 +55,13 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from ik_diff import compute_dp_dI_via_lm_adjoint
 from ik_artifacts import extract_centerline_dim, save_centerline, save_history_json
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 

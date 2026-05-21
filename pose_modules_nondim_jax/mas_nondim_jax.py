@@ -9,6 +9,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+from .jax_config import configure_jax_enable_x64
 from supiee_auto_diff.actuation_interpolator_jax import load_actuation_table, interpolate_A_jax, interpolate_A_vmap
 
 
@@ -103,7 +104,7 @@ class MagneticActuationSystem:
         enable_x64: bool = False,
     ):
         if enable_x64:
-            jax.config.update("jax_enable_x64", True)
+            configure_jax_enable_x64()
 
         if actuation_table_pkl is None:
             repo_root = Path(__file__).resolve().parents[1]

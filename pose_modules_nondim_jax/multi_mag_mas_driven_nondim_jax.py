@@ -9,6 +9,7 @@ import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
 
+from pose_modules_nondim_jax.jax_config import configure_jax_enable_x64
 # --- Only import from the requested scripts ---
 from pose_modules_nondim_jax.nondim_jax import NondimScales
 from pose_modules_nondim_jax.segments_nondim_jax import FlexibleParams, RigidParams
@@ -29,7 +30,7 @@ from pose_modules_nondim_jax.basics_nondim_jax import quat_to_rotmat, quat_norma
 # Optional: Supiee MAS (still within your allowed list)
 from pose_modules_nondim_jax.mas_nondim_jax import MagneticActuationSystem
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 

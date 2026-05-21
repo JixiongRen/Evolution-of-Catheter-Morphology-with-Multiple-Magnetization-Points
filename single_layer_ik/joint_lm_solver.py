@@ -6,8 +6,9 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 import jax
 import jax.numpy as jnp
 
+from .jax_config import configure_jax_enable_x64
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 

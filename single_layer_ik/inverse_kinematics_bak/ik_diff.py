@@ -29,11 +29,12 @@ from typing import Optional, Sequence, Tuple
 import jax
 import jax.numpy as jnp
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 from forward_kinematics_optimized.nondim import x_bar_to_dim
 from forward_kinematics_optimized.utils_nondim import unpack_z_bar_jax
 from forward_kinematics_optimized.equilibrium_solver_nondim import residual_bar_zI, SolverParams, LMStats
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 

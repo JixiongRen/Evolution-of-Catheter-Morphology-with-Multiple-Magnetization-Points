@@ -6,9 +6,10 @@ from typing import Optional, Callable
 import jax
 import jax.numpy as jnp
 
+from .jax_config import configure_jax_enable_x64
 from .basics_nondim_jax import skew, quat_to_rotmat, quat_derivative, quat_normalize, GL3_A, GL3_B, GL3_C
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 @dataclass(frozen=True)

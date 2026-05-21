@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -30,6 +31,12 @@ def _fmt_csv(vals: Sequence[float]) -> str:
 
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _child_env() -> dict[str, str]:
+    env = dict(os.environ)
+    env["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
+    return env
 
 
 def _copy_tree_contents(src: Path, dst: Path) -> None:
@@ -205,6 +212,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--stage1_max_iter", type=int, default=0)
     p.add_argument("--trace_block_topk", type=int, default=0)
     p.add_argument("--trace_block_every", type=int, default=0)
+    p.add_argument("--pose_save_every", type=int, default=10)
     return p
 
 
@@ -223,6 +231,7 @@ def main() -> None:
     attempt_records: list[dict[str, Any]] = []
     prev_attempt_result: dict[str, Any] | None = None
     prev_attempt_name: str | None = None
+    child_env = _child_env()
 
     for attempt in _attempt_variants(args):
         attempt_dir = out_dir / attempt["name"]
@@ -348,6 +357,7 @@ def main() -> None:
             f"--stage1_max_iter={str(args.stage1_max_iter)}",
             f"--trace_block_topk={str(args.trace_block_topk)}",
             f"--trace_block_every={str(args.trace_block_every)}",
+            f"--pose_save_every={str(args.pose_save_every)}",
             f"--out_dir={str(attempt_dir)}",
         ]
 
@@ -360,7 +370,7 @@ def main() -> None:
         if bool(args.enable_magnetics):
             run_cmd.append("--enable_magnetics")
 
-        run_completed = subprocess.run(run_cmd, check=False)
+        run_completed = subprocess.run(run_cmd, env=child_env, check=False)
         plot_cmd = [
             sys.executable,
             "-m",
@@ -370,7 +380,7 @@ def main() -> None:
         ]
         if bool(args.show_plot):
             plot_cmd.append("--show")
-        plot_completed = subprocess.run(plot_cmd, check=False)
+        plot_completed = subprocess.run(plot_cmd, env=child_env, check=False)
 
         result_path = attempt_dir / "result.json"
         result = _read_json(result_path) if result_path.exists() else None
@@ -399,7 +409,17 @@ def main() -> None:
         best_attempt = None
 
     (out_dir / "attempt_summary.json").write_text(
-        json.dumps({"attempts": attempt_records, "selected_attempt": None if best_attempt is None else best_attempt["name"]}, indent=2),
+        json.dumps(
+            {
+                "attempts": attempt_records,
+                "selected_attempt": None if best_attempt is None else best_attempt["name"],
+                "child_env": {
+                    "XLA_PYTHON_CLIENT_PREALLOCATE": child_env["XLA_PYTHON_CLIENT_PREALLOCATE"],
+                    "MCRS_JAX_ENABLE_X64": child_env.get("MCRS_JAX_ENABLE_X64"),
+                },
+            },
+            indent=2,
+        ),
         encoding="utf-8",
     )
 

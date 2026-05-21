@@ -14,7 +14,9 @@ import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
 
-jax.config.update("jax_enable_x64", True)
+from .jax_config import configure_jax_enable_x64
+
+configure_jax_enable_x64()
 
 Array = jnp.ndarray
 
@@ -371,4 +373,3 @@ def build_gravity_rigid_for_ndfeb_jax(d_outer: float, length: float) -> GravityR
     r_cm_body = jnp.array([0.0, 0.0, 0.5], dtype=jnp.float64) * length
 
     return GravityRigid(mass=float(mass), g_world=g_world, r_cm_body=r_cm_body)
-

@@ -7,9 +7,10 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+from .jax_config import configure_jax_enable_x64
 from supiee_auto_diff.actuation_interpolator_jax import load_actuation_table, interpolate_A_checked
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 
 
 ArrayLike = Sequence[float] | np.ndarray

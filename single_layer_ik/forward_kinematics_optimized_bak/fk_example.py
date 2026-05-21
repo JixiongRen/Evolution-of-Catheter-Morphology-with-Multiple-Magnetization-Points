@@ -10,6 +10,7 @@ import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 
+from single_layer_ik.jax_config import configure_jax_enable_x64
 from .nondim import NondimScales, x_bar_to_dim
 from .basics_nondim import quat_normalize, quat_to_rotmat
 from .segments_nondim import FlexibleParams, RigidParams
@@ -25,7 +26,7 @@ from .utils_nondim import (
 from .rod_mesh_nondim import UniformMesh, build_uniform_mesh
 from .mas_nondim import MagneticActuationSystem
 
-jax.config.update("jax_enable_x64", True)
+configure_jax_enable_x64()
 Array = jnp.ndarray
 
 
@@ -648,5 +649,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
