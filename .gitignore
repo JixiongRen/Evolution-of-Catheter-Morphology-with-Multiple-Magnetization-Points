@@ -3,6 +3,8 @@
 /docs/*
 !/docs/experiment_records/
 !/docs/experiment_records/**
+!/docs/efficiency_optimization_experiment/
+!/docs/efficiency_optimization_experiment/**
 /calib/
 /callback_snaps/
 /ik_out/

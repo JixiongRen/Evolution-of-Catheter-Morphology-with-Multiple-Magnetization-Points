@@ -29,3 +29,20 @@
 
 - After each round, choose the next justified large experiment from the latest evidence and continue when the path is clear.
 - Stop only for real blockers, missing prerequisites, or contradictory instructions.
+
+## Optimization Priority Notes
+
+- Neural networks are reserved as a future helper for IK initialization and attempt selection.
+- The preferred NN role is to predict better `I_init`, `I_ref`, and `x_init`, then let the physics-based LM solver validate and refine the result.
+- Do not prioritize full NN replacement of FK, residuals, or LM in the near term because the current dataset is too small and physical consistency risk is high.
+- The current high-priority work is major LM/FK solver acceleration: reducing full Jacobian cost, avoiding repeated diagnostics, reusing compilation, improving coarse-to-fine solving, and exploring matrix-free or reduced-control updates.
+
+## Efficiency Optimization Experiment Convention
+
+- Use the `efficiency-optimization-experiment` skill for large FK/IK runtime optimization rounds.
+- Store efficiency records and matched logs under `docs/efficiency_optimization_experiment/`.
+- Each large round must use one unique ID: `eff_opt_exp_YYYYMMDDHHMMSS`.
+- Record file pattern: `{eff_opt_exp_YYYYMMDDHHMMSS}_{exp_name}_record.md`.
+- Log-data directory pattern: `{eff_opt_exp_YYYYMMDDHHMMSS}_{exp_name}_logs_data/`.
+- Record actual runtime for each round and use it to estimate the next comparable wait interval.
+- After each large efficiency experiment, commit relevant changes locally on branch `dev`; never push.
