@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-05-22 11:16:22",
+  "git_commit": "e3dcfd380b05164412ce845703c553026f95f7a0",
+  "jax_enable_x64": true,
+  "jax_backend": "gpu",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "xla_preallocate": "false",
+  "max_iter": 2,
+  "matrix_free_max_iter": 2,
+  "cg_tol": 0.001,
+  "cg_max_iter": 10
+}

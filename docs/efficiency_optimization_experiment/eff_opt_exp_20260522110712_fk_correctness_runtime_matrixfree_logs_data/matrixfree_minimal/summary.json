@@ -1,0 +1,21 @@
+[
+  {
+    "case_id": "minimal_nomag_nogravity",
+    "dense_wall_s": 36.69734932099891,
+    "dense_first_call_wall_s": 36.69734932099891,
+    "dense_steady_wall_s": 0.24846858300043095,
+    "dense_normE": 0.006021621591233396,
+    "dense_iter": 2,
+    "matrix_free_wall_s": 134.31718077299956,
+    "matrix_free_first_call_wall_s": 134.31718077299956,
+    "matrix_free_steady_wall_s": 66.08110032399964,
+    "speedup": 0.27321411237046905,
+    "matrix_free_normE": 0.014646871727590443,
+    "centerline_rms_m": 0.0008810133469856991,
+    "centerline_max_m": 0.0017704392659875778,
+    "curvature_corr": 0.6396021490668314,
+    "geometry_verdict": "hard_fail",
+    "matrix_free_iter": 2,
+    "matrix_free_stop": "max_iter"
+  }
+]

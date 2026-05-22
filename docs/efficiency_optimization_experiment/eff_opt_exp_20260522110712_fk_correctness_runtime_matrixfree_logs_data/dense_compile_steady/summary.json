@@ -1,0 +1,29 @@
+[
+  {
+    "case_id": "straight_nomag_nogravity",
+    "dense_wall_s": 70.09196575399983,
+    "dense_first_call_wall_s": 70.09196575399983,
+    "dense_steady_wall_s": 0.3925773079990904,
+    "dense_normE": 0.0010129694072264135,
+    "dense_iter": 4,
+    "geometry_verdict": "dense_only"
+  },
+  {
+    "case_id": "gravity_only_mid",
+    "dense_wall_s": 53.70122119499865,
+    "dense_first_call_wall_s": 53.70122119499865,
+    "dense_steady_wall_s": 0.36838964900016435,
+    "dense_normE": 0.010308882108396372,
+    "dense_iter": 4,
+    "geometry_verdict": "dense_only"
+  },
+  {
+    "case_id": "mag_zero_mid",
+    "dense_wall_s": 61.880372964000344,
+    "dense_first_call_wall_s": 61.880372964000344,
+    "dense_steady_wall_s": 0.3842991740002617,
+    "dense_normE": 0.0010129694072264135,
+    "dense_iter": 4,
+    "geometry_verdict": "dense_only"
+  }
+]

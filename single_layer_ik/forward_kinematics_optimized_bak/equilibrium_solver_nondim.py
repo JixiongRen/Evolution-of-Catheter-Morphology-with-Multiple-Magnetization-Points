@@ -1,10 +1,11 @@
 # equilibrium_solver_nondim.py
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Optional, Callable, Dict, Tuple
+from typing import Any, Optional, Callable, Dict, Tuple
 
 import jax
 import jax.numpy as jnp
+import jax.scipy.sparse.linalg as jsla
 
 from single_layer_ik.jax_config import configure_jax_enable_x64
 from .nondim import NondimScales, x_bar_to_dim, rhs_dim_to_rhs_bar_dsbar
@@ -712,6 +713,8 @@ class LMStats:
     jac_method: str
     stop_reason: str
     n_iter: int
+    linear_solver: str = "dense"
+    linear_info: Optional[Dict[str, Any]] = None
 
 
 class MultiSegmentEquilibriumSolverNondimJAX:
@@ -948,6 +951,12 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         self.residual_jit = jax.jit(residual_bar)
         self._jac_fwd = jax.jit(jax.jacfwd(residual_bar, argnums=0))
         self._jac_rev = jax.jit(jax.jacrev(residual_bar, argnums=0))
+        self._jvp = jax.jit(
+            lambda z, params, v: jax.jvp(lambda zz: residual_bar(zz, params), (z,), (v,))[1]
+        )
+        self._vjp = jax.jit(
+            lambda z, params, w: jax.vjp(lambda zz: residual_bar(zz, params), z)[1](w)[0]
+        )
 
     def jacobian_jit(self, z: Array, params: SolverParams, *, method: str = "fwd") -> Array:
         if method == "fwd":
@@ -957,13 +966,15 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         raise ValueError("jac_method must be 'fwd' or 'rev'")
 
     def _pack_return(self, z: Array, params: SolverParams, ok: bool, *, tol: float, lam: float,
-                     jac_method: str, stop_reason: str, n_iter: int, return_stats: bool) -> tuple:
+                     jac_method: str, stop_reason: str, n_iter: int, return_stats: bool,
+                     linear_solver: str = "dense", linear_info: Optional[Dict[str, Any]] = None,
+                     stats_include_jacobian: bool = True) -> tuple:
         if not return_stats:
             return (jnp.array(z), bool(ok))
         E = self.residual_jit(z, params)
         normE = float(jnp.linalg.norm(E))
         cost = 0.5 * normE * normE
-        J = self.jacobian_jit(z, params, method=jac_method)
+        J = self.jacobian_jit(z, params, method=jac_method) if stats_include_jacobian else None
         stats = LMStats(
             z_star=jnp.array(z),
             ok_strict=bool(ok and (normE < tol)),
@@ -971,12 +982,74 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
             normE=float(normE),
             cost=float(cost),
             lam=float(lam),
-            J=jnp.array(J),
+            J=None if J is None else jnp.array(J),
             jac_method=str(jac_method),
             stop_reason=str(stop_reason),
             n_iter=int(n_iter),
+            linear_solver=str(linear_solver),
+            linear_info={} if linear_info is None else dict(linear_info),
         )
         return (jnp.array(z), bool(ok), stats)
+
+    def _jt_residual(self, z: Array, params: SolverParams, w: Array) -> Array:
+        """Return ``J(z).T @ w`` without materializing the full Jacobian."""
+        return self._vjp(z, params, w)
+
+    def _j_residual(self, z: Array, params: SolverParams, v: Array) -> Array:
+        """Return ``J(z) @ v`` without materializing the full Jacobian."""
+        return self._jvp(z, params, v)
+
+    def _solve_dense_step(self, J: Array, E: Array, lam: float) -> Tuple[Array, Array, float, Dict[str, Any]]:
+        """Solve the damped normal equation with a materialized dense Jacobian."""
+        g = jnp.transpose(J) @ E
+        H = jnp.transpose(J) @ J
+        A = H + lam * jnp.eye(H.shape[0], dtype=H.dtype)
+        dz = jnp.linalg.solve(A, -g)
+        g_norm = float(jnp.linalg.norm(g))
+        return dz, g, g_norm, {"method": "dense", "n": int(H.shape[0])}
+
+    def _solve_matrix_free_cg_step(
+        self,
+        z: Array,
+        params: SolverParams,
+        E: Array,
+        lam: float,
+        *,
+        cg_tol: float,
+        cg_atol: float,
+        cg_max_iter: Optional[int],
+        use_damping_preconditioner: bool,
+    ) -> Tuple[Array, Array, float, Dict[str, Any]]:
+        """Solve the damped normal equation through JVP/VJP and CG."""
+        g = self._jt_residual(z, params, E)
+        g_norm = float(jnp.linalg.norm(g))
+        lam_safe = jnp.asarray(max(float(lam), 1e-12), dtype=g.dtype)
+
+        def matvec(v: Array) -> Array:
+            jv = self._j_residual(z, params, v)
+            return self._jt_residual(z, params, jv) + lam_safe * v
+
+        preconditioner = None
+        if use_damping_preconditioner:
+            preconditioner = lambda v: v / lam_safe
+
+        dz, info = jsla.cg(
+            matvec,
+            -g,
+            tol=float(cg_tol),
+            atol=float(cg_atol),
+            maxiter=None if cg_max_iter is None else int(cg_max_iter),
+            M=preconditioner,
+        )
+        linear_info = {
+            "method": "matrix_free_cg",
+            "cg_info": int(info) if hasattr(info, "__int__") else str(info),
+            "cg_max_iter": None if cg_max_iter is None else int(cg_max_iter),
+            "cg_tol": float(cg_tol),
+            "cg_atol": float(cg_atol),
+            "preconditioner": "damping" if use_damping_preconditioner else "none",
+        }
+        return dz, g, g_norm, linear_info
 
     def solve_lm(
         self,
@@ -998,6 +1071,12 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         lam_max: float = 1e10,
         return_stats: bool = False,
         verbose: bool = True,
+        linear_solver: str = "dense",
+        cg_tol: float = 1e-5,
+        cg_atol: float = 0.0,
+        cg_max_iter: Optional[int] = None,
+        cg_damping_preconditioner: bool = True,
+        stats_include_jacobian: bool = True,
     ):
         """Same algorithm as :meth:`MultiSegmentEquilibriumSolverNondimJAX.solve_lm`.
 
@@ -1014,6 +1093,10 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         best_cost = float(cost)
         no_improve = 0
         consecutive_reject = 0
+        last_linear_info: Dict[str, Any] = {}
+        linear_solver = str(linear_solver)
+        if linear_solver not in ("dense", "matrix_free_cg"):
+            raise ValueError("linear_solver must be 'dense' or 'matrix_free_cg'")
 
         if verbose:
             print(f"[Multi-LM-JAX] iter=0, ||E||={normE:.3e}, lambda={lam:.3e}")
@@ -1024,33 +1107,50 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
             if verbose:
                 print("[Multi-LM-JAX] numerical error at init (NaN/Inf).")
             return self._pack_return(z, params, False, tol=tol, lam=lam, jac_method=jac_method,
-                                     stop_reason="nan_init", n_iter=0, return_stats=return_stats)
+                                     stop_reason="nan_init", n_iter=0, return_stats=return_stats,
+                                     linear_solver=linear_solver, linear_info=last_linear_info,
+                                     stats_include_jacobian=stats_include_jacobian)
 
         for it in range(max_iter):
             if normE < tol:
                 if verbose:
                     print(f"[Multi-LM-JAX] converged. Final ||E||={normE:.3e}")
                 return self._pack_return(z, params, True, tol=tol, lam=lam, jac_method=jac_method,
-                                         stop_reason="converged", n_iter=it+1, return_stats=return_stats)
+                                         stop_reason="converged", n_iter=it+1, return_stats=return_stats,
+                                         linear_solver=linear_solver, linear_info=last_linear_info,
+                                         stats_include_jacobian=stats_include_jacobian)
 
-            J = self.jacobian_jit(z, params, method=jac_method)
-            g = jnp.transpose(J) @ E
-            g_norm = float(jnp.linalg.norm(g))
+            if linear_solver == "dense":
+                J = self.jacobian_jit(z, params, method=jac_method)
+                dz, g, g_norm, last_linear_info = self._solve_dense_step(J, E, lam)
+            else:
+                dz, g, g_norm, last_linear_info = self._solve_matrix_free_cg_step(
+                    z,
+                    params,
+                    E,
+                    lam,
+                    cg_tol=float(cg_tol),
+                    cg_atol=float(cg_atol),
+                    cg_max_iter=cg_max_iter,
+                    use_damping_preconditioner=bool(cg_damping_preconditioner),
+                )
 
             if g_norm < gtol:
                 if verbose:
                     print(f"[Multi-LM-JAX] stop: small gradient ||J^T E||={g_norm:.3e} < {gtol:.3e}")
                 return self._pack_return(z, params, True, tol=tol, lam=lam, jac_method=jac_method,
-                                         stop_reason="gtol", n_iter=it+1, return_stats=return_stats)
+                                         stop_reason="gtol", n_iter=it+1, return_stats=return_stats,
+                                         linear_solver=linear_solver, linear_info=last_linear_info,
+                                         stats_include_jacobian=stats_include_jacobian)
 
-            A = jnp.transpose(J) @ J + lam * jnp.eye(J.shape[1], dtype=J.dtype)
-            dz = jnp.linalg.solve(A, -g)
             dz_norm = float(jnp.linalg.norm(dz))
             if dz_norm < xtol:
                 if verbose:
                     print(f"[Multi-LM-JAX] stop: small step ||dz||={dz_norm:.3e} < {xtol:.3e}")
                 return self._pack_return(z, params, True, tol=tol, lam=lam, jac_method=jac_method,
-                                         stop_reason="xtol", n_iter=it+1, return_stats=return_stats)
+                                         stop_reason="xtol", n_iter=it+1, return_stats=return_stats,
+                                         linear_solver=linear_solver, linear_info=last_linear_info,
+                                         stats_include_jacobian=stats_include_jacobian)
 
             z_new = z + dz
             E_new = self.residual_jit(z_new, params)
@@ -1064,7 +1164,9 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                     print(f"[Multi-LM-JAX] iter={it+1}, NaN/Inf -> lambda={lam:.3e} reject")
                 if consecutive_reject >= reject_patience:
                     return self._pack_return(z, params, False, tol=tol, lam=lam, jac_method=jac_method,
-                                             stop_reason="nan_reject_patience", n_iter=it+1, return_stats=return_stats)
+                                             stop_reason="nan_reject_patience", n_iter=it+1, return_stats=return_stats,
+                                             linear_solver=linear_solver, linear_info=last_linear_info,
+                                             stats_include_jacobian=stats_include_jacobian)
                 continue
 
             # Predicted reduction (standard LM model)
@@ -1097,7 +1199,9 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                     if verbose:
                         print("[Multi-LM-JAX] stop: no-improve patience reached")
                     return self._pack_return(z, params, True, tol=tol, lam=lam, jac_method=jac_method,
-                                             stop_reason="patience", n_iter=it+1, return_stats=return_stats)
+                                             stop_reason="patience", n_iter=it+1, return_stats=return_stats,
+                                             linear_solver=linear_solver, linear_info=last_linear_info,
+                                             stats_include_jacobian=stats_include_jacobian)
             else:
                 # reject
                 consecutive_reject += 1
@@ -1109,12 +1213,16 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                     if verbose:
                         print("[Multi-LM-JAX] stop: reject-patience reached")
                     return self._pack_return(z, params, False, tol=tol, lam=lam, jac_method=jac_method,
-                                             stop_reason="reject_patience", n_iter=it+1, return_stats=return_stats)
+                                             stop_reason="reject_patience", n_iter=it+1, return_stats=return_stats,
+                                             linear_solver=linear_solver, linear_info=last_linear_info,
+                                             stats_include_jacobian=stats_include_jacobian)
 
         if verbose:
             print("[Multi-LM-JAX] stop: max_iter")
         return self._pack_return(z, params, False, tol=tol, lam=lam, jac_method=jac_method,
-                                 stop_reason="max_iter", n_iter=max_iter, return_stats=return_stats)
+                                 stop_reason="max_iter", n_iter=max_iter, return_stats=return_stats,
+                                 linear_solver=linear_solver, linear_info=last_linear_info,
+                                 stats_include_jacobian=stats_include_jacobian)
 
 
 # -------------------- Convenience builder --------------------

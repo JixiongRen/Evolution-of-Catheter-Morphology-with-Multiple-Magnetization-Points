@@ -1,0 +1,47 @@
+[
+  {
+    "case_id": "straight_nomag_nogravity",
+    "dense_wall_s": 65.75246225900082,
+    "dense_first_call_wall_s": 65.75246225900082,
+    "dense_steady_wall_s": 0.37247631100035505,
+    "dense_normE": 2.0473018542492196e-06,
+    "dense_iter": 7,
+    "geometry_verdict": "dense_only"
+  },
+  {
+    "case_id": "gravity_only_mid",
+    "dense_wall_s": 53.631650490999164,
+    "dense_first_call_wall_s": 53.631650490999164,
+    "dense_steady_wall_s": 2.3914037180002197,
+    "dense_normE": 0.000675599598482416,
+    "dense_iter": 80,
+    "geometry_verdict": "dense_only"
+  },
+  {
+    "case_id": "mag_zero_mid",
+    "dense_wall_s": 58.53100968800027,
+    "dense_first_call_wall_s": 58.53100968800027,
+    "dense_steady_wall_s": 0.4188900310000463,
+    "dense_normE": 2.0473018542492196e-06,
+    "dense_iter": 7,
+    "geometry_verdict": "dense_only"
+  },
+  {
+    "case_id": "coil5_pos",
+    "dense_wall_s": 57.29862701899947,
+    "dense_first_call_wall_s": 57.29862701899947,
+    "dense_steady_wall_s": 2.6225068270014162,
+    "dense_normE": 0.26243105349691953,
+    "dense_iter": 80,
+    "geometry_verdict": "dense_only"
+  },
+  {
+    "case_id": "mixed_balanced",
+    "dense_wall_s": 58.050178833000246,
+    "dense_first_call_wall_s": 58.050178833000246,
+    "dense_steady_wall_s": 2.5903169110006274,
+    "dense_normE": 0.023700249800469204,
+    "dense_iter": 80,
+    "geometry_verdict": "dense_only"
+  }
+]

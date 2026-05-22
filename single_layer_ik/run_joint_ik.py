@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional
+
+os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
 
 import numpy as np
 
@@ -240,7 +243,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--stage1_max_iter", type=int, default=0, help="Stage-1 max_iter in v1_staged mode; <=0 uses max(10, max_iter//3)")
     p.add_argument("--trace_block_topk", type=int, default=0, help="If >0, record top residual blocks into trace/result")
     p.add_argument("--trace_block_every", type=int, default=0, help="Iteration interval for block summaries; 0 disables per-iter block logging")
-    p.add_argument("--pose_save_every", type=int, default=10, help="Save intermediate centerline NPZ every N solver callbacks; <=0 disables intermediate saves")
+    p.add_argument("--pose_save_every", type=int, default=50, help="Save intermediate centerline NPZ every N solver callbacks; <=0 disables intermediate saves")
 
     p.add_argument("--out_dir", type=str, default=None, help="Output directory; default ik_out/run_YYYYMMDD_HHMMSS")
     return p

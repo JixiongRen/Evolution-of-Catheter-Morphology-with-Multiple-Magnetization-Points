@@ -1,0 +1,17 @@
+[
+  {
+    "case_id": "straight_nomag_nogravity",
+    "dense_wall_s": 66.06033441099953,
+    "matrix_free_wall_s": 358.77980839999964,
+    "speedup": 0.1841250061022096,
+    "dense_normE": 0.011787048553771579,
+    "matrix_free_normE": 0.013011986633271999,
+    "centerline_rms_m": 0.00017334670367308188,
+    "centerline_max_m": 0.00030195487535301935,
+    "curvature_corr": 1.0,
+    "geometry_verdict": "ok_or_warning",
+    "dense_iter": 2,
+    "matrix_free_iter": 2,
+    "matrix_free_stop": "max_iter"
+  }
+]

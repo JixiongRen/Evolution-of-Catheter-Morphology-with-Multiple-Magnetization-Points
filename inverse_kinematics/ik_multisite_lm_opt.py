@@ -51,6 +51,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional, Sequence, Tuple
 
+os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
+
 import jax
 import jax.numpy as jnp
 import numpy as np
@@ -394,6 +396,7 @@ def _fk_eval(
     w_Ix: float,
     dx_floor: float,
     override_z0_bar: Optional[Array] = None,
+    stats_include_jacobian: bool = True,
 ) -> EvalPack:
     z_star_bar, params, _meshes, ok, lm_stats = engine.solve_with_stats(
         coil_currents=I,
@@ -401,6 +404,7 @@ def _fk_eval(
         warm_start=True,
         override_z0_bar=override_z0_bar,
         return_stats=True,
+        stats_include_jacobian=bool(stats_include_jacobian),
     )
 
     normE = float(lm_stats.normE) if lm_stats is not None else float("nan")
@@ -449,6 +453,18 @@ def _fk_eval(
         params=params,
         lm_stats=lm_stats,
     )
+
+
+def _ensure_lm_jacobian_stats(engine: ForwardKinematicsEngine, pack: EvalPack) -> EvalPack:
+    """Attach the dense FK Jacobian only when the next adjoint step needs it."""
+    stats = pack.lm_stats
+    if stats is None or getattr(stats, "J", None) is not None:
+        return pack
+    J = engine._solver_cached.jacobian_jit(pack.z_star_bar, pack.params, method=engine.jac_method)
+    if hasattr(J, "block_until_ready"):
+        J.block_until_ready()
+    stats.J = jnp.array(J)
+    return pack
 
 
 def _compute_dp_dx_fd(
@@ -967,6 +983,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             w_Ix=w_Ix,
             dx_floor=dx_floor,
             override_z0_bar=z_warm,
+            stats_include_jacobian=False,
         )
 
         act_red = float(cur.cost - trial.cost)
@@ -1019,6 +1036,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         # 6) Update lambda and state
         if accept:
+            trial = _ensure_lm_jacobian_stats(engine, trial)
             u = u_trial
             cur = trial
             z_warm = cur.z_star_bar

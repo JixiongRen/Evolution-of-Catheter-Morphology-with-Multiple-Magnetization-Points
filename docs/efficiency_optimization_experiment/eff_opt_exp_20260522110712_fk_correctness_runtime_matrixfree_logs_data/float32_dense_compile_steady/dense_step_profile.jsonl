@@ -1,0 +1,3 @@
+{"residual_s": 0.005015406999518746, "jacobian_s": 0.008613119998699403, "jtj_s": 0.002274937000038335, "jt_residual_s": 0.00204694300009578, "linear_solve_s": 0.0024994549985422054, "J_shape": [459, 442], "J_bytes": 811512, "case_id": "straight_nomag_nogravity"}
+{"residual_s": 0.004986243000530521, "jacobian_s": 0.00742178799919202, "jtj_s": 0.0011327660013193963, "jt_residual_s": 0.0010724910007411381, "linear_solve_s": 0.001560310000058962, "J_shape": [459, 442], "J_bytes": 811512, "case_id": "gravity_only_mid"}
+{"residual_s": 0.007056340000417549, "jacobian_s": 0.010292864999428275, "jtj_s": 0.0018534179998823674, "jt_residual_s": 0.0051095510007144185, "linear_solve_s": 0.0016410000007454073, "J_shape": [459, 442], "J_bytes": 811512, "case_id": "mag_zero_mid"}

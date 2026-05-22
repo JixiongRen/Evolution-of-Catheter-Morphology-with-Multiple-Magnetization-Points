@@ -212,7 +212,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--stage1_max_iter", type=int, default=0)
     p.add_argument("--trace_block_topk", type=int, default=0)
     p.add_argument("--trace_block_every", type=int, default=0)
-    p.add_argument("--pose_save_every", type=int, default=10)
+    p.add_argument("--pose_save_every", type=int, default=50)
     return p
 
 

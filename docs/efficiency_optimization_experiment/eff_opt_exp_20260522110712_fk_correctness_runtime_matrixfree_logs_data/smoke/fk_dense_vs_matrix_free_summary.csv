@@ -1,0 +1,2 @@
+case_id,dense_wall_s,matrix_free_wall_s,speedup,dense_normE,matrix_free_normE,centerline_rms_m,centerline_max_m,curvature_corr,geometry_verdict,dense_iter,matrix_free_iter,matrix_free_stop
+straight_nomag_nogravity,66.06033441099953,358.77980839999964,0.1841250061022096,0.011787048553771579,0.013011986633271999,0.00017334670367308188,0.00030195487535301935,1.0,ok_or_warning,2,2,max_iter

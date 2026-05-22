@@ -1,0 +1,1 @@
+{"residual_s": 0.004441832999873441, "jacobian_s": 0.00894980300017778, "jtj_s": 0.002408143000138807, "jt_residual_s": 0.0009452260001125978, "linear_solve_s": 0.00339780400008749, "J_shape": [459, 442], "J_bytes": 1623024, "case_id": "straight_nomag_nogravity"}

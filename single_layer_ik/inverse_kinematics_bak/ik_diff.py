@@ -60,23 +60,15 @@ _DP_DZ_REV = jax.jit(jax.jacrev(_p_of_z_params, argnums=0))
 
 
 def extract_tip_p_dim(z_bar: Array, *, M_list: Sequence[int], scales) -> Array:
-    """Extract the catheter tip position (SI units) from packed ``z_bar``.
+    """Extract the current FK task point in SI units from packed ``z_bar``.
 
-    Important
-    ---------
-    In this codebase, each segment i contains
-      - a flexible piece (discretized nodes), followed by
-      - a rigid piece whose *distal* state is stored as ``xR``.
-
-    The physical catheter "tip" is therefore the *distal end of the last rigid
-    piece*, i.e. the last ``xR`` block in ``z_bar``.
-
-    If you instead use the last flexible node, you will systematically ignore
-    the rigid lengths (and may observe almost no lateral motion), which breaks
-    IK.
+    The canonical task point for the current FK/IK stack is the distal node of
+    the last flexible segment. This matches ``ForwardKinematicsEngine`` and the
+    single-layer joint residual, so adjoint sensitivities and residuals refer to
+    the same point.
     """
-    _x_nodes_list_bar, _k_list_bar, x_rigid_list_bar = unpack_z_bar_jax(z_bar, M_list=M_list)
-    x_tip_bar = x_rigid_list_bar[-1]  # (13,) rigid distal state
+    x_nodes_list_bar, _k_list_bar, _x_rigid_list_bar = unpack_z_bar_jax(z_bar, M_list=M_list)
+    x_tip_bar = x_nodes_list_bar[-1][-1]
     x_tip_dim = x_bar_to_dim(x_tip_bar, scales)
     return x_tip_dim[0:3]
 

@@ -1,0 +1,4 @@
+case_id,dense_wall_s,dense_first_call_wall_s,dense_steady_wall_s,matrix_free_wall_s,matrix_free_first_call_wall_s,matrix_free_steady_wall_s,speedup,dense_normE,matrix_free_normE,centerline_rms_m,centerline_max_m,curvature_corr,geometry_verdict,dense_iter,matrix_free_iter,matrix_free_stop
+straight_nomag_nogravity,80.95410611199986,80.95410611199986,0.3233372419999796,,,,,0.0010134389158338308,,,,,dense_only,4,,
+gravity_only_mid,68.22413124500054,68.22413124500054,0.3074658309997176,,,,,0.05495739355683327,,,,,dense_only,4,,
+mag_zero_mid,70.29564917300013,70.29564917300013,0.3267932609996933,,,,,0.0010134389158338308,,,,,dense_only,4,,

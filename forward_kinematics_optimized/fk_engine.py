@@ -84,6 +84,11 @@ class ForwardKinematicsEngine:
             tol: float = 1e-5,
             lm_damping: float = 1e-1,
             jac_method: str = "fwd",
+            linear_solver: str = "dense",
+            cg_tol: float = 1e-5,
+            cg_atol: float = 0.0,
+            cg_max_iter: Optional[int] = None,
+            cg_damping_preconditioner: bool = True,
             L_protrude_max: Optional[float] = None,
     ) -> None:
         self.flex_lengths_tail = tuple(float(x) for x in flex_lengths_tail)
@@ -120,6 +125,13 @@ class ForwardKinematicsEngine:
         if jac_method not in ("fwd", "rev"):
             raise ValueError("jac_method must be 'fwd' or 'rev'")
         self.jac_method = jac_method
+        if linear_solver not in ("dense", "matrix_free_cg"):
+            raise ValueError("linear_solver must be 'dense' or 'matrix_free_cg'")
+        self.linear_solver = str(linear_solver)
+        self.cg_tol = float(cg_tol)
+        self.cg_atol = float(cg_atol)
+        self.cg_max_iter = None if cg_max_iter is None else int(cg_max_iter)
+        self.cg_damping_preconditioner = bool(cg_damping_preconditioner)
 
         self.L_protrude_max = None if L_protrude_max is None else float(L_protrude_max)
 
@@ -211,6 +223,12 @@ class ForwardKinematicsEngine:
             tol=self.tol,
             lm_damping=self.lm_damping,
             jac_method=self.jac_method,
+            linear_solver=self.linear_solver,
+            cg_tol=self.cg_tol,
+            cg_atol=self.cg_atol,
+            cg_max_iter=self.cg_max_iter,
+            cg_damping_preconditioner=self.cg_damping_preconditioner,
+            verbose=False,
         )
 
         # Update warm-start cache (we cache best-so-far even if ok==False; caller can decide)
@@ -229,6 +247,8 @@ class ForwardKinematicsEngine:
             warm_start: bool = True,
             override_z0_bar: Optional[Array] = None,
             return_stats: bool = True,
+            stats_include_jacobian: bool = True,
+            verbose: bool = False,
     ) -> Tuple[Array, Any, Any, bool, Any]:
         """Like :meth:`solve`, but requests LM diagnostics.
 
@@ -281,8 +301,13 @@ class ForwardKinematicsEngine:
                 lm_damping=self.lm_damping,
                 jac_method=self.jac_method,
                 return_stats=True,
-                # FK/IK will usually handle outer logs; keep LM verbose for now
-                verbose=True,
+                linear_solver=self.linear_solver,
+                cg_tol=self.cg_tol,
+                cg_atol=self.cg_atol,
+                cg_max_iter=self.cg_max_iter,
+                cg_damping_preconditioner=self.cg_damping_preconditioner,
+                stats_include_jacobian=bool(stats_include_jacobian),
+                verbose=bool(verbose),
             )
         else:
             z_star_bar, ok = self._solver_cached.solve_lm(
@@ -292,6 +317,12 @@ class ForwardKinematicsEngine:
                 tol=self.tol,
                 lm_damping=self.lm_damping,
                 jac_method=self.jac_method,
+                linear_solver=self.linear_solver,
+                cg_tol=self.cg_tol,
+                cg_atol=self.cg_atol,
+                cg_max_iter=self.cg_max_iter,
+                cg_damping_preconditioner=self.cg_damping_preconditioner,
+                verbose=bool(verbose),
             )
             stats = None
 
