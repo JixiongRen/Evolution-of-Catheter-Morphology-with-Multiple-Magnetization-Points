@@ -54,11 +54,89 @@
 - 磁场插值位于标定范围内，或明确报告越界行为。
 - 最终成功不能只看 tip error，还必须满足平衡残差和形态质量要求。
 
-## 4. 主策略
+## 4. FK/IK 正确性验证门禁
+
+当前缺少直接实验条件验证 IK 输出，因此后续优化必须采用 FK oracle 代理验证。基本原则是：当前可信 dense FK 结果作为 golden reference，任何 FK 加速、IK 修复或线性化重构，只有在同配置 FK 输出不发生明显偏移时，才允许讨论 runtime speedup。
+
+### 4.1 正确性契约
+
+- 在进入主要优化前，必须明确 canonical task point。验证阶段应同时记录最后柔性节点、最后刚段远端或刚段代表点，直到最终确认哪一个是物理受控点。
+- FK golden 数据由当前可信 dense FK 生成。后续新 FK 路径、matrix-free 路径或 reduced-space IK 路径都必须与该 golden 对比。
+- IK 成功不能只看内部 `pos_err_norm_mm` 或自报 `p_tip_m`。IK 输出的 `I_A` 和 `x_m` 必须重新输入 FK，使用同配置严格重算，得到 FK replay 结果后再判定成功。
+- 速度结论必须建立在 correctness gate 通过之后。任何 tip 定义不一致、FK replay 偏移、平衡残差恶化或形态质量退化，都使该轮 speedup 无效。
+
+### 4.2 FK golden 基线
+
+FK 基线应使用低开销入口生成：
+
+- 首选 `ForwardKinematicsEngine.solve()` 或 `solve_with_stats()`。
+- 常规回归默认使用 `solve()`，只额外计算必要 residual 和几何指标。
+- 不默认保存完整 Jacobian，不默认绘图，不在 tight loop 中保存大量 NPZ。
+- `fk.py` CLI 可用于人工调试，但不作为自动回归主入口，因为它可能引入额外 I/O 和 plotting 开销。
+
+FK golden 每个 case 至少记录：
+
+- case id、git commit、FK module、JAX x64 状态、device。
+- `M_list`、`L_protrude`、`L1_dim`、currents、`m_body_list`、gravity、scales。
+- `ok`、`normE`、`cost`、`max_abs_E`。
+- canonical task point、最后柔性节点、最后刚段或刚体代表点。
+- rigid midpoint poses、centerline 下采样点、interface gap、smoothness。
+- cold first-call time、steady solve time、residual evaluation time。
+
+`z_bar` 只作为 debug artifact，不作为主要比较对象，因为 nondim scale、内部 packing 或状态布局变化可能造成假差异。
+
+### 4.3 FK 对比容差
+
+初始容差采用保守规则，后续可根据真实实验结果调整：
+
+- 同 dense x64 路径重复运行：task point 偏移不超过 `1e-5 * L_ref`，centerline RMS 不超过 `2e-5 * L_ref`，centerline max 不超过 `5e-5 * L_ref`。
+- 新 FK 算法对 dense golden：task point 偏移不超过 `5e-4 * L_ref`，centerline RMS 不超过 `1e-3 * L_ref`，quaternion angle 不超过 `5e-3 rad`。
+- residual：normal case 满足 `normE_new <= max(3 * normE_ref, 3e-5)`；stress case 满足 `normE_new <= max(3 * normE_ref, 1e-4)`。
+- interface gap：不超过 `max(3 * ref_gap, 1e-6 m)`。
+- smoothness：不超过 `max(1.25 * ref_smooth, ref_smooth + 1e-3)`。该项初期作为 warning，积累证据后再升级为 hard fail。
+
+### 4.4 IK 代理验证
+
+IK 修复或优化必须通过以下低成本代理验证：
+
+- FK replay：读取 IK 输出的 `I_A`、`x_m` 和配置，重建同配置 FK 并严格重算。记录 `e_ik=||p_ik-p_des||`、`e_fk=||p_fk-p_des||`、`replay_gap=||p_fk-p_ik||`、`normE_fk`、`ok_strict` 和 FK iteration count。
+- closed-loop consistency：先采样一批 `(I, x)`，用 FK 生成 reachable target，再让 IK 反求该 target，最后用 FK replay 验证 `FK(IK(p_fk))` 是否回到目标。由于系统冗余，不要求反求得到的 `I` 和 `x` 与原始采样完全一致。
+- 目标可达性 sweep：对真实目标先做小规模 FK sweep，估计 `d_min = min ||p_fk-p_des||`。如果目标明显在采样可达包络外，IK 不应报告成功，而应输出 best-effort 和 reachability 或 bound-stall 诊断。
+- sensitivity check：对 implicit adjoint 或 matrix-free sensitivity，在 well-conditioned 小 case 上用 directional finite difference 验证；near-singular case 可放宽容差，但必须标记 conditioning。
+
+建议初始判据：
+
+- 如果 IK 自报误差小于 `1 mm`，但 FK replay 误差大于 `2 mm`，该 IK run 判为不可信。
+- 如果 `replay_gap` 大于 `0.5-1 mm`，判定存在状态解释、task point 或平衡一致性风险。
+- 如果 FK replay 的 `normE > 1e-1`，或 `L1_clipped=true` 且误差未收敛，判为物理无效。
+- `normE <= 1e-2` 作为绿色区间；`1e-2..1e-1` 作为黄色区间；`>1e-1` 作为红色区间。
+
+### 4.5 建议基线 case
+
+第一批 FK golden case 应覆盖低成本 per-commit 回归和更重的 nightly/performance 回归：
+
+| 层级 | case | 配置 |
+| --- | --- | --- |
+| per-commit | `straight_nomag_nogravity` | `M_list=3,2,2`，`L_protrude=0.10`，gravity off，magnetics off |
+| per-commit | `gravity_only_mid` | 同上，gravity on |
+| per-commit | `mag_zero_mid` | magnetics on，mixed `m_body_list`，currents 全零 |
+| per-commit | `coil0_pos` | currents `[15,0,0,0,0,0,0,0]` |
+| per-commit | `coil0_neg` | currents `[-15,0,0,0,0,0,0,0]` |
+| per-commit | `coil5_pos` | currents `[0,0,0,0,0,15,0,0]` |
+| per-commit | `mixed_balanced` | currents `[10,-8,6,-4,2,-6,8,-10]` |
+| per-commit | `ik_snapshot_input` | 使用已有 IK 输出的 `(I, x)` 作为 FK 输入，不以 IK 是否成功作为 oracle |
+| nightly | `short_protrude` | `L_protrude=0.075`，mixed current |
+| nightly | `long_protrude` | `L_protrude=0.18`，mixed current |
+| nightly | `mesh_5` | `M_list=5,5,5`，mixed current |
+| weekly/perf | `mesh_8` | `M_list=8,8,8`，mixed current |
+
+默认几何建议复用当前 stress 配置：`flex_lengths_tail=0.03,0.03`、`rigid_lengths=0.003,0.003,0.003`、`axis_body=1,0,0`、`p0=0,0,-0.05`、mixed `m_body_list=0,0,-0.005301;0,0,0.005301;0.005301,0,0`。真实 IK target 只用于覆盖工作空间，不作为 oracle。
+
+## 5. 主策略
 
 推荐主线如下：
 
-1. 正确性校准。
+1. 正确性校准和 FK/IK correctness gate。
 2. dense FK profiling。
 3. matrix-free FK。
 4. implicit adjoint sensitivity。
@@ -75,7 +153,7 @@ subject to E(z, I, x) = 0
 
 该路径把平衡方程作为内层硬约束，而不是允许 penalty formulation 用非物理解换取更低的 tip error。
 
-## 5. 成功指标
+## 6. 成功指标
 
 每一轮大规模效率优化实验至少应记录：
 
@@ -93,28 +171,33 @@ subject to E(z, I, x) = 0
 - 可用时记录 control Jacobian rank 或 singular values。
 - 使用 float32 还是 float64。
 - 本次统计是否包含 first-call compilation。
+- FK golden 对比误差。
+- IK final control 的 FK replay 误差。
+- task point convention 是否一致。
+- failed case 的失败分类。
 
 只有在物理质量不超过实验设定容差的前提下，speedup 才视为有效。
 
-## 6. 两个月路线图
+## 7. 两个月路线图
 
 | 阶段 | 时间 | 目标 | 主要产物 | 验收标准 |
 | --- | --- | --- | --- | --- |
 | P0 | 立即 | 建立 workflow 和总体方案 | skill、目录、本文档 | 后续实验具备统一 ID、记录、日志、耗时统计和本地 dev 提交规则 |
-| P1 | 第 1 周 | 基准拆解与建模一致性 | dense FK/IK profiling 实验 | 10-12 个固定 case 具备耗时分解和质量指标 |
+| P1 | 第 1 周 | 正确性门禁、基准拆解与建模一致性 | correctness gate + dense FK/IK profiling 实验 | FK golden、IK replay 和 10-12 个固定 case 耗时分解全部记录 |
 | P2 | 第 2 周 | 低风险 runtime 清理 | 配置和 I/O 优化 | 不降低收敛质量的前提下获得 2-5x 提速 |
 | P3 | 第 3-4 周 | matrix-free FK 原型 | 带 dense fallback 的 JVP/VJP Krylov FK 路径 | 代表性 case 中 FK 单步成本下降 5-10x |
 | P4 | 第 4-5 周 | implicit adjoint sensitivity | 不依赖完整 `J` 和 FK 有限差分循环的灵敏度路径 | IK 线性化成本相对 FK 平衡求解变小 |
 | P5 | 第 5-6 周 | reduced-space IK | 基于 `I` 和 `x` 的物理变量 IK | 代表性 near/stress target 可稳定收敛 |
 | P6 | 第 6-7 周 | continuation 与初始化 | coarse-to-fine mesh、load continuation、target continuation | 典型 IK 迭代数降到 50-80 以下 |
-| P7 | 第 8 周 | 回归与稳定性验证 | 10 组以上极端场景 benchmark suite | 可行时 p50 接近 1 分钟，p95 或极端 case 控制在约 3 分钟内 |
+| P7 | 第 8 周 | 回归与稳定性验证 | 10 组以上极端场景 benchmark suite | correctness gate 全过后，可行时 p50 接近 1 分钟，p95 或极端 case 控制在约 3 分钟内 |
 
-## 7. 阶段细化
+## 8. 阶段细化
 
-### P1：基准拆解与建模一致性
+### P1：正确性门禁、基准拆解与建模一致性
 
 目标：
 
+- 建立 FK golden 和 IK FK-replay correctness gate。
 - 在修改求解器结构前找准真实瓶颈。
 - 确保所有 IK 路径优化同一个物理任务点。
 
@@ -122,18 +205,22 @@ subject to E(z, I, x) = 0
 
 - 审查旧 IK、FK engine 和单层 IK 中的 tip extraction。
 - 定义唯一的 canonical task point convention。
+- 在 canonical convention 确认前，同时记录最后柔性节点和最后刚段相关点，防止比较对象漂移。
+- 用当前 dense FK 生成第一批 golden baseline。
+- 对已有成功 IK 输出选取少量 `I_A/x_m` 快照，做 FK replay，验证 IK 自报结果与 FK oracle 是否一致。
 - 审查刚段端点、磁体中心和柔性节点约定。
 - 增加或运行 profiling，将 residual evaluation、Jacobian construction、`J.T @ J`、dense solve、line-search residual call、stats packing 和 I/O 分开计时。
 - 将 first-call compile time 与 steady-state runtime 分开统计。
 
 建议实验：
 
-- `exp_name=fk_dense_baseline`
-- 实验记录：`docs/efficiency_optimization_experiment/{ID}_fk_dense_baseline_record.md`
-- 日志数据：`docs/efficiency_optimization_experiment/{ID}_fk_dense_baseline_logs_data/`
+- `exp_name=fk_correctness_dense_baseline`
+- 实验记录：`docs/efficiency_optimization_experiment/{ID}_fk_correctness_dense_baseline_record.md`
+- 日志数据：`docs/efficiency_optimization_experiment/{ID}_fk_correctness_dense_baseline_logs_data/`
 
 决策规则：
 
+- 如果 correctness gate 未通过，先修正 convention、FK replay 或诊断逻辑，不进入提速结论。
 - 如果 dense Jacobian 加 dense solve 是主瓶颈，下一步进入 matrix-free FK。
 - 如果其他部分占主导，则优先优化真实热点。
 
@@ -177,6 +264,7 @@ subject to E(z, I, x) = 0
 - 代表性 case 中每个 FK LM step 成本下降 5-10x。
 - final equilibrium residual 和任务点几何与 dense FK 在容差内一致。
 - 显存压力下降，极端 case 不再轻易打满显存。
+- 所有 per-commit FK golden case 通过对比，失败时自动或人工 fallback 到 dense path。
 
 ### P4：implicit adjoint sensitivity
 
@@ -196,6 +284,7 @@ subject to E(z, I, x) = 0
 
 - IK outer linearization 不再为小扰动执行多个完整 FK solve。
 - 灵敏度计算成本可预测，且显著低于旧有限差分路径。
+- well-conditioned 小 case 中 directional derivative 与有限差分一致；near-singular case 必须报告 conditioning。
 
 ### P5：reduced-space IK
 
@@ -217,6 +306,7 @@ subject to E(z, I, x) = 0
 - 代表性 near targets 可稳定求解。
 - stress targets 能收敛，或能给出明确 reachability diagnosis。
 - tip error 改善时 equilibrium residual 不恶化。
+- 每个成功 IK run 都必须通过 FK replay；未通过 FK replay 的 run 不计入成功率或 speedup。
 
 ### P6：coarse-to-fine 与 continuation
 
@@ -262,22 +352,27 @@ m_body_list = "0,0,-0.005301;0,0,0.005301;0.005301,0,0"
 - 如果算法改造达到预期，p50 runtime 接近 1 分钟。
 - reachable hard cases 的 p95 runtime 或极端 case runtime 控制在约 3 分钟内。
 - 所有成功 case 都满足物理质量容差。
+- 所有成功 case 通过 FK replay 和 FK golden 回归。
 - 失败 case 必须分类为 reachability、conditioning、numerical 或 implementation failure。
 
-## 8. 第一轮正式实验设计
+## 9. 第一轮正式实验设计
 
-第一轮大实验应是 profiling baseline，而不是优化实验。
+第一轮大实验应先建立 correctness gate，再进行 profiling baseline，而不是直接优化。
 
 实验名称：
 
 ```text
-fk_dense_baseline
+fk_correctness_dense_baseline
 ```
 
 实验组：
 
 | 实验组 | 配置 | 目的 |
 | --- | --- | --- |
+| Convention audit | 同一 `z_bar` 同时提取最后柔性节点、最后刚段相关点和 centerline end | 固定 canonical task point，发现旧 IK、FK engine、single-layer IK 的定义差异 |
+| FK golden baseline | per-commit FK case | 生成当前 dense FK compact JSON 和可选下采样 centerline NPZ |
+| IK FK replay | 选取已有成功或代表性 IK 输出的 `I_A/x_m` | 验证 IK 自报结果是否能被严格 FK replay 复现 |
+| Closed-loop reachable | 少量 FK 采样生成 target，再由 IK 反求 | 低成本验证 IK 能否回到 FK 生成的可达目标 |
 | FK micro | `M_list=3,3,3`、`5,5,5`、`8,8,8` | 测量 dense FK 的规模扩展趋势 |
 | FK repeated call | 相同 shape，改变 currents | 分离 compile、warm-start 和 steady-state 行为 |
 | FK repeated protrusion | 尽量保持相同 shape，改变 `x` 或 protrusion | 观察 recompilation 和有限差分成本 |
@@ -305,7 +400,7 @@ dense FK 瓶颈确认条件：
 
 如果这些条件不成立，下一轮实验应先处理真实主瓶颈，而不是直接进入 matrix-free FK。
 
-## 9. 本方向工程规则
+## 10. 本方向工程规则
 
 - 每轮大规模效率优化实验必须使用一个唯一 ID：`eff_opt_exp_YYYYMMDDHHMMSS`。
 - 每轮大规模效率优化实验必须使用同一个 ID 创建一个 record 文件和一个 log-data 目录。
@@ -316,45 +411,51 @@ dense FK 瓶颈确认条件：
 - 每轮大实验结束后，将相关变更提交到本地 `dev` 分支。
 - 不 push。
 - 不提交无关的大型生成数据，除非它是本轮实验记录的必要组成部分。
+- 任何 FK 算法路径替换、IK 修复、灵敏度重构或初始化策略修改，都必须运行对应级别的 correctness smoke 或 regression。
+- 未通过 FK golden 对比或 IK FK replay 的实验结果不能用于宣称有效提速。
 - 文档统一使用中文。
 - 代码注释和 docstring 统一使用英文。
 
-## 10. 风险清单
+## 11. 风险清单
 
 | 风险 | 影响 | 缓解方式 |
 | --- | --- | --- |
 | tip 定义不一致 | 快速求解器优化了错误物理点 | 在主要求解器改造前解决 |
+| golden data drift | baseline 自身随未记录配置变化漂移 | golden 记录 git commit、完整配置、scales、device 和 x64 状态 |
+| IK 自报成功但 FK replay 失败 | penalty solver 给出非物理解或错误 task point | 所有 IK 成功必须通过 FK replay 后才计入 |
+| 旧路径本身存在 convention 错误 | golden 可能固化错误约定 | 第一轮先做 convention audit，同时记录多个 candidate task point |
+| 弱验证误判 | 只看 tip error 忽略残差和形态 | 同时检查 residual、interface gap、smoothness、current saturation |
 | matrix-free solve 不稳定 | FK 可能因线性求解失败而不收敛 | 保留 dense fallback，并持续对比 residual |
 | float32 数值漂移 | 可能出现隐性质量退化 | 使用代表性 float32/float64 benchmark |
 | coarse mesh 分支不一致 | fine refinement 进入错误分支 | prolongation 前加入形态和残差检查 |
 | saturated current transform | 导数消失并拖慢 IK | 优先使用物理 bounds 和 trust-region step |
 | 过度日志输出 | runtime 被 I/O 主导 | 默认稀疏保存 |
 | 重复编译 | runtime 统计失真 | 分离 compile 和 steady-state timing |
-| benchmark 过小 | 对真实场景泛化差 | 使用至少 10 个多样化 stress cases |
+| benchmark 过小 | 对真实场景泛化差 | 使用至少 10 个多样化 stress cases，并包含 FK replay |
 
-## 11. 预期里程碑
+## 12. 预期里程碑
 
-- 第 1 周结束：明确真实瓶颈；tip 和 magnet convention 问题被记录或修正。
+- 第 1 周结束：建立 FK golden 和 IK FK-replay correctness gate；明确真实瓶颈；tip 和 magnet convention 问题被记录或修正。
 - 第 2 周结束：低风险 runtime 清理完成；代表性中等 case 有 float32/float64 证据。
 - 第 4 周结束：matrix-free FK 原型能产出与 dense FK 可比的平衡解。
 - 第 5 周结束：IK 核心 sensitivity 不再依赖昂贵的 FK 有限差分循环。
 - 第 6 周结束：reduced-space IK 可在严格平衡约束下求解代表性 case。
 - 第 7 周结束：coarse-to-fine 策略能降低 hard targets 的迭代数。
-- 第 8 周结束：benchmark suite 给出 1 分钟目标是否现实、3 分钟上限是否达成的结论。
+- 第 8 周结束：benchmark suite 在 correctness gate 通过前提下给出 1 分钟目标是否现实、3 分钟上限是否达成的结论。
 
-## 12. 立即下一步
+## 13. 立即下一步
 
 启动第一轮大实验：
 
 ```text
-exp_name = fk_dense_baseline
+exp_name = fk_correctness_dense_baseline
 ```
 
 启动前必须先创建：
 
 ```text
-docs/efficiency_optimization_experiment/{eff_opt_exp_YYYYMMDDHHMMSS}_fk_dense_baseline_record.md
-docs/efficiency_optimization_experiment/{eff_opt_exp_YYYYMMDDHHMMSS}_fk_dense_baseline_logs_data/
+docs/efficiency_optimization_experiment/{eff_opt_exp_YYYYMMDDHHMMSS}_fk_correctness_dense_baseline_record.md
+docs/efficiency_optimization_experiment/{eff_opt_exp_YYYYMMDDHHMMSS}_fk_correctness_dense_baseline_logs_data/
 ```
 
 第一轮实验结论应决定下一轮进入以下哪条路径：

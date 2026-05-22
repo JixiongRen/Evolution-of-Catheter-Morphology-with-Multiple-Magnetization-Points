@@ -92,5 +92,10 @@ FK/IK 提速工作必须同时跟踪速度和物理质量：
 - smoothness 或 curvature anomaly metric。
 - current utilization 和 saturation。
 - 可用时记录 target reachability 或 control Jacobian rank。
+- FK golden 对比误差。
+- IK final control 的 FK replay 误差。
+- task point convention 是否一致。
 
 只有物理质量不超过实验设定容差时，speedup 才视为有效。
+
+任何 FK 算法路径替换、IK 修复、灵敏度重构或初始化策略修改，都必须先通过对应级别的 FK golden 对比或 IK FK-replay 检查。未通过 correctness gate 的结果不能用于宣称有效提速。
