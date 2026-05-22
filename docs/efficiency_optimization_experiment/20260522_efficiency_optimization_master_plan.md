@@ -54,16 +54,17 @@
 - 磁场插值位于标定范围内，或明确报告越界行为。
 - 最终成功不能只看 tip error，还必须满足平衡残差和形态质量要求。
 
-## 4. FK/IK 正确性验证门禁
+## 4. FK/IK 正确性验证与宽松门禁
 
-当前缺少直接实验条件验证 IK 输出，因此后续优化必须采用 FK oracle 代理验证。基本原则是：当前可信 dense FK 结果作为 golden reference，任何 FK 加速、IK 修复或线性化重构，只有在同配置 FK 输出不发生明显偏移时，才允许讨论 runtime speedup。
+当前缺少直接实验条件验证 IK 输出，因此后续优化采用 FK oracle 代理验证。这里的验证不应在前期卡得过严：FK 目前只能被认为“整体求解效果比较靠谱”，因此前期主要检查同配置下 FK 的整体姿态、弯曲方向和曲率变化趋势是否大致一致。IK 输出暂不作为强可信对象，IK replay 主要用于诊断和标记可信度，不作为早期算法探索的硬阻断条件。
 
-### 4.1 正确性契约
+### 4.1 分阶段正确性契约
 
 - 在进入主要优化前，必须明确 canonical task point。验证阶段应同时记录最后柔性节点、最后刚段远端或刚段代表点，直到最终确认哪一个是物理受控点。
-- FK golden 数据由当前可信 dense FK 生成。后续新 FK 路径、matrix-free 路径或 reduced-space IK 路径都必须与该 golden 对比。
-- IK 成功不能只看内部 `pos_err_norm_mm` 或自报 `p_tip_m`。IK 输出的 `I_A` 和 `x_m` 必须重新输入 FK，使用同配置严格重算，得到 FK replay 结果后再判定成功。
-- 速度结论必须建立在 correctness gate 通过之后。任何 tip 定义不一致、FK replay 偏移、平衡残差恶化或形态质量退化，都使该轮 speedup 无效。
+- FK golden 数据由当前可信 dense FK 生成。后续新 FK 路径、matrix-free 路径或 reduced-space IK 路径都应与该 golden 对比，但前期只要求整体姿态和曲率变化曲线不发生明显偏移。
+- IK 成功不能只看内部 `pos_err_norm_mm` 或自报 `p_tip_m`。IK 输出的 `I_A` 和 `x_m` 应重新输入 FK 做 replay，但前期 replay 结果只用于诊断、分类和选择下一步，不直接否定本轮 FK 加速实验。
+- 速度结论分两类记录：`FK speedup` 只要求 FK 姿态大致一致；`IK success speedup` 必须额外通过 FK replay 和基本物理质量检查。
+- 前期 hard fail 只针对明显错误：FK 姿态整体翻转、弯曲方向明显相反、曲率曲线严重失真、平衡残差大数量级恶化、出现不可解释的形态断裂或数值发散。
 
 ### 4.2 FK golden 基线
 
@@ -87,17 +88,18 @@ FK golden 每个 case 至少记录：
 
 ### 4.3 FK 对比容差
 
-初始容差采用保守规则，后续可根据真实实验结果调整：
+初始容差采用宽松分级规则，后续根据实验结果收紧：
 
-- 同 dense x64 路径重复运行：task point 偏移不超过 `1e-5 * L_ref`，centerline RMS 不超过 `2e-5 * L_ref`，centerline max 不超过 `5e-5 * L_ref`。
-- 新 FK 算法对 dense golden：task point 偏移不超过 `5e-4 * L_ref`，centerline RMS 不超过 `1e-3 * L_ref`，quaternion angle 不超过 `5e-3 rad`。
-- residual：normal case 满足 `normE_new <= max(3 * normE_ref, 3e-5)`；stress case 满足 `normE_new <= max(3 * normE_ref, 1e-4)`。
-- interface gap：不超过 `max(3 * ref_gap, 1e-6 m)`。
-- smoothness：不超过 `max(1.25 * ref_smooth, ref_smooth + 1e-3)`。该项初期作为 warning，积累证据后再升级为 hard fail。
+- 同 dense x64 路径重复运行仍应较稳定，可保留较严格检查，但这主要用于发现非确定性或实现 bug。
+- 新 FK 算法对 dense golden 的前期主指标是形态相似性：重采样 centerline 后，弯曲方向一致、整体曲率峰值位置相近、曲率变化曲线形状相似。
+- 建议前期 hard fail 条件：centerline 平均偏移超过 `5-10% * L_ref`，最大偏移超过 `15% * L_ref`，曲率曲线相关性低于 `0.8`，或主要弯曲方向相反。
+- task point 偏移前期只作为参考：`3-5 mm` 以内可接受，`5-10 mm` 记为 warning，超过 `10 mm` 再结合形态和 residual 判断是否 hard fail。
+- residual 前期不要求严格倍率一致，但如果 `normE_new` 比 `normE_ref` 恶化超过一个数量级，或绝对值进入明显不可信区间，应标记为 hard fail。
+- interface gap 和 smoothness 前期作为 warning 指标，只有出现明显断裂、尖峰或非物理折角时才阻断。
 
 ### 4.4 IK 代理验证
 
-IK 修复或优化必须通过以下低成本代理验证：
+IK 修复或优化建议执行以下低成本代理验证，但前期不把 IK replay 作为硬约束：
 
 - FK replay：读取 IK 输出的 `I_A`、`x_m` 和配置，重建同配置 FK 并严格重算。记录 `e_ik=||p_ik-p_des||`、`e_fk=||p_fk-p_des||`、`replay_gap=||p_fk-p_ik||`、`normE_fk`、`ok_strict` 和 FK iteration count。
 - closed-loop consistency：先采样一批 `(I, x)`，用 FK 生成 reachable target，再让 IK 反求该 target，最后用 FK replay 验证 `FK(IK(p_fk))` 是否回到目标。由于系统冗余，不要求反求得到的 `I` 和 `x` 与原始采样完全一致。
@@ -106,8 +108,8 @@ IK 修复或优化必须通过以下低成本代理验证：
 
 建议初始判据：
 
-- 如果 IK 自报误差小于 `1 mm`，但 FK replay 误差大于 `2 mm`，该 IK run 判为不可信。
-- 如果 `replay_gap` 大于 `0.5-1 mm`，判定存在状态解释、task point 或平衡一致性风险。
+- 如果 IK 自报误差小于 `1 mm`，但 FK replay 误差大于 `2 mm`，该 IK run 标记为“不可信 IK 成功”，但不阻断 FK 加速实验。
+- 如果 `replay_gap` 大于 `0.5-1 mm`，判定存在状态解释、task point 或平衡一致性风险；前期只记录风险并辅助定位。
 - 如果 FK replay 的 `normE > 1e-1`，或 `L1_clipped=true` 且误差未收敛，判为物理无效。
 - `normE <= 1e-2` 作为绿色区间；`1e-2..1e-1` 作为黄色区间；`>1e-1` 作为红色区间。
 
@@ -136,7 +138,7 @@ IK 修复或优化必须通过以下低成本代理验证：
 
 推荐主线如下：
 
-1. 正确性校准和 FK/IK correctness gate。
+1. 正确性校准和 FK/IK 宽松 correctness gate。
 2. dense FK profiling。
 3. matrix-free FK。
 4. implicit adjoint sensitivity。
@@ -171,33 +173,33 @@ subject to E(z, I, x) = 0
 - 可用时记录 control Jacobian rank 或 singular values。
 - 使用 float32 还是 float64。
 - 本次统计是否包含 first-call compilation。
-- FK golden 对比误差。
-- IK final control 的 FK replay 误差。
+- FK golden 对比误差，重点关注整体姿态和曲率变化趋势。
+- IK final control 的 FK replay 误差，前期作为诊断和可信度分类。
 - task point convention 是否一致。
 - failed case 的失败分类。
 
-只有在物理质量不超过实验设定容差的前提下，speedup 才视为有效。
+speedup 需要分层解释。前期 `FK speedup` 只要求 FK 姿态和曲率趋势大致一致；`IK success speedup` 才要求 FK replay、目标误差和基本物理质量同时可接受。
 
 ## 7. 两个月路线图
 
 | 阶段 | 时间 | 目标 | 主要产物 | 验收标准 |
 | --- | --- | --- | --- | --- |
 | P0 | 立即 | 建立 workflow 和总体方案 | skill、目录、本文档 | 后续实验具备统一 ID、记录、日志、耗时统计和本地 dev 提交规则 |
-| P1 | 第 1 周 | 正确性门禁、基准拆解与建模一致性 | correctness gate + dense FK/IK profiling 实验 | FK golden、IK replay 和 10-12 个固定 case 耗时分解全部记录 |
+| P1 | 第 1 周 | 宽松正确性门禁、基准拆解与建模一致性 | correctness baseline + dense FK/IK profiling 实验 | FK golden、IK replay 和 10-12 个固定 case 耗时分解全部记录 |
 | P2 | 第 2 周 | 低风险 runtime 清理 | 配置和 I/O 优化 | 不降低收敛质量的前提下获得 2-5x 提速 |
 | P3 | 第 3-4 周 | matrix-free FK 原型 | 带 dense fallback 的 JVP/VJP Krylov FK 路径 | 代表性 case 中 FK 单步成本下降 5-10x |
 | P4 | 第 4-5 周 | implicit adjoint sensitivity | 不依赖完整 `J` 和 FK 有限差分循环的灵敏度路径 | IK 线性化成本相对 FK 平衡求解变小 |
 | P5 | 第 5-6 周 | reduced-space IK | 基于 `I` 和 `x` 的物理变量 IK | 代表性 near/stress target 可稳定收敛 |
 | P6 | 第 6-7 周 | continuation 与初始化 | coarse-to-fine mesh、load continuation、target continuation | 典型 IK 迭代数降到 50-80 以下 |
-| P7 | 第 8 周 | 回归与稳定性验证 | 10 组以上极端场景 benchmark suite | correctness gate 全过后，可行时 p50 接近 1 分钟，p95 或极端 case 控制在约 3 分钟内 |
+| P7 | 第 8 周 | 回归与稳定性验证 | 10 组以上极端场景 benchmark suite | FK 姿态一致性通过后评估 p50 是否接近 1 分钟，p95 或极端 case 是否控制在约 3 分钟内 |
 
 ## 8. 阶段细化
 
-### P1：正确性门禁、基准拆解与建模一致性
+### P1：宽松正确性门禁、基准拆解与建模一致性
 
 目标：
 
-- 建立 FK golden 和 IK FK-replay correctness gate。
+- 建立 FK golden 和 IK FK-replay 诊断基线。
 - 在修改求解器结构前找准真实瓶颈。
 - 确保所有 IK 路径优化同一个物理任务点。
 
@@ -220,7 +222,8 @@ subject to E(z, I, x) = 0
 
 决策规则：
 
-- 如果 correctness gate 未通过，先修正 convention、FK replay 或诊断逻辑，不进入提速结论。
+- 如果 FK 姿态一致性明显不通过，先修正 convention、FK replay 或诊断逻辑，不进入 FK 提速结论。
+- 如果只是 IK replay 不通过，前期记录为 IK 不可信或目标不可达风险，不阻断 FK 提速方向。
 - 如果 dense Jacobian 加 dense solve 是主瓶颈，下一步进入 matrix-free FK。
 - 如果其他部分占主导，则优先优化真实热点。
 
@@ -306,7 +309,7 @@ subject to E(z, I, x) = 0
 - 代表性 near targets 可稳定求解。
 - stress targets 能收敛，或能给出明确 reachability diagnosis。
 - tip error 改善时 equilibrium residual 不恶化。
-- 每个成功 IK run 都必须通过 FK replay；未通过 FK replay 的 run 不计入成功率或 speedup。
+- 正式宣称 IK 成功时必须通过 FK replay；前期 prototype 可只记录 replay 结果，不把 IK replay 作为 hard fail。
 
 ### P6：coarse-to-fine 与 continuation
 
@@ -352,12 +355,12 @@ m_body_list = "0,0,-0.005301;0,0,0.005301;0.005301,0,0"
 - 如果算法改造达到预期，p50 runtime 接近 1 分钟。
 - reachable hard cases 的 p95 runtime 或极端 case runtime 控制在约 3 分钟内。
 - 所有成功 case 都满足物理质量容差。
-- 所有成功 case 通过 FK replay 和 FK golden 回归。
+- 所有成功 FK case 通过姿态一致性检查；正式宣称 IK 成功的 case 需要通过 FK replay。
 - 失败 case 必须分类为 reachability、conditioning、numerical 或 implementation failure。
 
 ## 9. 第一轮正式实验设计
 
-第一轮大实验应先建立 correctness gate，再进行 profiling baseline，而不是直接优化。
+第一轮大实验应先建立宽松 correctness baseline，再进行 profiling baseline，而不是直接优化。
 
 实验名称：
 
@@ -371,7 +374,7 @@ fk_correctness_dense_baseline
 | --- | --- | --- |
 | Convention audit | 同一 `z_bar` 同时提取最后柔性节点、最后刚段相关点和 centerline end | 固定 canonical task point，发现旧 IK、FK engine、single-layer IK 的定义差异 |
 | FK golden baseline | per-commit FK case | 生成当前 dense FK compact JSON 和可选下采样 centerline NPZ |
-| IK FK replay | 选取已有成功或代表性 IK 输出的 `I_A/x_m` | 验证 IK 自报结果是否能被严格 FK replay 复现 |
+| IK FK replay | 选取已有成功或代表性 IK 输出的 `I_A/x_m` | 诊断 IK 自报结果能否被 FK replay 复现 |
 | Closed-loop reachable | 少量 FK 采样生成 target，再由 IK 反求 | 低成本验证 IK 能否回到 FK 生成的可达目标 |
 | FK micro | `M_list=3,3,3`、`5,5,5`、`8,8,8` | 测量 dense FK 的规模扩展趋势 |
 | FK repeated call | 相同 shape，改变 currents | 分离 compile、warm-start 和 steady-state 行为 |
@@ -411,8 +414,9 @@ dense FK 瓶颈确认条件：
 - 每轮大实验结束后，将相关变更提交到本地 `dev` 分支。
 - 不 push。
 - 不提交无关的大型生成数据，除非它是本轮实验记录的必要组成部分。
-- 任何 FK 算法路径替换、IK 修复、灵敏度重构或初始化策略修改，都必须运行对应级别的 correctness smoke 或 regression。
-- 未通过 FK golden 对比或 IK FK replay 的实验结果不能用于宣称有效提速。
+- 任何 FK 算法路径替换、IK 修复、灵敏度重构或初始化策略修改，都应运行对应级别的 correctness smoke 或 regression。
+- 前期 correctness 采用宽松分级判据：FK 结果以整体姿态和曲率趋势相似为主；IK replay 以诊断为主。
+- 未通过 FK 姿态一致性检查的结果不能用于宣称 FK 有效提速；未通过 IK FK replay 的结果不能用于宣称 IK 成功，但可用于继续分析和改进。
 - 文档统一使用中文。
 - 代码注释和 docstring 统一使用英文。
 
@@ -422,7 +426,7 @@ dense FK 瓶颈确认条件：
 | --- | --- | --- |
 | tip 定义不一致 | 快速求解器优化了错误物理点 | 在主要求解器改造前解决 |
 | golden data drift | baseline 自身随未记录配置变化漂移 | golden 记录 git commit、完整配置、scales、device 和 x64 状态 |
-| IK 自报成功但 FK replay 失败 | penalty solver 给出非物理解或错误 task point | 所有 IK 成功必须通过 FK replay 后才计入 |
+| IK 自报成功但 FK replay 失败 | penalty solver 给出非物理解或错误 task point | 正式宣称 IK 成功时必须通过 FK replay；前期只作诊断 |
 | 旧路径本身存在 convention 错误 | golden 可能固化错误约定 | 第一轮先做 convention audit，同时记录多个 candidate task point |
 | 弱验证误判 | 只看 tip error 忽略残差和形态 | 同时检查 residual、interface gap、smoothness、current saturation |
 | matrix-free solve 不稳定 | FK 可能因线性求解失败而不收敛 | 保留 dense fallback，并持续对比 residual |
@@ -435,13 +439,13 @@ dense FK 瓶颈确认条件：
 
 ## 12. 预期里程碑
 
-- 第 1 周结束：建立 FK golden 和 IK FK-replay correctness gate；明确真实瓶颈；tip 和 magnet convention 问题被记录或修正。
+- 第 1 周结束：建立 FK golden 和 IK FK-replay 诊断基线；明确真实瓶颈；tip 和 magnet convention 问题被记录或修正。
 - 第 2 周结束：低风险 runtime 清理完成；代表性中等 case 有 float32/float64 证据。
 - 第 4 周结束：matrix-free FK 原型能产出与 dense FK 可比的平衡解。
 - 第 5 周结束：IK 核心 sensitivity 不再依赖昂贵的 FK 有限差分循环。
 - 第 6 周结束：reduced-space IK 可在严格平衡约束下求解代表性 case。
 - 第 7 周结束：coarse-to-fine 策略能降低 hard targets 的迭代数。
-- 第 8 周结束：benchmark suite 在 correctness gate 通过前提下给出 1 分钟目标是否现实、3 分钟上限是否达成的结论。
+- 第 8 周结束：benchmark suite 在 FK 姿态一致性通过前提下给出 1 分钟目标是否现实、3 分钟上限是否达成的结论。
 
 ## 13. 立即下一步
 
