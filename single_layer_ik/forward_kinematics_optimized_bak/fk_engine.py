@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Sequence, Tuple
 
-import os, sys
+import os, sys, time
 
 
 import jax
@@ -331,6 +331,77 @@ class ForwardKinematicsEngine:
         self._last_rigid_lengths = self.rigid_lengths
 
         return z_star_bar, params, meshes, bool(ok), stats
+
+    def warm_up(
+            self,
+            *,
+            coil_currents: Sequence[float],
+            L_protrude: float,
+            include_jacobian: bool = True,
+            include_lm_step: bool = True,
+    ) -> Dict[str, float]:
+        """Compile and time the fixed-shape FK hot path without changing warm-start state."""
+        timings: Dict[str, float] = {}
+        total_start = time.perf_counter()
+
+        coil_currents = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1, )
+        self._ensure_static_initialized(L_protrude=float(L_protrude))
+        flex_lengths = self._compute_flex_lengths(L_protrude=float(L_protrude))
+        L1_dim = float(flex_lengths[0])
+
+        assert self._params_static_base is not None
+        assert self._meshes_ref is not None
+
+        params = with_coil_currents(self._params_static_base, coil_currents)
+        params = with_L1_dim(params, jnp.asarray(L1_dim, dtype=jnp.float64))
+        meshes = list(self._meshes_ref)
+        meshes[0] = build_uniform_mesh(float(L1_dim), int(self.M_list[0]))
+        z0_bar, *_ = make_initial_guess_multi_bar_jax(
+            flex_segs=list(params.flex),
+            meshes=meshes,
+            rigid_segs=list(params.rigid),
+            scales=params.scales,
+            p0_dim=self.p0_dim,
+            Q0=self.Q0,
+            axis_body=self.axis_body,
+        )
+
+        t0 = time.perf_counter()
+        E = self._solver_cached.residual_jit(z0_bar, params)
+        if hasattr(E, "block_until_ready"):
+            E.block_until_ready()
+        timings["residual_s"] = float(time.perf_counter() - t0)
+
+        if include_jacobian:
+            t0 = time.perf_counter()
+            J = self._solver_cached.jacobian_jit(z0_bar, params, method=self.jac_method)
+            if hasattr(J, "block_until_ready"):
+                J.block_until_ready()
+            timings["jacobian_s"] = float(time.perf_counter() - t0)
+
+        if include_lm_step:
+            t0 = time.perf_counter()
+            z1, _ok = self._solver_cached.solve_lm(
+                z0_bar=z0_bar,
+                params=params,
+                max_iter=1,
+                tol=self.tol,
+                lm_damping=self.lm_damping,
+                jac_method=self.jac_method,
+                linear_solver=self.linear_solver,
+                cg_tol=self.cg_tol,
+                cg_atol=self.cg_atol,
+                cg_max_iter=self.cg_max_iter,
+                cg_damping_preconditioner=self.cg_damping_preconditioner,
+                return_stats=False,
+                verbose=False,
+            )
+            if hasattr(z1, "block_until_ready"):
+                z1.block_until_ready()
+            timings["lm_step_s"] = float(time.perf_counter() - t0)
+
+        timings["total_s"] = float(time.perf_counter() - total_start)
+        return timings
 
 
     def query_sites(

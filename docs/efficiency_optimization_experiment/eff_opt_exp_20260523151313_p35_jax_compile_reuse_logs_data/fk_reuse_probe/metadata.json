@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-23 15:26:45",
+  "git_commit": "2c7ab878ca1b901a7f75ac20247ee978e9e268b5",
+  "jax_enable_x64": true,
+  "jax_backend": "cpu",
+  "jax_devices": [
+    "TFRT_CPU_0"
+  ],
+  "xla_preallocate": "false",
+  "max_iter": 4,
+  "rebuild_count": 2,
+  "module_level_jit_wrappers": true
+}

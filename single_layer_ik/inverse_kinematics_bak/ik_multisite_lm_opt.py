@@ -46,12 +46,20 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional, Sequence, Tuple
 
 os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+_MODULE_DIR = Path(__file__).resolve().parent
+for _path in (_REPO_ROOT, _MODULE_DIR):
+    _path_str = str(_path)
+    if _path_str not in sys.path:
+        sys.path.insert(0, _path_str)
 
 import jax
 import jax.numpy as jnp
@@ -105,6 +113,28 @@ def _update_run_config(run_config_path: Path, *, updates: dict) -> None:
         cfg = {}
     cfg.update(updates)
     _atomic_write_json(run_config_path, cfg)
+
+
+def _new_runtime_profile(enabled: bool) -> dict:
+    return {"enabled": bool(enabled), "sections": {}, "warmup": {}}
+
+
+def _profile_add(profile: Optional[dict], section: str, label: str, elapsed_s: float) -> None:
+    if not profile or not profile.get("enabled", False):
+        return
+    sections = profile.setdefault("sections", {})
+    labels = sections.setdefault(str(section), {})
+    item = labels.setdefault(str(label), {"count": 0, "total_s": 0.0, "first_s": None, "max_s": 0.0})
+    elapsed_s = float(elapsed_s)
+    item["count"] = int(item["count"]) + 1
+    item["total_s"] = float(item["total_s"]) + elapsed_s
+    item["first_s"] = elapsed_s if item["first_s"] is None else item["first_s"]
+    item["max_s"] = max(float(item["max_s"]), elapsed_s)
+
+
+def _write_runtime_profile(run_dir: Path, profile: Optional[dict]) -> None:
+    if profile and profile.get("enabled", False):
+        _atomic_write_json(run_dir / "runtime_profile.json", profile)
 
 
 def build_argparser() -> argparse.ArgumentParser:
@@ -234,6 +264,9 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--out_dir", type=str, default="ik_out", help="Output directory")
     p.add_argument("--run_name", type=str, default=None, help="Optional run name (subfolder)")
     p.add_argument("--print_devices", action="store_true", help="Print JAX devices at start")
+    p.add_argument("--runtime_profile", action="store_true", help="Write runtime_profile.json with FK/IK timing buckets")
+    p.add_argument("--warmup_fk_compile", action="store_true", help="Precompile fixed-shape FK residual/Jacobian/one-step solve before IK")
+    p.add_argument("--warmup_ik_adjoint", action="store_true", help="Precompute and reuse the first dp/dI adjoint sensitivity")
 
     # seed
     p.add_argument("--seed", type=int, default=0, help="Random seed used for initializing currents (I0).")
@@ -398,7 +431,10 @@ def _fk_eval(
     dx_floor: float,
     override_z0_bar: Optional[Array] = None,
     stats_include_jacobian: bool = True,
+    runtime_profile: Optional[dict] = None,
+    profile_label: str = "fk_eval",
 ) -> EvalPack:
+    t0 = time.perf_counter()
     z_star_bar, params, _meshes, ok, lm_stats = engine.solve_with_stats(
         coil_currents=I,
         L_protrude=float(x),
@@ -407,14 +443,17 @@ def _fk_eval(
         return_stats=True,
         stats_include_jacobian=bool(stats_include_jacobian),
     )
+    _profile_add(runtime_profile, "fk_solve", profile_label, time.perf_counter() - t0)
 
     normE = float(lm_stats.normE) if lm_stats is not None else float("nan")
     ok_strict = bool(lm_stats.ok_strict) if lm_stats is not None else bool(ok)
     cls = _classify_equilibrium(ok_strict=ok_strict, normE=normE, tol_good=tol_good, tol_weak=tol_weak, tol_bad=tol_bad)
 
     # Tip position (SI) via FK engine observation interface
+    t0 = time.perf_counter()
     obs = engine.query_sites(z_bar=z_star_bar, scales=params.scales)
     p_tip = jnp.asarray(obs["tip_p_dim"], dtype=jnp.float64)
+    _profile_add(runtime_profile, "fk_observe", profile_label, time.perf_counter() - t0)
 
     penalty = 0.0
     if (not jnp.all(jnp.isfinite(p_tip))) or (cls in ("BAD", "REJECT")):
@@ -456,15 +495,22 @@ def _fk_eval(
     )
 
 
-def _ensure_lm_jacobian_stats(engine: ForwardKinematicsEngine, pack: EvalPack) -> EvalPack:
+def _ensure_lm_jacobian_stats(
+    engine: ForwardKinematicsEngine,
+    pack: EvalPack,
+    *,
+    runtime_profile: Optional[dict] = None,
+) -> EvalPack:
     """Attach the dense FK Jacobian only when the next adjoint step needs it."""
     stats = pack.lm_stats
     if stats is None or getattr(stats, "J", None) is not None:
         return pack
+    t0 = time.perf_counter()
     J = engine._solver_cached.jacobian_jit(pack.z_star_bar, pack.params, method=engine.jac_method)
     if hasattr(J, "block_until_ready"):
         J.block_until_ready()
     stats.J = jnp.array(J)
+    _profile_add(runtime_profile, "jacobian_stats", "accepted_trial", time.perf_counter() - t0)
     return pack
 
 
@@ -477,6 +523,7 @@ def _compute_dp_dx_fd(
     z0_bar: Optional[Array],
     clip_bounds: Tuple[float, float],
     debug_flag: bool = False,
+    runtime_profile: Optional[dict] = None,
 ) -> Array:
     """Finite difference dp_tip/dx along x, returns (3,)."""
     if not debug_flag:
@@ -489,20 +536,24 @@ def _compute_dp_dx_fd(
         if abs(xp - xm) < 1e-12:
             return jnp.zeros((3,), dtype=jnp.float64)
 
+        t0 = time.perf_counter()
         zp, params_p, _, _, _ = engine.solve_with_stats(
             coil_currents=I,
             L_protrude=float(xp),
             warm_start=True,
             override_z0_bar=z0_bar,
-            return_stats=True,
+            return_stats=False,
         )
+        _profile_add(runtime_profile, "fd_x_fk", "plus", time.perf_counter() - t0)
+        t0 = time.perf_counter()
         zm, params_m, _, _, _ = engine.solve_with_stats(
             coil_currents=I,
             L_protrude=float(xm),
             warm_start=True,
             override_z0_bar=z0_bar,
-            return_stats=True,
+            return_stats=False,
         )
+        _profile_add(runtime_profile, "fd_x_fk", "minus", time.perf_counter() - t0)
 
         pp = jnp.asarray(engine.query_sites(z_bar=zp, scales=params_p.scales)["tip_p_dim"], dtype=jnp.float64)
         pm = jnp.asarray(engine.query_sites(z_bar=zm, scales=params_m.scales)["tip_p_dim"], dtype=jnp.float64)
@@ -517,6 +568,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         print("[IK-LM] JAX devices:", jax.devices())
 
     run_dir = _make_run_dir(args.out_dir, args.run_name)
+    runtime_profile = _new_runtime_profile(bool(args.runtime_profile))
     run_config_path = run_dir / "run_config.json"
     poses_dir = (run_dir / "poses")
     poses_trial_dir = (poses_dir / "trial")
@@ -607,6 +659,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     x_ref = float(args.x_ref) if args.x_ref is not None else float(x0)
 
     # Build engine
+    t0_engine = time.perf_counter()
     engine = ForwardKinematicsEngine(
         flex_lengths_tail=flex_lengths,
         rigid_lengths=rigid_lengths,
@@ -633,6 +686,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         lm_damping=float(_get("lm_damping", args.lm_damping)),
         jac_method=str(_get("jac_method", args.jac_method)),
     )
+    _profile_add(runtime_profile, "setup", "engine_build", time.perf_counter() - t0_engine)
 
     # Targets
     p_des = _parse_vec3(args.p_des)
@@ -719,15 +773,19 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     }
 
     def _save_pose(*, which: str, iter_idx: int, pack: EvalPack) -> Path:
+        t0 = time.perf_counter()
         cl = extract_centerline_dim(pack.z_star_bar, M_list=engine.M_list, scales=pack.params.scales)
         out_dir = poses_accept_dir if which == "accept" else poses_trial_dir
         out_path = out_dir / f"centerline_iter_{int(iter_idx):04d}.npy"
         save_centerline(cl, out_path)
+        _profile_add(runtime_profile, "io", f"save_pose_{which}", time.perf_counter() - t0)
         return out_path
 
     def _append_history(*, d: dict) -> None:
+        t0 = time.perf_counter()
         history["outer"].append(d)
         save_history_json(history, history_path)
+        _profile_add(runtime_profile, "io", "save_history", time.perf_counter() - t0)
 
     def _safe_sigma(w: float) -> str:
         if w <= 0:
@@ -753,6 +811,18 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         f"rho_bad={float(args.rho_bad):.2f}, rho_good={float(args.rho_good):.2f}"
     )
     print("[IK-LM] ==============================")
+
+    if bool(args.warmup_fk_compile):
+        t0 = time.perf_counter()
+        warmup = engine.warm_up(
+            coil_currents=jnp.zeros((8,), dtype=jnp.float64),
+            L_protrude=float(x0),
+            include_jacobian=True,
+            include_lm_step=True,
+        )
+        runtime_profile["warmup"] = warmup
+        _profile_add(runtime_profile, "setup", "warmup_fk_compile", time.perf_counter() - t0)
+        _write_runtime_profile(run_dir, runtime_profile)
 
     lam = float(args.lam_init)
 
@@ -784,6 +854,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         w_Ix=w_Ix,
         dx_floor=dx_floor,
         override_z0_bar=z_warm,
+        runtime_profile=runtime_profile,
+        profile_label="init",
     )
     z_warm = cur.z_star_bar
 
@@ -839,12 +911,14 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     if cur.err <= eps_p and cur.cls != "REJECT":
         print(f"[IK-LM] Converged at init: ||e||={cur.err*1e3:.3f}mm")
+        _write_runtime_profile(run_dir, runtime_profile)
         return
 
-    for k in range(1, int(args.outer_max_iter) + 1):
-        # 1) Sensitivities dp/dI and dp/dx (at current accepted state)
+    jac_res_cached: Optional[Any] = None
+    if bool(args.warmup_ik_adjoint):
         try:
-            jac_res = compute_dp_dI_via_lm_adjoint(
+            t0 = time.perf_counter()
+            jac_res_cached = compute_dp_dI_via_lm_adjoint(
                 z_star_bar=cur.z_star_bar,
                 params=cur.params,
                 lm_stats=cur.lm_stats,
@@ -852,6 +926,35 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 ridge=ridge_adj,
                 jac_method_I="fwd",
             )
+            if hasattr(jac_res_cached.J_p_I, "block_until_ready"):
+                jac_res_cached.J_p_I.block_until_ready()
+            elapsed = time.perf_counter() - t0
+            runtime_profile.setdefault("warmup", {})["ik_adjoint_s"] = float(elapsed)
+            _profile_add(runtime_profile, "setup", "warmup_ik_adjoint", elapsed)
+            _write_runtime_profile(run_dir, runtime_profile)
+        except Exception as e:
+            jac_res_cached = None
+            print(f"[IK-LM] WARNING: warmup dp/dI adjoint failed: {repr(e)}")
+
+    for k in range(1, int(args.outer_max_iter) + 1):
+        # 1) Sensitivities dp/dI and dp/dx (at current accepted state)
+        try:
+            if jac_res_cached is not None:
+                t0 = time.perf_counter()
+                jac_res = jac_res_cached
+                jac_res_cached = None
+                _profile_add(runtime_profile, "sensitivity", "dp_dI_adjoint_reused", time.perf_counter() - t0)
+            else:
+                t0 = time.perf_counter()
+                jac_res = compute_dp_dI_via_lm_adjoint(
+                    z_star_bar=cur.z_star_bar,
+                    params=cur.params,
+                    lm_stats=cur.lm_stats,
+                    coil_currents=cur.I,
+                    ridge=ridge_adj,
+                    jac_method_I="fwd",
+                )
+                _profile_add(runtime_profile, "sensitivity", "dp_dI_adjoint", time.perf_counter() - t0)
             Jp_I = jnp.asarray(jac_res.J_p_I, dtype=jnp.float64)  # (3, nI)
         except Exception as e:
             print(f"[IK-LM] WARNING: dp/dI adjoint failed: {repr(e)}")
@@ -865,6 +968,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             z0_bar=z_warm,
             clip_bounds=(x_min, x_max),
             debug_flag=False,
+            runtime_profile=runtime_profile,
         )  # (3,)
 
         # 2) Build Jacobian wrt u
@@ -985,6 +1089,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             dx_floor=dx_floor,
             override_z0_bar=z_warm,
             stats_include_jacobian=False,
+            runtime_profile=runtime_profile,
+            profile_label="trial",
         )
 
         act_red = float(cur.cost - trial.cost)
@@ -1037,7 +1143,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         # 6) Update lambda and state
         if accept:
-            trial = _ensure_lm_jacobian_stats(engine, trial)
+            trial = _ensure_lm_jacobian_stats(engine, trial, runtime_profile=runtime_profile)
             u = u_trial
             cur = trial
             z_warm = cur.z_star_bar
@@ -1096,6 +1202,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             w_Ix=w_Ix,
             dx_floor=dx_floor,
             override_z0_bar=z_warm,
+            stats_include_jacobian=False,
+            runtime_profile=runtime_profile,
+            profile_label="final",
         )
         fin_pose_path = _save_pose(which="accept", iter_idx=int(len(history.get("outer", []))), pack=fin_pack)
         _update_run_config(
@@ -1112,6 +1221,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         )
     except Exception as e:
         print(f"[IK-LM] WARNING: failed to save final snapshot: {repr(e)}")
+    t0 = time.perf_counter()
     (run_dir / "result.json").write_text(
         json.dumps(
             {
@@ -1138,6 +1248,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         ),
         encoding="utf-8",
     )
+    _profile_add(runtime_profile, "io", "save_result", time.perf_counter() - t0)
+    _write_runtime_profile(run_dir, runtime_profile)
     print("[IK-LM] Saved result.json")
 
 

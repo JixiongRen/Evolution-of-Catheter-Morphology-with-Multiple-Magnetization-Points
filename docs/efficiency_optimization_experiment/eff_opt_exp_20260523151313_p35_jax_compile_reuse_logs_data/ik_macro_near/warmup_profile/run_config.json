@@ -1,0 +1,158 @@
+{
+  "argv": {
+    "config": null,
+    "flex_lengths": "0.03,0.03,0.03",
+    "rigid_lengths": "0.003,0.003,0.003",
+    "L_protrude": 0.1,
+    "L1_min": 1e-06,
+    "M_list": "3,2,2",
+    "flex_d_outer": "0.0015",
+    "flex_E": "1.8e6",
+    "flex_G": "0.6e6",
+    "flex_rho": "970.0",
+    "rigid_d_outer": "0.0015",
+    "rigid_rho": "7500.0",
+    "p0": "0,0,-0.05",
+    "Q0": "1,0,0,0",
+    "axis_body": "1,0,0",
+    "enable_gravity": false,
+    "g_world": "0,0,-9.81",
+    "enable_magnetics": false,
+    "calib_file": null,
+    "actuation_table_pkl": null,
+    "coil_currents": null,
+    "m_body_list": null,
+    "max_iter": 4,
+    "tol": 1e-05,
+    "lm_damping": 0.1,
+    "jac_method": "fwd",
+    "plot": false,
+    "p_des": "0.08,0.015,-0.045",
+    "eps_p": 0.001,
+    "sigma_p": 0.005,
+    "I_min": null,
+    "I_max": 20.0,
+    "x0": 0.1,
+    "x_min": 0.095,
+    "x_max": 0.105,
+    "x_ref": null,
+    "outer_max_iter": 1,
+    "lam_init": 0.01,
+    "lam_up": 10.0,
+    "lam_down": 0.3,
+    "rho_good": 0.75,
+    "rho_bad": 0.25,
+    "step_I_max": 8.0,
+    "step_x_max": 0.02,
+    "pred_red_tol": 1e-10,
+    "step_I_tol": 1e-06,
+    "step_x_tol": 1e-09,
+    "act_red_tol": 1e-10,
+    "w_I": 0.05,
+    "w_x": 20.0,
+    "w_dI": 0.2,
+    "w_dx": 200.0,
+    "w_Ix": 0.0005,
+    "dx_floor": 0.001,
+    "ridge_adjoint": 0.0,
+    "fd_x_eps": 0.001,
+    "tol_E_good": null,
+    "tol_E_weak": 0.01,
+    "tol_E_bad": 0.1,
+    "penalty_bad": 1000.0,
+    "out_dir": "docs/efficiency_optimization_experiment/eff_opt_exp_20260523151313_p35_jax_compile_reuse_logs_data/ik_macro_near",
+    "run_name": "warmup_profile",
+    "print_devices": false,
+    "runtime_profile": true,
+    "warmup_fk_compile": true,
+    "seed": 0
+  },
+  "fk_cfg": {},
+  "p_des": [
+    0.08,
+    0.015,
+    -0.045
+  ],
+  "seed": 0,
+  "I_min": -20.0,
+  "I_max": 20.0,
+  "x0": 0.1,
+  "x_bounds": [
+    0.095,
+    0.105
+  ],
+  "x_ref": 0.1,
+  "sigma_p": 0.005,
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 8.0,
+    "step_x_max": 0.02
+  },
+  "init": {
+    "x_m": 0.1,
+    "I_A": [
+      -3.2617155313445427,
+      -11.348181815779544,
+      18.6128584447599,
+      2.980021349100186,
+      1.28905953002171,
+      -5.803792789210229,
+      15.320359046359613,
+      5.302415611856572
+    ],
+    "p_tip_m": [
+      0.09590864146238233,
+      0.0,
+      -0.05
+    ],
+    "err_m": 0.022429553566190974,
+    "centerline_npy": "poses/accept/centerline_iter_0000.npy"
+  },
+  "last_accept": {
+    "iter": 1,
+    "x_m": 0.09542737635880824,
+    "I_A": [
+      -3.2341072745536237,
+      -11.251763323882125,
+      18.446431741125554,
+      2.95479842963128,
+      1.278150628373467,
+      -5.754640732276633,
+      15.189146265014752,
+      5.257515892211826
+    ],
+    "p_tip_m": [
+      0.0927606690880199,
+      0.0,
+      -0.05
+    ],
+    "err_m": 0.02031833348417007,
+    "centerline_npy": "poses/accept/centerline_iter_0001.npy"
+  },
+  "final": {
+    "x_m": 0.09542737635880824,
+    "I_A": [
+      -3.234107274553624,
+      -11.251763323882127,
+      18.446431741125554,
+      2.9547984296312797,
+      1.278150628373467,
+      -5.754640732276634,
+      15.189146265014752,
+      5.257515892211825
+    ],
+    "p_tip_m": [
+      0.09246183174902026,
+      0.0,
+      -0.05
+    ],
+    "err_m": 0.020131995691954865,
+    "centerline_npy": "poses/accept/centerline_iter_0002.npy"
+  }
+}

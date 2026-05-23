@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-05-23 15:36:20",
+  "git_commit": "2c7ab878ca1b901a7f75ac20247ee978e9e268b5",
+  "jax_enable_x64": true,
+  "jax_backend": "cpu",
+  "jax_devices": [
+    "TFRT_CPU_0"
+  ],
+  "xla_preallocate": "false",
+  "max_iter": 80,
+  "matrix_free_max_iter": 60,
+  "cg_tol": 0.0001,
+  "cg_max_iter": 60,
+  "minimal_cases": false,
+  "steady_repeats": 1,
+  "skip_matrix_free": true,
+  "skip_dense_profile": true,
+  "case_ids": [
+    "straight_nomag_nogravity",
+    "mag_zero_mid",
+    "mixed_balanced"
+  ]
+}

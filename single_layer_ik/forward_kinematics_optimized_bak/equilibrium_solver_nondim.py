@@ -921,6 +921,23 @@ class MultiSegmentEquilibriumSolverNondimJAX:
                               stop_reason="max_iter", n_iter=max_iter, return_stats=return_stats)
 
 
+_RESIDUAL_BAR_JIT = jax.jit(residual_bar)
+_JAC_FWD_JIT = jax.jit(jax.jacfwd(residual_bar, argnums=0))
+_JAC_REV_JIT = jax.jit(jax.jacrev(residual_bar, argnums=0))
+
+
+def _residual_jvp(z: Array, params: SolverParams, v: Array) -> Array:
+    return jax.jvp(lambda zz: residual_bar(zz, params), (z,), (v,))[1]
+
+
+def _residual_vjp(z: Array, params: SolverParams, w: Array) -> Array:
+    return jax.vjp(lambda zz: residual_bar(zz, params), z)[1](w)[0]
+
+
+_JVP_JIT = jax.jit(_residual_jvp)
+_VJP_JIT = jax.jit(_residual_vjp)
+
+
 class MultiSegmentEquilibriumSolverNondimJAXCached:
     """A reusable LM solver that avoids rebuilding JAX programs per FK call.
 
@@ -947,16 +964,12 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
     """
 
     def __init__(self):
-        # Residual and Jacobians (compiled once per shape/static-config)
-        self.residual_jit = jax.jit(residual_bar)
-        self._jac_fwd = jax.jit(jax.jacfwd(residual_bar, argnums=0))
-        self._jac_rev = jax.jit(jax.jacrev(residual_bar, argnums=0))
-        self._jvp = jax.jit(
-            lambda z, params, v: jax.jvp(lambda zz: residual_bar(zz, params), (z,), (v,))[1]
-        )
-        self._vjp = jax.jit(
-            lambda z, params, w: jax.vjp(lambda zz: residual_bar(zz, params), z)[1](w)[0]
-        )
+        # Module-level jit wrappers survive engine rebuilds within one process.
+        self.residual_jit = _RESIDUAL_BAR_JIT
+        self._jac_fwd = _JAC_FWD_JIT
+        self._jac_rev = _JAC_REV_JIT
+        self._jvp = _JVP_JIT
+        self._vjp = _VJP_JIT
 
     def jacobian_jit(self, z: Array, params: SolverParams, *, method: str = "fwd") -> Array:
         if method == "fwd":
