@@ -1,0 +1,28 @@
+W0523 17:35:29.031822   50602 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0523 17:35:29.039888   50520 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+[IK-LM] ==============================
+[IK-LM] run_dir = /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523173326_ik_full_max_iter_benchmark_logs_data/ik_benchmark/c04_upper_front_moderate_full240_implicit
+[IK-LM] p_des = [0.068, -0.031, 0.042] (m), eps_p = 1.000 (mm)
+[IK-LM] sigma_p = 5.000e-03 (m)  (r_p = e_p/sigma_p)
+[IK-LM] I bound: [-50.0, 50.0] A (param via tanh)
+[IK-LM] x0=0.100000 m, x in [0.069001, 0.180000] m, x_ref=0.100000 m
+[IK-LM] weights interpreted as inverse scales (w=1/sigma):
+[IK-LM]   w_I =5.000e-02  -> sigma_I =20 A
+[IK-LM]   w_x =2.000e+01  -> sigma_x =0.05 m
+[IK-LM]   w_dI=2.000e-01  -> sigma_dI=5 A
+[IK-LM]   w_dx=2.000e+02  -> sigma_dx=0.005 m
+[IK-LM]   w_Ix=5.000e-04  -> sigma_Ix=2e+03 (A/m)
+[IK-LM] physical step limits: step_I_max=8 A, step_x_max=0.02 m
+[IK-LM] outer LM: max_iter=240, lam_init=1.000e-02, lam_up=10, lam_down=0.3, rho_bad=0.25, rho_good=0.75
+[IK-LM] ==============================
+[IK-LM] iter=000 cls=REJECT ok_strict=False ||E||=3.360e-01 x=0.100000 p_tip=[0.10025086576846777, -0.02867587504059943, -0.0521550041004282] ||e||=99.552mm cost=7.044083e+02
+[IK-LM] iter=001 lam=1.00e-02 rho=-359.981 REJECT du_eff=6.11e-02 |dI|_max=0.413A ||dI||=0.615A |dx|=0.000mm pred_red=5.334e-02 act_red=-1.920e+01 cls=REJECT ||E||=2.496e-01 x=0.100000 ||e||=104.276mm cost=7.236114e+02
+[IK-LM] iter=002 lam=1.00e-01 rho=-363.136 REJECT du_eff=5.61e-02 |dI|_max=0.377A ||dI||=0.563A |dx|=0.000mm pred_red=5.291e-02 act_red=-1.921e+01 cls=REJECT ||E||=2.496e-01 x=0.100000 ||e||=104.278mm cost=7.236215e+02
+[IK-LM] iter=003 lam=1.00e+00 rho=-448.925 REJECT du_eff=3.08e-02 |dI|_max=0.203A ||dI||=0.306A |dx|=0.000mm pred_red=4.001e-02 act_red=-1.796e+01 cls=REJECT ||E||=2.527e-01 x=0.100000 ||e||=103.975mm cost=7.223709e+02
+[IK-LM] iter=004 lam=1.00e+01 rho=-1946.985 REJECT du_eff=5.61e-03 |dI|_max=0.036A ||dI||=0.055A |dx|=0.000mm pred_red=9.259e-03 act_red=-1.803e+01 cls=REJECT ||E||=2.528e-01 x=0.100000 ||e||=103.983mm cost=7.224356e+02
+[IK-LM] iter=005 lam=1.00e+02 rho=-17159.047 REJECT du_eff=6.11e-04 |dI|_max=0.004A ||dI||=0.006A |dx|=0.000mm pred_red=1.051e-03 act_red=-1.804e+01 cls=REJECT ||E||=2.528e-01 x=0.100000 ||e||=103.984mm cost=7.224460e+02
+[IK-LM] iter=006 lam=1.00e+03 rho=-169315.198 REJECT du_eff=6.16e-05 |dI|_max=0.000A ||dI||=0.001A |dx|=0.000mm pred_red=1.065e-04 act_red=-1.804e+01 cls=REJECT ||E||=2.528e-01 x=0.100000 ||e||=103.984mm cost=7.224472e+02
+[IK-LM] iter=007 lam=1.00e+04 rho=-1690880.431 REJECT du_eff=6.17e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=1.067e-05 act_red=-1.804e+01 cls=REJECT ||E||=2.528e-01 x=0.100000 ||e||=103.984mm cost=7.224473e+02
+[IK-LM] iter=008 lam=1.00e+05 rho=-16906531.422 REJECT du_eff=6.17e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=1.067e-06 act_red=-1.804e+01 cls=REJECT ||E||=2.528e-01 x=0.100000 ||e||=103.984mm cost=7.224473e+02
+[IK-LM] stop: effective step is zero (|dI|_max=3.948e-07A, |dx|=0.000e+00m). Likely parameter saturation / clipping / numerical floor.
+[IK-LM] Saved result.json

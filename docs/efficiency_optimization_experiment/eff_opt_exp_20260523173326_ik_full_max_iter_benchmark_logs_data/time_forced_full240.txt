@@ -1,0 +1,5 @@
+wall_s=725.51
+user_s=506.66
+sys_s=367.90
+max_rss_kb=1983780
+exit_code=0
