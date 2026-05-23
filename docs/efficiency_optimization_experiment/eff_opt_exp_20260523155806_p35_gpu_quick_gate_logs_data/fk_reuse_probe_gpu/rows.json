@@ -1,0 +1,108 @@
+[
+  {
+    "label": "engine0_first_solve",
+    "wall_s": 62.042509134000284,
+    "ok": false,
+    "stop_reason": "max_iter",
+    "n_iter": 4,
+    "normE": 0.001012969407226415,
+    "stats_has_jacobian": false,
+    "centerline_end_m": [
+      0.09960521763055813,
+      0.0,
+      -0.05
+    ],
+    "points": {
+      "last_flex_node_m": [
+        0.09660774026555537,
+        0.0,
+        -0.05
+      ],
+      "last_rigid_state_m": [
+        0.09960521763055813,
+        0.0,
+        -0.05
+      ]
+    }
+  },
+  {
+    "label": "engine0_repeat_solve",
+    "wall_s": 0.30174402099873987,
+    "ok": false,
+    "stop_reason": "max_iter",
+    "n_iter": 4,
+    "normE": 0.001012969407226415,
+    "stats_has_jacobian": false,
+    "centerline_end_m": [
+      0.09960521763055813,
+      0.0,
+      -0.05
+    ],
+    "points": {
+      "last_flex_node_m": [
+        0.09660774026555537,
+        0.0,
+        -0.05
+      ],
+      "last_rigid_state_m": [
+        0.09960521763055813,
+        0.0,
+        -0.05
+      ]
+    }
+  },
+  {
+    "label": "engine_rebuild_1_solve",
+    "wall_s": 0.3315261019997706,
+    "ok": false,
+    "stop_reason": "max_iter",
+    "n_iter": 4,
+    "normE": 0.001012969407226415,
+    "stats_has_jacobian": false,
+    "centerline_end_m": [
+      0.09960521763055813,
+      0.0,
+      -0.05
+    ],
+    "points": {
+      "last_flex_node_m": [
+        0.09660774026555537,
+        0.0,
+        -0.05
+      ],
+      "last_rigid_state_m": [
+        0.09960521763055813,
+        0.0,
+        -0.05
+      ]
+    },
+    "engine_build_s": 0.0034001290005107876
+  },
+  {
+    "label": "engine_rebuild_2_solve",
+    "wall_s": 0.33759368599930895,
+    "ok": false,
+    "stop_reason": "max_iter",
+    "n_iter": 4,
+    "normE": 0.001012969407226415,
+    "stats_has_jacobian": false,
+    "centerline_end_m": [
+      0.09960521763055813,
+      0.0,
+      -0.05
+    ],
+    "points": {
+      "last_flex_node_m": [
+        0.09660774026555537,
+        0.0,
+        -0.05
+      ],
+      "last_rigid_state_m": [
+        0.09960521763055813,
+        0.0,
+        -0.05
+      ]
+    },
+    "engine_build_s": 0.0042950419992848765
+  }
+]
