@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-05-23 18:31:04",
+  "repo_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points",
+  "git_commit": "2fe0a1da77c01c88f2ea16b0948821f6f1303299",
+  "jax_enable_x64": true,
+  "jax_backend": "gpu",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "xla_preallocate": "false",
+  "max_iter": 80,
+  "tol": 1e-05,
+  "case_ids": [
+    "straight_nomag_nogravity",
+    "gravity_only_mid",
+    "mag_zero_mid",
+    "coil5_pos",
+    "mixed_balanced"
+  ]
+}

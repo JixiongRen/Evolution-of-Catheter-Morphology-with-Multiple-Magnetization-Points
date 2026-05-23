@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-05-23 18:25:55",
+  "repo_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523182339_fk_pointwise_regression_check_logs_data/before_2c7ab87_worktree",
+  "git_commit": "2c7ab878ca1b901a7f75ac20247ee978e9e268b5",
+  "jax_enable_x64": true,
+  "jax_backend": "gpu",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "xla_preallocate": "false",
+  "max_iter": 80,
+  "tol": 1e-05,
+  "case_ids": [
+    "straight_nomag_nogravity",
+    "gravity_only_mid",
+    "mag_zero_mid",
+    "coil5_pos",
+    "mixed_balanced"
+  ]
+}
