@@ -1,0 +1,154 @@
+{
+  "case_name": "fk_lm_diagH_backtrack_probe_a",
+  "mode": "continuation",
+  "classification": "speed-only result",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 1000,
+  "final_lam": 1.6677181699666545e-07,
+  "wall_s": 90.25453367399314,
+  "first_call_compile_s": 159.78379445800238,
+  "steady_solve_s": 90.25453367399314,
+  "wall_s_including_warmup": 250.0383281319955,
+  "final_normE": 0.00015013803631439877,
+  "max_abs_E": 5.7505915880813945e-05,
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "centerline_start_m": [
+    -2.1127582073929392e-10,
+    -2.3325670264258554e-10,
+    -2.3637601487281234e-10
+  ],
+  "centerline_end_m": [
+    0.02085210868185153,
+    -0.05451762453644425,
+    0.061587607395547424
+  ],
+  "scale": {
+    "mode": "optimized",
+    "include_external": true,
+    "L_ref": 0.11,
+    "F_ref": 1.0602875205865552,
+    "M_ref": 0.00039608620418474146
+  },
+  "warmup": {
+    "residual_s": 38.42987804600125,
+    "jacobian_s": 114.30912475199875,
+    "lm_step_s": 2.074364831998537,
+    "total_s": 159.78379445800238
+  },
+  "stages": [
+    {
+      "stage": "continuation_00",
+      "current_factor": 0.0,
+      "wall_s": 0.5056157479993999,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 4,
+      "normE": 0.0005995942335574369,
+      "max_abs_E": 0.0001644480884425922,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_01",
+      "current_factor": 0.2,
+      "wall_s": 2.419518817005155,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 34,
+      "normE": 0.0009171027653976178,
+      "max_abs_E": 0.00030181877378862966,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_02",
+      "current_factor": 0.4,
+      "wall_s": 9.760493157999008,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 106,
+      "normE": 0.0009993873050447286,
+      "max_abs_E": 0.0002707896128435278,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_03",
+      "current_factor": 0.6,
+      "wall_s": 5.64707408099639,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 66,
+      "normE": 0.0009985152461114337,
+      "max_abs_E": 0.0002686287126258319,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_04",
+      "current_factor": 0.8,
+      "wall_s": 1.8674717059984687,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 30,
+      "normE": 0.0009791924074072048,
+      "max_abs_E": 0.0002687380919849459,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_05",
+      "current_factor": 1.0,
+      "wall_s": 2.9683678090004832,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 35,
+      "normE": 0.0009894509494855585,
+      "max_abs_E": 0.0002441053360234481,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "final_refine",
+      "current_factor": 1.0,
+      "wall_s": 67.08599235499423,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 1000,
+      "normE": 0.00015013803631439877,
+      "max_abs_E": 5.7505915880813945e-05,
+      "max_iter": 1000,
+      "tol": 1e-05
+    }
+  ],
+  "references": {
+    "current_new_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/new_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.023486238816008097,
+      "rms_point_error_m": 0.011488309550960758,
+      "mean_point_error_m": 0.008961409435598235,
+      "end_error_m": 0.023486238816008097,
+      "max_rel_to_L_ref": 0.21351126196370998,
+      "end_rel_to_L_ref": 0.21351126196370998
+    },
+    "legacy_old_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/old_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.018761461756712786,
+      "rms_point_error_m": 0.01053499554250999,
+      "mean_point_error_m": 0.008912339757071251,
+      "end_error_m": 0.018761461756712786,
+      "max_rel_to_L_ref": 0.1705587432428435,
+      "end_rel_to_L_ref": 0.1705587432428435
+    }
+  },
+  "rss_mb": 2162.73046875,
+  "process_wall_s": 287.94335406499886
+}

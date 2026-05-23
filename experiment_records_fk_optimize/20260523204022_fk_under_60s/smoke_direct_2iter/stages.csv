@@ -1,0 +1,2 @@
+stage,current_factor,wall_s,ok,stop_reason,n_iter,normE,max_abs_E,max_iter,tol
+direct,1.0,172.32835259700005,False,max_iter,2,0.19580253449484847,0.060408197504905226,2,1e-05

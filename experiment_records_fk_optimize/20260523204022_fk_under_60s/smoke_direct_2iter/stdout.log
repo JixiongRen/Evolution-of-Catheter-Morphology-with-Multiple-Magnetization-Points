@@ -1,0 +1,76 @@
+{
+  "case_name": "smoke_direct_2iter",
+  "mode": "direct",
+  "classification": "speed-only result",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 2,
+  "wall_s": 172.32835259700005,
+  "first_call_compile_s": 0.0,
+  "steady_solve_s": 172.32835259700005,
+  "wall_s_including_warmup": 172.32835259700005,
+  "final_normE": 0.19580253449484847,
+  "max_abs_E": 0.060408197504905226,
+  "centerline_shape": [
+    51,
+    3
+  ],
+  "centerline_start_m": [
+    0.00014978785486483126,
+    -6.562287729374786e-05,
+    8.038138361063745e-05
+  ],
+  "centerline_end_m": [
+    0.11012631002322464,
+    -0.0032543381164266212,
+    0.004070201887954598
+  ],
+  "scale": {
+    "mode": "optimized",
+    "include_external": true,
+    "L_ref": 0.11,
+    "F_ref": 1.0602875205865552,
+    "M_ref": 0.00039608620418474146
+  },
+  "warmup": {},
+  "stages": [
+    {
+      "stage": "direct",
+      "current_factor": 1.0,
+      "wall_s": 172.32835259700005,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 2,
+      "normE": 0.19580253449484847,
+      "max_abs_E": 0.060408197504905226,
+      "max_iter": 2,
+      "tol": 1e-05
+    }
+  ],
+  "references": {
+    "current_new_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/new_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.13843980722417115,
+      "rms_point_error_m": 0.09480692700939711,
+      "mean_point_error_m": 0.08686404226120299,
+      "end_error_m": 0.13843980722417115,
+      "max_rel_to_L_ref": 1.2585437020379195,
+      "end_rel_to_L_ref": 1.2585437020379195
+    },
+    "legacy_old_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/old_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.11238973721397509,
+      "rms_point_error_m": 0.08624785839917296,
+      "mean_point_error_m": 0.08028185293026047,
+      "end_error_m": 0.11209068154757773,
+      "max_rel_to_L_ref": 1.0217248837634099,
+      "end_rel_to_L_ref": 1.0190061958870702
+    }
+  },
+  "rss_mb": 2150.859375,
+  "process_wall_s": 185.8060272199982
+}

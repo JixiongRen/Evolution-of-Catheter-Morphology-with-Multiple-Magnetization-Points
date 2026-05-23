@@ -963,14 +963,28 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         """Return ``J(z) @ v`` without materializing the full Jacobian."""
         return self._jvp(z, params, v)
 
-    def _solve_dense_step(self, J: Array, E: Array, lam: float) -> Tuple[Array, Array, float, Dict[str, Any]]:
+    def _solve_dense_step(
+        self,
+        J: Array,
+        E: Array,
+        lam: float,
+        *,
+        damping_mode: str = "identity",
+    ) -> Tuple[Array, Array, Array, float, Dict[str, Any]]:
         """Solve the damped normal equation with a materialized dense Jacobian."""
         g = jnp.transpose(J) @ E
         H = jnp.transpose(J) @ J
-        A = H + lam * jnp.eye(H.shape[0], dtype=H.dtype)
+        damping_mode = str(damping_mode)
+        if damping_mode == "identity":
+            damping_diag = jnp.ones((H.shape[0],), dtype=H.dtype)
+        elif damping_mode == "diagH":
+            damping_diag = jnp.clip(jnp.diag(H), a_min=1e-12)
+        else:
+            raise ValueError("damping_mode must be 'identity' or 'diagH'")
+        A = H + lam * jnp.diag(damping_diag)
         dz = jnp.linalg.solve(A, -g)
         g_norm = float(jnp.linalg.norm(g))
-        return dz, g, g_norm, {"method": "dense", "n": int(H.shape[0])}
+        return dz, g, damping_diag, g_norm, {"method": "dense", "n": int(H.shape[0]), "damping_mode": damping_mode}
 
     def _solve_matrix_free_cg_step(
         self,
@@ -1041,6 +1055,10 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         cg_max_iter: Optional[int] = None,
         cg_damping_preconditioner: bool = True,
         stats_include_jacobian: bool = True,
+        damping_mode: str = "identity",
+        step_norm_clip: Optional[float] = None,
+        backtrack_max: int = 0,
+        backtrack_factor: float = 0.5,
     ):
         """Same algorithm as :meth:`MultiSegmentEquilibriumSolverNondimJAX.solve_lm`.
 
@@ -1061,6 +1079,12 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         linear_solver = str(linear_solver)
         if linear_solver not in ("dense", "matrix_free_cg"):
             raise ValueError("linear_solver must be 'dense' or 'matrix_free_cg'")
+        damping_mode = str(damping_mode)
+        if damping_mode not in ("identity", "diagH"):
+            raise ValueError("damping_mode must be 'identity' or 'diagH'")
+        step_norm_clip_f = None if step_norm_clip is None else float(step_norm_clip)
+        backtrack_max = max(int(backtrack_max), 0)
+        backtrack_factor = float(backtrack_factor)
 
         if verbose:
             print(f"[Multi-LM-JAX] iter=0, ||E||={normE:.3e}, lambda={lam:.3e}")
@@ -1086,7 +1110,12 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
 
             if linear_solver == "dense":
                 J = self.jacobian_jit(z, params, method=jac_method)
-                dz, g, g_norm, last_linear_info = self._solve_dense_step(J, E, lam)
+                dz, g, damping_diag, g_norm, last_linear_info = self._solve_dense_step(
+                    J,
+                    E,
+                    lam,
+                    damping_mode=damping_mode,
+                )
             else:
                 dz, g, g_norm, last_linear_info = self._solve_matrix_free_cg_step(
                     z,
@@ -1098,6 +1127,7 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                     cg_max_iter=cg_max_iter,
                     use_damping_preconditioner=bool(cg_damping_preconditioner),
                 )
+                damping_diag = jnp.ones((dz.shape[0],), dtype=dz.dtype)
 
             if g_norm < gtol:
                 if verbose:
@@ -1108,6 +1138,9 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                                          stats_include_jacobian=stats_include_jacobian)
 
             dz_norm = float(jnp.linalg.norm(dz))
+            if step_norm_clip_f is not None and dz_norm > step_norm_clip_f:
+                dz = dz * (step_norm_clip_f / max(dz_norm, 1e-18))
+                dz_norm = float(jnp.linalg.norm(dz))
             if dz_norm < xtol:
                 if verbose:
                     print(f"[Multi-LM-JAX] stop: small step ||dz||={dz_norm:.3e} < {xtol:.3e}")
@@ -1120,6 +1153,18 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
             E_new = self.residual_jit(z_new, params)
             normE_new = float(jnp.linalg.norm(E_new))
             cost_new = 0.5 * normE_new * normE_new
+            backtrack_count = 0
+            while (
+                backtrack_count < backtrack_max
+                and ((not jnp.isfinite(cost_new)) or (not jnp.isfinite(normE_new)) or cost_new >= cost)
+            ):
+                dz = dz * backtrack_factor
+                dz_norm = float(jnp.linalg.norm(dz))
+                z_new = z + dz
+                E_new = self.residual_jit(z_new, params)
+                normE_new = float(jnp.linalg.norm(E_new))
+                cost_new = 0.5 * normE_new * normE_new
+                backtrack_count += 1
 
             if (not jnp.isfinite(cost_new)) or (not jnp.isfinite(normE_new)):
                 lam = min(lam * 10.0, lam_max)
@@ -1134,7 +1179,7 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                 continue
 
             # Predicted reduction (standard LM model)
-            pred_red = 0.5 * float(dz @ (lam * dz - g))
+            pred_red = 0.5 * float(dz @ (lam * damping_diag * dz - g))
             act_red = float(cost - cost_new)
             rho = act_red / (pred_red + 1e-30)
 

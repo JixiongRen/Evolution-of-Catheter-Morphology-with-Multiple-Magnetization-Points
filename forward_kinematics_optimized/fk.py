@@ -123,6 +123,7 @@ def compute_scales_from_flex(
     d_outer: float,
     E: float,
     G: float,
+    scale_mode: str = "optimized",
     # --- Layer 1 + External estimate A (optional) ---
     enable_magnetics: bool = False,
     calib_file: Optional[str] = None,
@@ -136,28 +137,45 @@ def compute_scales_from_flex(
     flex_lengths: Optional[List[float]] = None,
     rigid_lengths: Optional[List[float]] = None,
 ) -> NondimScales:
-    """Layer 1 scales (recommended first version).
+    """Compute nondimensional scales for the FK residual.
 
-    Internal scales (physics-consistent):
-      - F_int_ref ~ median(diag(K_se))   [N]
-      - M_int_ref ~ median(diag(K_bt)) / L_ref   [N*m]
+    Args:
+        L_ref: Reference length in meters.
+        d_outer: Flexible segment outer diameter in meters.
+        E: Young's modulus in pascal.
+        G: Shear modulus in pascal.
+        scale_mode: Scale convention. ``"optimized"`` keeps the current
+            median-stiffness convention, while ``"legacy"`` matches the old
+            FK CLI convention ``F_ref=max(diag(K_se))`` and
+            ``M_ref=F_ref * L_ref``.
+        enable_magnetics: Whether to include a nominal magnetic wrench scale.
+        calib_file: Magnetic calibration file.
+        actuation_table_pkl: Optional magnetic actuation table.
+        coil_currents: Coil currents used for nominal magnetic scale.
+        m_body_list: Per-rigid-segment body-frame magnetic moments.
+        p0_dim: Nominal base position.
+        Q0: Nominal base quaternion.
+        axis_body: Nominal body-frame centerline axis.
+        flex_lengths: Nominal flexible segment lengths.
+        rigid_lengths: Nominal rigid segment lengths.
 
-    External estimate A (optional): estimate typical magnetic wrench at a
-    nominal pose (based on p0/Q0/axis and segment lengths).
-
-    Final scales:
-      - F_ref = max(F_int_ref, F_ext_typ)
-      - M_ref = max(M_int_ref, M_ext_typ)
-
-    Notes:
-      - This is nondimensionalization, NOT residual re-weighting.
-      - If magnetics inputs are incomplete/unavailable, external terms default
-        to 0.
+    Returns:
+        Nondimensional scale values.
     """
+    scale_mode = str(scale_mode).lower()
+    if scale_mode not in ("optimized", "legacy"):
+        raise ValueError("scale_mode must be 'optimized' or 'legacy'")
+
     # --- internal refs ---
     K_se, K_bt = build_k_matrices_circular_jax(d_outer=d_outer, E=E, G=G)
     diag_Kse = jnp.diag(K_se)
     diag_Kbt = jnp.diag(K_bt)
+
+    if scale_mode == "legacy":
+        F_ref = float(jnp.max(diag_Kse))
+        M_ref = float(F_ref * float(L_ref))
+        return NondimScales(L_ref=float(L_ref), F_ref=F_ref, M_ref=M_ref)
+
     # robust central tendency (avoid one axis dominating scale)
     F_int_ref = float(jnp.median(diag_Kse))
     # moment scale corresponds to curvature ~ 1/L_ref: m ~ K_bt * (1/L_ref)
@@ -555,6 +573,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--tol", type=float, default=1e-5)
     p.add_argument("--lm_damping", type=float, default=1e-1)
     p.add_argument("--jac_method", type=str, default="fwd", choices=["fwd", "rev"])
+    p.add_argument("--scale_mode", type=str, default="optimized", choices=["optimized", "legacy"])
     p.add_argument("--plot", action="store_true", help="Plot converged pose (matplotlib).")
     return p
 
@@ -752,6 +771,7 @@ def main():
         d_outer=float(flex_d0),
         E=float(flex_E0),
         G=float(flex_G0),
+        scale_mode=str(_get("scale_mode", args.scale_mode)),
         enable_magnetics=enable_magnetics,
         calib_file=calib_file,
         actuation_table_pkl=actuation_table_pkl,
@@ -825,5 +845,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 

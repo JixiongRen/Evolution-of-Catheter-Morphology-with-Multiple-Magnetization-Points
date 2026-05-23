@@ -1,0 +1,81 @@
+{
+  "case_name": "smoke_direct_warmup_10iter",
+  "mode": "direct",
+  "classification": "speed-only result",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 10,
+  "wall_s": 0.8538342770007148,
+  "first_call_compile_s": 172.16005213500102,
+  "steady_solve_s": 0.8538342770007148,
+  "wall_s_including_warmup": 173.01388641200174,
+  "final_normE": 0.08124290797410105,
+  "max_abs_E": 0.03179829323929752,
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "centerline_start_m": [
+    6.276340889104432e-05,
+    -7.295474663706053e-05,
+    0.00023224924374359689
+  ],
+  "centerline_end_m": [
+    0.10968504559929063,
+    -0.005067223043421321,
+    0.004038736474948905
+  ],
+  "scale": {
+    "mode": "optimized",
+    "include_external": true,
+    "L_ref": 0.11,
+    "F_ref": 1.0602875205865552,
+    "M_ref": 0.00039608620418474146
+  },
+  "warmup": {
+    "residual_s": 41.41824018099942,
+    "jacobian_s": 123.22088707200237,
+    "lm_step_s": 2.237155408001854,
+    "total_s": 172.16005213500102
+  },
+  "stages": [
+    {
+      "stage": "direct",
+      "current_factor": 1.0,
+      "wall_s": 0.8538342770007148,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 10,
+      "normE": 0.08124290797410105,
+      "max_abs_E": 0.03179829323929752,
+      "max_iter": 10,
+      "tol": 1e-05
+    }
+  ],
+  "references": {
+    "current_new_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/new_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.1380449770011666,
+      "rms_point_error_m": 0.09542997909166973,
+      "mean_point_error_m": 0.08735440057952115,
+      "end_error_m": 0.1380449770011666,
+      "max_rel_to_L_ref": 1.254954336374242,
+      "end_rel_to_L_ref": 1.254954336374242
+    },
+    "legacy_old_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/old_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.11219199020404012,
+      "rms_point_error_m": 0.0867287546287973,
+      "mean_point_error_m": 0.08066819148596178,
+      "end_error_m": 0.11139907719817291,
+      "max_rel_to_L_ref": 1.019927183673092,
+      "end_rel_to_L_ref": 1.0127188836197536
+    }
+  },
+  "rss_mb": 2159.3046875,
+  "process_wall_s": 186.5122660650013
+}

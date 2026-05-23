@@ -1,0 +1,153 @@
+{
+  "case_name": "fk_current_continuation_probe_a",
+  "mode": "continuation",
+  "classification": "speed-only result",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 800,
+  "wall_s": 58.752192142997956,
+  "first_call_compile_s": 177.66761899599805,
+  "steady_solve_s": 58.752192142997956,
+  "wall_s_including_warmup": 236.419811138996,
+  "final_normE": 0.000176567522552601,
+  "max_abs_E": 5.936097700169035e-05,
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "centerline_start_m": [
+    3.1617155620743834e-10,
+    -2.643339104172646e-10,
+    -2.9218777806785337e-10
+  ],
+  "centerline_end_m": [
+    0.024959273531099453,
+    -0.05506583348809368,
+    0.06115828127586613
+  ],
+  "scale": {
+    "mode": "optimized",
+    "include_external": true,
+    "L_ref": 0.11,
+    "F_ref": 1.0602875205865552,
+    "M_ref": 0.00039608620418474146
+  },
+  "warmup": {
+    "residual_s": 41.90575675099899,
+    "jacobian_s": 128.22675379599968,
+    "lm_step_s": 2.3762570269973367,
+    "total_s": 177.66761899599805
+  },
+  "stages": [
+    {
+      "stage": "continuation_00",
+      "current_factor": 0.0,
+      "wall_s": 0.5843766709986085,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 7,
+      "normE": 0.0007596366195918534,
+      "max_abs_E": 0.00018747003467297702,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_01",
+      "current_factor": 0.2,
+      "wall_s": 2.896359417001804,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 72,
+      "normE": 0.0009923894061065093,
+      "max_abs_E": 0.0003124976546912711,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_02",
+      "current_factor": 0.4,
+      "wall_s": 5.1317949209988,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 120,
+      "normE": 0.0015102363528263002,
+      "max_abs_E": 0.0004933225259589888,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_03",
+      "current_factor": 0.6,
+      "wall_s": 4.7904915459985205,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 120,
+      "normE": 0.0012132912936190184,
+      "max_abs_E": 0.0002960358731785255,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_04",
+      "current_factor": 0.8,
+      "wall_s": 3.618515956997726,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 91,
+      "normE": 0.0009999379532368753,
+      "max_abs_E": 0.00022480719046071083,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_05",
+      "current_factor": 1.0,
+      "wall_s": 1.5246081600016623,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 32,
+      "normE": 0.0009992801974162573,
+      "max_abs_E": 0.00021541806457820302,
+      "max_iter": 120,
+      "tol": 0.001
+    },
+    {
+      "stage": "final_refine",
+      "current_factor": 1.0,
+      "wall_s": 40.206045471000834,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 800,
+      "normE": 0.000176567522552601,
+      "max_abs_E": 5.936097700169035e-05,
+      "max_iter": 800,
+      "tol": 1e-05
+    }
+  ],
+  "references": {
+    "current_new_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/new_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.02750317918807232,
+      "rms_point_error_m": 0.013825025244913866,
+      "mean_point_error_m": 0.011087978323999185,
+      "end_error_m": 0.02750317918807232,
+      "max_rel_to_L_ref": 0.25002890170974834,
+      "end_rel_to_L_ref": 0.25002890170974834
+    },
+    "legacy_old_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/old_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.017573431009997358,
+      "rms_point_error_m": 0.010499264906905831,
+      "mean_point_error_m": 0.0092567520763249,
+      "end_error_m": 0.017573431009997358,
+      "max_rel_to_L_ref": 0.1597584637272487,
+      "end_rel_to_L_ref": 0.1597584637272487
+    }
+  },
+  "rss_mb": 2157.796875,
+  "process_wall_s": 272.1647064129975
+}

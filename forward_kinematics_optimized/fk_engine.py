@@ -89,6 +89,12 @@ class ForwardKinematicsEngine:
             cg_atol: float = 0.0,
             cg_max_iter: Optional[int] = None,
             cg_damping_preconditioner: bool = True,
+            damping_mode: str = "identity",
+            step_norm_clip: Optional[float] = None,
+            backtrack_max: int = 0,
+            backtrack_factor: float = 0.5,
+            scale_mode: str = "optimized",
+            scale_include_external: bool = False,
             L_protrude_max: Optional[float] = None,
     ) -> None:
         self.flex_lengths_tail = tuple(float(x) for x in flex_lengths_tail)
@@ -132,6 +138,16 @@ class ForwardKinematicsEngine:
         self.cg_atol = float(cg_atol)
         self.cg_max_iter = None if cg_max_iter is None else int(cg_max_iter)
         self.cg_damping_preconditioner = bool(cg_damping_preconditioner)
+        self.damping_mode = str(damping_mode)
+        if self.damping_mode not in ("identity", "diagH"):
+            raise ValueError("damping_mode must be 'identity' or 'diagH'")
+        self.step_norm_clip = None if step_norm_clip is None else float(step_norm_clip)
+        self.backtrack_max = int(backtrack_max)
+        self.backtrack_factor = float(backtrack_factor)
+        self.scale_mode = str(scale_mode).lower()
+        if self.scale_mode not in ("optimized", "legacy"):
+            raise ValueError("scale_mode must be 'optimized' or 'legacy'")
+        self.scale_include_external = bool(scale_include_external)
 
         self.L_protrude_max = None if L_protrude_max is None else float(L_protrude_max)
 
@@ -180,7 +196,7 @@ class ForwardKinematicsEngine:
         coil_currents = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1, )
         if coil_currents.size == 0:
             raise ValueError("coil_currents is empty")
-        self._ensure_static_initialized(L_protrude=float(L_protrude))
+        self._ensure_static_initialized(L_protrude=float(L_protrude), coil_currents=coil_currents)
 
         flex_lengths = self._compute_flex_lengths(L_protrude=float(L_protrude))
         L1_dim = float(flex_lengths[0])
@@ -228,6 +244,10 @@ class ForwardKinematicsEngine:
             cg_atol=self.cg_atol,
             cg_max_iter=self.cg_max_iter,
             cg_damping_preconditioner=self.cg_damping_preconditioner,
+            damping_mode=self.damping_mode,
+            step_norm_clip=self.step_norm_clip,
+            backtrack_max=self.backtrack_max,
+            backtrack_factor=self.backtrack_factor,
             verbose=False,
         )
 
@@ -258,7 +278,7 @@ class ForwardKinematicsEngine:
             (z_star_bar, params, meshes, ok, lm_stats)
         """
         coil_currents = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1, )
-        self._ensure_static_initialized(L_protrude=float(L_protrude))
+        self._ensure_static_initialized(L_protrude=float(L_protrude), coil_currents=coil_currents)
 
         flex_lengths = self._compute_flex_lengths(L_protrude=float(L_protrude))
         L1_dim = float(flex_lengths[0])
@@ -306,6 +326,10 @@ class ForwardKinematicsEngine:
                 cg_atol=self.cg_atol,
                 cg_max_iter=self.cg_max_iter,
                 cg_damping_preconditioner=self.cg_damping_preconditioner,
+                damping_mode=self.damping_mode,
+                step_norm_clip=self.step_norm_clip,
+                backtrack_max=self.backtrack_max,
+                backtrack_factor=self.backtrack_factor,
                 stats_include_jacobian=bool(stats_include_jacobian),
                 verbose=bool(verbose),
             )
@@ -322,6 +346,10 @@ class ForwardKinematicsEngine:
                 cg_atol=self.cg_atol,
                 cg_max_iter=self.cg_max_iter,
                 cg_damping_preconditioner=self.cg_damping_preconditioner,
+                damping_mode=self.damping_mode,
+                step_norm_clip=self.step_norm_clip,
+                backtrack_max=self.backtrack_max,
+                backtrack_factor=self.backtrack_factor,
                 verbose=bool(verbose),
             )
             stats = None
@@ -346,7 +374,7 @@ class ForwardKinematicsEngine:
         total_start = time.perf_counter()
 
         coil_currents = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1, )
-        self._ensure_static_initialized(L_protrude=float(L_protrude))
+        self._ensure_static_initialized(L_protrude=float(L_protrude), coil_currents=coil_currents)
         flex_lengths = self._compute_flex_lengths(L_protrude=float(L_protrude))
         L1_dim = float(flex_lengths[0])
 
@@ -394,6 +422,10 @@ class ForwardKinematicsEngine:
                 cg_atol=self.cg_atol,
                 cg_max_iter=self.cg_max_iter,
                 cg_damping_preconditioner=self.cg_damping_preconditioner,
+                damping_mode=self.damping_mode,
+                step_norm_clip=self.step_norm_clip,
+                backtrack_max=self.backtrack_max,
+                backtrack_factor=self.backtrack_factor,
                 return_stats=False,
                 verbose=False,
             )
@@ -503,7 +535,7 @@ class ForwardKinematicsEngine:
             )
         return float(sum(tail))
 
-    def _ensure_static_initialized(self, *, L_protrude: float) -> None:
+    def _ensure_static_initialized(self, *, L_protrude: float, coil_currents: Optional[Array] = None) -> None:
         if self._params_static_base is not None and self._meshes_ref is not None and self._scales_ref is not None:
             return
 
@@ -516,11 +548,28 @@ class ForwardKinematicsEngine:
 
         flex_lengths_ref = [float(L1_ref)] + list(self._compute_flex_lengths(L_protrude=float(L_protrude_max)))[1:]
 
+        scale_kwargs: Dict[str, Any] = {}
+        if self.scale_include_external:
+            scale_kwargs = dict(
+                enable_magnetics=self.enable_magnetics,
+                calib_file=self.calib_file,
+                actuation_table_pkl=self.actuation_table_pkl,
+                coil_currents=coil_currents,
+                m_body_list=self.m_body_list,
+                p0_dim=self.p0_dim,
+                Q0=self.Q0,
+                axis_body=self.axis_body,
+                flex_lengths=flex_lengths_ref,
+                rigid_lengths=list(self.rigid_lengths),
+            )
+
         scales_ref = compute_scales_from_flex(
             L_ref=float(L_protrude_max),
             d_outer=float(self.flex_d_outer[0]),
             E=float(self.flex_E[0]),
             G=float(self.flex_G[0]),
+            scale_mode=self.scale_mode,
+            **scale_kwargs,
         )
 
         params_base, meshes_ref = build_solver_params(
