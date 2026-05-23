@@ -90,6 +90,15 @@ Forced full-cap run 在同一命令基础上额外加入：
   - 最终保存结果仍对应最后 accepted state，因此 `result.json` 中 `err=99.55 mm`。
   - 最终 `normE=0.336`，`cls=REJECT`。
 
+## 可视化输出
+
+- Natural-stop 基础图：`docs/efficiency_optimization_experiment/eff_opt_exp_20260523173326_ik_full_max_iter_benchmark_logs_data/plots/natural_stop/`
+- Forced full-cap 基础图：`docs/efficiency_optimization_experiment/eff_opt_exp_20260523173326_ik_full_max_iter_benchmark_logs_data/plots/forced_full240/`
+- Natural-stop 综合图：`docs/efficiency_optimization_experiment/eff_opt_exp_20260523173326_ik_full_max_iter_benchmark_logs_data/plots/comprehensive/c04_upper_front_moderate_full240_implicit/`
+- Forced full-cap 综合图：`docs/efficiency_optimization_experiment/eff_opt_exp_20260523173326_ik_full_max_iter_benchmark_logs_data/plots/comprehensive/c04_upper_front_moderate_full240_forced_implicit/`
+
+综合图包含 trial centerline、tip trajectory、target、起点、最后 trial 点，以及 error/normE/acceptance 曲线。
+
 ## 数据分析
 
 - 本轮 benchmark 的核心速度结论是：在 FK inner `max_iter=80` 的较高保真设置下，当前 optimized IK 主路径跑满 `240` 次外层 trial 的 wall time 约为 `12.1 min`。
