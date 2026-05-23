@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-05-23 17:05:51",
+  "git_commit": "19bb8762aa2c5dada6eaf89527a2e7916a552574",
+  "jax_backend": "gpu",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "xla_preallocate": "false",
+  "args": {
+    "out_dir": "docs/efficiency_optimization_experiment/eff_opt_exp_20260523164047_p4_implicit_adjoint_sensitivity_logs_data/sensitivity_micro_gpu_reuse_jz",
+    "max_iter": 4,
+    "tol": 1e-05,
+    "lm_damping": 0.1,
+    "jac_method": "fwd",
+    "L_protrude": 0.1,
+    "L_protrude_max": 0.18,
+    "x_min": 0.095,
+    "x_max": 0.105,
+    "ridge": 0.0,
+    "conditioning": true,
+    "weak_normE": 0.1,
+    "num_directions": 2,
+    "seed": 0,
+    "current_step_a": 0.2,
+    "x_step_m": 0.0002,
+    "rel_tol": 0.5,
+    "abs_tol_m": 0.0002,
+    "abs_floor": 1e-07,
+    "calib_file": "calib/mpem_calibration_file_sp=40_order=1.yaml",
+    "actuation_table_pkl": "supiee_auto_diff/offline_interpolation_data/actuation_tables/actuation_table.pkl",
+    "case_ids": ""
+  }
+}

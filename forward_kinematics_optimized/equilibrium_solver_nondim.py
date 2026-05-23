@@ -56,6 +56,30 @@ def residual_bar_zI(z_bar: Array, coil_currents: Array, params_static: "SolverPa
     return residual_bar(z_bar, p)
 
 
+def residual_bar_zIx(
+    z_bar: Array,
+    coil_currents: Array,
+    L1_dim: Array,
+    params_static: "SolverParams",
+) -> Array:
+    """Explicit residual interface ``E(z, I, x)`` using first-flex length.
+
+    Args:
+        z_bar: Packed equilibrium state in nondimensional units, shape ``(n_z,)``.
+        coil_currents: Coil currents in ampere, shape ``(n_coils,)``.
+        L1_dim: First flexible segment length in meters. For the current
+            advancer convention, ``dL1_dim / dL_protrude = 1`` away from bounds.
+        params_static: Solver parameters whose static fields define the shape,
+            material, scales, and physics switches.
+
+    Returns:
+        Nondimensional residual vector ``E``.
+    """
+    p = with_coil_currents(params_static, jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,))
+    p = with_L1_dim(p, jnp.asarray(L1_dim, dtype=jnp.float64).reshape(()))
+    return residual_bar(z_bar, p)
+
+
 @jax.tree_util.register_pytree_node_class
 @dataclass(frozen=True)
 class SolverParams:

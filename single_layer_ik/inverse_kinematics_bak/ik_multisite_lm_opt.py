@@ -68,7 +68,7 @@ import numpy as np
 from single_layer_ik.jax_config import configure_jax_enable_x64
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
-from ik_diff import compute_dp_dI_via_lm_adjoint
+from ik_diff import compute_tip_sensitivities_via_lm_adjoint
 from ik_artifacts import extract_centerline_dim, save_centerline, save_history_json
 
 configure_jax_enable_x64()
@@ -248,6 +248,9 @@ def build_argparser() -> argparse.ArgumentParser:
     # Sensitivity knobs
     p.add_argument("--ridge_adjoint", type=float, default=0.0, help="Extra ridge added to inner LM damping when computing dp/dI")
     p.add_argument("--fd_x_eps", type=float, default=1e-3, help="Finite difference step for dp/dx [m]")
+    p.add_argument("--x_sensitivity_method", choices=["implicit", "fd"], default="implicit", help="How to compute dp/dx in the outer IK linearization")
+    p.add_argument("--store_accepted_jacobian", action="store_true", help="Store dense FK Jacobian on accepted trials for legacy diagnostics")
+    p.add_argument("--sensitivity_conditioning", action="store_true", help="Compute dense conditioning diagnostics for implicit sensitivity")
 
     # Robustness / FK accept
     p.add_argument(
@@ -514,6 +517,22 @@ def _ensure_lm_jacobian_stats(
     return pack
 
 
+def _compute_local_fk_jacobian(
+    engine: ForwardKinematicsEngine,
+    pack: EvalPack,
+    *,
+    runtime_profile: Optional[dict] = None,
+    label: str = "implicit_adjoint_jz",
+) -> Array:
+    """Materialize ``dE/dz`` for sensitivity without storing it in LMStats."""
+    t0 = time.perf_counter()
+    J = engine._solver_cached.jacobian_jit(pack.z_star_bar, pack.params, method=engine.jac_method)
+    if hasattr(J, "block_until_ready"):
+        J.block_until_ready()
+    _profile_add(runtime_profile, "sensitivity", label, time.perf_counter() - t0)
+    return jnp.asarray(J, dtype=jnp.float64)
+
+
 def _compute_dp_dx_fd(
     engine: ForwardKinematicsEngine,
     *,
@@ -720,6 +739,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     ridge_adj = float(args.ridge_adjoint)
     fd_x_eps = float(args.fd_x_eps)
+    x_sensitivity_method = str(args.x_sensitivity_method)
+    sensitivity_conditioning = bool(args.sensitivity_conditioning)
 
     # Initialize u from randomized I0, x=x0
     n_coils = 8
@@ -854,6 +875,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         w_Ix=w_Ix,
         dx_floor=dx_floor,
         override_z0_bar=z_warm,
+        stats_include_jacobian=False,
         runtime_profile=runtime_profile,
         profile_label="init",
     )
@@ -918,58 +940,89 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     if bool(args.warmup_ik_adjoint):
         try:
             t0 = time.perf_counter()
-            jac_res_cached = compute_dp_dI_via_lm_adjoint(
+            Jz_local = _compute_local_fk_jacobian(engine, cur, runtime_profile=runtime_profile, label="warmup_implicit_adjoint_jz")
+            jac_res_cached = compute_tip_sensitivities_via_lm_adjoint(
                 z_star_bar=cur.z_star_bar,
                 params=cur.params,
                 lm_stats=cur.lm_stats,
                 coil_currents=cur.I,
                 ridge=ridge_adj,
-                jac_method_I="fwd",
+                J_E_z=Jz_local,
+                materialize_jacobian=True,
+                compute_conditioning=sensitivity_conditioning,
             )
             if hasattr(jac_res_cached.J_p_I, "block_until_ready"):
                 jac_res_cached.J_p_I.block_until_ready()
+            if hasattr(jac_res_cached.J_p_x, "block_until_ready"):
+                jac_res_cached.J_p_x.block_until_ready()
             elapsed = time.perf_counter() - t0
             runtime_profile.setdefault("warmup", {})["ik_adjoint_s"] = float(elapsed)
+            runtime_profile.setdefault("warmup", {})["ik_adjoint_status"] = str(jac_res_cached.status)
+            runtime_profile.setdefault("warmup", {})["ik_adjoint_method"] = str(jac_res_cached.method)
             _profile_add(runtime_profile, "setup", "warmup_ik_adjoint", elapsed)
             _write_runtime_profile(run_dir, runtime_profile)
         except Exception as e:
             jac_res_cached = None
-            print(f"[IK-LM] WARNING: warmup dp/dI adjoint failed: {repr(e)}")
+            print(f"[IK-LM] WARNING: warmup implicit adjoint failed: {repr(e)}")
 
     for k in range(1, int(args.outer_max_iter) + 1):
         # 1) Sensitivities dp/dI and dp/dx (at current accepted state)
+        sensitivity_info = {
+            "x_method": str(x_sensitivity_method),
+            "status": "not_computed",
+            "method": "none",
+            "stationarity_norm": None,
+            "condition_number": None,
+        }
+        dp_dx = jnp.zeros((3,), dtype=jnp.float64)
         try:
             if jac_res_cached is not None:
                 t0 = time.perf_counter()
                 jac_res = jac_res_cached
                 jac_res_cached = None
-                _profile_add(runtime_profile, "sensitivity", "dp_dI_adjoint_reused", time.perf_counter() - t0)
+                _profile_add(runtime_profile, "sensitivity", "implicit_adjoint_reused", time.perf_counter() - t0)
             else:
                 t0 = time.perf_counter()
-                jac_res = compute_dp_dI_via_lm_adjoint(
+                Jz_local = _compute_local_fk_jacobian(engine, cur, runtime_profile=runtime_profile, label="implicit_adjoint_jz")
+                jac_res = compute_tip_sensitivities_via_lm_adjoint(
                     z_star_bar=cur.z_star_bar,
                     params=cur.params,
                     lm_stats=cur.lm_stats,
                     coil_currents=cur.I,
                     ridge=ridge_adj,
-                    jac_method_I="fwd",
+                    J_E_z=Jz_local,
+                    materialize_jacobian=True,
+                    compute_conditioning=sensitivity_conditioning,
                 )
-                _profile_add(runtime_profile, "sensitivity", "dp_dI_adjoint", time.perf_counter() - t0)
+                _profile_add(runtime_profile, "sensitivity", "implicit_adjoint", time.perf_counter() - t0)
             Jp_I = jnp.asarray(jac_res.J_p_I, dtype=jnp.float64)  # (3, nI)
+            if x_sensitivity_method == "implicit":
+                dp_dx = jnp.asarray(jac_res.J_p_x, dtype=jnp.float64).reshape(3,)
+            sensitivity_info = {
+                "x_method": str(x_sensitivity_method),
+                "status": str(jac_res.status),
+                "method": str(jac_res.method),
+                "stationarity_norm": float(jac_res.stationarity_norm),
+                "condition_number": None if jac_res.condition_number is None else float(jac_res.condition_number),
+            }
         except Exception as e:
-            print(f"[IK-LM] WARNING: dp/dI adjoint failed: {repr(e)}")
+            print(f"[IK-LM] WARNING: implicit adjoint failed: {repr(e)}")
             Jp_I = jnp.zeros((3, n_coils), dtype=jnp.float64)
+            sensitivity_info["status"] = "failed"
+            sensitivity_info["error"] = repr(e)
 
-        dp_dx = _compute_dp_dx_fd(
-            engine,
-            I=cur.I,
-            x=cur.x,
-            h=fd_x_eps,
-            z0_bar=z_warm,
-            clip_bounds=(x_min, x_max),
-            debug_flag=False,
-            runtime_profile=runtime_profile,
-        )  # (3,)
+        if x_sensitivity_method == "fd" or sensitivity_info.get("status") == "failed":
+            dp_dx = _compute_dp_dx_fd(
+                engine,
+                I=cur.I,
+                x=cur.x,
+                h=fd_x_eps,
+                z0_bar=z_warm,
+                clip_bounds=(x_min, x_max),
+                debug_flag=False,
+                runtime_profile=runtime_profile,
+            )  # (3,)
+            sensitivity_info["x_method"] = "fd_fallback" if sensitivity_info.get("status") == "failed" else "fd"
 
         # 2) Build Jacobian wrt u
         # Residual order:
@@ -1127,6 +1180,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "cost": float(trial.cost),
                 "cls": str(trial.cls),
                 "normE": float(trial.normE),
+                "sensitivity": sensitivity_info,
                 "pose": {
                     "centerline_npy": str(trial_pose_path.relative_to(run_dir)),
                     "which": "trial",
@@ -1143,7 +1197,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         # 6) Update lambda and state
         if accept:
-            trial = _ensure_lm_jacobian_stats(engine, trial, runtime_profile=runtime_profile)
+            if bool(args.store_accepted_jacobian):
+                trial = _ensure_lm_jacobian_stats(engine, trial, runtime_profile=runtime_profile)
             u = u_trial
             cur = trial
             z_warm = cur.z_star_bar

@@ -1,0 +1,82 @@
+{
+  "gate": "pass_with_conditioning_warnings",
+  "micro_cases": [
+    {
+      "case_id": "straight_nomag_nogravity",
+      "normE": 0.001012969407226415,
+      "status": "ill_conditioned",
+      "condition_number": 655676804832.3177,
+      "direction_verdicts": [
+        "pass",
+        "pass"
+      ],
+      "max_rel_err": 0.01141036997597963,
+      "max_abs_err_m": 1.4882283518149791e-06,
+      "jz_s": 0.008438963999651605,
+      "sensitivity_s": 12.901691318998928
+    },
+    {
+      "case_id": "mag_zero_mid",
+      "normE": 0.001012969407226415,
+      "status": "ill_conditioned",
+      "condition_number": 655676804832.3177,
+      "direction_verdicts": [
+        "pass",
+        "pass"
+      ],
+      "max_rel_err": 7.728187759472671,
+      "max_abs_err_m": 0.00012744491386572132,
+      "jz_s": 0.010954223002045183,
+      "sensitivity_s": 16.111119099998177
+    },
+    {
+      "case_id": "mixed_balanced",
+      "normE": 0.046813022734283276,
+      "status": "weak_conditioning",
+      "condition_number": 5952830549.423527,
+      "direction_verdicts": [
+        "warn",
+        "pass"
+      ],
+      "max_rel_err": 0.7383761042256989,
+      "max_abs_err_m": 0.0004917648759999236,
+      "jz_s": 0.010234805002255598,
+      "sensitivity_s": 15.746408407998388
+    }
+  ],
+  "ik_macro": {
+    "implicit": {
+      "err_mm": 19.896461017479123,
+      "normE": 0.0002049753811146691,
+      "sensitivity_total_s": 0.060886108003614936,
+      "fd_x_fk_total_s": 0.0,
+      "jacobian_stats_total_s": 0.0,
+      "warmup_ik_adjoint_s": 12.595134785999107
+    },
+    "fd_legacy": {
+      "err_mm": 19.896492965610275,
+      "normE": 0.00020510275012126973,
+      "sensitivity_plus_fd_total_s": 0.6863072359992657,
+      "fd_x_fk_total_s": 0.5783391059994756,
+      "jacobian_stats_total_s": 0.03464978500051075,
+      "warmup_ik_adjoint_s": 13.005800595998153
+    },
+    "steady_sensitivity_speedup": 11.271984012486366,
+    "err_delta_mm": -3.194813115214856e-05,
+    "normE_delta": -1.2736900660063302e-07
+  },
+  "regularized_sanity": [
+    {
+      "case_id": "straight_nomag_nogravity",
+      "status": "ok",
+      "condition_number": 531105.1791974937,
+      "ridge": 1000.0,
+      "direction_verdicts": [
+        "pass"
+      ],
+      "max_rel_err": 1.0,
+      "max_abs_err_m": 0.000130429251727196,
+      "note": "regularization improves conditioning but changes the physical derivative; use as stability diagnostic only"
+    }
+  ]
+}

@@ -31,7 +31,7 @@ import jax.numpy as jnp
 
 from forward_kinematics_optimized.nondim import x_bar_to_dim
 from forward_kinematics_optimized.utils_nondim import unpack_z_bar_jax
-from forward_kinematics_optimized.equilibrium_solver_nondim import residual_bar_zI, SolverParams, LMStats
+from forward_kinematics_optimized.equilibrium_solver_nondim import residual_bar_zI, residual_bar_zIx, SolverParams, LMStats
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
@@ -48,6 +48,8 @@ Array = jnp.ndarray
 
 _JAC_E_WRT_I_FWD = jax.jit(jax.jacfwd(residual_bar_zI, argnums=1))
 _JAC_E_WRT_I_REV = jax.jit(jax.jacrev(residual_bar_zI, argnums=1))
+_JAC_E_WRT_Z_IX_FWD = jax.jit(jax.jacfwd(residual_bar_zIx, argnums=0))
+_JAC_E_WRT_IX_FWD = jax.jit(jax.jacfwd(residual_bar_zIx, argnums=(1, 2)))
 
 
 def _p_of_z_params(z_bar: Array, params: SolverParams) -> Array:
@@ -83,6 +85,152 @@ class TipJacobianResult:
     lam: float
 
 
+@dataclass
+class TipSensitivityResult:
+    """Return bundle for implicit tip sensitivity in control variables."""
+
+    p_tip_dim: Array
+    J_p_I: Array
+    J_p_x: Array
+    J_E_z: Optional[Array]
+    J_E_I: Optional[Array]
+    J_E_x: Optional[Array]
+    lam: float
+    stationarity_norm: float
+    condition_number: Optional[float]
+    status: str
+    method: str
+
+
+def _classify_conditioning(
+    *,
+    normE: float,
+    stationarity_norm: float,
+    condition_number: Optional[float],
+    weak_normE: float,
+    cond_warning: float,
+    cond_bad: float,
+) -> str:
+    if normE > weak_normE:
+        return "weak_equilibrium"
+    if condition_number is not None:
+        if (not jnp.isfinite(jnp.asarray(condition_number))) or float(condition_number) >= float(cond_bad):
+            return "ill_conditioned"
+        if float(condition_number) >= float(cond_warning):
+            return "weak_conditioning"
+    if stationarity_norm > 1.0:
+        return "weak_stationarity"
+    return "ok"
+
+
+def compute_tip_sensitivities_via_lm_adjoint(
+    *,
+    z_star_bar: Array,
+    params: SolverParams,
+    lm_stats: LMStats,
+    coil_currents: Array,
+    ridge: Optional[float] = None,
+    J_E_z: Optional[Array] = None,
+    materialize_jacobian: bool = True,
+    compute_conditioning: bool = False,
+    weak_normE: float = 1e-1,
+    cond_warning: float = 1e8,
+    cond_bad: float = 1e10,
+) -> TipSensitivityResult:
+    """Compute implicit tip sensitivity with respect to currents and protrusion.
+
+    The residual is overdetermined, so this uses the LM/Gauss-Newton
+    stationarity approximation rather than a square implicit-function solve.
+    The ``x`` derivative is taken through ``L1_dim``; for the current advancer
+    convention, ``dL1_dim / dL_protrude = 1`` away from clipping bounds.
+
+    Args:
+        z_star_bar: Equilibrium state in nondimensional units.
+        params: Solver parameters used by the FK solve.
+        lm_stats: LM diagnostics. ``lm_stats.J`` is reused if present, but is
+            not required.
+        coil_currents: Coil current vector in ampere.
+        ridge: Optional ridge added to the LM damping.
+        J_E_z: Optional precomputed ``dE/dz``. This can come from the FK
+            solver's cached ``jacobian_jit`` without storing it in ``lm_stats``.
+        materialize_jacobian: Must currently be true. The Jacobian may be
+            materialized inside this routine, but it is not stored back into
+            ``lm_stats``.
+        compute_conditioning: Whether to compute ``cond(H)`` for diagnostics.
+        weak_normE: Residual norm threshold above which sensitivity is weak.
+        cond_warning: Condition number threshold for weak conditioning.
+        cond_bad: Condition number threshold for ill conditioning.
+
+    Returns:
+        TipSensitivityResult with ``dp/dI`` and ``dp/dx``.
+    """
+    if not materialize_jacobian:
+        raise NotImplementedError("matrix-free implicit sensitivity is not enabled as the default path")
+    if lm_stats is None:
+        raise ValueError("lm_stats is required for damping and residual diagnostics")
+
+    I0 = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,)
+    z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
+    L1 = jnp.asarray(params.L1_dim, dtype=jnp.float64).reshape(())
+
+    if J_E_z is not None:
+        Jz = jnp.asarray(J_E_z, dtype=jnp.float64)
+    elif getattr(lm_stats, "J", None) is not None:
+        Jz = jnp.asarray(lm_stats.J, dtype=jnp.float64)
+    else:
+        Jz = _JAC_E_WRT_Z_IX_FWD(z0, I0, L1, params)
+
+    JI, Jx = _JAC_E_WRT_IX_FWD(z0, I0, L1, params)
+    JI = jnp.asarray(JI, dtype=jnp.float64)
+    Jx = jnp.asarray(Jx, dtype=jnp.float64).reshape((-1, 1))
+    B = jnp.concatenate([JI, Jx], axis=1)
+
+    dp_dz = _DP_DZ_REV(z0, params)
+    lam_used = float(lm_stats.lam)
+    if ridge is not None:
+        lam_used = float(lam_used + ridge)
+
+    Jt = jnp.transpose(Jz)
+    H = Jt @ Jz
+    nZ = H.shape[0]
+    H = H + lam_used * jnp.eye(nZ, dtype=H.dtype)
+
+    U = jnp.linalg.solve(H, jnp.transpose(dp_dz))
+    JT_B = Jt @ B
+    Jp_all = -jnp.transpose(U) @ JT_B
+
+    E = jnp.asarray(lm_stats.E_star, dtype=jnp.float64)
+    stationarity_norm = float(jnp.linalg.norm(Jt @ E))
+    condition_number = None
+    if bool(compute_conditioning):
+        condition_number = float(jnp.linalg.cond(H))
+    normE = float(getattr(lm_stats, "normE", jnp.linalg.norm(E)))
+    status = _classify_conditioning(
+        normE=normE,
+        stationarity_norm=stationarity_norm,
+        condition_number=condition_number,
+        weak_normE=float(weak_normE),
+        cond_warning=float(cond_warning),
+        cond_bad=float(cond_bad),
+    )
+
+    p_tip = _p_of_z_params(z0, params)
+    nI = int(I0.shape[0])
+    return TipSensitivityResult(
+        p_tip_dim=p_tip,
+        J_p_I=Jp_all[:, :nI],
+        J_p_x=Jp_all[:, nI],
+        J_E_z=Jz,
+        J_E_I=JI,
+        J_E_x=Jx[:, 0],
+        lam=float(lam_used),
+        stationarity_norm=float(stationarity_norm),
+        condition_number=condition_number,
+        status=str(status),
+        method="dense_implicit_transitional",
+    )
+
+
 def compute_dp_dI_via_lm_adjoint(
     *,
     z_star_bar: Array,
@@ -105,47 +253,21 @@ def compute_dp_dI_via_lm_adjoint(
     Returns:
         TipJacobianResult containing Jp (3 x nI) and intermediate Jacobians.
     """
-    I0 = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,)
-    z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
-
-    # 1) Reuse LM Jacobian dE/dz
-    if lm_stats.J is None:
-        raise ValueError("lm_stats.J is None. Call solve_lm(..., return_stats=True).")
-    Jz = jnp.asarray(lm_stats.J, dtype=jnp.float64)
-
-    # 2) Compute JI = dE/dI using a cached compiled transform
-    if jac_method_I == "fwd":
-        JI = _JAC_E_WRT_I_FWD(z0, I0, params)
-    elif jac_method_I == "rev":
-        JI = _JAC_E_WRT_I_REV(z0, I0, params)
-    else:
+    if jac_method_I not in ("fwd", "rev"):
         raise ValueError("jac_method_I must be 'fwd' or 'rev'")
-
-    # 3) dp/dz (cached; only 3 rows, reverse-mode is ideal)
-    dp_dz = _DP_DZ_REV(z0, params)  # (3, nZ)
-
-    # 4) Solve (J^T J + lam I) U = (dp/dz)^T for U (nZ x 3)
-    lam_used = float(lm_stats.lam)
-    if ridge is not None:
-        lam_used = float(lam_used + ridge)
-
-    Jt = jnp.transpose(Jz)
-    H = Jt @ Jz
-    nZ = H.shape[0]
-    H = H + lam_used * jnp.eye(nZ, dtype=H.dtype)
-
-    # Three RHS in one solve
-    U = jnp.linalg.solve(H, jnp.transpose(dp_dz))  # (nZ, 3)
-
-    # 5) Jp = - U^T (J^T JI)
-    JT_B = Jt @ JI  # (nZ, nI)
-    Jp = - jnp.transpose(U) @ JT_B  # (3, nI)
-
-    p_tip = _p_of_z_params(z0, params)
+    sens = compute_tip_sensitivities_via_lm_adjoint(
+        z_star_bar=z_star_bar,
+        params=params,
+        lm_stats=lm_stats,
+        coil_currents=coil_currents,
+        ridge=ridge,
+        J_E_z=None,
+        materialize_jacobian=True,
+    )
     return TipJacobianResult(
-        p_tip_dim=p_tip,
-        J_p_I=Jp,
-        J_E_z=Jz,
-        J_E_I=JI,
-        lam=float(lam_used),
+        p_tip_dim=sens.p_tip_dim,
+        J_p_I=sens.J_p_I,
+        J_E_z=jnp.asarray(sens.J_E_z),
+        J_E_I=jnp.asarray(sens.J_E_I),
+        lam=float(sens.lam),
     )
