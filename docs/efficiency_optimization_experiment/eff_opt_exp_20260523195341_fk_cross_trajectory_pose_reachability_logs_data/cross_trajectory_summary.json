@@ -1,0 +1,31 @@
+{
+  "threshold_mm": 11.0,
+  "old_final_proxy": {
+    "source": "docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/old_fk_tol1e-5/centerline_last_callback.npy",
+    "iter": 4500
+  },
+  "new_final_proxy": {
+    "source": "docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/new_fk_tol1e-5/centerline_last_callback.npy",
+    "iter": 2500
+  },
+  "new_trajectory_to_old_final_best_by_max_error": {
+    "source": "new_to_old_final_proxy",
+    "iter": 900,
+    "normE": 0.00027012698694248784,
+    "max_point_error_mm": 14.824489410071996,
+    "rms_point_error_mm": 12.063973076485764,
+    "mean_point_error_mm": 11.579686145719757,
+    "end_error_mm": 14.728762731958636
+  },
+  "old_trajectory_to_new_final_best_by_max_error": {
+    "source": "old_to_new_final_proxy",
+    "iter": 6100,
+    "normE": 5.137417244859058e-06,
+    "max_point_error_mm": 27.52400578014539,
+    "rms_point_error_mm": 13.038253974103416,
+    "mean_point_error_mm": 9.329829343968433,
+    "end_error_mm": 27.52400578014539
+  },
+  "new_reaches_old_final_by_10pct_L": false,
+  "old_reaches_new_final_by_10pct_L": false
+}
