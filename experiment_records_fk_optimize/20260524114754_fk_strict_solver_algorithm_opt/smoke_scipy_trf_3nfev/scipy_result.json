@@ -1,0 +1,9 @@
+{
+  "status": 0,
+  "message": "The maximum number of function evaluations is exceeded.",
+  "cost": 0.006990369259039045,
+  "optimality": 0.08996481307194379,
+  "nfev": 3,
+  "njev": 1,
+  "final_normE": 0.11824017302963527
+}

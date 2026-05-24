@@ -1,0 +1,23 @@
+	Command being timed: "conda run -n evolution_of_mcrs env XLA_PYTHON_CLIENT_PREALLOCATE=false python experiments/efficiency_optimization/fk_under_60s_driver.py --out_dir experiment_records_fk_optimize/20260524114754_fk_strict_solver_algorithm_opt/fk_pos_lm01_final1450 --case_name fk_pos_lm01_final1450 --mode continuation --classification speed-only result --scale_mode optimized --scale_include_external --warmup --tol 1e-5 --lm_damping 0.1 --damping_mode identity --dense_solve_method pos --current_factors 0,1.0 --stage_max_iter 60 --stage_tol 1e-3 --final_max_iter 1450 --final_tol 1e-5"
+	User time (seconds): 237.76
+	System time (seconds): 59.18
+	Percent of CPU this job got: 119%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 4:09.38
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2367384
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 205
+	Minor (reclaiming a frame) page faults: 1436138
+	Voluntary context switches: 857513
+	Involuntary context switches: 604
+	Swaps: 0
+	File system inputs: 19088
+	File system outputs: 46952
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

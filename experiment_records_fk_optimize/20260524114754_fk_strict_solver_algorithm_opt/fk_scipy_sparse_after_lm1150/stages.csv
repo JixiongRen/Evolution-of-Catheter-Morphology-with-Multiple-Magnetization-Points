@@ -1,0 +1,4 @@
+stage,current_factor,wall_s,ok,stop_reason,n_iter,normE,max_abs_E,max_iter,tol
+seed_continuation_00,0.0,29.044107755995356,True,converged,636,9.749385498494538e-06,3.5879862030413935e-06,1150,1e-05
+seed_continuation_01,1.0,53.86035371400067,False,max_iter,1150,2.5480922269648448e-05,1.1339345374044859e-05,1150,1e-05
+scipy_trust_region_refine,1.0,9.203313443009392,False,scipy_status_0,119,2.4980591636270755e-05,1.1126174136145341e-05,120,1e-05

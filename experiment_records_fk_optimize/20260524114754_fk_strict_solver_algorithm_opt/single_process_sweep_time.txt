@@ -1,0 +1,23 @@
+	Command being timed: "conda run -n evolution_of_mcrs env XLA_PYTHON_CLIENT_PREALLOCATE=false python experiment_records_fk_optimize/20260524114754_fk_strict_solver_algorithm_opt/run_single_process_sweep.py"
+	User time (seconds): 947.58
+	System time (seconds): 267.65
+	Percent of CPU this job got: 123%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 16:23.66
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 3730408
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 205
+	Minor (reclaiming a frame) page faults: 2201913
+	Voluntary context switches: 4339927
+	Involuntary context switches: 1514
+	Swaps: 0
+	File system inputs: 19088
+	File system outputs: 135208
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

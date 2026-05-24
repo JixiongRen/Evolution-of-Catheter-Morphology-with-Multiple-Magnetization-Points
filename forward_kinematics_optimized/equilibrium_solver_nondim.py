@@ -5,6 +5,7 @@ from typing import Any, Optional, Callable, Dict, Tuple
 
 import jax
 import jax.numpy as jnp
+import jax.scipy.linalg as jspl
 import jax.scipy.sparse.linalg as jsla
 
 from nondim import NondimScales, x_bar_to_dim, rhs_dim_to_rhs_bar_dsbar
@@ -972,6 +973,22 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         damping_mode: str = "identity",
     ) -> Tuple[Array, Array, Array, float, Dict[str, Any]]:
         """Solve the damped normal equation with a materialized dense Jacobian."""
+        H, g, damping_diag, g_norm, linear_info = self._build_dense_normal_system(
+            J,
+            E,
+            damping_mode=damping_mode,
+        )
+        dz = self._solve_dense_normal_step(H, g, damping_diag, lam)
+        return dz, g, damping_diag, g_norm, linear_info
+
+    def _build_dense_normal_system(
+        self,
+        J: Array,
+        E: Array,
+        *,
+        damping_mode: str = "identity",
+    ) -> Tuple[Array, Array, Array, float, Dict[str, Any]]:
+        """Materialize the dense normal-equation terms once per outer iteration."""
         g = jnp.transpose(J) @ E
         H = jnp.transpose(J) @ J
         damping_mode = str(damping_mode)
@@ -981,10 +998,31 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
             damping_diag = jnp.clip(jnp.diag(H), a_min=1e-12)
         else:
             raise ValueError("damping_mode must be 'identity' or 'diagH'")
-        A = H + lam * jnp.diag(damping_diag)
-        dz = jnp.linalg.solve(A, -g)
         g_norm = float(jnp.linalg.norm(g))
-        return dz, g, damping_diag, g_norm, {"method": "dense", "n": int(H.shape[0]), "damping_mode": damping_mode}
+        linear_info = {"method": "dense", "n": int(H.shape[0]), "damping_mode": damping_mode}
+        return H, g, damping_diag, g_norm, linear_info
+
+    def _solve_dense_normal_step(
+        self,
+        H: Array,
+        g: Array,
+        damping_diag: Array,
+        lam: float,
+        *,
+        dense_solve_method: str = "solve",
+    ) -> Array:
+        """Solve a dense damped normal equation for one damping value."""
+        A = H + float(lam) * jnp.diag(damping_diag)
+        dense_solve_method = str(dense_solve_method)
+        if dense_solve_method == "cholesky":
+            A = 0.5 * (A + jnp.transpose(A))
+            return jspl.cho_solve(jspl.cho_factor(A, lower=True, check_finite=False), -g, check_finite=False)
+        if dense_solve_method == "pos":
+            A = 0.5 * (A + jnp.transpose(A))
+            return jspl.solve(A, -g, assume_a="pos", check_finite=False)
+        if dense_solve_method != "solve":
+            raise ValueError("dense_solve_method must be 'solve', 'pos', or 'cholesky'")
+        return jnp.linalg.solve(A, -g)
 
     def _solve_matrix_free_cg_step(
         self,
@@ -1056,9 +1094,13 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         cg_damping_preconditioner: bool = True,
         stats_include_jacobian: bool = True,
         damping_mode: str = "identity",
+        dense_solve_method: str = "solve",
         step_norm_clip: Optional[float] = None,
         backtrack_max: int = 0,
         backtrack_factor: float = 0.5,
+        trust_region_eta: Optional[float] = None,
+        max_damping_attempts: int = 1,
+        reject_lam_gain: float = 10.0,
     ):
         """Same algorithm as :meth:`MultiSegmentEquilibriumSolverNondimJAX.solve_lm`.
 
@@ -1082,9 +1124,15 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         damping_mode = str(damping_mode)
         if damping_mode not in ("identity", "diagH"):
             raise ValueError("damping_mode must be 'identity' or 'diagH'")
+        dense_solve_method = str(dense_solve_method)
+        if dense_solve_method not in ("solve", "pos", "cholesky"):
+            raise ValueError("dense_solve_method must be 'solve', 'pos', or 'cholesky'")
         step_norm_clip_f = None if step_norm_clip is None else float(step_norm_clip)
         backtrack_max = max(int(backtrack_max), 0)
         backtrack_factor = float(backtrack_factor)
+        trust_region_eta_f = None if trust_region_eta is None else float(trust_region_eta)
+        max_damping_attempts = max(int(max_damping_attempts), 1)
+        reject_lam_gain = float(reject_lam_gain)
 
         if verbose:
             print(f"[Multi-LM-JAX] iter=0, ||E||={normE:.3e}, lambda={lam:.3e}")
@@ -1110,13 +1158,21 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
 
             if linear_solver == "dense":
                 J = self.jacobian_jit(z, params, method=jac_method)
-                dz, g, damping_diag, g_norm, last_linear_info = self._solve_dense_step(
+                H, g, damping_diag, g_norm, last_linear_info = self._build_dense_normal_system(
                     J,
                     E,
-                    lam,
                     damping_mode=damping_mode,
                 )
+                dz = self._solve_dense_normal_step(
+                    H,
+                    g,
+                    damping_diag,
+                    lam,
+                    dense_solve_method=dense_solve_method,
+                )
             else:
+                J = None
+                H = None
                 dz, g, g_norm, last_linear_info = self._solve_matrix_free_cg_step(
                     z,
                     params,
@@ -1132,58 +1188,103 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
             if g_norm < gtol:
                 if verbose:
                     print(f"[Multi-LM-JAX] stop: small gradient ||J^T E||={g_norm:.3e} < {gtol:.3e}")
-                return self._pack_return(z, params, True, tol=tol, lam=lam, jac_method=jac_method,
+                return self._pack_return(z, params, False, tol=tol, lam=lam, jac_method=jac_method,
                                          stop_reason="gtol", n_iter=it+1, return_stats=return_stats,
                                          linear_solver=linear_solver, linear_info=last_linear_info,
                                          stats_include_jacobian=stats_include_jacobian)
 
-            dz_norm = float(jnp.linalg.norm(dz))
-            if step_norm_clip_f is not None and dz_norm > step_norm_clip_f:
-                dz = dz * (step_norm_clip_f / max(dz_norm, 1e-18))
-                dz_norm = float(jnp.linalg.norm(dz))
-            if dz_norm < xtol:
-                if verbose:
-                    print(f"[Multi-LM-JAX] stop: small step ||dz||={dz_norm:.3e} < {xtol:.3e}")
-                return self._pack_return(z, params, True, tol=tol, lam=lam, jac_method=jac_method,
-                                         stop_reason="xtol", n_iter=it+1, return_stats=return_stats,
-                                         linear_solver=linear_solver, linear_info=last_linear_info,
-                                         stats_include_jacobian=stats_include_jacobian)
+            step_accepted = False
+            tiny_step = False
+            last_rho = 0.0
+            last_act_red = 0.0
+            last_pred_red = 0.0
+            for attempt in range(max_damping_attempts):
+                if attempt > 0 and linear_solver == "dense":
+                    dz = self._solve_dense_normal_step(
+                        H,
+                        g,
+                        damping_diag,
+                        lam,
+                        dense_solve_method=dense_solve_method,
+                    )
+                elif attempt > 0:
+                    dz, g, g_norm, last_linear_info = self._solve_matrix_free_cg_step(
+                        z,
+                        params,
+                        E,
+                        lam,
+                        cg_tol=float(cg_tol),
+                        cg_atol=float(cg_atol),
+                        cg_max_iter=cg_max_iter,
+                        use_damping_preconditioner=bool(cg_damping_preconditioner),
+                    )
+                    damping_diag = jnp.ones((dz.shape[0],), dtype=dz.dtype)
 
-            z_new = z + dz
-            E_new = self.residual_jit(z_new, params)
-            normE_new = float(jnp.linalg.norm(E_new))
-            cost_new = 0.5 * normE_new * normE_new
-            backtrack_count = 0
-            while (
-                backtrack_count < backtrack_max
-                and ((not jnp.isfinite(cost_new)) or (not jnp.isfinite(normE_new)) or cost_new >= cost)
-            ):
-                dz = dz * backtrack_factor
                 dz_norm = float(jnp.linalg.norm(dz))
+                if step_norm_clip_f is not None and dz_norm > step_norm_clip_f:
+                    dz = dz * (step_norm_clip_f / max(dz_norm, 1e-18))
+                    dz_norm = float(jnp.linalg.norm(dz))
+                if dz_norm < xtol:
+                    tiny_step = True
+                    break
+
                 z_new = z + dz
                 E_new = self.residual_jit(z_new, params)
                 normE_new = float(jnp.linalg.norm(E_new))
                 cost_new = 0.5 * normE_new * normE_new
-                backtrack_count += 1
+                backtrack_count = 0
+                while (
+                    backtrack_count < backtrack_max
+                    and ((not jnp.isfinite(cost_new)) or (not jnp.isfinite(normE_new)) or cost_new >= cost)
+                ):
+                    dz = dz * backtrack_factor
+                    dz_norm = float(jnp.linalg.norm(dz))
+                    z_new = z + dz
+                    E_new = self.residual_jit(z_new, params)
+                    normE_new = float(jnp.linalg.norm(E_new))
+                    cost_new = 0.5 * normE_new * normE_new
+                    backtrack_count += 1
 
-            if (not jnp.isfinite(cost_new)) or (not jnp.isfinite(normE_new)):
-                lam = min(lam * 10.0, lam_max)
-                consecutive_reject += 1
+                if (not jnp.isfinite(cost_new)) or (not jnp.isfinite(normE_new)):
+                    lam = min(lam * reject_lam_gain, lam_max)
+                    continue
+
+                use_model_prediction = (
+                    trust_region_eta_f is not None
+                    or step_norm_clip_f is not None
+                    or backtrack_count > 0
+                )
+                if not use_model_prediction:
+                    pred_red = 0.5 * float(dz @ (lam * damping_diag * dz - g))
+                elif linear_solver == "dense":
+                    jdz = J @ dz
+                    model_norm = float(jnp.linalg.norm(E + jdz))
+                    pred_red = float(cost - 0.5 * model_norm * model_norm)
+                else:
+                    jdz = self._j_residual(z, params, dz)
+                    model_norm = float(jnp.linalg.norm(E + jdz))
+                    pred_red = float(cost - 0.5 * model_norm * model_norm)
+                act_red = float(cost - cost_new)
+                rho = act_red / (pred_red + 1e-30)
+                last_rho = float(rho)
+                last_act_red = float(act_red)
+                last_pred_red = float(pred_red)
+                accept_by_rho = True if trust_region_eta_f is None else (rho >= trust_region_eta_f)
+
+                if act_red > 0 and accept_by_rho:
+                    step_accepted = True
+                    break
+                lam = min(lam * reject_lam_gain, lam_max)
+
+            if tiny_step:
                 if verbose:
-                    print(f"[Multi-LM-JAX] iter={it+1}, NaN/Inf -> lambda={lam:.3e} reject")
-                if consecutive_reject >= reject_patience:
-                    return self._pack_return(z, params, False, tol=tol, lam=lam, jac_method=jac_method,
-                                             stop_reason="nan_reject_patience", n_iter=it+1, return_stats=return_stats,
-                                             linear_solver=linear_solver, linear_info=last_linear_info,
-                                             stats_include_jacobian=stats_include_jacobian)
-                continue
+                    print(f"[Multi-LM-JAX] stop: small step ||dz||={dz_norm:.3e} < {xtol:.3e}")
+                return self._pack_return(z, params, False, tol=tol, lam=lam, jac_method=jac_method,
+                                         stop_reason="xtol", n_iter=it+1, return_stats=return_stats,
+                                         linear_solver=linear_solver, linear_info=last_linear_info,
+                                         stats_include_jacobian=stats_include_jacobian)
 
-            # Predicted reduction (standard LM model)
-            pred_red = 0.5 * float(dz @ (lam * damping_diag * dz - g))
-            act_red = float(cost - cost_new)
-            rho = act_red / (pred_red + 1e-30)
-
-            if act_red > 0:
+            if step_accepted:
                 # accept
                 z, E, normE, cost = z_new, E_new, normE_new, cost_new
                 consecutive_reject = 0
@@ -1193,30 +1294,29 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                 else:
                     no_improve += 1
 
-                if rho > 0.75:
+                if last_rho > 0.75:
                     lam *= 0.3
-                elif rho < 0.25:
-                    lam *= 10.0
+                elif last_rho < 0.25:
+                    lam *= reject_lam_gain
                 lam = float(min(max(lam, 1e-30), lam_max))
 
                 if verbose and (it + 1) % 1000 == 0:
                     # keep the same format as original class (approx.)
-                    arrow = "↓↓" if rho > 0.75 else ("↑↑" if rho < 0.25 else "--")
-                    print(f"[Multi-LM-JAX] iter={it+1}, ||E||={normE:.3e}, lambda={lam:.3e} {arrow}, rho={rho:.2f}, no_improve={no_improve}/{patience}")
+                    arrow = "↓↓" if last_rho > 0.75 else ("↑↑" if last_rho < 0.25 else "--")
+                    print(f"[Multi-LM-JAX] iter={it+1}, ||E||={normE:.3e}, lambda={lam:.3e} {arrow}, rho={last_rho:.2f}, no_improve={no_improve}/{patience}")
 
                 if no_improve >= patience:
                     if verbose:
                         print("[Multi-LM-JAX] stop: no-improve patience reached")
-                    return self._pack_return(z, params, True, tol=tol, lam=lam, jac_method=jac_method,
+                    return self._pack_return(z, params, False, tol=tol, lam=lam, jac_method=jac_method,
                                              stop_reason="patience", n_iter=it+1, return_stats=return_stats,
                                              linear_solver=linear_solver, linear_info=last_linear_info,
                                              stats_include_jacobian=stats_include_jacobian)
             else:
                 # reject
                 consecutive_reject += 1
-                lam = min(lam * 10.0, lam_max)
                 if verbose and (it + 1) % 1000 == 0:
-                    print(f"[Multi-LM-JAX] iter={it+1}, reject, ||E||={normE:.3e}, lambda={lam:.3e}, rho={rho:.2f}")
+                    print(f"[Multi-LM-JAX] iter={it+1}, reject, ||E||={normE:.3e}, lambda={lam:.3e}, rho={last_rho:.2f}")
 
                 if consecutive_reject >= reject_patience:
                     if verbose:

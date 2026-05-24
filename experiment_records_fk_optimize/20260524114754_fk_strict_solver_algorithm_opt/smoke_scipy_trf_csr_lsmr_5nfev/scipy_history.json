@@ -1,0 +1,14 @@
+[
+  {
+    "callback_index": 0,
+    "normE": 0.010922618310146683,
+    "fun_calls": 4,
+    "jac_calls": 2
+  },
+  {
+    "callback_index": 1,
+    "normE": 0.010970465041125784,
+    "fun_calls": 5,
+    "jac_calls": 2
+  }
+]

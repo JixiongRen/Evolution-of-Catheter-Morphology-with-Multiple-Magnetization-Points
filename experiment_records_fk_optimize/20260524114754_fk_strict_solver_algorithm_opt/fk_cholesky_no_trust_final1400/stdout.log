@@ -1,0 +1,106 @@
+{
+  "case_name": "fk_cholesky_no_trust_final1400",
+  "mode": "continuation",
+  "classification": "speed-only result",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 1400,
+  "final_lam": 9.404610869859987e-07,
+  "wall_s": 61.037722743014456,
+  "first_call_compile_s": 168.26782818300126,
+  "steady_solve_s": 61.037722743014456,
+  "wall_s_including_warmup": 229.3055509260157,
+  "final_normE": 4.863547281402849e-05,
+  "max_abs_E": 1.7097879984628263e-05,
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "centerline_start_m": [
+    2.2839794581743857e-10,
+    -1.4436049361096043e-10,
+    4.23323030313219e-11
+  ],
+  "centerline_end_m": [
+    0.014828022906430535,
+    -0.07344667486698893,
+    0.04131926162150037
+  ],
+  "scale": {
+    "mode": "optimized",
+    "include_external": true,
+    "L_ref": 0.11,
+    "F_ref": 1.0602875205865552,
+    "M_ref": 0.00039608620418474146
+  },
+  "warmup": {
+    "residual_s": 40.888809424999636,
+    "jacobian_s": 119.81059256799927,
+    "lm_step_s": 2.3620804880047217,
+    "total_s": 168.26782818300126
+  },
+  "stages": [
+    {
+      "stage": "continuation_00",
+      "current_factor": 0.0,
+      "wall_s": 0.5919724080013111,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 8,
+      "normE": 0.000703346150600556,
+      "max_abs_E": 0.00018590088641020817,
+      "max_iter": 60,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_01",
+      "current_factor": 1.0,
+      "wall_s": 2.463588733007782,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 60,
+      "normE": 0.011379165842665828,
+      "max_abs_E": 0.00466371153892613,
+      "max_iter": 60,
+      "tol": 0.001
+    },
+    {
+      "stage": "final_refine",
+      "current_factor": 1.0,
+      "wall_s": 57.98216160200536,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 1400,
+      "normE": 4.863547281402849e-05,
+      "max_abs_E": 1.7097879984628263e-05,
+      "max_iter": 1400,
+      "tol": 1e-05
+    }
+  ],
+  "references": {
+    "current_new_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/new_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.03314223484908313,
+      "rms_point_error_m": 0.016067145461298515,
+      "mean_point_error_m": 0.012073956051269414,
+      "end_error_m": 0.03314223484908313,
+      "max_rel_to_L_ref": 0.3012930440825739,
+      "end_rel_to_L_ref": 0.3012930440825739
+    },
+    "legacy_old_cli_tol1e-5": {
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/old_fk_tol1e-5/centerline_last_callback.npy",
+      "status": "ok",
+      "point_count": 48,
+      "max_point_error_m": 0.01473630542205604,
+      "rms_point_error_m": 0.0097127716124287,
+      "mean_point_error_m": 0.009063475552182615,
+      "end_error_m": 0.01473630542205604,
+      "max_rel_to_L_ref": 0.13396641292778216,
+      "end_rel_to_L_ref": 0.13396641292778216
+    }
+  },
+  "rss_mb": 2160.80078125,
+  "process_wall_s": 248.99590881500626
+}

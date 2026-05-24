@@ -90,9 +90,13 @@ class ForwardKinematicsEngine:
             cg_max_iter: Optional[int] = None,
             cg_damping_preconditioner: bool = True,
             damping_mode: str = "identity",
+            dense_solve_method: str = "solve",
             step_norm_clip: Optional[float] = None,
             backtrack_max: int = 0,
             backtrack_factor: float = 0.5,
+            trust_region_eta: Optional[float] = None,
+            max_damping_attempts: int = 1,
+            reject_lam_gain: float = 10.0,
             scale_mode: str = "optimized",
             scale_include_external: bool = False,
             L_protrude_max: Optional[float] = None,
@@ -141,9 +145,15 @@ class ForwardKinematicsEngine:
         self.damping_mode = str(damping_mode)
         if self.damping_mode not in ("identity", "diagH"):
             raise ValueError("damping_mode must be 'identity' or 'diagH'")
+        self.dense_solve_method = str(dense_solve_method)
+        if self.dense_solve_method not in ("solve", "pos", "cholesky"):
+            raise ValueError("dense_solve_method must be 'solve', 'pos', or 'cholesky'")
         self.step_norm_clip = None if step_norm_clip is None else float(step_norm_clip)
         self.backtrack_max = int(backtrack_max)
         self.backtrack_factor = float(backtrack_factor)
+        self.trust_region_eta = None if trust_region_eta is None else float(trust_region_eta)
+        self.max_damping_attempts = int(max_damping_attempts)
+        self.reject_lam_gain = float(reject_lam_gain)
         self.scale_mode = str(scale_mode).lower()
         if self.scale_mode not in ("optimized", "legacy"):
             raise ValueError("scale_mode must be 'optimized' or 'legacy'")
@@ -245,9 +255,13 @@ class ForwardKinematicsEngine:
             cg_max_iter=self.cg_max_iter,
             cg_damping_preconditioner=self.cg_damping_preconditioner,
             damping_mode=self.damping_mode,
+            dense_solve_method=self.dense_solve_method,
             step_norm_clip=self.step_norm_clip,
             backtrack_max=self.backtrack_max,
             backtrack_factor=self.backtrack_factor,
+            trust_region_eta=self.trust_region_eta,
+            max_damping_attempts=self.max_damping_attempts,
+            reject_lam_gain=self.reject_lam_gain,
             verbose=False,
         )
 
@@ -327,9 +341,13 @@ class ForwardKinematicsEngine:
                 cg_max_iter=self.cg_max_iter,
                 cg_damping_preconditioner=self.cg_damping_preconditioner,
                 damping_mode=self.damping_mode,
+                dense_solve_method=self.dense_solve_method,
                 step_norm_clip=self.step_norm_clip,
                 backtrack_max=self.backtrack_max,
                 backtrack_factor=self.backtrack_factor,
+                trust_region_eta=self.trust_region_eta,
+                max_damping_attempts=self.max_damping_attempts,
+                reject_lam_gain=self.reject_lam_gain,
                 stats_include_jacobian=bool(stats_include_jacobian),
                 verbose=bool(verbose),
             )
@@ -347,9 +365,13 @@ class ForwardKinematicsEngine:
                 cg_max_iter=self.cg_max_iter,
                 cg_damping_preconditioner=self.cg_damping_preconditioner,
                 damping_mode=self.damping_mode,
+                dense_solve_method=self.dense_solve_method,
                 step_norm_clip=self.step_norm_clip,
                 backtrack_max=self.backtrack_max,
                 backtrack_factor=self.backtrack_factor,
+                trust_region_eta=self.trust_region_eta,
+                max_damping_attempts=self.max_damping_attempts,
+                reject_lam_gain=self.reject_lam_gain,
                 verbose=bool(verbose),
             )
             stats = None
@@ -423,9 +445,13 @@ class ForwardKinematicsEngine:
                 cg_max_iter=self.cg_max_iter,
                 cg_damping_preconditioner=self.cg_damping_preconditioner,
                 damping_mode=self.damping_mode,
+                dense_solve_method=self.dense_solve_method,
                 step_norm_clip=self.step_norm_clip,
                 backtrack_max=self.backtrack_max,
                 backtrack_factor=self.backtrack_factor,
+                trust_region_eta=self.trust_region_eta,
+                max_damping_attempts=self.max_damping_attempts,
+                reject_lam_gain=self.reject_lam_gain,
                 return_stats=False,
                 verbose=False,
             )

@@ -1,0 +1,5 @@
+{"case_name": "sweep_cholesky_lm01_final1400", "ok": false, "wall_s": 64.2759555499797, "final_normE": 1.239155929186801e-05, "n_iter": 1400, "process_wall_s": 249.96641741899657}
+{"case_name": "sweep_cholesky_lm003_final1400", "ok": false, "wall_s": 63.01851955498569, "final_normE": 0.00011170950657166538, "n_iter": 1400, "process_wall_s": 197.09781629400095}
+{"case_name": "sweep_cholesky_lm1_final1400", "ok": false, "wall_s": 61.75315518799471, "final_normE": 5.239017018432858e-05, "n_iter": 1400, "process_wall_s": 200.46100765900337}
+{"case_name": "sweep_cholesky_trust_eta001_final1400", "ok": false, "wall_s": 62.616056867016596, "final_normE": 2.4189285467090675e-05, "n_iter": 1400, "process_wall_s": 202.34268354698725}
+{"case_name": "sweep_cholesky_trust_eta0001_final1400", "ok": false, "wall_s": 63.91048730099283, "final_normE": 2.4189285467090675e-05, "n_iter": 1400, "process_wall_s": 202.40774630798842}

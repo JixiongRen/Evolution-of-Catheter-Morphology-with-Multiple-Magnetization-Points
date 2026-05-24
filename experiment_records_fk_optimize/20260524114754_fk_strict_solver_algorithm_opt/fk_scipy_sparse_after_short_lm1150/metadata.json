@@ -1,0 +1,113 @@
+{
+  "timestamp": "2026-05-24 12:05:04",
+  "repo_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points",
+  "git_commit": "3388f702054a528d67d226699356ca83b13dbf78",
+  "jax_backend": "gpu",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "jax_enable_x64": true,
+  "xla_preallocate": "false",
+  "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "calib_reason": "requested_path_missing_used_repo_fallback",
+  "fixed_case": {
+    "flex_lengths_tail": [
+      0.03,
+      0.03
+    ],
+    "rigid_lengths": [
+      0.003,
+      0.003,
+      0.003
+    ],
+    "L_protrude": 0.11,
+    "M_list": [
+      5,
+      5,
+      5
+    ],
+    "enable_gravity": true,
+    "enable_magnetics": true,
+    "coil_currents": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      50.0,
+      0.0,
+      0.0
+    ],
+    "m_body_list": [
+      [
+        0.0,
+        0.0,
+        -0.005301
+      ],
+      [
+        0.0,
+        0.0,
+        0.005301
+      ],
+      [
+        0.005301,
+        0.0,
+        0.0
+      ]
+    ],
+    "p0": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Q0": [
+      0.70710678,
+      0.0,
+      0.70710678,
+      0.0
+    ],
+    "axis_body": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "args": {
+    "out_dir": "experiment_records_fk_optimize/20260524114754_fk_strict_solver_algorithm_opt/fk_scipy_sparse_after_short_lm1150",
+    "case_name": "fk_scipy_sparse_after_short_lm1150",
+    "mode": "scipy_trust_region",
+    "classification": "speed-only result",
+    "max_iter": 5000,
+    "tol": 1e-05,
+    "lm_damping": 0.3,
+    "jac_method": "fwd",
+    "damping_mode": "identity",
+    "step_norm_clip": null,
+    "backtrack_max": 0,
+    "backtrack_factor": 0.5,
+    "scale_mode": "optimized",
+    "scale_include_external": true,
+    "warmup": true,
+    "current_factors": "0,1.0",
+    "coarse_M_list": "2,2,2",
+    "stage_max_iter": 60,
+    "stage_tol": 0.001,
+    "final_max_iter": 1000,
+    "final_tol": 1e-05,
+    "rigid_sample_count": 10,
+    "scipy_seed_mode": "continuation",
+    "scipy_seed_final_lm_iter": 1150,
+    "scipy_method": "trf",
+    "scipy_tr_solver": "lsmr",
+    "scipy_jac_format": "csr_exact",
+    "scipy_jac_threshold": 1e-12,
+    "scipy_x_scale": "jac",
+    "scipy_ftol": 1e-12,
+    "scipy_xtol": 1e-12,
+    "scipy_gtol": 1e-12,
+    "scipy_max_nfev": 120,
+    "scipy_regularize": true,
+    "reference_new_centerline": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/new_fk_tol1e-5/centerline_last_callback.npy",
+    "reference_old_centerline": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/docs/efficiency_optimization_experiment/eff_opt_exp_20260523192724_fk_old_new_same_params_compare_logs_data/old_fk_tol1e-5/centerline_last_callback.npy"
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "case_name": "fk_pos_lm01_shortstage_final1450_production",
+    "reference": "fk_driver_lm03_solve_strict_baseline",
+    "point_count": 48,
+    "max_point_error_m": 0.00011540541774330057,
+    "rms_point_error_m": 0.00010130736416658935,
+    "end_error_m": 0.00011167746602103746,
+    "max_rel_to_L_ref": 0.0010491401613027325
+  },
+  {
+    "case_name": "fk_pos_lm01_shortstage_final1450",
+    "reference": "fk_driver_lm03_solve_strict_baseline",
+    "point_count": 48,
+    "max_point_error_m": 0.00011540541774330057,
+    "rms_point_error_m": 0.00010130736416658935,
+    "end_error_m": 0.00011167746602103746,
+    "max_rel_to_L_ref": 0.0010491401613027325
+  },
+  {
+    "case_name": "fk_pos_lm01_final1450",
+    "reference": "fk_driver_lm03_solve_strict_baseline",
+    "point_count": 48,
+    "max_point_error_m": 5.98966537493387e-06,
+    "rms_point_error_m": 5.324771046027864e-06,
+    "end_error_m": 5.675808533559317e-06,
+    "max_rel_to_L_ref": 5.445150340848973e-05
+  },
+  {
+    "case_name": "fk_driver_lm03_solve_strict_baseline",
+    "reference": "fk_driver_lm03_solve_strict_baseline",
+    "point_count": 48,
+    "max_point_error_m": 0.0,
+    "rms_point_error_m": 0.0,
+    "end_error_m": 0.0,
+    "max_rel_to_L_ref": 0.0
+  }
+]

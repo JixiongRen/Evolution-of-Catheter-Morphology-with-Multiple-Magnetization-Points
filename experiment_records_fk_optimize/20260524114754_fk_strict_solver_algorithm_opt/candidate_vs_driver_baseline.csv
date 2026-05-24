@@ -1,0 +1,5 @@
+case_name,reference,point_count,max_point_error_m,rms_point_error_m,end_error_m,max_rel_to_L_ref
+fk_pos_lm01_shortstage_final1450_production,fk_driver_lm03_solve_strict_baseline,48,0.00011540541774330057,0.00010130736416658935,0.00011167746602103746,0.0010491401613027325
+fk_pos_lm01_shortstage_final1450,fk_driver_lm03_solve_strict_baseline,48,0.00011540541774330057,0.00010130736416658935,0.00011167746602103746,0.0010491401613027325
+fk_pos_lm01_final1450,fk_driver_lm03_solve_strict_baseline,48,5.98966537493387e-06,5.324771046027864e-06,5.675808533559317e-06,5.445150340848973e-05
+fk_driver_lm03_solve_strict_baseline,fk_driver_lm03_solve_strict_baseline,48,0.0,0.0,0.0,0.0
