@@ -1,0 +1,23 @@
+	Command being timed: "conda run -n evolution_of_mcrs env XLA_PYTHON_CLIENT_PREALLOCATE=false python experiment_records_fk_optimize/20260524180122_fk_M5_to_M10_current20_validation/run_fk_M5_to_M10_validation.py"
+	User time (seconds): 8943.38
+	System time (seconds): 2204.29
+	Percent of CPU this job got: 115%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:41:22
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 13537984
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 9907
+	Minor (reclaiming a frame) page faults: 9902186
+	Voluntary context switches: 34454742
+	Involuntary context switches: 9909
+	Swaps: 0
+	File system inputs: 2289168
+	File system outputs: 900000
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

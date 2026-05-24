@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-05-24 14:51:32",
+  "repo_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points",
+  "jax_backend": "cpu",
+  "jax_devices": [
+    "TFRT_CPU_0"
+  ],
+  "xla_preallocate": "false",
+  "case_count": 18
+}

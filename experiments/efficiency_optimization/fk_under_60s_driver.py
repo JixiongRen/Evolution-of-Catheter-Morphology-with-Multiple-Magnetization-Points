@@ -59,6 +59,45 @@ def _parse_factors(text: str) -> list[float]:
     return [float(item.strip()) for item in str(text).split(",") if item.strip()]
 
 
+def _parse_float_vector(text: str, *, expected: Optional[int] = None) -> tuple[float, ...]:
+    values = tuple(float(item.strip()) for item in str(text).split(",") if item.strip())
+    if expected is not None and len(values) != int(expected):
+        raise ValueError(f"Expected {expected} values, got {len(values)} from {text!r}")
+    return values
+
+
+def _parse_int_tuple(text: str, *, expected: Optional[int] = None) -> tuple[int, ...]:
+    values = tuple(int(item.strip()) for item in str(text).split(",") if item.strip())
+    if expected is not None and len(values) != int(expected):
+        raise ValueError(f"Expected {expected} values, got {len(values)} from {text!r}")
+    return values
+
+
+def _parse_m_body_list(text: str) -> tuple[tuple[float, float, float], ...]:
+    rows = []
+    for row in str(text).split(";"):
+        row = row.strip()
+        if not row:
+            continue
+        values = _parse_float_vector(row, expected=3)
+        rows.append((values[0], values[1], values[2]))
+    if not rows:
+        raise ValueError("m_body_list must contain at least one 3-vector")
+    return tuple(rows)
+
+
+def _target_currents(args: argparse.Namespace) -> jnp.ndarray:
+    return jnp.asarray(_parse_float_vector(args.coil_currents, expected=8), dtype=jnp.float64)
+
+
+def _target_m_body(args: argparse.Namespace) -> tuple[tuple[float, float, float], ...]:
+    return _parse_m_body_list(args.m_body_list)
+
+
+def _target_M_list(args: argparse.Namespace) -> tuple[int, ...]:
+    return _parse_int_tuple(args.M_list, expected=3)
+
+
 def _rss_mb() -> float:
     return float(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) / 1024.0
 
@@ -76,13 +115,14 @@ def _build_engine(
     *,
     max_iter: int,
     tol: float,
-    M_list: tuple[int, int, int] = (5, 5, 5),
+    M_list: Optional[tuple[int, ...]] = None,
 ) -> ForwardKinematicsEngine:
     calib_file, _calib_reason = _get_calib_file()
+    m_list = _target_M_list(args) if M_list is None else tuple(int(v) for v in M_list)
     return ForwardKinematicsEngine(
         flex_lengths_tail=(0.03, 0.03),
         rigid_lengths=(0.003, 0.003, 0.003),
-        M_list=M_list,
+        M_list=m_list,
         L1_min=1e-6,
         flex_d_outer=(0.0015,),
         flex_E=(1.8e6,),
@@ -103,7 +143,7 @@ def _build_engine(
             / "actuation_tables"
             / "actuation_table.pkl"
         ),
-        m_body_list=TARGET_M_BODY,
+        m_body_list=_target_m_body(args),
         max_iter=int(max_iter),
         tol=float(tol),
         lm_damping=float(args.lm_damping),
@@ -325,8 +365,8 @@ def _solve_once(
 
 
 def run_direct(args: argparse.Namespace, out_dir: Path) -> dict[str, Any]:
-    engine = _build_engine(args, max_iter=int(args.max_iter), tol=float(args.tol))
-    target = jnp.asarray(TARGET_CURRENTS, dtype=jnp.float64)
+    engine = _build_engine(args, max_iter=int(args.max_iter), tol=float(args.tol), M_list=_target_M_list(args))
+    target = _target_currents(args)
     warmup = engine.warm_up(coil_currents=target, L_protrude=0.11) if bool(args.warmup) else {}
     z_star, params, _meshes, ok, stats, row = _solve_once(
         engine,
@@ -340,8 +380,8 @@ def run_direct(args: argparse.Namespace, out_dir: Path) -> dict[str, Any]:
 
 
 def run_continuation(args: argparse.Namespace, out_dir: Path) -> dict[str, Any]:
-    target = jnp.asarray(TARGET_CURRENTS, dtype=jnp.float64)
-    engine = _build_engine(args, max_iter=int(args.stage_max_iter), tol=float(args.stage_tol))
+    target = _target_currents(args)
+    engine = _build_engine(args, max_iter=int(args.stage_max_iter), tol=float(args.stage_tol), M_list=_target_M_list(args))
 
     # Compile and initialize static scale using target current, not the zero-current stage.
     warmup = engine.warm_up(coil_currents=target, L_protrude=0.11) if bool(args.warmup) else {}
@@ -381,7 +421,7 @@ def run_continuation(args: argparse.Namespace, out_dir: Path) -> dict[str, Any]:
 def run_coarse_to_fine(args: argparse.Namespace, out_dir: Path) -> dict[str, Any]:
     target = jnp.asarray(TARGET_CURRENTS, dtype=jnp.float64)
     coarse_M = tuple(int(v) for v in str(args.coarse_M_list).split(","))
-    fine_M = (5, 5, 5)
+    fine_M = _target_M_list(args)
     if len(coarse_M) != 3:
         raise ValueError("coarse_M_list must contain three integers")
 
@@ -467,8 +507,8 @@ def run_scipy_trust_region(args: argparse.Namespace, out_dir: Path) -> dict[str,
     from scipy.optimize import least_squares
     from scipy import sparse
 
-    target = jnp.asarray(TARGET_CURRENTS, dtype=jnp.float64)
-    engine = _build_engine(args, max_iter=int(args.stage_max_iter), tol=float(args.stage_tol), M_list=(5, 5, 5))
+    target = _target_currents(args)
+    engine = _build_engine(args, max_iter=int(args.stage_max_iter), tol=float(args.stage_tol), M_list=_target_M_list(args))
     warmup = engine.warm_up(coil_currents=target, L_protrude=0.11) if bool(args.warmup) else {}
     stages: list[dict[str, Any]] = []
 
@@ -713,6 +753,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--case_name", default="fk_under_60s_candidate")
     parser.add_argument("--mode", choices=["direct", "continuation", "coarse_to_fine", "scipy_trust_region"], default="direct")
     parser.add_argument("--classification", default="speed-only result")
+    parser.add_argument("--coil_currents", default=",".join(str(v) for v in TARGET_CURRENTS))
+    parser.add_argument(
+        "--m_body_list",
+        default="; ".join(",".join(str(v) for v in row) for row in TARGET_M_BODY),
+    )
+    parser.add_argument("--M_list", default="5,5,5")
     parser.add_argument("--max_iter", type=int, default=5000)
     parser.add_argument("--tol", type=float, default=1e-5)
     parser.add_argument("--lm_damping", type=float, default=1e-1)
@@ -777,6 +823,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     out_dir = Path(args.out_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     calib_file, calib_reason = _get_calib_file()
+    target_currents = _parse_float_vector(args.coil_currents, expected=8)
+    target_m_body = _target_m_body(args)
+    target_M_list = _target_M_list(args)
     metadata = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "repo_root": str(REPO_ROOT),
@@ -791,11 +840,11 @@ def main(argv: Optional[list[str]] = None) -> int:
             "flex_lengths_tail": [0.03, 0.03],
             "rigid_lengths": [0.003, 0.003, 0.003],
             "L_protrude": 0.11,
-            "M_list": [5, 5, 5],
+            "M_list": list(target_M_list),
             "enable_gravity": True,
             "enable_magnetics": True,
-            "coil_currents": list(TARGET_CURRENTS),
-            "m_body_list": [list(item) for item in TARGET_M_BODY],
+            "coil_currents": list(target_currents),
+            "m_body_list": [list(item) for item in target_m_body],
             "p0": [0.0, 0.0, 0.0],
             "Q0": [0.70710678, 0.0, 0.70710678, 0.0],
             "axis_body": [0.0, 0.0, 1.0],

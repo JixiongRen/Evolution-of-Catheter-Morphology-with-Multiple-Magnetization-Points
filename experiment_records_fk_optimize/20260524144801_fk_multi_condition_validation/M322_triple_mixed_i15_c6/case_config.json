@@ -1,0 +1,8 @@
+{
+  "case_name": "M322_triple_mixed_i15_c6",
+  "M_list": "3,2,2",
+  "magnet_config": "triple_mixed",
+  "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0.005301,0,0",
+  "current_config": "i15_c6",
+  "coil_currents": "0,0,0,0,0,15,0,0"
+}

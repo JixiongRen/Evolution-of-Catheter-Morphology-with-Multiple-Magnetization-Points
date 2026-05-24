@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-05-24 18:04:14",
+  "repo_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points",
+  "git_commit": "3eb0e0d5e2c6f2f46c79f44021d6791566fedebd",
+  "jax_backend": "gpu",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "xla_preallocate": "false",
+  "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "calib_reason": "requested_path_missing_used_repo_fallback",
+  "case_count": 27,
+  "current_rule": "Deterministic random multi-coil vectors in [-20, 20] A; no single-coil-only case."
+}

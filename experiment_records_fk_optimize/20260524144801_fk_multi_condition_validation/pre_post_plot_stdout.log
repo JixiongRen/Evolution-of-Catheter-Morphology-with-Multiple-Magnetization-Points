@@ -1,0 +1,20 @@
+[
+  {
+    "reference": "pre_algorithm_baseline",
+    "candidate": "post_optimized_candidate",
+    "point_count": 48,
+    "max_point_error_m": 0.00011540541774330057,
+    "rms_point_error_m": 0.00010130736416658935,
+    "end_error_m": 0.00011167746602103746,
+    "max_rel_to_L_ref": 0.0010491401613027325
+  },
+  {
+    "reference": "old_cli_callback",
+    "candidate": "post_optimized_candidate",
+    "point_count": 48,
+    "max_point_error_m": 0.017372513946468975,
+    "rms_point_error_m": 0.011037807018575804,
+    "end_error_m": 0.017372513946468975,
+    "max_rel_to_L_ref": 0.15793194496789978
+  }
+]

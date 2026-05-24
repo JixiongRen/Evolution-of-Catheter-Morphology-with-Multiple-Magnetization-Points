@@ -1,0 +1,3 @@
+reference,candidate,point_count,max_point_error_m,rms_point_error_m,end_error_m,max_rel_to_L_ref
+pre_algorithm_baseline,post_optimized_candidate,48,0.00011540541774330057,0.00010130736416658935,0.00011167746602103746,0.0010491401613027325
+old_cli_callback,post_optimized_candidate,48,0.017372513946468975,0.011037807018575804,0.017372513946468975,0.15793194496789978

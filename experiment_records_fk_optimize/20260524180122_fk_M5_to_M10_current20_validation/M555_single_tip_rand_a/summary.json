@@ -1,0 +1,79 @@
+{
+  "case_name": "M555_single_tip_rand_a",
+  "coil_currents": "11.2,-6.7,18.4,-15.1,3.6,9.8,-12.5,5.4",
+  "m_body_list": "0,0,0; 0,0,0; 0,0,0.005301",
+  "M_list": "5,5,5",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 1600,
+  "wall_s": 73.43944121900131,
+  "first_call_compile_s": 160.53704523499982,
+  "wall_s_including_warmup": 233.97648645400113,
+  "process_wall_s": 97.5229007779999,
+  "final_normE": 0.0002704687785833634,
+  "max_abs_E": 7.624670262413002e-05,
+  "centerline_end_m": [
+    0.05365422724385626,
+    0.03273568705514753,
+    -0.08039932950396327
+  ],
+  "stage_count": 4,
+  "warmup": {
+    "residual_s": 39.16039826299857,
+    "jacobian_s": 114.32579449100012,
+    "lm_step_s": 2.1191478229993663,
+    "total_s": 160.53704523499982
+  },
+  "stages": [
+    {
+      "stage": "continuation_00",
+      "current_factor": 0.0,
+      "wall_s": 2.0378091929997026,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 40,
+      "normE": 0.004079349664055536,
+      "max_abs_E": 0.0008519934428451513,
+      "max_iter": 40,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_01",
+      "current_factor": 0.5,
+      "wall_s": 1.8035943920003774,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 40,
+      "normE": 0.006200908945359011,
+      "max_abs_E": 0.004435666198979438,
+      "max_iter": 40,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_02",
+      "current_factor": 1.0,
+      "wall_s": 1.7951058630005718,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 40,
+      "normE": 0.008633027806789489,
+      "max_abs_E": 0.006246072615601031,
+      "max_iter": 40,
+      "tol": 0.001
+    },
+    {
+      "stage": "final_refine",
+      "current_factor": 1.0,
+      "wall_s": 67.80293177100066,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 1600,
+      "normE": 0.0002704687785833634,
+      "max_abs_E": 7.624670262413002e-05,
+      "max_iter": 1600,
+      "tol": 1e-05
+    }
+  ],
+  "references": {},
+  "rss_mb": 2162.90625
+}

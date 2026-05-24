@@ -1,0 +1,79 @@
+{
+  "case_name": "M777_double_z_rand_b",
+  "coil_currents": "-19.3,7.1,-4.8,16.6,-10.9,2.3,13.7,-8.2",
+  "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0,0,0",
+  "M_list": "7,7,7",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 1600,
+  "wall_s": 96.76243609200174,
+  "first_call_compile_s": 177.26108630499948,
+  "wall_s_including_warmup": 274.0235223970012,
+  "process_wall_s": 124.17800833000001,
+  "final_normE": 5.698423130265009e-05,
+  "max_abs_E": 1.4121175897048201e-05,
+  "centerline_end_m": [
+    0.09618185887386965,
+    -0.0016412999226821095,
+    -0.011737913696552481
+  ],
+  "stage_count": 4,
+  "warmup": {
+    "residual_s": 46.73870829400039,
+    "jacobian_s": 129.97212758299793,
+    "lm_step_s": 0.11368633700112696,
+    "total_s": 177.26108630499948
+  },
+  "stages": [
+    {
+      "stage": "continuation_00",
+      "current_factor": 0.0,
+      "wall_s": 2.596045584999956,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 40,
+      "normE": 0.006181596234487752,
+      "max_abs_E": 0.0014116803775792804,
+      "max_iter": 40,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_01",
+      "current_factor": 0.5,
+      "wall_s": 2.26269873199999,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 40,
+      "normE": 0.004997238199997121,
+      "max_abs_E": 0.0009341670927157908,
+      "max_iter": 40,
+      "tol": 0.001
+    },
+    {
+      "stage": "continuation_02",
+      "current_factor": 1.0,
+      "wall_s": 2.2583897410004283,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 40,
+      "normE": 0.005106873208772434,
+      "max_abs_E": 0.0017696903173225875,
+      "max_iter": 40,
+      "tol": 0.001
+    },
+    {
+      "stage": "final_refine",
+      "current_factor": 1.0,
+      "wall_s": 89.64530203400136,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 1600,
+      "normE": 5.698423130265009e-05,
+      "max_abs_E": 1.4121175897048201e-05,
+      "max_iter": 1600,
+      "tol": 1e-05
+    }
+  ],
+  "references": {},
+  "rss_mb": 7147.234375
+}

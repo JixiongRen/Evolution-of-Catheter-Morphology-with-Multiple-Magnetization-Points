@@ -1,0 +1,8 @@
+{
+  "case_name": "M555_single_tip_z_i15_c6",
+  "M_list": "5,5,5",
+  "magnet_config": "single_tip_z",
+  "m_body_list": "0,0,0; 0,0,0; 0,0,0.005301",
+  "current_config": "i15_c6",
+  "coil_currents": "0,0,0,0,0,15,0,0"
+}
