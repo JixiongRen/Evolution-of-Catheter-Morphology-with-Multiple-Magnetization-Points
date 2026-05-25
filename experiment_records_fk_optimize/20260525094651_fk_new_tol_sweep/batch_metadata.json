@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-05-25 10:03:25",
+  "repo_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points",
+  "git_commit": "e2ee786f8a0c23310a6a47a9856855c21b6a759a",
+  "jax_backend": "gpu",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "jax_enable_x64": true,
+  "xla_preallocate": "false",
+  "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "calib_reason": "requested_path_missing_used_repo_fallback",
+  "actuation_table_pkl": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/supiee_auto_diff/offline_interpolation_data/actuation_tables/actuation_table.pkl",
+  "fixed_case": {
+    "flex_lengths": [
+      0.03,
+      0.03
+    ],
+    "rigid_lengths": [
+      0.003,
+      0.003,
+      0.003
+    ],
+    "L_protrude": 0.11,
+    "M_list": [
+      5,
+      5,
+      5
+    ],
+    "enable_gravity": true,
+    "enable_magnetics": true,
+    "coil_currents": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      50.0,
+      0.0,
+      0.0
+    ],
+    "m_body_list": [
+      [
+        0.0,
+        0.0,
+        -0.005301
+      ],
+      [
+        0.0,
+        0.0,
+        0.005301
+      ],
+      [
+        0.005301,
+        0.0,
+        0.0
+      ]
+    ],
+    "p0": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Q0": [
+      0.70710678,
+      0.0,
+      0.70710678,
+      0.0
+    ],
+    "axis_body": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "max_iter": 100000,
+    "lm_damping": 0.1,
+    "jac_method": "fwd",
+    "scale_mode": "optimized",
+    "scale_include_external": true,
+    "dense_solve_method": "solve"
+  },
+  "tolerances": [
+    1e-05,
+    1e-06,
+    1e-07,
+    0.0001
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "case_name": "tol_1e-06",
+  "tol": 1e-06,
+  "ok": true,
+  "stop_reason": "converged",
+  "n_iter": 2913,
+  "wall_s": 194.75964099800058,
+  "first_call_compile_s": 120.34079779999956,
+  "steady_solve_s": 194.75964099800058,
+  "final_normE": 9.88809728457266e-07,
+  "max_abs_E": 4.815327585409328e-07,
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "centerline_start_m": [
+    -3.021819383671929e-12,
+    -1.5895262236552071e-12,
+    -3.496162285185384e-12
+  ],
+  "centerline_end_m": [
+    -0.0038673392042489294,
+    -0.059309288394639385,
+    0.06461834428860395
+  ],
+  "snapshot_count": 60,
+  "scale": {
+    "mode": "optimized",
+    "include_external": true,
+    "L_ref": 0.11,
+    "F_ref": 1.0602875205865552,
+    "M_ref": 0.00039608620418474146
+  },
+  "rss_mb": 2114.2421875
+}
