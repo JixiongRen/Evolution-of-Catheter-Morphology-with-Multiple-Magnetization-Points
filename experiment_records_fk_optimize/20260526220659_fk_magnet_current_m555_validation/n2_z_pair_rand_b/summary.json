@@ -1,0 +1,53 @@
+{
+  "case_name": "n2_z_pair_rand_b",
+  "current_name": "rand_b",
+  "coil_currents": "-19.3,7.1,-4.8,16.6,-10.9,2.3,13.7,-8.2",
+  "magnet_name": "n2_z_pair",
+  "magnet_segment_count": 2,
+  "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0,0,0",
+  "M_list": "5,5,5",
+  "tol": 1e-05,
+  "max_iter": 100000,
+  "linear_solver": "dense_fused_cholesky",
+  "ok": false,
+  "stop_reason": "reject_patience",
+  "n_iter": 2776,
+  "wall_s": 51.42043483501766,
+  "first_call_compile_s": 314.73418257400044,
+  "wall_s_including_warmup": 366.1546174090181,
+  "final_normE": 1.902940179506266e-05,
+  "max_abs_E": 4.6834297059529565e-06,
+  "centerline_start_m": [
+    4.357031919977805e-10,
+    4.0357509625217755e-12,
+    -2.2009821449393514e-11
+  ],
+  "centerline_end_m": [
+    0.0898487387787347,
+    -0.0010356102295514106,
+    -0.0031194303285662466
+  ],
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "warmup": {
+    "residual_s": 34.86152873898391,
+    "jacobian_s": 99.35511216099258,
+    "lm_step_s": 180.13979049801128,
+    "total_s": 314.73418257400044
+  },
+  "stage": {
+    "stage": "direct",
+    "current_factor": 1.0,
+    "wall_s": 51.42043483501766,
+    "ok": false,
+    "stop_reason": "reject_patience",
+    "n_iter": 2776,
+    "normE": 1.902940179506266e-05,
+    "max_abs_E": 4.6834297059529565e-06,
+    "max_iter": 100000,
+    "tol": 1e-05
+  },
+  "rss_mb": 6564.02734375
+}

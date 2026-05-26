@@ -1,0 +1,12 @@
+{
+  "case_name": "n2_xz_pair_rand_b",
+  "current_name": "rand_b",
+  "coil_currents": "-19.3,7.1,-4.8,16.6,-10.9,2.3,13.7,-8.2",
+  "magnet_name": "n2_xz_pair",
+  "magnet_segment_count": 2,
+  "m_body_list": "0.005301,0,0; 0,0,0; 0,0,0.005301",
+  "M_list": "5,5,5",
+  "tol": 1e-05,
+  "max_iter": 100000,
+  "linear_solver": "dense_fused_cholesky"
+}

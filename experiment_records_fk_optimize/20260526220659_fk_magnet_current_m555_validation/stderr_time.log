@@ -1,0 +1,25 @@
+W0526 22:12:24.483765  250678 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0526 22:12:24.490928  250583 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+	Command being timed: "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_fk_optimize/20260526220659_fk_magnet_current_m555_validation/run_fk_magnet_current_m555_validation.py"
+	User time (seconds): 4644.98
+	System time (seconds): 576.62
+	Percent of CPU this job got: 124%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:09:58
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 10684380
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 8539
+	Minor (reclaiming a frame) page faults: 8989540
+	Voluntary context switches: 9938811
+	Involuntary context switches: 13174
+	Swaps: 0
+	File system inputs: 1724272
+	File system outputs: 610736
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
