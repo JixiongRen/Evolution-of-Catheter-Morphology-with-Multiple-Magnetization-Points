@@ -1,0 +1,60 @@
+{
+  "case_name": "F1_fused_cholesky_direct",
+  "mode": "fused_direct",
+  "dense_solve_method": "cholesky",
+  "damping_mode": "identity",
+  "step_scale": 1.0,
+  "classification_hint": "branch-preserving fused-jit result",
+  "ok": true,
+  "stop_reason": "converged",
+  "n_iter": 2254,
+  "wall_s": 40.68592937498761,
+  "steady_solve_s": 40.68592937498761,
+  "first_call_compile_s": 200.26377838700137,
+  "wall_s_including_warmup": 240.94970776198898,
+  "speedup_vs_golden": 4.3063958467841505,
+  "final_normE": 9.99165129048288e-06,
+  "max_abs_E": 4.917394899058423e-06,
+  "centerline_start_m": [
+    -3.120037574879469e-11,
+    -1.4517362780442172e-11,
+    -2.8830757657936137e-11
+  ],
+  "centerline_end_m": [
+    -0.0024008689501496933,
+    -0.058309084731148035,
+    0.06522708459482923
+  ],
+  "golden_metrics": {
+    "point_count": 48,
+    "max_point_error_m": 1.950445559435659e-06,
+    "rms_point_error_m": 9.069925735160766e-07,
+    "mean_point_error_m": 6.723955229500583e-07,
+    "end_error_m": 1.950445559435659e-06,
+    "max_rel_to_L_ref": 1.77313232675969e-05,
+    "end_rel_to_L_ref": 1.77313232675969e-05
+  },
+  "warmup": {
+    "fused_compile_s": 200.26377838700137,
+    "total_s": 200.26377838700137
+  },
+  "stages": [
+    {
+      "wall_s": 40.68592937498761,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 2254,
+      "normE": 9.991651290474354e-06,
+      "max_abs_E": 4.917394899058442e-06,
+      "max_iter": 100000,
+      "tol": 1e-05,
+      "stage": "fused_direct",
+      "current_factor": 1.0,
+      "lam": 1.4765642514853807e-07,
+      "no_improve": 0,
+      "rejects": 0
+    }
+  ],
+  "rss_mb": 2713.08203125,
+  "classification": "production-candidate result"
+}

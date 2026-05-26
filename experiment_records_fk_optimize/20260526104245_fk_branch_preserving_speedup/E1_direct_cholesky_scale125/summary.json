@@ -1,0 +1,59 @@
+{
+  "case_name": "E1_direct_cholesky_scale125",
+  "mode": "direct",
+  "dense_solve_method": "cholesky",
+  "damping_mode": "identity",
+  "step_scale": 1.25,
+  "classification_hint": "branch-preserving overrelaxation result",
+  "ok": true,
+  "stop_reason": "converged",
+  "n_iter": 4717,
+  "wall_s": 180.02623732099892,
+  "steady_solve_s": 180.02623732099892,
+  "first_call_compile_s": 152.12605681899004,
+  "wall_s_including_warmup": 332.15229413998895,
+  "speedup_vs_golden": 0.9732454551643447,
+  "final_normE": 9.969007883768386e-06,
+  "max_abs_E": 4.907032495707131e-06,
+  "centerline_start_m": [
+    -3.113830096702999e-11,
+    -1.449007602257833e-11,
+    -2.879212610512007e-11
+  ],
+  "centerline_end_m": [
+    -0.0024043009014651207,
+    -0.05831126958448382,
+    0.06522579507009053
+  ],
+  "golden_metrics": {
+    "point_count": 48,
+    "max_point_error_m": 2.3174305906289015e-06,
+    "rms_point_error_m": 1.0777195003225979e-06,
+    "mean_point_error_m": 7.990242906151799e-07,
+    "end_error_m": 2.3174305906289015e-06,
+    "max_rel_to_L_ref": 2.1067550823899103e-05,
+    "end_rel_to_L_ref": 2.1067550823899103e-05
+  },
+  "warmup": {
+    "residual_s": 37.53854567700182,
+    "jacobian_s": 106.89833710200037,
+    "lm_step_s": 2.2229390069987858,
+    "total_s": 152.12605681899004
+  },
+  "stages": [
+    {
+      "wall_s": 180.02623732099892,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 4717,
+      "normE": 9.969007883768386e-06,
+      "max_abs_E": 4.907032495707131e-06,
+      "max_iter": 100000,
+      "tol": 1e-05,
+      "stage": "direct",
+      "current_factor": 1.0
+    }
+  ],
+  "rss_mb": 2146.0546875,
+  "classification": "branch-preserving result"
+}

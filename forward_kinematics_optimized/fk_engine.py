@@ -92,6 +92,7 @@ class ForwardKinematicsEngine:
             damping_mode: str = "identity",
             dense_solve_method: str = "solve",
             step_norm_clip: Optional[float] = None,
+            step_scale: float = 1.0,
             backtrack_max: int = 0,
             backtrack_factor: float = 0.5,
             trust_region_eta: Optional[float] = None,
@@ -135,8 +136,8 @@ class ForwardKinematicsEngine:
         if jac_method not in ("fwd", "rev"):
             raise ValueError("jac_method must be 'fwd' or 'rev'")
         self.jac_method = jac_method
-        if linear_solver not in ("dense", "matrix_free_cg"):
-            raise ValueError("linear_solver must be 'dense' or 'matrix_free_cg'")
+        if linear_solver not in ("dense", "matrix_free_cg", "dense_fused_cholesky"):
+            raise ValueError("linear_solver must be 'dense', 'matrix_free_cg', or 'dense_fused_cholesky'")
         self.linear_solver = str(linear_solver)
         self.cg_tol = float(cg_tol)
         self.cg_atol = float(cg_atol)
@@ -149,6 +150,9 @@ class ForwardKinematicsEngine:
         if self.dense_solve_method not in ("solve", "pos", "cholesky"):
             raise ValueError("dense_solve_method must be 'solve', 'pos', or 'cholesky'")
         self.step_norm_clip = None if step_norm_clip is None else float(step_norm_clip)
+        self.step_scale = float(step_scale)
+        if self.step_scale <= 0.0:
+            raise ValueError("step_scale must be positive")
         self.backtrack_max = int(backtrack_max)
         self.backtrack_factor = float(backtrack_factor)
         self.trust_region_eta = None if trust_region_eta is None else float(trust_region_eta)
@@ -257,6 +261,7 @@ class ForwardKinematicsEngine:
             damping_mode=self.damping_mode,
             dense_solve_method=self.dense_solve_method,
             step_norm_clip=self.step_norm_clip,
+            step_scale=self.step_scale,
             backtrack_max=self.backtrack_max,
             backtrack_factor=self.backtrack_factor,
             trust_region_eta=self.trust_region_eta,
@@ -343,6 +348,7 @@ class ForwardKinematicsEngine:
                 damping_mode=self.damping_mode,
                 dense_solve_method=self.dense_solve_method,
                 step_norm_clip=self.step_norm_clip,
+                step_scale=self.step_scale,
                 backtrack_max=self.backtrack_max,
                 backtrack_factor=self.backtrack_factor,
                 trust_region_eta=self.trust_region_eta,
@@ -367,6 +373,7 @@ class ForwardKinematicsEngine:
                 damping_mode=self.damping_mode,
                 dense_solve_method=self.dense_solve_method,
                 step_norm_clip=self.step_norm_clip,
+                step_scale=self.step_scale,
                 backtrack_max=self.backtrack_max,
                 backtrack_factor=self.backtrack_factor,
                 trust_region_eta=self.trust_region_eta,
@@ -447,6 +454,7 @@ class ForwardKinematicsEngine:
                 damping_mode=self.damping_mode,
                 dense_solve_method=self.dense_solve_method,
                 step_norm_clip=self.step_norm_clip,
+                step_scale=self.step_scale,
                 backtrack_max=self.backtrack_max,
                 backtrack_factor=self.backtrack_factor,
                 trust_region_eta=self.trust_region_eta,

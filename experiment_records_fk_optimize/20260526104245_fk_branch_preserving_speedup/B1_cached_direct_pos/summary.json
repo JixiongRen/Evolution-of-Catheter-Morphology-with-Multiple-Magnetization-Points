@@ -1,0 +1,58 @@
+{
+  "case_name": "B1_cached_direct_pos",
+  "mode": "direct",
+  "dense_solve_method": "pos",
+  "damping_mode": "identity",
+  "classification_hint": "branch-preserving result",
+  "ok": true,
+  "stop_reason": "converged",
+  "n_iter": 2255,
+  "wall_s": 94.06082400599553,
+  "steady_solve_s": 94.06082400599553,
+  "first_call_compile_s": 113.05860368300637,
+  "wall_s_including_warmup": 207.1194276890019,
+  "speedup_vs_golden": 1.8627278586442308,
+  "final_normE": 9.991651289956785e-06,
+  "max_abs_E": 4.91739489869799e-06,
+  "centerline_start_m": [
+    -3.120037573898813e-11,
+    -1.4517362778120622e-11,
+    -2.883075763208085e-11
+  ],
+  "centerline_end_m": [
+    -0.0024008689502531557,
+    -0.058309084731216695,
+    0.06522708459479161
+  ],
+  "golden_metrics": {
+    "point_count": 48,
+    "max_point_error_m": 1.9504454297216356e-06,
+    "rms_point_error_m": 9.069925130031815e-07,
+    "mean_point_error_m": 6.723954784971043e-07,
+    "end_error_m": 1.9504454297216356e-06,
+    "max_rel_to_L_ref": 1.7731322088378504e-05,
+    "end_rel_to_L_ref": 1.7731322088378504e-05
+  },
+  "warmup": {
+    "residual_s": 29.462570831994526,
+    "jacobian_s": 82.62262195600488,
+    "lm_step_s": 0.5583082280063536,
+    "total_s": 113.05860368300637
+  },
+  "stages": [
+    {
+      "wall_s": 94.06082400599553,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 2255,
+      "normE": 9.991651289956785e-06,
+      "max_abs_E": 4.91739489869799e-06,
+      "max_iter": 100000,
+      "tol": 1e-05,
+      "stage": "direct",
+      "current_factor": 1.0
+    }
+  ],
+  "rss_mb": 2656.453125,
+  "classification": "branch-preserving result"
+}

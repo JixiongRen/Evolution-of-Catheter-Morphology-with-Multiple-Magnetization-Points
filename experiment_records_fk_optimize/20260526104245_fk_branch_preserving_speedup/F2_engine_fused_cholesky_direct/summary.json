@@ -1,0 +1,60 @@
+{
+  "case_name": "F2_engine_fused_cholesky_direct",
+  "mode": "direct",
+  "dense_solve_method": "cholesky",
+  "linear_solver": "dense_fused_cholesky",
+  "damping_mode": "identity",
+  "step_scale": 1.0,
+  "classification_hint": "production fused-jit result",
+  "ok": true,
+  "stop_reason": "converged",
+  "n_iter": 2254,
+  "wall_s": 40.87680011401244,
+  "steady_solve_s": 40.87680011401244,
+  "first_call_compile_s": 360.9140405149956,
+  "wall_s_including_warmup": 401.790840629008,
+  "speedup_vs_golden": 4.286287497903697,
+  "final_normE": 9.991651290476919e-06,
+  "max_abs_E": 4.917394899058423e-06,
+  "centerline_start_m": [
+    -3.120037574879469e-11,
+    -1.4517362780442172e-11,
+    -2.8830757657936137e-11
+  ],
+  "centerline_end_m": [
+    -0.0024008689501496933,
+    -0.058309084731148035,
+    0.06522708459482923
+  ],
+  "golden_metrics": {
+    "point_count": 48,
+    "max_point_error_m": 1.950445559435659e-06,
+    "rms_point_error_m": 9.069925735160766e-07,
+    "mean_point_error_m": 6.723955229500583e-07,
+    "end_error_m": 1.950445559435659e-06,
+    "max_rel_to_L_ref": 1.77313232675969e-05,
+    "end_rel_to_L_ref": 1.77313232675969e-05
+  },
+  "warmup": {
+    "residual_s": 39.001207942012115,
+    "jacobian_s": 111.46922596699733,
+    "lm_step_s": 205.47151609300636,
+    "total_s": 360.9140405149956
+  },
+  "stages": [
+    {
+      "wall_s": 40.87680011401244,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 2254,
+      "normE": 9.991651290476919e-06,
+      "max_abs_E": 4.917394899058423e-06,
+      "max_iter": 100000,
+      "tol": 1e-05,
+      "stage": "direct",
+      "current_factor": 1.0
+    }
+  ],
+  "rss_mb": 3138.43359375,
+  "classification": "production-candidate result"
+}

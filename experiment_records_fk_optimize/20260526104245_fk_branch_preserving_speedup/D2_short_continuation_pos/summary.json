@@ -1,0 +1,82 @@
+{
+  "case_name": "D2_short_continuation_pos",
+  "mode": "continuation",
+  "dense_solve_method": "pos",
+  "damping_mode": "identity",
+  "classification_hint": "high-risk continuation result",
+  "ok": true,
+  "stop_reason": "converged",
+  "n_iter": 1373,
+  "wall_s": 55.91373592597665,
+  "steady_solve_s": 55.91373592597665,
+  "first_call_compile_s": 116.26740812500066,
+  "wall_s_including_warmup": 172.1811440509773,
+  "speedup_vs_golden": 3.1335719994628404,
+  "final_normE": 9.855144658932908e-06,
+  "max_abs_E": 3.2116018483348218e-06,
+  "centerline_start_m": [
+    6.179689655369686e-12,
+    -3.133500667864258e-11,
+    -2.133221669050245e-11
+  ],
+  "centerline_end_m": [
+    0.012816936039722612,
+    -0.07526103559213498,
+    0.041115689978247834
+  ],
+  "golden_metrics": {
+    "point_count": 48,
+    "max_point_error_m": 0.03317069354896917,
+    "rms_point_error_m": 0.016273259925638328,
+    "mean_point_error_m": 0.012622793609555585,
+    "end_error_m": 0.03317069354896917,
+    "max_rel_to_L_ref": 0.3015517595360834,
+    "end_rel_to_L_ref": 0.3015517595360834
+  },
+  "warmup": {
+    "residual_s": 30.43237444999977,
+    "jacobian_s": 85.2815664170048,
+    "lm_step_s": 0.09103389400115702,
+    "total_s": 116.26740812500066
+  },
+  "stages": [
+    {
+      "wall_s": 0.5810167629970238,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 7,
+      "normE": 0.0007596366195917522,
+      "max_abs_E": 0.00018747003467297604,
+      "max_iter": 20,
+      "tol": 0.001,
+      "stage": "continuation_00",
+      "current_factor": 0.0
+    },
+    {
+      "wall_s": 0.850460691988701,
+      "ok": false,
+      "stop_reason": "max_iter",
+      "n_iter": 20,
+      "normE": 0.04305148955351612,
+      "max_abs_E": 0.021961316422091422,
+      "max_iter": 20,
+      "tol": 0.001,
+      "stage": "continuation_01",
+      "current_factor": 1.0
+    },
+    {
+      "wall_s": 54.48225847099093,
+      "ok": true,
+      "stop_reason": "converged",
+      "n_iter": 1373,
+      "normE": 9.855144658932908e-06,
+      "max_abs_E": 3.2116018483348218e-06,
+      "max_iter": 3000,
+      "tol": 1e-05,
+      "stage": "final_refine",
+      "current_factor": 1.0
+    }
+  ],
+  "rss_mb": 3561.41796875,
+  "classification": "speed-only result"
+}

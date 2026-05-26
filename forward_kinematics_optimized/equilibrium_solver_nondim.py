@@ -890,6 +890,98 @@ _JVP_JIT = jax.jit(_residual_jvp)
 _VJP_JIT = jax.jit(_residual_vjp)
 
 
+@jax.jit
+def _FUSED_CHOLESKY_LM_JIT(
+    z0_bar: Array,
+    params: SolverParams,
+    max_iter: Array,
+    tol: Array,
+    lm_damping: Array,
+) -> tuple:
+    """Run the dense Cholesky LM loop in one compiled XLA while loop."""
+
+    def residual_fn(z_bar: Array) -> Array:
+        return residual_bar(z_bar, params)
+
+    def jacobian_fn(z_bar: Array) -> Array:
+        return jax.jacfwd(residual_fn)(z_bar)
+
+    z = jnp.asarray(z0_bar, dtype=jnp.float64)
+    E = residual_fn(z)
+    normE = jnp.linalg.norm(E)
+    cost = 0.5 * normE * normE
+    eye = jnp.eye(z.shape[0], dtype=z.dtype)
+    max_iter_i = jnp.asarray(max_iter, dtype=jnp.int32)
+    tol_f = jnp.asarray(tol, dtype=z.dtype)
+    lam0 = jnp.asarray(lm_damping, dtype=z.dtype)
+    init = (
+        jnp.asarray(0, dtype=jnp.int32),
+        z,
+        E,
+        normE,
+        cost,
+        lam0,
+        cost,
+        jnp.asarray(0, dtype=jnp.int32),
+        jnp.asarray(0, dtype=jnp.int32),
+    )
+
+    def cond_fun(carry: tuple) -> Array:
+        it, _z, _E, current_norm, _cost, lam, _best, no_improve, rejects = carry
+        return (
+            (it < max_iter_i)
+            & (current_norm >= tol_f)
+            & (no_improve < jnp.asarray(20, dtype=jnp.int32))
+            & (rejects < jnp.asarray(10, dtype=jnp.int32))
+            & (lam < jnp.asarray(1e10, dtype=z.dtype))
+        )
+
+    def body_fun(carry: tuple) -> tuple:
+        it, z_cur, E_cur, norm_cur, cost_cur, lam, best_cost, no_improve, rejects = carry
+        J = jacobian_fn(z_cur)
+        H = jnp.transpose(J) @ J
+        g = jnp.transpose(J) @ E_cur
+        A_raw = H + lam * eye
+        A = 0.5 * (A_raw + jnp.transpose(A_raw))
+        dz = jspl.cho_solve(jspl.cho_factor(A, lower=True, check_finite=False), -g, check_finite=False)
+        z_trial = z_cur + dz
+        E_trial = residual_fn(z_trial)
+        norm_trial = jnp.linalg.norm(E_trial)
+        cost_trial = 0.5 * norm_trial * norm_trial
+        finite_trial = jnp.isfinite(norm_trial) & jnp.isfinite(cost_trial)
+        act_red = cost_cur - cost_trial
+        pred_red = 0.5 * (dz @ (lam * dz - g))
+        rho = act_red / (pred_red + jnp.asarray(1e-30, dtype=z.dtype))
+        accept = finite_trial & (act_red > 0.0)
+
+        z_next = jnp.where(accept, z_trial, z_cur)
+        E_next = jnp.where(accept, E_trial, E_cur)
+        norm_next = jnp.where(accept, norm_trial, norm_cur)
+        cost_next = jnp.where(accept, cost_trial, cost_cur)
+        improvement_gate = jnp.maximum(
+            jnp.asarray(1e-18, dtype=z.dtype),
+            jnp.asarray(1e-12, dtype=z.dtype) * best_cost,
+        )
+        improved = cost_next < best_cost - improvement_gate
+        best_next = jnp.where(accept & improved, cost_next, best_cost)
+        no_improve_next = jnp.where(
+            accept,
+            jnp.where(improved, jnp.asarray(0, dtype=jnp.int32), no_improve + 1),
+            no_improve,
+        )
+        rejects_next = jnp.where(accept, jnp.asarray(0, dtype=jnp.int32), rejects + 1)
+        lam_accept = jnp.where(
+            rho > 0.75,
+            lam * jnp.asarray(0.3, dtype=z.dtype),
+            jnp.where(rho < 0.25, lam * jnp.asarray(10.0, dtype=z.dtype), lam),
+        )
+        lam_next = jnp.where(accept, lam_accept, lam * jnp.asarray(10.0, dtype=z.dtype))
+        lam_next = jnp.minimum(jnp.maximum(lam_next, jnp.asarray(1e-30, dtype=z.dtype)), jnp.asarray(1e10, dtype=z.dtype))
+        return it + 1, z_next, E_next, norm_next, cost_next, lam_next, best_next, no_improve_next, rejects_next
+
+    return jax.lax.while_loop(cond_fun, body_fun, init)
+
+
 class MultiSegmentEquilibriumSolverNondimJAXCached:
     """A reusable LM solver that avoids rebuilding JAX programs per FK call.
 
@@ -963,6 +1055,53 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
     def _j_residual(self, z: Array, params: SolverParams, v: Array) -> Array:
         """Return ``J(z) @ v`` without materializing the full Jacobian."""
         return self._jvp(z, params, v)
+
+    def solve_lm_fused_cholesky(
+        self,
+        z0_bar: Array,
+        params: SolverParams,
+        *,
+        max_iter: int = 200,
+        tol: float = 1e-6,
+        lm_damping: float = 1e-3,
+        jac_method: str = "fwd",
+        return_stats: bool = False,
+        stats_include_jacobian: bool = True,
+    ) -> tuple:
+        """Solve LM with the dense Cholesky path fused into one XLA loop."""
+        if jac_method != "fwd":
+            raise ValueError("fused Cholesky LM currently supports jac_method='fwd' only")
+        result = _FUSED_CHOLESKY_LM_JIT(
+            jnp.asarray(z0_bar, dtype=jnp.float64),
+            params,
+            jnp.asarray(int(max_iter), dtype=jnp.int32),
+            jnp.asarray(float(tol), dtype=jnp.float64),
+            jnp.asarray(float(lm_damping), dtype=jnp.float64),
+        )
+        n_iter, z, _E, normE, _cost, lam, _best, no_improve, rejects = result
+        ok = bool(float(normE) < float(tol))
+        if ok:
+            stop_reason = "converged"
+        elif int(no_improve) >= 20:
+            stop_reason = "patience"
+        elif int(rejects) >= 10:
+            stop_reason = "reject_patience"
+        else:
+            stop_reason = "max_iter"
+        return self._pack_return(
+            z,
+            params,
+            ok,
+            tol=float(tol),
+            lam=float(lam),
+            jac_method=jac_method,
+            stop_reason=stop_reason,
+            n_iter=int(n_iter),
+            return_stats=return_stats,
+            linear_solver="dense_fused_cholesky",
+            linear_info={"method": "dense_fused_cholesky", "n": int(jnp.asarray(z).shape[0])},
+            stats_include_jacobian=stats_include_jacobian,
+        )
 
     def _solve_dense_step(
         self,
@@ -1096,6 +1235,7 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         damping_mode: str = "identity",
         dense_solve_method: str = "solve",
         step_norm_clip: Optional[float] = None,
+        step_scale: float = 1.0,
         backtrack_max: int = 0,
         backtrack_factor: float = 0.5,
         trust_region_eta: Optional[float] = None,
@@ -1119,8 +1259,19 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         consecutive_reject = 0
         last_linear_info: Dict[str, Any] = {}
         linear_solver = str(linear_solver)
+        if linear_solver == "dense_fused_cholesky":
+            return self.solve_lm_fused_cholesky(
+                z,
+                params,
+                max_iter=max_iter,
+                tol=tol,
+                lm_damping=lm_damping,
+                jac_method=jac_method,
+                return_stats=return_stats,
+                stats_include_jacobian=stats_include_jacobian,
+            )
         if linear_solver not in ("dense", "matrix_free_cg"):
-            raise ValueError("linear_solver must be 'dense' or 'matrix_free_cg'")
+            raise ValueError("linear_solver must be 'dense', 'matrix_free_cg', or 'dense_fused_cholesky'")
         damping_mode = str(damping_mode)
         if damping_mode not in ("identity", "diagH"):
             raise ValueError("damping_mode must be 'identity' or 'diagH'")
@@ -1128,6 +1279,9 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
         if dense_solve_method not in ("solve", "pos", "cholesky"):
             raise ValueError("dense_solve_method must be 'solve', 'pos', or 'cholesky'")
         step_norm_clip_f = None if step_norm_clip is None else float(step_norm_clip)
+        step_scale_f = float(step_scale)
+        if step_scale_f <= 0.0:
+            raise ValueError("step_scale must be positive")
         backtrack_max = max(int(backtrack_max), 0)
         backtrack_factor = float(backtrack_factor)
         trust_region_eta_f = None if trust_region_eta is None else float(trust_region_eta)
@@ -1220,6 +1374,8 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                     )
                     damping_diag = jnp.ones((dz.shape[0],), dtype=dz.dtype)
 
+                if step_scale_f != 1.0:
+                    dz = dz * step_scale_f
                 dz_norm = float(jnp.linalg.norm(dz))
                 if step_norm_clip_f is not None and dz_norm > step_norm_clip_f:
                     dz = dz * (step_norm_clip_f / max(dz_norm, 1e-18))
@@ -1252,6 +1408,7 @@ class MultiSegmentEquilibriumSolverNondimJAXCached:
                 use_model_prediction = (
                     trust_region_eta_f is not None
                     or step_norm_clip_f is not None
+                    or step_scale_f != 1.0
                     or backtrack_count > 0
                 )
                 if not use_model_prediction:

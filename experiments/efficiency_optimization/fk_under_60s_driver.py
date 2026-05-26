@@ -148,10 +148,11 @@ def _build_engine(
         tol=float(tol),
         lm_damping=float(args.lm_damping),
         jac_method=str(args.jac_method),
-        linear_solver="dense",
+        linear_solver=str(args.linear_solver),
         damping_mode=str(args.damping_mode),
         dense_solve_method=str(args.dense_solve_method),
         step_norm_clip=None if args.step_norm_clip is None else float(args.step_norm_clip),
+        step_scale=float(args.step_scale),
         backtrack_max=int(args.backtrack_max),
         backtrack_factor=float(args.backtrack_factor),
         trust_region_eta=args.trust_region_eta,
@@ -763,9 +764,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--tol", type=float, default=1e-5)
     parser.add_argument("--lm_damping", type=float, default=1e-1)
     parser.add_argument("--jac_method", choices=["fwd", "rev"], default="fwd")
+    parser.add_argument("--linear_solver", choices=["dense", "matrix_free_cg", "dense_fused_cholesky"], default="dense")
     parser.add_argument("--damping_mode", choices=["identity", "diagH"], default="identity")
     parser.add_argument("--dense_solve_method", choices=["solve", "pos", "cholesky"], default="solve")
     parser.add_argument("--step_norm_clip", type=float, default=None)
+    parser.add_argument("--step_scale", type=float, default=1.0)
     parser.add_argument("--backtrack_max", type=int, default=0)
     parser.add_argument("--backtrack_factor", type=float, default=0.5)
     parser.add_argument("--trust_region_eta", type=float, default=None)

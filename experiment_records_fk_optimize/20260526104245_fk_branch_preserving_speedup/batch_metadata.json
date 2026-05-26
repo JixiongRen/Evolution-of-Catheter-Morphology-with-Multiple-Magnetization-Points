@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-05-26 11:36:52",
+  "repo_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points",
+  "git_commit": "4cf404b79c4b4aa9b7cccdefb5cd1601acb65c76",
+  "jax_backend": "gpu",
+  "jax_devices": [
+    "cuda:0"
+  ],
+  "jax_enable_x64": true,
+  "xla_preallocate": "false",
+  "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "calib_reason": "requested_path_missing_used_repo_fallback",
+  "golden_summary": {
+    "case_name": "tol_1e-05",
+    "tol": 1e-05,
+    "ok": true,
+    "stop_reason": "converged",
+    "n_iter": 2556,
+    "wall_s": 175.20971728299992,
+    "first_call_compile_s": 120.34079779999956,
+    "steady_solve_s": 175.20971728299992,
+    "final_normE": 9.968744338290226e-06,
+    "max_abs_E": 4.912559819235657e-06,
+    "centerline_shape": [
+      48,
+      3
+    ],
+    "centerline_start_m": [
+      -3.117514221425815e-11,
+      -1.4503438463312294e-11,
+      -2.881356446668402e-11
+    ],
+    "centerline_end_m": [
+      -0.0024024363970037363,
+      -0.05831008364337905,
+      0.06522649339046964
+    ],
+    "snapshot_count": 53,
+    "scale": {
+      "mode": "optimized",
+      "include_external": true,
+      "L_ref": 0.11,
+      "F_ref": 1.0602875205865552,
+      "M_ref": 0.00039608620418474146
+    },
+    "rss_mb": 2093.2421875
+  },
+  "candidate_names": [
+    "A1_cached_direct_solve",
+    "B1_cached_direct_pos",
+    "B2_cached_direct_cholesky",
+    "F1_fused_cholesky_direct",
+    "F2_engine_fused_cholesky_direct",
+    "E1_direct_cholesky_scale125",
+    "D1_short_continuation_solve",
+    "D2_short_continuation_pos"
+  ]
+}
