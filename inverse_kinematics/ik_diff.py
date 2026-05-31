@@ -116,6 +116,13 @@ class TaskSensitivityResult:
     lam: float
     stationarity_norm: float
     condition_number: Optional[float]
+    sv_min: Optional[float]
+    sv_max: Optional[float]
+    effective_rank: Optional[int]
+    lm_lam: float
+    extra_ridge: float
+    ridge_used: float
+    solve_mode: str
     status: str
     method: str
 
@@ -282,6 +289,13 @@ def compute_dp_dI_via_lm_adjoint(
         J_E_z=None,
         materialize_jacobian=True,
     )
+    return TipJacobianResult(
+        p_tip_dim=sens.p_tip_dim,
+        J_p_I=sens.J_p_I,
+        J_E_z=jnp.asarray(sens.J_E_z),
+        J_E_I=jnp.asarray(sens.J_E_I),
+        lam=float(sens.lam),
+    )
 
 
 def _sites_from_z_params(z_bar: Array, params: SolverParams) -> dict:
@@ -330,6 +344,8 @@ def compute_task_sensitivities_via_lm_adjoint(
     specs: Sequence[ObservationSpec],
     ridge: Optional[float] = None,
     J_E_z: Optional[Array] = None,
+    solve_mode: str = "solve",
+    svd_rcond: float = 1e-10,
     compute_conditioning: bool = False,
     weak_normE: float = 1e-1,
     cond_warning: float = 1e8,
@@ -345,6 +361,9 @@ def compute_task_sensitivities_via_lm_adjoint(
     if not specs:
         raise ValueError("at least one ObservationSpec is required")
 
+    solve_mode = str(solve_mode)
+    if solve_mode not in ("solve", "svd"):
+        raise ValueError("solve_mode must be 'solve' or 'svd'")
     I0 = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,)
     z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
     L1 = jnp.asarray(params.L1_dim, dtype=jnp.float64).reshape(())
@@ -374,13 +393,33 @@ def compute_task_sensitivities_via_lm_adjoint(
     nZ = H.shape[0]
     H = H + lam_used * jnp.eye(nZ, dtype=H.dtype)
 
-    U = jnp.linalg.solve(H, jnp.transpose(Jr_z))
+    sv_min = None
+    sv_max = None
+    effective_rank = None
+    if solve_mode == "svd":
+        U_svd, S, Vh = jnp.linalg.svd(H, full_matrices=False)
+        sv_max_val = jnp.max(S)
+        cutoff = float(svd_rcond) * sv_max_val
+        keep = S > cutoff
+        inv_S = jnp.where(keep, 1.0 / S, 0.0)
+        U = Vh.T @ (inv_S[:, None] * (U_svd.T @ jnp.transpose(Jr_z)))
+        sv_min = float(jnp.min(S))
+        sv_max = float(sv_max_val)
+        effective_rank = int(jnp.sum(keep))
+        condition_number = float(sv_max_val / jnp.maximum(jnp.min(S), jnp.finfo(S.dtype).tiny))
+    else:
+        condition_number = None
+        if bool(compute_conditioning):
+            S = jnp.linalg.svd(H, compute_uv=False)
+            sv_min = float(jnp.min(S))
+            sv_max = float(jnp.max(S))
+            effective_rank = int(jnp.sum(S > float(svd_rcond) * jnp.max(S)))
+        U = jnp.linalg.solve(H, jnp.transpose(Jr_z))
     JT_B = Jt @ B
     Jr_all = -jnp.transpose(U) @ JT_B
 
     E = jnp.asarray(lm_stats.E_star, dtype=jnp.float64)
     stationarity_norm = float(jnp.linalg.norm(Jt @ E))
-    condition_number = None
     if bool(compute_conditioning):
         condition_number = float(jnp.linalg.cond(H))
     normE = float(getattr(lm_stats, "normE", jnp.linalg.norm(E)))
@@ -392,8 +431,12 @@ def compute_task_sensitivities_via_lm_adjoint(
         cond_warning=float(cond_warning),
         cond_bad=float(cond_bad),
     )
+    if solve_mode == "svd" and effective_rank is not None and effective_rank < int(nZ):
+        status = "truncated_svd"
 
     nI = int(I0.shape[0])
+    lm_lam = float(lm_stats.lam)
+    extra_ridge = 0.0 if ridge is None else float(ridge)
     return TaskSensitivityResult(
         residual=residual,
         J_r_I=Jr_all[:, :nI],
@@ -404,13 +447,13 @@ def compute_task_sensitivities_via_lm_adjoint(
         lam=float(lam_used),
         stationarity_norm=float(stationarity_norm),
         condition_number=condition_number,
+        sv_min=sv_min,
+        sv_max=sv_max,
+        effective_rank=effective_rank,
+        lm_lam=lm_lam,
+        extra_ridge=extra_ridge,
+        ridge_used=extra_ridge,
+        solve_mode=solve_mode,
         status=str(status),
         method="dense_task_implicit_diagnostic",
-    )
-    return TipJacobianResult(
-        p_tip_dim=sens.p_tip_dim,
-        J_p_I=sens.J_p_I,
-        J_E_z=jnp.asarray(sens.J_E_z),
-        J_E_I=jnp.asarray(sens.J_E_I),
-        lam=float(sens.lam),
     )
