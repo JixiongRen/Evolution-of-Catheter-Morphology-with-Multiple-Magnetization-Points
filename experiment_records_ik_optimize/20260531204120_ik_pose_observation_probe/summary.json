@@ -1,0 +1,167 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/\n?? inverse_kinematics/ik_observations.py\n?? inverse_kinematics/tests/test_observation_interface.py\n?? references/",
+    "fk_module_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/forward_kinematics_optimized/fk.py",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "python": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python"
+  },
+  "results": [
+    {
+      "case": "zero_current",
+      "enable_magnetics": true,
+      "coil_currents": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "m_body_list": [
+        [
+          0.0,
+          0.0,
+          -0.005301
+        ],
+        [
+          0.0,
+          0.0,
+          0.005301
+        ],
+        [
+          0.005301,
+          0.0,
+          0.0
+        ]
+      ],
+      "ok": false,
+      "ok_replay": false,
+      "wall_s": 68.78103043299961,
+      "replay_wall_s": 1.4221566630003508,
+      "normE": 0.0009407859415592973,
+      "replay_normE": 0.0009407859415592973,
+      "residual_self_norm": 5.275689105623996e-16,
+      "tip_p_dim": [
+        0.10596026405100363,
+        0.0,
+        0.013339944784393182
+      ],
+      "tip_replay_delta_m": 0.0,
+      "tip_orientation_replay_error_rad": 0.0,
+      "rigid_midpoint_count": 3,
+      "rigid_replay_max_delta_m": 0.0,
+      "rigid_orientation_replay_max_error_rad": 0.0,
+      "max_rot_orth_error": 3.1403570438120834e-16,
+      "max_rot_det_error": 2.220446049250313e-16,
+      "max_quat_norm_error": 4.193789893136568e-08
+    },
+    {
+      "case": "single_coil_current",
+      "enable_magnetics": true,
+      "coil_currents": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        8.0,
+        0.0,
+        0.0
+      ],
+      "m_body_list": [
+        [
+          0.0,
+          0.0,
+          -0.005301
+        ],
+        [
+          0.0,
+          0.0,
+          0.005301
+        ],
+        [
+          0.005301,
+          0.0,
+          0.0
+        ]
+      ],
+      "ok": false,
+      "ok_replay": false,
+      "wall_s": 53.72362996099946,
+      "replay_wall_s": 1.4036027109996212,
+      "normE": 0.0006235811024669634,
+      "replay_normE": 0.0006235811024669634,
+      "residual_self_norm": 5.932778510553937e-16,
+      "tip_p_dim": [
+        0.08528904572244636,
+        0.003869231164989117,
+        -0.03129859453704565
+      ],
+      "tip_replay_delta_m": 0.0,
+      "tip_orientation_replay_error_rad": 0.0,
+      "rigid_midpoint_count": 3,
+      "rigid_replay_max_delta_m": 0.0,
+      "rigid_orientation_replay_max_error_rad": 0.0,
+      "max_rot_orth_error": 8.497373616034882e-16,
+      "max_rot_det_error": 6.661338147750939e-16,
+      "max_quat_norm_error": 2.4648412968453215e-06
+    },
+    {
+      "case": "mixed_current_mixed_magnet",
+      "enable_magnetics": true,
+      "coil_currents": [
+        4.0,
+        -6.0,
+        2.5,
+        0.0,
+        -3.0,
+        5.5,
+        -1.5,
+        3.0
+      ],
+      "m_body_list": [
+        [
+          0.005301,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -0.005301,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.005301
+        ]
+      ],
+      "ok": false,
+      "ok_replay": false,
+      "wall_s": 55.3243763699993,
+      "replay_wall_s": 1.4222114669992152,
+      "normE": 0.0006112417300555256,
+      "replay_normE": 0.0006112417300555256,
+      "residual_self_norm": 5.397696157451827e-16,
+      "tip_p_dim": [
+        0.09572932313725163,
+        -0.017007087153233683,
+        -0.03989256236715713
+      ],
+      "tip_replay_delta_m": 0.0,
+      "tip_orientation_replay_error_rad": 0.0,
+      "rigid_midpoint_count": 3,
+      "rigid_replay_max_delta_m": 0.0,
+      "rigid_orientation_replay_max_error_rad": 0.0,
+      "max_rot_orth_error": 1.1345219854371668e-15,
+      "max_rot_det_error": 8.881784197001252e-16,
+      "max_quat_norm_error": 1.7295169378872544e-06
+    }
+  ]
+}

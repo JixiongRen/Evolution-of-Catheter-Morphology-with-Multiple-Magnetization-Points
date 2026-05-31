@@ -1,0 +1,47 @@
+{
+  "label": "P2 diagnostic-only dense task sensitivity",
+  "ok_base": false,
+  "ok_plus": false,
+  "ok_minus": false,
+  "base_normE": 0.0006470195097361606,
+  "stationarity_norm": 0.05062740890185152,
+  "condition_number": 2953147136649.8267,
+  "status": "ill_conditioned",
+  "method": "dense_task_implicit_diagnostic",
+  "base_wall_s": 69.20847612699981,
+  "sensitivity_wall_s": 41.07701416999953,
+  "plus_wall_s": 1.5376002329994662,
+  "minus_wall_s": 1.4275115069995081,
+  "eps_A": 0.25,
+  "direction": [
+    0.4103913408340617,
+    -0.6155870112510925,
+    0.20519567041703085,
+    0.0,
+    -0.30779350562554625,
+    0.5129891760425771,
+    -0.20519567041703085,
+    0.10259783520851543
+  ],
+  "predicted_directional_derivative": [
+    -5.0990416636083596e-05,
+    0.00012172169377231128,
+    -0.000339366226783096,
+    0.0035712099578818005,
+    0.002395230378753251,
+    0.005803416218211694
+  ],
+  "fd_directional_derivative": [
+    -0.00012520501699106457,
+    -0.0011272039949773646,
+    -0.00087746400821756,
+    0.0015177702488227696,
+    0.005870269063797062,
+    0.0026524692987276166
+  ],
+  "difference_norm": 0.00529866468046498,
+  "fd_norm": 0.006771667964288181,
+  "relative_error": 0.7824755597008899,
+  "grade": "untrusted",
+  "production_candidate": false
+}

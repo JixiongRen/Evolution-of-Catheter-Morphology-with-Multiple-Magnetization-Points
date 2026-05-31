@@ -32,6 +32,7 @@ import jax.numpy as jnp
 from forward_kinematics_optimized.nondim import x_bar_to_dim
 from forward_kinematics_optimized.utils_nondim import unpack_z_bar_jax
 from forward_kinematics_optimized.equilibrium_solver_nondim import residual_bar_zI, residual_bar_zIx, SolverParams, LMStats
+from inverse_kinematics.ik_observations import ObservationSpec, compute_observation_residual
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
@@ -92,6 +93,23 @@ class TipSensitivityResult:
     p_tip_dim: Array
     J_p_I: Array
     J_p_x: Array
+    J_E_z: Optional[Array]
+    J_E_I: Optional[Array]
+    J_E_x: Optional[Array]
+    lam: float
+    stationarity_norm: float
+    condition_number: Optional[float]
+    status: str
+    method: str
+
+
+@dataclass
+class TaskSensitivityResult:
+    """Return bundle for diagnostic multi-observation sensitivity."""
+
+    residual: Array
+    J_r_I: Array
+    J_r_x: Array
     J_E_z: Optional[Array]
     J_E_I: Optional[Array]
     J_E_x: Optional[Array]
@@ -263,6 +281,131 @@ def compute_dp_dI_via_lm_adjoint(
         ridge=ridge,
         J_E_z=None,
         materialize_jacobian=True,
+    )
+
+
+def _sites_from_z_params(z_bar: Array, params: SolverParams) -> dict:
+    """Build a ``query_sites``-compatible pose dictionary from ``z_bar``."""
+    x_nodes_list_bar, _k_list_bar, x_rigid_list_bar = unpack_z_bar_jax(z_bar, M_list=params.M_list)
+    x_tip_dim = x_bar_to_dim(x_nodes_list_bar[-1][-1], params.scales)
+
+    rigid_p = []
+    rigid_q = []
+    for x_rigid_bar in x_rigid_list_bar:
+        x_rigid_dim = x_bar_to_dim(x_rigid_bar, params.scales)
+        rigid_p.append(x_rigid_dim[0:3])
+        rigid_q.append(x_rigid_dim[3:7])
+    if rigid_p:
+        rigid_mid_p = jnp.stack(rigid_p, axis=0)
+        rigid_mid_q = jnp.stack(rigid_q, axis=0)
+    else:
+        rigid_mid_p = jnp.zeros((0, 3), dtype=jnp.float64)
+        rigid_mid_q = jnp.zeros((0, 4), dtype=jnp.float64)
+
+    return {
+        "tip_p_dim": x_tip_dim[0:3],
+        "tip_Q_wxyz": x_tip_dim[3:7],
+        "rigid_mid_p_dim": rigid_mid_p,
+        "rigid_mid_Q_wxyz": rigid_mid_q,
+    }
+
+
+def _task_residual_from_z(z_bar: Array, params: SolverParams, specs: Sequence[ObservationSpec]) -> Array:
+    """Compute stacked observation residuals from a packed FK state."""
+    sites = _sites_from_z_params(z_bar, params)
+    pieces = []
+    for spec in specs:
+        pieces.append(compute_observation_residual(sites, spec).residual.reshape(-1))
+    if not pieces:
+        return jnp.zeros((0,), dtype=jnp.float64)
+    return jnp.concatenate(pieces, axis=0)
+
+
+def compute_task_sensitivities_via_lm_adjoint(
+    *,
+    z_star_bar: Array,
+    params: SolverParams,
+    lm_stats: LMStats,
+    coil_currents: Array,
+    specs: Sequence[ObservationSpec],
+    ridge: Optional[float] = None,
+    J_E_z: Optional[Array] = None,
+    compute_conditioning: bool = False,
+    weak_normE: float = 1e-1,
+    cond_warning: float = 1e8,
+    cond_bad: float = 1e10,
+) -> TaskSensitivityResult:
+    """Compute dense diagnostic sensitivity for arbitrary observation residuals.
+
+    This is a P2 diagnostic path. It materializes dense Jacobians and should not
+    be used as the production path for large IK problems.
+    """
+    if lm_stats is None:
+        raise ValueError("lm_stats is required for damping and residual diagnostics")
+    if not specs:
+        raise ValueError("at least one ObservationSpec is required")
+
+    I0 = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,)
+    z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
+    L1 = jnp.asarray(params.L1_dim, dtype=jnp.float64).reshape(())
+
+    if J_E_z is not None:
+        Jz = jnp.asarray(J_E_z, dtype=jnp.float64)
+    elif getattr(lm_stats, "J", None) is not None:
+        Jz = jnp.asarray(lm_stats.J, dtype=jnp.float64)
+    else:
+        Jz = _JAC_E_WRT_Z_IX_FWD(z0, I0, L1, params)
+
+    JI, Jx = _JAC_E_WRT_IX_FWD(z0, I0, L1, params)
+    JI = jnp.asarray(JI, dtype=jnp.float64)
+    Jx = jnp.asarray(Jx, dtype=jnp.float64).reshape((-1, 1))
+    B = jnp.concatenate([JI, Jx], axis=1)
+
+    residual_fn = lambda z: _task_residual_from_z(z, params, specs)
+    residual = residual_fn(z0)
+    Jr_z = jax.jacrev(residual_fn)(z0)
+
+    lam_used = float(lm_stats.lam)
+    if ridge is not None:
+        lam_used = float(lam_used + ridge)
+
+    Jt = jnp.transpose(Jz)
+    H = Jt @ Jz
+    nZ = H.shape[0]
+    H = H + lam_used * jnp.eye(nZ, dtype=H.dtype)
+
+    U = jnp.linalg.solve(H, jnp.transpose(Jr_z))
+    JT_B = Jt @ B
+    Jr_all = -jnp.transpose(U) @ JT_B
+
+    E = jnp.asarray(lm_stats.E_star, dtype=jnp.float64)
+    stationarity_norm = float(jnp.linalg.norm(Jt @ E))
+    condition_number = None
+    if bool(compute_conditioning):
+        condition_number = float(jnp.linalg.cond(H))
+    normE = float(getattr(lm_stats, "normE", jnp.linalg.norm(E)))
+    status = _classify_conditioning(
+        normE=normE,
+        stationarity_norm=stationarity_norm,
+        condition_number=condition_number,
+        weak_normE=float(weak_normE),
+        cond_warning=float(cond_warning),
+        cond_bad=float(cond_bad),
+    )
+
+    nI = int(I0.shape[0])
+    return TaskSensitivityResult(
+        residual=residual,
+        J_r_I=Jr_all[:, :nI],
+        J_r_x=Jr_all[:, nI],
+        J_E_z=Jz,
+        J_E_I=JI,
+        J_E_x=Jx[:, 0],
+        lam=float(lam_used),
+        stationarity_norm=float(stationarity_norm),
+        condition_number=condition_number,
+        status=str(status),
+        method="dense_task_implicit_diagnostic",
     )
     return TipJacobianResult(
         p_tip_dim=sens.p_tip_dim,
