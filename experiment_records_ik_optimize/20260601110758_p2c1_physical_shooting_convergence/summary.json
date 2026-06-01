@@ -294,6 +294,21 @@
   },
   "stage_a_reached": true,
   "stage_b_reached": true,
-  "fd_audit_run": false,
-  "fd_audit_reason": "Not run yet in this merge step; endpoint-first Stage B reached, but sensitivity audit should target the selected physical candidate in the next run."
+  "fd_audit_run": true,
+  "fd_audit_mode": "fixed_state",
+  "fd_audit_summary": {
+    "candidate": "c3_segment_wrench_18d",
+    "active_current_index": 5,
+    "wall_s": 94.84729906599387,
+    "max_relative_error": 1.0,
+    "position_relative_errors": [
+      1.0,
+      1.0
+    ],
+    "axis_relative_errors": [
+      1.0,
+      1.0
+    ],
+    "interpretation": "Fixed-state audit failed: holding the shooting state constant suppresses the current response. A re-optimized or implicit sensitivity audit is required."
+  }
 }

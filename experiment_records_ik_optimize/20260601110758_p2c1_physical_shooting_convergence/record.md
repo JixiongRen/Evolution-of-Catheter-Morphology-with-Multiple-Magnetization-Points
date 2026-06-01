@@ -76,6 +76,17 @@ FK oracle 本身未达到严格 `base_ok`，但残差量级较低：
 - `candidate_comparison.png`
 - `M111/*_oracle_vs_shooting.png`
 - `M111/*_residual_history.png`
+- `fd_audit_errors.png`
+
+由于 endpoint-first 口径下最佳物理候选达到 Stage B，本轮补做了轻量 fixed-state FD audit。该审计固定 `c3_segment_wrench_18d` 的打靶状态，只扰动第 5 号电流通道并比较 FK oracle 与 shooting 预测的末端位置/轴向响应。
+
+FD audit 结果：
+
+- `eps=0.02`：position 相对误差 `1.0`，axis 相对误差 `1.0`
+- `eps=0.05`：position 相对误差 `1.0`，axis 相对误差 `1.0`
+- wall time：`94.85s`
+
+该结果不代表 `c3` 的几何拟合失败，而是说明 fixed-state 审计方式本身不足：打靶状态固定后，shooting 预测几乎不响应电流扰动。后续必须采用 re-optimized shooting 或隐式敏感度审计。
 
 ## 数据分析
 
@@ -86,6 +97,8 @@ FK oracle 本身未达到严格 `base_ok`，但残差量级较低：
 
 `segment_twist` 候选证明几何自由度可以降低轴线 RMS，但它绕开了物理内力/内矩平衡，且末端姿态代理较差，因此只能作为调试参考，不能作为生产路线。
 
+FD audit 的失败进一步说明：仅靠固定打靶状态不能提供可靠的外层 IK 梯度。物理打靶求解器如果要进入 IK，必须把“打靶状态随电流变化的响应”纳入梯度链路。
+
 ## 实验结论
 
 在修正评价口径后，本轮达到了 P2c.1 的阶段性目标：存在物理意义更强的 `segment_wrench` 打靶候选，可以在 `M=(1,1,1)` 基准上实现末端位置和刚段位置的 Stage B 级接近。
@@ -95,13 +108,13 @@ FK oracle 本身未达到严格 `base_ok`，但残差量级较低：
 - FK oracle 本身 `base_ok=false`，虽然残差不大，但应记录为基准不完美。
 - 当前候选依赖对 FK oracle 的初值估计，不是从任意初值稳定收敛。
 - 轴线整体形态仍有明显漂移。
-- 还没有完成针对最佳物理候选的电流位置/姿态敏感性审计。
+- 轻量 fixed-state 敏感性审计已经运行，但结果不可信；下一轮需要 re-optimized 或 implicit sensitivity 审计。
 
 ## 下一步计划
 
 下一轮应围绕 `c3_segment_wrench_18d` 开展：
 
-1. 对最佳候选补做电流扰动下的末端位置和姿态敏感性审计。
+1. 对最佳候选补做 re-optimized 或 implicit sensitivity 的末端位置和姿态敏感性审计。
 2. 引入更接近 FK collocation 结构的段连接约束，降低轴线 RMS 漂移。
 3. 将自由端边界残差作为软约束而非完全忽略，避免 `c1/c2` 这类低末端误差但物理一致性差的候选被误采信。
 4. 在 `M=(2,2,2)` 或 `M=(3,3,3)` 上复核 endpoint-first 结论是否保持。

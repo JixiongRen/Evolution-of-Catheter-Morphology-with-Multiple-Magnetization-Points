@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "mode": "fixed_state",
+    "candidate": "c3_segment_wrench_18d",
+    "active_current_index": 5,
+    "eps_values": [
+      0.02,
+      0.05
+    ],
+    "tasks": [
+      "position",
+      "axis"
+    ],
+    "wall_s": 94.84729906599387,
+    "base_oracle_normE": 0.000864072679962742,
+    "base_oracle_ok": false,
+    "note": "Fixed-state audit only. It checks local task response with the best shooting state held constant."
+  },
+  "rows": [
+    {
+      "mode": "fixed_state",
+      "candidate": "c3_segment_wrench_18d",
+      "active_current_index": 5,
+      "eps": 0.02,
+      "task": "position",
+      "oracle_fd_norm": 0.0012746492188675813,
+      "shooting_fd_norm": 0.0,
+      "difference_norm": 0.0012746492188675813,
+      "relative_error": 1.0
+    },
+    {
+      "mode": "fixed_state",
+      "candidate": "c3_segment_wrench_18d",
+      "active_current_index": 5,
+      "eps": 0.02,
+      "task": "axis",
+      "oracle_fd_norm": 0.10362668647501437,
+      "shooting_fd_norm": 0.0,
+      "difference_norm": 0.10362668647501437,
+      "relative_error": 1.0
+    },
+    {
+      "mode": "fixed_state",
+      "candidate": "c3_segment_wrench_18d",
+      "active_current_index": 5,
+      "eps": 0.05,
+      "task": "position",
+      "oracle_fd_norm": 0.004535228913558961,
+      "shooting_fd_norm": 0.0,
+      "difference_norm": 0.004535228913558961,
+      "relative_error": 1.0
+    },
+    {
+      "mode": "fixed_state",
+      "candidate": "c3_segment_wrench_18d",
+      "active_current_index": 5,
+      "eps": 0.05,
+      "task": "axis",
+      "oracle_fd_norm": 0.1361445984769765,
+      "shooting_fd_norm": 0.0,
+      "difference_norm": 0.1361445984769765,
+      "relative_error": 1.0
+    }
+  ]
+}

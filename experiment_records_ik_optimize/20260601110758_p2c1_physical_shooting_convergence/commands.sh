@@ -33,3 +33,9 @@ conda run -n evolution_of_mcrs python \
   2> experiment_records_ik_optimize/20260601110758_p2c1_physical_shooting_convergence/run_twist_stderr.log
 
 # Final merge uses endpoint-first scoring after the tip/terminal-pose priority clarification.
+
+# Lightweight fixed-state finite-difference audit for the best physical candidate.
+conda run -n evolution_of_mcrs python \
+  experiment_records_ik_optimize/20260601110758_p2c1_physical_shooting_convergence/run_p2c1_fd_audit.py \
+  > experiment_records_ik_optimize/20260601110758_p2c1_physical_shooting_convergence/fd_audit_stdout.log \
+  2> experiment_records_ik_optimize/20260601110758_p2c1_physical_shooting_convergence/fd_audit_stderr.log

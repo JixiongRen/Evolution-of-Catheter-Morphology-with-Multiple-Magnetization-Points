@@ -1,0 +1,5 @@
+active_current_index,candidate,difference_norm,eps,mode,oracle_fd_norm,relative_error,shooting_fd_norm,task
+5,c3_segment_wrench_18d,0.0012746492188675813,0.02,fixed_state,0.0012746492188675813,1.0,0.0,position
+5,c3_segment_wrench_18d,0.10362668647501437,0.02,fixed_state,0.10362668647501437,1.0,0.0,axis
+5,c3_segment_wrench_18d,0.004535228913558961,0.05,fixed_state,0.004535228913558961,1.0,0.0,position
+5,c3_segment_wrench_18d,0.1361445984769765,0.05,fixed_state,0.1361445984769765,1.0,0.0,axis
