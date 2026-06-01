@@ -1,0 +1,219 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260601100855_p2c_physical_shooting_solver/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "python": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "mode": "quick",
+    "max_iter": 120,
+    "tol": 1e-05,
+    "jac_eps": 0.02,
+    "audit_eps_values": [
+      0.02,
+      0.05
+    ],
+    "cutoff_ratio": 1e-05,
+    "shooting_max_nfev": 4,
+    "steps_per_flex": 4,
+    "active_current_indices": [
+      5
+    ],
+    "residual_types": [
+      "position",
+      "axis"
+    ],
+    "non_production": true,
+    "physics_approximation": "RK4 IVP with proximal force/moment shooting; rigid magnetic/gravity loads reuse FK callbacks; no distributed magnetic load on flexible segments.",
+    "fd_reuse_base_y": true,
+    "base_only": false,
+    "use_oracle_proximal_guess": true
+  },
+  "cases": [
+    {
+      "case_dir": "M111",
+      "M_list": [
+        1,
+        1,
+        1
+      ],
+      "base_ok": false,
+      "base_normE": 0.000864072679962742,
+      "base_wall_s": 76.54536283999914,
+      "shooting_state_dim": 6,
+      "shooting_state_type": "proximal_force_moment",
+      "active_current_indices": [
+        5
+      ],
+      "steps_per_flex": 4,
+      "fd_reuse_base_y": true,
+      "base_only": false,
+      "use_oracle_proximal_guess": true,
+      "shooting_success": false,
+      "shooting_cost": 0.037673796576793046,
+      "shooting_nfev": 4,
+      "shooting_wall_s": 63.507814975993824,
+      "geometry": {
+        "tip_error": 0.02638061205309432,
+        "rms_centerline_error": 0.022634253221914816,
+        "max_centerline_error": 0.029324853295003093,
+        "rigid_midpoint_rms_error": 0.022472002167494187,
+        "axis_proxy_rms_error": 0.5482999213666626,
+        "boundary_residual_norm": 0.2744951605285348
+      },
+      "jacobian_rows": [
+        {
+          "M_list": "1,1,1",
+          "residual_type": "position",
+          "jac_eps": 0.02,
+          "cutoff_ratio": 1e-05,
+          "residual_dim": 3,
+          "active_current_indices": [
+            5
+          ],
+          "fd_reuse_base_y": true,
+          "singular_values": [
+            0.005696577942866715
+          ],
+          "effective_rank": 1,
+          "condition_number": 1.0,
+          "truncated_count": 0
+        },
+        {
+          "M_list": "1,1,1",
+          "residual_type": "axis",
+          "jac_eps": 0.02,
+          "cutoff_ratio": 1e-05,
+          "residual_dim": 3,
+          "active_current_indices": [
+            5
+          ],
+          "fd_reuse_base_y": true,
+          "singular_values": [
+            0.0
+          ],
+          "effective_rank": 0,
+          "condition_number": null,
+          "truncated_count": 1
+        }
+      ],
+      "audit_rows": [
+        {
+          "M_list": "1,1,1",
+          "residual_type": "position",
+          "direction": "dA",
+          "eps": 0.02,
+          "jac_eps": 0.02,
+          "relative_error": 4.678904709727419,
+          "difference_norm": 0.005963962233409902,
+          "fd_norm": 0.0012746492188675813,
+          "pred_norm": 0.005696577942866715,
+          "grade": "untrusted",
+          "fd_reuse_base_y": true
+        },
+        {
+          "M_list": "1,1,1",
+          "residual_type": "position",
+          "direction": "dA",
+          "eps": 0.05,
+          "jac_eps": 0.02,
+          "relative_error": 1.9163828056121492,
+          "difference_norm": 0.00869123470945946,
+          "fd_norm": 0.004535228913558961,
+          "pred_norm": 0.005696577942866715,
+          "grade": "untrusted",
+          "fd_reuse_base_y": true
+        },
+        {
+          "M_list": "1,1,1",
+          "residual_type": "position",
+          "direction": "dB",
+          "eps": 0.02,
+          "jac_eps": 0.02,
+          "relative_error": 4.678904709727419,
+          "difference_norm": 0.005963962233409902,
+          "fd_norm": 0.0012746492188675813,
+          "pred_norm": 0.005696577942866715,
+          "grade": "untrusted",
+          "fd_reuse_base_y": true
+        },
+        {
+          "M_list": "1,1,1",
+          "residual_type": "position",
+          "direction": "dB",
+          "eps": 0.05,
+          "jac_eps": 0.02,
+          "relative_error": 1.9163828056121492,
+          "difference_norm": 0.00869123470945946,
+          "fd_norm": 0.004535228913558961,
+          "pred_norm": 0.005696577942866715,
+          "grade": "untrusted",
+          "fd_reuse_base_y": true
+        },
+        {
+          "M_list": "1,1,1",
+          "residual_type": "axis",
+          "direction": "dA",
+          "eps": 0.02,
+          "jac_eps": 0.02,
+          "relative_error": 1.0,
+          "difference_norm": 0.05776351891588137,
+          "fd_norm": 0.05776351891588137,
+          "pred_norm": 0.0,
+          "grade": "untrusted",
+          "fd_reuse_base_y": true
+        },
+        {
+          "M_list": "1,1,1",
+          "residual_type": "axis",
+          "direction": "dA",
+          "eps": 0.05,
+          "jac_eps": 0.02,
+          "relative_error": 1.0,
+          "difference_norm": 0.10742112798192754,
+          "fd_norm": 0.10742112798192754,
+          "pred_norm": 0.0,
+          "grade": "untrusted",
+          "fd_reuse_base_y": true
+        },
+        {
+          "M_list": "1,1,1",
+          "residual_type": "axis",
+          "direction": "dB",
+          "eps": 0.02,
+          "jac_eps": 0.02,
+          "relative_error": 1.0,
+          "difference_norm": 0.05776351891588137,
+          "fd_norm": 0.05776351891588137,
+          "pred_norm": 0.0,
+          "grade": "untrusted",
+          "fd_reuse_base_y": true
+        },
+        {
+          "M_list": "1,1,1",
+          "residual_type": "axis",
+          "direction": "dB",
+          "eps": 0.05,
+          "jac_eps": 0.02,
+          "relative_error": 1.0,
+          "difference_norm": 0.10742112798192754,
+          "fd_norm": 0.10742112798192754,
+          "pred_norm": 0.0,
+          "grade": "untrusted",
+          "fd_reuse_base_y": true
+        }
+      ],
+      "solve_count": 5,
+      "cache_oracle_wall_s": 2.52972181399673,
+      "cache_shooting_wall_s": 0.0
+    }
+  ],
+  "row_count": 8,
+  "grade_counts": {
+    "usable": 0,
+    "diagnostic-only": 0,
+    "untrusted": 8
+  }
+}

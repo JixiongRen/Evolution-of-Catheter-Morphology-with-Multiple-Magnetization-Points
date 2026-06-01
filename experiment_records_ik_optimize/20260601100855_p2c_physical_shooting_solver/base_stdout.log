@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260601100855_p2c_physical_shooting_solver/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "python": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "mode": "quick",
+    "max_iter": 120,
+    "tol": 1e-05,
+    "jac_eps": 0.02,
+    "audit_eps_values": [
+      0.02,
+      0.05
+    ],
+    "cutoff_ratio": 1e-05,
+    "shooting_max_nfev": 4,
+    "steps_per_flex": 8,
+    "active_current_indices": [
+      5
+    ],
+    "residual_types": [
+      "position",
+      "axis"
+    ],
+    "non_production": true,
+    "physics_approximation": "RK4 IVP with proximal force/moment shooting; rigid magnetic/gravity loads reuse FK callbacks; no distributed magnetic load on flexible segments.",
+    "fd_reuse_base_y": false,
+    "base_only": true,
+    "use_oracle_proximal_guess": true
+  },
+  "cases": [
+    {
+      "case_dir": "M111",
+      "M_list": [
+        1,
+        1,
+        1
+      ],
+      "base_ok": false,
+      "base_normE": 0.000864072679962742,
+      "base_wall_s": 83.49247989599826,
+      "shooting_state_dim": 6,
+      "shooting_state_type": "proximal_force_moment",
+      "active_current_indices": [
+        5
+      ],
+      "steps_per_flex": 8,
+      "fd_reuse_base_y": false,
+      "base_only": true,
+      "use_oracle_proximal_guess": true,
+      "shooting_success": false,
+      "shooting_cost": 0.037677233856673056,
+      "shooting_nfev": 4,
+      "shooting_wall_s": 115.51919260100112,
+      "geometry": {
+        "tip_error": 0.02635276025253586,
+        "rms_centerline_error": 0.022544956135284525,
+        "max_centerline_error": 0.029295772565137115,
+        "rigid_midpoint_rms_error": 0.022408490231335666,
+        "axis_proxy_rms_error": 0.5475076925036082,
+        "boundary_residual_norm": 0.27450768243046697
+      },
+      "jacobian_rows": [],
+      "audit_rows": [],
+      "solve_count": 1,
+      "cache_oracle_wall_s": 0.0,
+      "cache_shooting_wall_s": 0.0
+    }
+  ],
+  "row_count": 0,
+  "grade_counts": {
+    "usable": 0,
+    "diagnostic-only": 0,
+    "untrusted": 0
+  }
+}
