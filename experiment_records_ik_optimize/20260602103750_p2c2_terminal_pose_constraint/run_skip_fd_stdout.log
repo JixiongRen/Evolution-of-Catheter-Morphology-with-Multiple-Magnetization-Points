@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260602103750_p2c2_terminal_pose_constraint/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "M_list": [
+      1,
+      1,
+      1
+    ],
+    "max_iter": 120,
+    "tol": 1e-05,
+    "steps_per_flex": 4,
+    "candidate_max_nfev": 16,
+    "terminal_convention": "distal end of the last rigid segment",
+    "flex_tip_convention": "distal node of the last flexible segment; recorded for drift diagnostics only",
+    "catheter_length": 0.10999999999999999,
+    "total_wall_s": 1201.5349026450058,
+    "non_production": true
+  },
+  "oracle": {
+    "base_ok": false,
+    "base_normE": 0.000864072679962742,
+    "base_wall_s": 83.68793754699436
+  },
+  "rows": [
+    {
+      "candidate": "c3_segment_wrench_18d",
+      "mode": "legacy_axis_proxy",
+      "state_mode": "segment_wrench",
+      "state_dim": 18,
+      "success": false,
+      "wall_s": 579.681303217003,
+      "nfev": 16,
+      "cost": 1.3085926857659447,
+      "pose_stage": "B",
+      "tip_error": 0.00309429840529431,
+      "rms_centerline_error": 0.013293415950488295,
+      "max_centerline_error": 0.027221392417579555,
+      "rigid_midpoint_rms_error": 0.000250901539954878,
+      "axis_proxy_rms_error": 0.014082260211949632,
+      "boundary_residual_norm": 0.2663155388312264,
+      "terminal_position_error": 0.0003437753654043893,
+      "terminal_so3_error_rad": 0.13842970411656338,
+      "terminal_so3_error_deg": 7.93143780512384,
+      "flex_tip_position_error": 0.00309429840529431,
+      "flex_tip_so3_error_deg": 7.931437948257007
+    },
+    {
+      "candidate": "c3_pose_terminal_v1",
+      "mode": "terminal_pose_so3",
+      "state_mode": "segment_wrench",
+      "state_dim": 18,
+      "success": false,
+      "wall_s": 528.5656790979992,
+      "nfev": 16,
+      "cost": 0.31814761457239077,
+      "pose_stage": "B",
+      "tip_error": 0.0031045080037166418,
+      "rms_centerline_error": 0.013292464141003317,
+      "max_centerline_error": 0.027222317496574368,
+      "rigid_midpoint_rms_error": 0.000158891598222154,
+      "axis_proxy_rms_error": 0.016409442738315457,
+      "boundary_residual_norm": 0.15051980638622736,
+      "terminal_position_error": 0.00010531185693278449,
+      "terminal_so3_error_rad": 0.0018436222923424728,
+      "terminal_so3_error_deg": 0.10563177636745771,
+      "flex_tip_position_error": 0.0031045080037166418,
+      "flex_tip_so3_error_deg": 0.10563317340204688
+    }
+  ],
+  "best_candidate": {
+    "candidate": "c3_pose_terminal_v1",
+    "mode": "terminal_pose_so3",
+    "state_mode": "segment_wrench",
+    "state_dim": 18,
+    "success": false,
+    "wall_s": 528.5656790979992,
+    "nfev": 16,
+    "cost": 0.31814761457239077,
+    "pose_stage": "B",
+    "tip_error": 0.0031045080037166418,
+    "rms_centerline_error": 0.013292464141003317,
+    "max_centerline_error": 0.027222317496574368,
+    "rigid_midpoint_rms_error": 0.000158891598222154,
+    "axis_proxy_rms_error": 0.016409442738315457,
+    "boundary_residual_norm": 0.15051980638622736,
+    "terminal_position_error": 0.00010531185693278449,
+    "terminal_so3_error_rad": 0.0018436222923424728,
+    "terminal_so3_error_deg": 0.10563177636745771,
+    "flex_tip_position_error": 0.0031045080037166418,
+    "flex_tip_so3_error_deg": 0.10563317340204688
+  },
+  "fd_audit": null
+}

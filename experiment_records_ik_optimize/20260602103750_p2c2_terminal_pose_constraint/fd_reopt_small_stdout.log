@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "mode": "reoptimized",
+    "candidate": "c3_pose_terminal_v1",
+    "active_current_index": 5,
+    "eps_values": [
+      0.02
+    ],
+    "audit_nfev": 8,
+    "wall_s": 292.0249268490006,
+    "solve_count": 2
+  },
+  "rows": [
+    {
+      "candidate": "c3_pose_terminal_v1",
+      "mode": "reoptimized",
+      "active_current_index": 5,
+      "eps": 0.02,
+      "task": "position",
+      "oracle_fd_norm": 0.001399201791164093,
+      "shooting_fd_norm": 0.006483238591208444,
+      "difference_norm": 0.005455385609586768,
+      "relative_error": 3.898926976821588
+    },
+    {
+      "candidate": "c3_pose_terminal_v1",
+      "mode": "reoptimized",
+      "active_current_index": 5,
+      "eps": 0.02,
+      "task": "so3",
+      "oracle_fd_norm": 0.10380494017038798,
+      "shooting_fd_norm": 0.5761684187441629,
+      "difference_norm": 0.5203665009362731,
+      "relative_error": 5.012926167888838
+    },
+    {
+      "candidate": "c3_pose_terminal_v1",
+      "mode": "reoptimized",
+      "active_current_index": 5,
+      "eps": 0.02,
+      "task": "pose",
+      "oracle_fd_norm": 0.10381436976368072,
+      "shooting_fd_norm": 0.5762048933676107,
+      "difference_norm": 0.5203950965649173,
+      "relative_error": 5.012746286949735
+    }
+  ]
+}
