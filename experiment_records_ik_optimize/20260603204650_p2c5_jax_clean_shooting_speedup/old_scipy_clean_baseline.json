@@ -1,0 +1,18 @@
+{
+  "case": "n3_mixed_base_i4",
+  "init_mode": "oracle_y0",
+  "wall_s": 317.34425343500334,
+  "nfev": 16,
+  "cost": 2.6450813949200018e-05,
+  "tip_error": 0.0029426886066332056,
+  "rms_centerline_error": 0.013338134592701832,
+  "max_centerline_error": 0.02723277857556301,
+  "rigid_midpoint_rms_error": 0.0004951694003812013,
+  "axis_proxy_rms_error": 0.025884163806753995,
+  "boundary_residual_norm": 0.08999565752417765,
+  "terminal_position_error": 5.832201678355668e-05,
+  "terminal_so3_error_rad": 0.0004125986271836369,
+  "terminal_so3_error_deg": 0.023640159970514114,
+  "flex_tip_position_error": 0.0029426886066332056,
+  "flex_tip_so3_error_deg": 0.02364154118466757
+}

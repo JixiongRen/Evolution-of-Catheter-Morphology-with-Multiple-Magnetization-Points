@@ -1,0 +1,23 @@
+{
+  "case": "n1_tip_z_rand15",
+  "init_mode": "oracle_y0",
+  "success": true,
+  "compile_s": 51.36049743500189,
+  "steady_solve_s": 4.866175721981563,
+  "residual_eval_s": 0.3355339880217798,
+  "jacobian_eval_s": 0.20596840901998803,
+  "linear_solve_s": 0.004688491026172414,
+  "n_iter": 17,
+  "reject_count": 0,
+  "lambda_final": 3.587226749999998e-07,
+  "cost": 4.8701752979178636e-05,
+  "oracle_wall_s": 74.32778700999916,
+  "uses_oracle_y0": true,
+  "production_candidate": false,
+  "terminal_position_error": 3.754625864176504e-05,
+  "terminal_so3_error_deg": 0.2273043822537857,
+  "boundary_residual_norm": 0.007522898126822794,
+  "residual_compile_s": 10.691847187001258,
+  "jacobian_compile_s": 28.541792917007115,
+  "output_compile_s": 12.126857330993516
+}

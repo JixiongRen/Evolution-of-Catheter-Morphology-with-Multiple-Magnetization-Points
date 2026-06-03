@@ -1,0 +1,23 @@
+{
+  "case": "n2_z_pair_rand12",
+  "init_mode": "oracle_y0",
+  "success": true,
+  "compile_s": 61.867277105979156,
+  "steady_solve_s": 3.4097873709979467,
+  "residual_eval_s": 0.2491082139313221,
+  "jacobian_eval_s": 0.18596186104696244,
+  "linear_solve_s": 0.003813009010627866,
+  "n_iter": 17,
+  "reject_count": 0,
+  "lambda_final": 3.587226749999998e-07,
+  "cost": 4.975042217883219e-06,
+  "oracle_wall_s": 73.60703348298557,
+  "uses_oracle_y0": true,
+  "production_candidate": false,
+  "terminal_position_error": 2.4015660365143654e-05,
+  "terminal_so3_error_deg": 0.03585812991100109,
+  "boundary_residual_norm": 0.0005590759100183845,
+  "residual_compile_s": 12.484642045979854,
+  "jacobian_compile_s": 36.54968124401057,
+  "output_compile_s": 12.83295381598873
+}

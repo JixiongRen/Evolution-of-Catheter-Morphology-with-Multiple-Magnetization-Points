@@ -1,0 +1,2 @@
+boundary_diff_norm,case,centerline_diff_max_m,init_mode,tip_position_diff_m,tip_so3_diff_deg
+1.575067779371354e-16,n3_mixed_base_i4,1.0408340855860843e-17,oracle_y0,1.0408340855860843e-17,6.733536879152578e-15
