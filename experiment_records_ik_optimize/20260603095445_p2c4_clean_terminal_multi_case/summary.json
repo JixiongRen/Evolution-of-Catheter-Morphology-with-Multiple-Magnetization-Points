@@ -1,0 +1,365 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260603095445_p2c4_clean_terminal_multi_case/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "M_list": [
+      1,
+      1,
+      1
+    ],
+    "clean_residuals": [
+      "terminal_position",
+      "terminal_so3",
+      "physical_boundary"
+    ],
+    "excluded_residuals": [
+      "centerline",
+      "rigid_midpoint"
+    ],
+    "init_modes": [
+      "oracle_y0",
+      "zero_y0"
+    ],
+    "total_wall_s": 4516.623561285
+  },
+  "cases": [
+    {
+      "case": "n3_mixed_base_i4",
+      "oracle_ok": false,
+      "oracle_normE": 0.000864072679962742,
+      "oracle_wall_s": 68.44726784699014,
+      "currents": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        4.0,
+        0.0,
+        0.0
+      ],
+      "m_body_list": [
+        [
+          0.0,
+          0.0,
+          -0.005301
+        ],
+        [
+          0.0,
+          0.0,
+          0.005301
+        ],
+        [
+          0.005301,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "oracle_ok": false,
+      "oracle_normE": 0.0045708904266758815,
+      "oracle_wall_s": 61.7707584159798,
+      "currents": [
+        12.0,
+        -7.5,
+        4.0,
+        -15.0,
+        9.0,
+        18.0,
+        -3.5,
+        6.0
+      ],
+      "m_body_list": [
+        [
+          0.0,
+          0.0,
+          -0.005301
+        ],
+        [
+          0.0,
+          0.0,
+          0.005301
+        ],
+        [
+          0.005301,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "oracle_ok": false,
+      "oracle_normE": 0.0008605947203079327,
+      "oracle_wall_s": 73.43600328001776,
+      "currents": [
+        -8.0,
+        5.0,
+        11.0,
+        -4.0,
+        0.0,
+        9.5,
+        -6.0,
+        3.0
+      ],
+      "m_body_list": [
+        [
+          0.0,
+          0.0,
+          -0.005301
+        ],
+        [
+          0.0,
+          0.0,
+          0.005301
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "oracle_ok": false,
+      "oracle_normE": 0.0007494468231049692,
+      "oracle_wall_s": 79.52623794099782,
+      "currents": [
+        3.0,
+        -12.0,
+        6.0,
+        0.0,
+        14.0,
+        -9.0,
+        4.5,
+        -2.0
+      ],
+      "m_body_list": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.005301
+        ]
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "case": "n3_mixed_base_i4",
+      "init_mode": "oracle_y0",
+      "magnet_count_nonzero": 3,
+      "currents": "0,0,0,0,0,4,0,0",
+      "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0.005301,0,0",
+      "pose_stage": "B",
+      "success": false,
+      "wall_s": 330.09929007999017,
+      "nfev": 16,
+      "cost": 2.6450813949200018e-05,
+      "data_leakage": false,
+      "uses_oracle_y0": true,
+      "tip_error": 0.0029426886066332056,
+      "rms_centerline_error": 0.013338134592701832,
+      "max_centerline_error": 0.02723277857556301,
+      "rigid_midpoint_rms_error": 0.0004951694003812013,
+      "axis_proxy_rms_error": 0.025884163806753995,
+      "boundary_residual_norm": 0.08999565752417765,
+      "terminal_position_error": 5.832201678355668e-05,
+      "terminal_so3_error_rad": 0.0004125986271836369,
+      "terminal_so3_error_deg": 0.023640159970514114,
+      "flex_tip_position_error": 0.0029426886066332056,
+      "flex_tip_so3_error_deg": 0.02364154118466757
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "init_mode": "zero_y0",
+      "magnet_count_nonzero": 3,
+      "currents": "0,0,0,0,0,4,0,0",
+      "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0.005301,0,0",
+      "pose_stage": "B",
+      "success": false,
+      "wall_s": 516.6140975110175,
+      "nfev": 16,
+      "cost": 2.616936141137856e-05,
+      "data_leakage": false,
+      "uses_oracle_y0": false,
+      "tip_error": 0.0029984472178228427,
+      "rms_centerline_error": 0.013413732154593296,
+      "max_centerline_error": 0.027250163525800727,
+      "rigid_midpoint_rms_error": 0.0014924284187920536,
+      "axis_proxy_rms_error": 0.08888878964173194,
+      "boundary_residual_norm": 0.29948567058458353,
+      "terminal_position_error": 5.924084731391113e-06,
+      "terminal_so3_error_rad": 0.0019972913681990893,
+      "terminal_so3_error_deg": 0.11443636585571754,
+      "flex_tip_position_error": 0.0029984472178228427,
+      "flex_tip_so3_error_deg": 0.11443583659311371
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "init_mode": "oracle_y0",
+      "magnet_count_nonzero": 3,
+      "currents": "12,-7.5,4,-15,9,18,-3.5,6",
+      "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0.005301,0,0",
+      "pose_stage": "B",
+      "success": false,
+      "wall_s": 551.5827977349982,
+      "nfev": 16,
+      "cost": 1.1585693647059677e-06,
+      "data_leakage": false,
+      "uses_oracle_y0": true,
+      "tip_error": 0.003002681059127611,
+      "rms_centerline_error": 0.013571247229863073,
+      "max_centerline_error": 0.026904742058673416,
+      "rigid_midpoint_rms_error": 0.0028261137449034214,
+      "axis_proxy_rms_error": 0.17367619266949,
+      "boundary_residual_norm": 0.07315080761324967,
+      "terminal_position_error": 3.2806047839474424e-06,
+      "terminal_so3_error_rad": 7.372986512577784e-05,
+      "terminal_so3_error_deg": 0.004224410095775865,
+      "flex_tip_position_error": 0.003002681059127611,
+      "flex_tip_so3_error_deg": 0.004245681302215976
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "init_mode": "zero_y0",
+      "magnet_count_nonzero": 3,
+      "currents": "12,-7.5,4,-15,9,18,-3.5,6",
+      "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0.005301,0,0",
+      "pose_stage": "B",
+      "success": false,
+      "wall_s": 412.30171240799245,
+      "nfev": 16,
+      "cost": 0.012528661058636459,
+      "data_leakage": false,
+      "uses_oracle_y0": false,
+      "tip_error": 0.0033814028000758254,
+      "rms_centerline_error": 0.014544295491734466,
+      "max_centerline_error": 0.027244753143131455,
+      "rigid_midpoint_rms_error": 0.005608843571839242,
+      "axis_proxy_rms_error": 0.27163170190195907,
+      "boundary_residual_norm": 0.09279440660190325,
+      "terminal_position_error": 0.0012538008678802956,
+      "terminal_so3_error_rad": 0.024580675956083736,
+      "terminal_so3_error_deg": 1.4083689898622977,
+      "flex_tip_position_error": 0.0033814028000758254,
+      "flex_tip_so3_error_deg": 1.4082878839937334
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "init_mode": "oracle_y0",
+      "magnet_count_nonzero": 2,
+      "currents": "-8,5,11,-4,0,9.5,-6,3",
+      "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0,0,0",
+      "pose_stage": "B",
+      "success": false,
+      "wall_s": 409.24275537600624,
+      "nfev": 16,
+      "cost": 1.8983437336930866e-09,
+      "data_leakage": false,
+      "uses_oracle_y0": true,
+      "tip_error": 0.00300000182793687,
+      "rms_centerline_error": 0.013295378331570129,
+      "max_centerline_error": 0.027166276170552367,
+      "rigid_midpoint_rms_error": 0.0005368629938121805,
+      "axis_proxy_rms_error": 0.047095660712572145,
+      "boundary_residual_norm": 0.0024987044407683307,
+      "terminal_position_error": 2.8723955980667914e-07,
+      "terminal_so3_error_rad": 5.272176555317579e-06,
+      "terminal_so3_error_deg": 0.00030207346546751786,
+      "flex_tip_position_error": 0.00300000182793687,
+      "flex_tip_so3_error_deg": 0.0003027855680988334
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "init_mode": "zero_y0",
+      "magnet_count_nonzero": 2,
+      "currents": "-8,5,11,-4,0,9.5,-6,3",
+      "m_body_list": "0,0,-0.005301; 0,0,0.005301; 0,0,0",
+      "pose_stage": "B",
+      "success": false,
+      "wall_s": 780.0164910949825,
+      "nfev": 16,
+      "cost": 0.022975637151112158,
+      "data_leakage": false,
+      "uses_oracle_y0": false,
+      "tip_error": 0.001264880171512983,
+      "rms_centerline_error": 0.014308334879743772,
+      "max_centerline_error": 0.027337957485793315,
+      "rigid_midpoint_rms_error": 0.004346812986078991,
+      "axis_proxy_rms_error": 0.19136826298035076,
+      "boundary_residual_norm": 0.2606917653466876,
+      "terminal_position_error": 0.00177622358291475,
+      "terminal_so3_error_rad": 0.011096385740189509,
+      "terminal_so3_error_deg": 0.6357760707620089,
+      "flex_tip_position_error": 0.001264880171512983,
+      "flex_tip_so3_error_deg": 0.6357803421715489
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "init_mode": "oracle_y0",
+      "magnet_count_nonzero": 1,
+      "currents": "3,-12,6,0,14,-9,4.5,-2",
+      "m_body_list": "0,0,0; 0,0,0; 0,0,0.005301",
+      "pose_stage": "B",
+      "success": false,
+      "wall_s": 752.4576011439785,
+      "nfev": 16,
+      "cost": 4.363404482743704e-11,
+      "data_leakage": false,
+      "uses_oracle_y0": true,
+      "tip_error": 0.002999990926828764,
+      "rms_centerline_error": 0.013335210229217567,
+      "max_centerline_error": 0.02723318181822009,
+      "rigid_midpoint_rms_error": 0.0006584537566726925,
+      "axis_proxy_rms_error": 0.05658899163790209,
+      "boundary_residual_norm": 0.0003163374028233813,
+      "terminal_position_error": 5.3039849200607424e-08,
+      "terminal_so3_error_rad": 1.2971025401296794e-06,
+      "terminal_so3_error_deg": 7.431850114512913e-05,
+      "flex_tip_position_error": 0.002999990926828764,
+      "flex_tip_so3_error_deg": 7.530023019502648e-05
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "init_mode": "zero_y0",
+      "magnet_count_nonzero": 1,
+      "currents": "3,-12,6,0,14,-9,4.5,-2",
+      "m_body_list": "0,0,0; 0,0,0; 0,0,0.005301",
+      "pose_stage": "B",
+      "success": false,
+      "wall_s": 446.0876842070138,
+      "nfev": 16,
+      "cost": 0.001759659652690896,
+      "data_leakage": false,
+      "uses_oracle_y0": false,
+      "tip_error": 0.00260122804647787,
+      "rms_centerline_error": 0.01378019372977017,
+      "max_centerline_error": 0.027319754275024193,
+      "rigid_midpoint_rms_error": 0.002983768594138855,
+      "axis_proxy_rms_error": 0.16222968952379924,
+      "boundary_residual_norm": 0.21199164252983277,
+      "terminal_position_error": 0.00045534699717823205,
+      "terminal_so3_error_rad": 0.01135379163424976,
+      "terminal_so3_error_deg": 0.6505243421134529,
+      "flex_tip_position_error": 0.00260122804647787,
+      "flex_tip_so3_error_deg": 0.6505248302669701
+    }
+  ]
+}
