@@ -1,0 +1,38 @@
+[
+  {
+    "stage_index": 0,
+    "iter": 0,
+    "cost": 10.562734904128957,
+    "lambda": 0.0003,
+    "rho": 0.9941193637273266,
+    "accepted": true,
+    "step_norm": 0.017952200485686957,
+    "terminal_position_error": 0.00035241533357178377,
+    "terminal_so3_error_deg": 2.2965607273880972,
+    "rigid_position_rms_mm": 0.3209177119225525,
+    "rigid_position_max_mm": 0.37384808984220075,
+    "axis_rms_deg": 0.7644386865540717,
+    "axis_max_deg": 0.7644386865540717,
+    "rigid_so3_rms_deg": 0.0,
+    "rigid_so3_max_deg": 0.0,
+    "boundary_residual_norm": 0.05513149815609492
+  },
+  {
+    "stage_index": 1,
+    "iter": 0,
+    "cost": 0.0626790452427556,
+    "lambda": 8.999999999999999e-05,
+    "rho": 0.9980701502984669,
+    "accepted": true,
+    "step_norm": 0.030054884102850725,
+    "terminal_position_error": 1.551592610819793e-05,
+    "terminal_so3_error_deg": 0.8220904088786488,
+    "rigid_position_rms_mm": 0.11233834094709769,
+    "rigid_position_max_mm": 0.18162003215426303,
+    "axis_rms_deg": 0.8208482931553295,
+    "axis_max_deg": 0.8208482931553295,
+    "rigid_so3_rms_deg": 0.0,
+    "rigid_so3_max_deg": 0.0,
+    "boundary_residual_norm": 0.009610995124856967
+  }
+]

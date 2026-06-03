@@ -20,7 +20,7 @@ FK_OPT_DIR = ROOT / "forward_kinematics_optimized"
 if str(FK_OPT_DIR) not in sys.path:
     sys.path.insert(0, str(FK_OPT_DIR))
 
-from basics_nondim import quat_normalize
+from basics_nondim import quat_normalize, quat_to_rotmat
 from external_wrench_nondim import compute_external_wrench_total_rigid
 from forward_kinematics_optimized.segments_nondim import cosserat_rhs_dim, rigid_state_along_dim
 from inverse_kinematics.ik_observations import quaternion_so3_residual
@@ -39,6 +39,17 @@ class CleanShootingWeights:
     boundary_weight: float = 0.02
 
 
+@dataclass(frozen=True)
+class SiteTargetSpec:
+    """Static description for one magnet-site target."""
+
+    site_kind: str
+    site_index: int
+    residual_type: str
+    sigma_position: float = 1.0e-3
+    sigma_angle: float = 1.0
+
+
 @jax.tree_util.register_pytree_node_class
 @dataclass(frozen=True)
 class CleanShootingOutput:
@@ -47,21 +58,34 @@ class CleanShootingOutput:
     centerline: Array
     rigid_mid_p: Array
     rigid_mid_q: Array
+    rigid_dist_p: Array
+    rigid_dist_q: Array
     tip_p: Array
     tip_q: Array
     boundary: Array
 
     def tree_flatten(self):
-        children = (self.centerline, self.rigid_mid_p, self.rigid_mid_q, self.tip_p, self.tip_q, self.boundary)
+        children = (
+            self.centerline,
+            self.rigid_mid_p,
+            self.rigid_mid_q,
+            self.rigid_dist_p,
+            self.rigid_dist_q,
+            self.tip_p,
+            self.tip_q,
+            self.boundary,
+        )
         return children, None
 
     @classmethod
     def tree_unflatten(cls, aux, children):
-        centerline, rigid_mid_p, rigid_mid_q, tip_p, tip_q, boundary = children
+        centerline, rigid_mid_p, rigid_mid_q, rigid_dist_p, rigid_dist_q, tip_p, tip_q, boundary = children
         return cls(
             centerline=centerline,
             rigid_mid_p=rigid_mid_p,
             rigid_mid_q=rigid_mid_q,
+            rigid_dist_p=rigid_dist_p,
+            rigid_dist_q=rigid_dist_q,
             tip_p=tip_p,
             tip_q=tip_q,
             boundary=boundary,
@@ -159,6 +183,8 @@ def forward_segment_wrench(params: Any, y: Array, *, steps_per_flex: int = 4) ->
     centerline_parts = [x[0:3].reshape(1, 3)]
     rigid_mid_p = []
     rigid_mid_q = []
+    rigid_dist_p = []
+    rigid_dist_q = []
 
     for i in range(len(params.flex)):
         x = x.at[7:10].set(blocks[i, 0:3] * float(params.scales.F_ref))
@@ -169,6 +195,8 @@ def forward_segment_wrench(params: Any, y: Array, *, steps_per_flex: int = 4) ->
         x, mid_p, mid_q = _advance_rigid(params, x, i)
         rigid_mid_p.append(mid_p)
         rigid_mid_q.append(mid_q)
+        rigid_dist_p.append(x[0:3])
+        rigid_dist_q.append(x[3:7])
         centerline_parts.append(x[0:3].reshape(1, 3))
 
     boundary = jnp.concatenate(
@@ -182,6 +210,8 @@ def forward_segment_wrench(params: Any, y: Array, *, steps_per_flex: int = 4) ->
         centerline=jnp.concatenate(centerline_parts, axis=0),
         rigid_mid_p=jnp.stack(rigid_mid_p, axis=0),
         rigid_mid_q=jnp.stack(rigid_mid_q, axis=0),
+        rigid_dist_p=jnp.stack(rigid_dist_p, axis=0),
+        rigid_dist_q=jnp.stack(rigid_dist_q, axis=0),
         tip_p=x[0:3],
         tip_q=quat_normalize(x[3:7]),
         boundary=boundary,
@@ -210,12 +240,111 @@ def clean_terminal_residual(
     return jnp.concatenate([r_p.reshape(-1), r_q.reshape(-1), r_b.reshape(-1)], axis=0)
 
 
+def axis_from_quat_wxyz(q: Array, axis_body: Array) -> Array:
+    """Return the world-frame axis for a body-frame direction."""
+    axis = jnp.asarray(axis_body, dtype=jnp.float64).reshape(3)
+    axis = axis / jnp.maximum(jnp.linalg.norm(axis), 1e-12)
+    return quat_to_rotmat(quat_normalize(q)) @ axis
+
+
+def extract_site_pose_jax(out: CleanShootingOutput, *, site_kind: str, site_index: int) -> tuple[Array, Array]:
+    """Extract a supported site pose from a shooting output."""
+    idx = int(site_index)
+    if site_kind == "terminal_end":
+        return out.tip_p, out.tip_q
+    if site_kind == "rigid_mid":
+        return out.rigid_mid_p[idx], out.rigid_mid_q[idx]
+    if site_kind == "rigid_dist":
+        return out.rigid_dist_p[idx], out.rigid_dist_q[idx]
+    raise ValueError(f"Unsupported site_kind: {site_kind}")
+
+
+def clean_multisite_residual(
+    params: Any,
+    y: Array,
+    *,
+    target_terminal_p: Array,
+    target_terminal_q: Array,
+    target_rigid_p: Array,
+    target_rigid_q: Array,
+    site_position_mask: Array,
+    site_axis_mask: Array,
+    site_so3_mask: Array,
+    axis_body: Array,
+    steps_per_flex: int = 4,
+    sigma_terminal_p: float = 1.0e-3,
+    sigma_terminal_angle: float = 1.0,
+    sigma_rigid_p: float = 1.0e-3,
+    sigma_rigid_angle: float = 1.0,
+    boundary_weight: float = 0.5,
+    terminal_position_scale: float = 1.0,
+    terminal_so3_scale: float = 1.0,
+    rigid_position_scale: float = 1.0,
+    rigid_axis_scale: float = 0.0,
+    rigid_so3_scale: float = 0.0,
+    boundary_scale: float = 1.0,
+) -> Array:
+    """Return a fixed-shape residual for multipoint magnet-pose shooting."""
+    out = forward_segment_wrench(params, y, steps_per_flex=steps_per_flex)
+    target_terminal_p = jnp.asarray(target_terminal_p, dtype=jnp.float64).reshape(3)
+    target_terminal_q = jnp.asarray(target_terminal_q, dtype=jnp.float64).reshape(4)
+    target_rigid_p = jnp.asarray(target_rigid_p, dtype=jnp.float64).reshape(out.rigid_mid_p.shape)
+    target_rigid_q = jnp.asarray(target_rigid_q, dtype=jnp.float64).reshape(out.rigid_mid_q.shape)
+    site_position_mask = jnp.asarray(site_position_mask, dtype=jnp.float64).reshape((-1, 1))
+    site_axis_mask = jnp.asarray(site_axis_mask, dtype=jnp.float64).reshape((-1, 1))
+    site_so3_mask = jnp.asarray(site_so3_mask, dtype=jnp.float64).reshape((-1, 1))
+    axis_body = jnp.asarray(axis_body, dtype=jnp.float64).reshape(3)
+
+    r_terminal_p = (
+        jnp.asarray(terminal_position_scale, dtype=jnp.float64)
+        * (out.tip_p - target_terminal_p)
+        / float(sigma_terminal_p)
+    )
+    r_terminal_q = (
+        jnp.asarray(terminal_so3_scale, dtype=jnp.float64)
+        * quaternion_so3_residual(out.tip_q, target_terminal_q, sigma_angle=float(sigma_terminal_angle))
+    )
+    r_rigid_p = (
+        jnp.asarray(rigid_position_scale, dtype=jnp.float64)
+        * site_position_mask
+        * (out.rigid_mid_p - target_rigid_p)
+        / float(sigma_rigid_p)
+    )
+
+    current_axes = jax.vmap(lambda q: axis_from_quat_wxyz(q, axis_body))(out.rigid_mid_q)
+    target_axes = jax.vmap(lambda q: axis_from_quat_wxyz(q, axis_body))(target_rigid_q)
+    r_axis = (
+        jnp.asarray(rigid_axis_scale, dtype=jnp.float64)
+        * site_axis_mask
+        * jnp.cross(target_axes, current_axes)
+        / float(sigma_rigid_angle)
+    )
+    r_site_q = jax.vmap(
+        lambda q_cur, q_tar: quaternion_so3_residual(q_cur, q_tar, sigma_angle=float(sigma_rigid_angle))
+    )(out.rigid_mid_q, target_rigid_q)
+    r_site_q = jnp.asarray(rigid_so3_scale, dtype=jnp.float64) * site_so3_mask * r_site_q
+    r_b = jnp.asarray(boundary_scale, dtype=jnp.float64) * float(boundary_weight) * out.boundary
+    return jnp.concatenate(
+        [
+            r_terminal_p.reshape(-1),
+            r_terminal_q.reshape(-1),
+            r_rigid_p.reshape(-1),
+            r_axis.reshape(-1),
+            r_site_q.reshape(-1),
+            r_b.reshape(-1),
+        ],
+        axis=0,
+    )
+
+
 def output_to_numpy(out: CleanShootingOutput) -> dict[str, Any]:
     """Convert a JAX shooting output to NumPy arrays."""
     return {
         "centerline": jax.device_get(out.centerline),
         "rigid_mid_p": jax.device_get(out.rigid_mid_p),
         "rigid_mid_q": jax.device_get(out.rigid_mid_q),
+        "rigid_dist_p": jax.device_get(out.rigid_dist_p),
+        "rigid_dist_q": jax.device_get(out.rigid_dist_q),
         "tip_p": jax.device_get(out.tip_p),
         "tip_q": jax.device_get(out.tip_q),
         "boundary": jax.device_get(out.boundary),

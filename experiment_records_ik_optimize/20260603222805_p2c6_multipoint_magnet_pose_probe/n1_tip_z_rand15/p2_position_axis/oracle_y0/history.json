@@ -1,0 +1,20 @@
+[
+  {
+    "stage_index": 0,
+    "iter": 0,
+    "cost": 2.3288536651822556,
+    "lambda": 0.0003,
+    "rho": 0.9992497796924156,
+    "accepted": true,
+    "step_norm": 0.005267800578377197,
+    "terminal_position_error": 5.9157186552566834e-05,
+    "terminal_so3_error_deg": 0.27261645767935655,
+    "rigid_position_rms_mm": 0.0623320652016631,
+    "rigid_position_max_mm": 0.0623320652016631,
+    "axis_rms_deg": 0.1832976496275681,
+    "axis_max_deg": 0.1832976496275681,
+    "rigid_so3_rms_deg": 0.0,
+    "rigid_so3_max_deg": 0.0,
+    "boundary_residual_norm": 0.012602819457351594
+  }
+]
