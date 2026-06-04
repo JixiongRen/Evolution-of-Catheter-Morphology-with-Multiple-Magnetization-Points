@@ -1,0 +1,1 @@
+{"ts": 1780562075.4821937, "case": "n3_mixed_rand20", "failure_class": "F1_baseline_unstable", "evidence": {"case": "n3_mixed_rand20", "oracle_success": false, "successful_init_count": 0, "init_count": 4, "branch_task_spread": 0.0, "branch_state_spread": 0.0, "branch_consistent": false, "classification": "baseline-unstable"}}

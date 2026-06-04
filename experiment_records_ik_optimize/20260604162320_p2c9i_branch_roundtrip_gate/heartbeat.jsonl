@@ -1,0 +1,26 @@
+{"ts": 1780561631.901131, "case": "n3_mixed_base_i4", "phase": "build"}
+{"ts": 1780561693.992421, "case": "n3_mixed_base_i4", "phase": "baseline", "init": "oracle"}
+{"ts": 1780561736.157814, "case": "n3_mixed_base_i4", "phase": "baseline", "init": "zero"}
+{"ts": 1780561736.5106025, "case": "n3_mixed_base_i4", "phase": "baseline", "init": "half_oracle"}
+{"ts": 1780561736.8012638, "case": "n3_mixed_base_i4", "phase": "baseline", "init": "neighbor"}
+{"ts": 1780561736.8592625, "case": "n3_mixed_base_i4", "phase": "roundtrip_plus"}
+{"ts": 1780561736.9558523, "case": "n3_mixed_base_i4", "phase": "roundtrip_back"}
+{"ts": 1780561737.0540395, "case": "n2_z_pair_rand12", "phase": "build"}
+{"ts": 1780561796.6495934, "case": "n2_z_pair_rand12", "phase": "baseline", "init": "oracle"}
+{"ts": 1780561841.5364537, "case": "n2_z_pair_rand12", "phase": "baseline", "init": "zero"}
+{"ts": 1780561841.8794534, "case": "n2_z_pair_rand12", "phase": "baseline", "init": "half_oracle"}
+{"ts": 1780561842.180036, "case": "n2_z_pair_rand12", "phase": "baseline", "init": "neighbor"}
+{"ts": 1780561842.4603066, "case": "n2_z_pair_rand12", "phase": "roundtrip_plus"}
+{"ts": 1780561842.5726397, "case": "n2_z_pair_rand12", "phase": "roundtrip_back"}
+{"ts": 1780561842.6883323, "case": "n1_tip_z_rand15", "phase": "build"}
+{"ts": 1780561905.5630631, "case": "n1_tip_z_rand15", "phase": "baseline", "init": "oracle"}
+{"ts": 1780561953.052988, "case": "n1_tip_z_rand15", "phase": "baseline", "init": "zero"}
+{"ts": 1780561953.4594917, "case": "n1_tip_z_rand15", "phase": "baseline", "init": "half_oracle"}
+{"ts": 1780561953.7902575, "case": "n1_tip_z_rand15", "phase": "baseline", "init": "neighbor"}
+{"ts": 1780561954.1261623, "case": "n1_tip_z_rand15", "phase": "roundtrip_plus"}
+{"ts": 1780561954.2392995, "case": "n1_tip_z_rand15", "phase": "roundtrip_back"}
+{"ts": 1780561954.356272, "case": "n3_mixed_rand20", "phase": "build"}
+{"ts": 1780562024.4408019, "case": "n3_mixed_rand20", "phase": "baseline", "init": "oracle"}
+{"ts": 1780562074.3933706, "case": "n3_mixed_rand20", "phase": "baseline", "init": "zero"}
+{"ts": 1780562074.7906199, "case": "n3_mixed_rand20", "phase": "baseline", "init": "half_oracle"}
+{"ts": 1780562075.1585474, "case": "n3_mixed_rand20", "phase": "baseline", "init": "neighbor"}

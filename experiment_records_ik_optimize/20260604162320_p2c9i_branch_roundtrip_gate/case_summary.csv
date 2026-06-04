@@ -1,0 +1,5 @@
+branch_consistent,branch_state_spread,branch_task_spread,case,classification,init_count,oracle_success,successful_init_count
+True,0.0,0.0,n3_mixed_base_i4,branch-consistent,4,True,2
+True,0.0,0.0,n2_z_pair_rand12,branch-consistent,4,True,1
+True,0.1360122294084332,0.0008693883156138095,n1_tip_z_rand15,branch-consistent,4,True,3
+False,0.0,0.0,n3_mixed_rand20,baseline-unstable,4,False,0
