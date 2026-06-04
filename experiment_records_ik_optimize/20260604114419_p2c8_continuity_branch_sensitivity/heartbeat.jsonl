@@ -1,0 +1,17 @@
+{"ts": 1780546029.7480488, "case": "n3_mixed_base_i4", "phase": "oracle"}
+{"ts": 1780546106.9967413, "case": "n3_mixed_base_i4", "mode": "cont_0.1", "phase": "compile"}
+{"ts": 1780546122.233397, "case": "n2_z_pair_rand12", "mode": "cont_1.0", "phase": "audit", "direction": "active_coil_2", "eps": 0.05, "status": "usable", "rel_err": 0.05588246056232096}
+{"ts": 1780546122.5500293, "case": "n2_z_pair_rand12", "mode": "cont_1.0", "phase": "audit", "direction": "random_0", "eps": 0.05, "status": "usable", "rel_err": 0.22317322744479695}
+{"ts": 1780546122.859607, "case": "n2_z_pair_rand12", "mode": "cont_1.0", "phase": "audit", "direction": "random_1", "eps": 0.05, "status": "usable", "rel_err": 0.04264362125796278}
+{"ts": 1780546245.2322147, "case": "n3_mixed_base_i4", "mode": "cont_0.1", "phase": "audit", "direction": "active_coil_5", "eps": 0.05, "status": "untrusted", "rel_err": 0.3476519747708693}
+{"ts": 1780546245.5704427, "case": "n3_mixed_base_i4", "mode": "cont_0.1", "phase": "audit", "direction": "random_0", "eps": 0.05, "status": "usable", "rel_err": 0.0970970172688988}
+{"ts": 1780546245.570717, "case": "n3_mixed_base_i4", "mode": "cont_1.0", "phase": "compile"}
+{"ts": 1780546377.3050442, "case": "n3_mixed_base_i4", "mode": "cont_1.0", "phase": "audit", "direction": "active_coil_5", "eps": 0.05, "status": "untrusted", "rel_err": 0.4153592392359551}
+{"ts": 1780546377.6266623, "case": "n3_mixed_base_i4", "mode": "cont_1.0", "phase": "audit", "direction": "random_0", "eps": 0.05, "status": "usable", "rel_err": 0.01622734712691983}
+{"ts": 1780546377.6269162, "case": "n2_z_pair_rand12", "phase": "oracle"}
+{"ts": 1780546439.6867523, "case": "n2_z_pair_rand12", "mode": "cont_0.1", "phase": "compile"}
+{"ts": 1780546580.630538, "case": "n2_z_pair_rand12", "mode": "cont_0.1", "phase": "audit", "direction": "active_coil_2", "eps": 0.05, "status": "nonstationary-diagnostic", "rel_err": 1.0146904994935355}
+{"ts": 1780546581.488707, "case": "n2_z_pair_rand12", "mode": "cont_0.1", "phase": "audit", "direction": "random_0", "eps": 0.05, "status": "nonstationary-diagnostic", "rel_err": 0.9104592608410221}
+{"ts": 1780546581.4888742, "case": "n2_z_pair_rand12", "mode": "cont_1.0", "phase": "compile"}
+{"ts": 1780546713.3293002, "case": "n2_z_pair_rand12", "mode": "cont_1.0", "phase": "audit", "direction": "active_coil_2", "eps": 0.05, "status": "usable", "rel_err": 0.055882459140079915}
+{"ts": 1780546713.6961567, "case": "n2_z_pair_rand12", "mode": "cont_1.0", "phase": "audit", "direction": "random_0", "eps": 0.05, "status": "usable", "rel_err": 0.040880030093824134}
