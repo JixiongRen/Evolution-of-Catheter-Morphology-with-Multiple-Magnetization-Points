@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M docs/experiment_records/project_memory.md\n M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260604125012_p2c9b_true_continuous_shooting_probe/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "eps_values": [
+      0.05
+    ],
+    "total_wall_s": 447.89861485298024
+  },
+  "classification": "untrusted",
+  "usable_count": 0,
+  "row_count": 0,
+  "median_rel_err_total": NaN,
+  "rows": [],
+  "solve_rows": [
+    {
+      "case": "n3_mixed_base_i4",
+      "success": false,
+      "steady_s": 1.2605265180172864,
+      "residual_norm": 4.025332655358451,
+      "stationarity_norm": 3170.632738113622,
+      "boundary_residual_norm": 7.0458996485568575
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "success": false,
+      "steady_s": 1.1382516489829868,
+      "residual_norm": 2.75912366618371,
+      "stationarity_norm": 38632.305439006865,
+      "boundary_residual_norm": 0.23013896953480342
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "success": false,
+      "steady_s": 1.2067499279801268,
+      "residual_norm": 0.3133192508750464,
+      "stationarity_norm": 16997.19588977028,
+      "boundary_residual_norm": 0.5870861902593979
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "success": false,
+      "steady_s": 1.2986777029873338,
+      "residual_norm": 0.3404632002913352,
+      "stationarity_norm": 8351.515555683474,
+      "boundary_residual_norm": 0.29127270842671876
+    }
+  ]
+}
