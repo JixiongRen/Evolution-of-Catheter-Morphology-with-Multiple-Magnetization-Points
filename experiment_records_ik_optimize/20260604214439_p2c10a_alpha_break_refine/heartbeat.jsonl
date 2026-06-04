@@ -1,0 +1,19 @@
+{"ts": 1780580799.5354104, "phase": "build", "alpha": 0.2}
+{"ts": 1780580886.373768, "phase": "solve", "alpha": 0.2, "branch": "cold_reference"}
+{"ts": 1780580946.8324528, "phase": "solve", "alpha": 0.2, "branch": "challenger"}
+{"ts": 1780580947.2029967, "phase": "build", "alpha": 0.25}
+{"ts": 1780581019.78069, "phase": "solve", "alpha": 0.25, "branch": "cold_reference"}
+{"ts": 1780581067.7530096, "phase": "solve", "alpha": 0.25, "branch": "challenger"}
+{"ts": 1780581068.1064665, "phase": "solve", "alpha": 0.25, "branch": "incumbent"}
+{"ts": 1780581068.463992, "phase": "build", "alpha": 0.3}
+{"ts": 1780581136.8025763, "phase": "solve", "alpha": 0.3, "branch": "cold_reference"}
+{"ts": 1780581188.1123986, "phase": "solve", "alpha": 0.3, "branch": "challenger"}
+{"ts": 1780581188.478543, "phase": "solve", "alpha": 0.3, "branch": "incumbent"}
+{"ts": 1780581188.8157256, "phase": "build", "alpha": 0.35}
+{"ts": 1780581259.3693821, "phase": "solve", "alpha": 0.35, "branch": "cold_reference"}
+{"ts": 1780581311.4333954, "phase": "solve", "alpha": 0.35, "branch": "challenger"}
+{"ts": 1780581311.7915525, "phase": "solve", "alpha": 0.35, "branch": "incumbent"}
+{"ts": 1780581312.1351314, "phase": "build", "alpha": 0.4}
+{"ts": 1780581393.6573215, "phase": "solve", "alpha": 0.4, "branch": "cold_reference"}
+{"ts": 1780581449.0607677, "phase": "solve", "alpha": 0.4, "branch": "challenger"}
+{"ts": 1780581449.3743484, "phase": "solve", "alpha": 0.4, "branch": "incumbent"}

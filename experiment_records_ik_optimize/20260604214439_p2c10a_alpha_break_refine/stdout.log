@@ -1,0 +1,315 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260604214439_p2c10a_alpha_break_refine/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "total_wall_s": 650.9239337190002,
+    "base_case": "n3_mixed_base_i4",
+    "target_case": "n3_mixed_rand20"
+  },
+  "classification": "threshold-refined",
+  "last_safe_alpha": 0.2,
+  "first_break_alpha": 0.25,
+  "per_alpha": [
+    {
+      "alpha": 0.2,
+      "any_linearizable": true,
+      "branch_ok": true,
+      "best_branch": "cold_reference",
+      "best_residual_norm": 0.0018839404225052024,
+      "best_stationarity_norm": 7.806557824803116e-06,
+      "best_boundary_residual_norm": 0.002706433804850027,
+      "linearizable_branch_count": 1,
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0
+    },
+    {
+      "alpha": 0.25,
+      "any_linearizable": false,
+      "branch_ok": false,
+      "best_branch": "cold_reference",
+      "best_residual_norm": 0.0021961565303754292,
+      "best_stationarity_norm": 20.587278071568864,
+      "best_boundary_residual_norm": 0.0038230812330606206,
+      "linearizable_branch_count": 0,
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0
+    },
+    {
+      "alpha": 0.3,
+      "any_linearizable": false,
+      "branch_ok": false,
+      "best_branch": "cold_reference",
+      "best_residual_norm": 0.0021066076973847137,
+      "best_stationarity_norm": 13.469270063928565,
+      "best_boundary_residual_norm": 0.0035330460042578703,
+      "linearizable_branch_count": 0,
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0
+    },
+    {
+      "alpha": 0.35,
+      "any_linearizable": false,
+      "branch_ok": false,
+      "best_branch": "cold_reference",
+      "best_residual_norm": 0.0023095914385559205,
+      "best_stationarity_norm": 5.0777812738414845,
+      "best_boundary_residual_norm": 0.0033195786166519132,
+      "linearizable_branch_count": 0,
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0
+    },
+    {
+      "alpha": 0.4,
+      "any_linearizable": false,
+      "branch_ok": false,
+      "best_branch": "cold_reference",
+      "best_residual_norm": 0.0024050328464217856,
+      "best_stationarity_norm": 28.320428246877903,
+      "best_boundary_residual_norm": 0.0028679743969228745,
+      "linearizable_branch_count": 0,
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0
+    }
+  ],
+  "rows": [
+    {
+      "alpha": 0.2,
+      "branch": "cold_reference",
+      "success_flag": true,
+      "residual_norm": 0.0018839404225052024,
+      "stationarity_norm": 7.806557824803116e-06,
+      "boundary_residual_norm": 0.002706433804850027,
+      "steady_s": 39.63844608499994,
+      "state_norm": 0.2617362470125619,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": true,
+      "linearizable": true
+    },
+    {
+      "alpha": 0.2,
+      "branch": "challenger",
+      "success_flag": true,
+      "residual_norm": 0.005285979044415433,
+      "stationarity_norm": 65.40003119291406,
+      "boundary_residual_norm": 0.0065262299783248705,
+      "steady_s": 0.33063735699988683,
+      "state_norm": 0.13324580722679058,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.25,
+      "branch": "cold_reference",
+      "success_flag": true,
+      "residual_norm": 0.0021961565303754292,
+      "stationarity_norm": 20.587278071568864,
+      "boundary_residual_norm": 0.0038230812330606206,
+      "steady_s": 30.793732744999943,
+      "state_norm": 0.2143165191809156,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.25,
+      "branch": "challenger",
+      "success_flag": false,
+      "residual_norm": 0.015479387207489521,
+      "stationarity_norm": 660.919460050801,
+      "boundary_residual_norm": 0.005222970789050338,
+      "steady_s": 0.31202983299999687,
+      "state_norm": 0.10619238058046634,
+      "residual_ok": false,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.25,
+      "branch": "incumbent",
+      "success_flag": true,
+      "residual_norm": 0.002626965151230234,
+      "stationarity_norm": 41.69657138629436,
+      "boundary_residual_norm": 0.003986183750940289,
+      "steady_s": 0.3156147830000009,
+      "state_norm": 0.25449033518824804,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.3,
+      "branch": "cold_reference",
+      "success_flag": true,
+      "residual_norm": 0.0021066076973847137,
+      "stationarity_norm": 13.469270063928565,
+      "boundary_residual_norm": 0.0035330460042578703,
+      "steady_s": 31.30776396300007,
+      "state_norm": 0.18582572430656022,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.3,
+      "branch": "challenger",
+      "success_flag": false,
+      "residual_norm": 0.01996629492633167,
+      "stationarity_norm": 336.2672248571524,
+      "boundary_residual_norm": 0.013535867941853439,
+      "steady_s": 0.3292363559999103,
+      "state_norm": 0.09108588818294225,
+      "residual_ok": false,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.3,
+      "branch": "incumbent",
+      "success_flag": false,
+      "residual_norm": 0.044681428011297875,
+      "stationarity_norm": 3199.3236469040703,
+      "boundary_residual_norm": 0.022262471929880435,
+      "steady_s": 0.3006701660001454,
+      "state_norm": 0.261795969231454,
+      "residual_ok": false,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.35,
+      "branch": "cold_reference",
+      "success_flag": true,
+      "residual_norm": 0.0023095914385559205,
+      "stationarity_norm": 5.0777812738414845,
+      "boundary_residual_norm": 0.0033195786166519132,
+      "steady_s": 32.97296467599972,
+      "state_norm": 0.14947681297149998,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.35,
+      "branch": "challenger",
+      "success_flag": true,
+      "residual_norm": 0.004478989205753025,
+      "stationarity_norm": 96.21534751914201,
+      "boundary_residual_norm": 0.0028624921211378622,
+      "steady_s": 0.3210942310001883,
+      "state_norm": 0.08567309897094859,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.35,
+      "branch": "incumbent",
+      "success_flag": false,
+      "residual_norm": 0.11824424576007268,
+      "stationarity_norm": 2652.803462049539,
+      "boundary_residual_norm": 0.17453825571310969,
+      "steady_s": 0.30194887400011794,
+      "state_norm": 0.26185522367707853,
+      "residual_ok": false,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.4,
+      "branch": "cold_reference",
+      "success_flag": true,
+      "residual_norm": 0.0024050328464217856,
+      "stationarity_norm": 28.320428246877903,
+      "boundary_residual_norm": 0.0028679743969228745,
+      "steady_s": 35.57544201000019,
+      "state_norm": 0.1305283703229787,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.4,
+      "branch": "challenger",
+      "success_flag": true,
+      "residual_norm": 0.0044346136098312155,
+      "stationarity_norm": 32.56221086065821,
+      "boundary_residual_norm": 0.004495705844836306,
+      "steady_s": 0.27352547700002106,
+      "state_norm": 0.07446822616220455,
+      "residual_ok": true,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.4,
+      "branch": "incumbent",
+      "success_flag": false,
+      "residual_norm": 0.12371747255772204,
+      "stationarity_norm": 2095.4680044627967,
+      "boundary_residual_norm": 0.18908010575609785,
+      "steady_s": 0.2957157589999042,
+      "state_norm": 0.26028837481376826,
+      "residual_ok": false,
+      "boundary_ok": true,
+      "stationarity_ok": false,
+      "linearizable": false
+    }
+  ],
+  "branch_tracker": {
+    "0.200": {
+      "best_branch": "cold_reference",
+      "linearizable_branches": [
+        "cold_reference"
+      ],
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0,
+      "branch_ok": true
+    },
+    "0.250": {
+      "best_branch": "cold_reference",
+      "linearizable_branches": [],
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0,
+      "branch_ok": false
+    },
+    "0.300": {
+      "best_branch": "cold_reference",
+      "linearizable_branches": [],
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0,
+      "branch_ok": false
+    },
+    "0.350": {
+      "best_branch": "cold_reference",
+      "linearizable_branches": [],
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0,
+      "branch_ok": false
+    },
+    "0.400": {
+      "best_branch": "cold_reference",
+      "linearizable_branches": [],
+      "branch_task_spread": 0.0,
+      "branch_state_spread": 0.0,
+      "branch_ok": false
+    }
+  }
+}

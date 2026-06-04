@@ -1,0 +1,4 @@
+{"ts": 1780581068.463667, "alpha": 0.25, "failure_class": "可线性化断裂", "evidence": {"best_branch": "cold_reference", "linearizable_branches": [], "branch_task_spread": 0.0, "branch_state_spread": 0.0, "branch_ok": false}}
+{"ts": 1780581188.8154452, "alpha": 0.3, "failure_class": "可线性化断裂", "evidence": {"best_branch": "cold_reference", "linearizable_branches": [], "branch_task_spread": 0.0, "branch_state_spread": 0.0, "branch_ok": false}}
+{"ts": 1780581312.1345434, "alpha": 0.35, "failure_class": "可线性化断裂", "evidence": {"best_branch": "cold_reference", "linearizable_branches": [], "branch_task_spread": 0.0, "branch_state_spread": 0.0, "branch_ok": false}}
+{"ts": 1780581449.7030728, "alpha": 0.4, "failure_class": "可线性化断裂", "evidence": {"best_branch": "cold_reference", "linearizable_branches": [], "branch_task_spread": 0.0, "branch_state_spread": 0.0, "branch_ok": false}}

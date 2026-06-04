@@ -1,0 +1,39 @@
+{
+  "0.200": {
+    "best_branch": "cold_reference",
+    "linearizable_branches": [
+      "cold_reference"
+    ],
+    "branch_task_spread": 0.0,
+    "branch_state_spread": 0.0,
+    "branch_ok": true
+  },
+  "0.250": {
+    "best_branch": "cold_reference",
+    "linearizable_branches": [],
+    "branch_task_spread": 0.0,
+    "branch_state_spread": 0.0,
+    "branch_ok": false
+  },
+  "0.300": {
+    "best_branch": "cold_reference",
+    "linearizable_branches": [],
+    "branch_task_spread": 0.0,
+    "branch_state_spread": 0.0,
+    "branch_ok": false
+  },
+  "0.350": {
+    "best_branch": "cold_reference",
+    "linearizable_branches": [],
+    "branch_task_spread": 0.0,
+    "branch_state_spread": 0.0,
+    "branch_ok": false
+  },
+  "0.400": {
+    "best_branch": "cold_reference",
+    "linearizable_branches": [],
+    "branch_task_spread": 0.0,
+    "branch_state_spread": 0.0,
+    "branch_ok": false
+  }
+}

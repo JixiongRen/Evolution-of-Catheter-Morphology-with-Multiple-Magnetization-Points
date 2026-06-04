@@ -1,0 +1,6 @@
+alpha,any_linearizable,best_boundary_residual_norm,best_branch,best_residual_norm,best_stationarity_norm,branch_ok,branch_state_spread,branch_task_spread,linearizable_branch_count
+0.2,True,0.002706433804850027,cold_reference,0.0018839404225052024,7.806557824803116e-06,True,0.0,0.0,1
+0.25,False,0.0038230812330606206,cold_reference,0.0021961565303754292,20.587278071568864,False,0.0,0.0,0
+0.3,False,0.0035330460042578703,cold_reference,0.0021066076973847137,13.469270063928565,False,0.0,0.0,0
+0.35,False,0.0033195786166519132,cold_reference,0.0023095914385559205,5.0777812738414845,False,0.0,0.0,0
+0.4,False,0.0028679743969228745,cold_reference,0.0024050328464217856,28.320428246877903,False,0.0,0.0,0

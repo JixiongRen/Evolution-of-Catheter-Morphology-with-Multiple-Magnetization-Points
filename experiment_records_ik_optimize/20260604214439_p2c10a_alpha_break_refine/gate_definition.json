@@ -1,0 +1,8 @@
+{
+  "residual_norm_max": 0.01,
+  "boundary_residual_norm_max": 0.2,
+  "stationarity_norm_max": 0.001,
+  "branch_task_spread_max": 0.001,
+  "branch_state_spread_max": 5.0,
+  "note": "A point is publishable only when residual, boundary, stationarity, and branch gates all pass."
+}
