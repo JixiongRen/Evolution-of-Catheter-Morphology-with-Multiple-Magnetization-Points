@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260604222000_p2c10c_rigid_load_coupling_counterfactual/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "total_wall_s": 947.0558525469996
+  },
+  "classification": "counterfactual-audited",
+  "interpretation_scope": "This is an experiment-only equivalent compliance model, not a production physical model.",
+  "by_alpha": [
+    {
+      "alpha": 0.2,
+      "best_beta": 0.02,
+      "best_stationarity_norm": 5.7227602411792175e-06,
+      "best_residual_norm": 0.0019026891640274038,
+      "best_boundary_residual_norm": 0.0027390933128992297,
+      "any_linearizable": true
+    },
+    {
+      "alpha": 0.25,
+      "best_beta": 0.02,
+      "best_stationarity_norm": 0.0014386360777762074,
+      "best_residual_norm": 0.002069936476044307,
+      "best_boundary_residual_norm": 0.0033284249456160884,
+      "any_linearizable": false
+    }
+  ],
+  "rows": [
+    {
+      "alpha": 0.2,
+      "beta": 0.0,
+      "success_flag": true,
+      "residual_norm": 0.0018839404225052298,
+      "stationarity_norm": 7.805843808176963e-06,
+      "boundary_residual_norm": 0.0027064338048499604,
+      "steady_s": 36.34436036400075,
+      "linearizable": true
+    },
+    {
+      "alpha": 0.2,
+      "beta": 0.005,
+      "success_flag": true,
+      "residual_norm": 0.0018886217003246538,
+      "stationarity_norm": 1.5361900367548676e-05,
+      "boundary_residual_norm": 0.0027146522910467276,
+      "steady_s": 35.14627191100044,
+      "linearizable": true
+    },
+    {
+      "alpha": 0.2,
+      "beta": 0.01,
+      "success_flag": true,
+      "residual_norm": 0.0018933072255414645,
+      "stationarity_norm": 3.0206269717909335e-05,
+      "boundary_residual_norm": 0.002722834804450126,
+      "steady_s": 32.438420887000575,
+      "linearizable": true
+    },
+    {
+      "alpha": 0.2,
+      "beta": 0.02,
+      "success_flag": true,
+      "residual_norm": 0.0019026891640274038,
+      "stationarity_norm": 5.7227602411792175e-06,
+      "boundary_residual_norm": 0.0027390933128992297,
+      "steady_s": 34.725051289000476,
+      "linearizable": true
+    },
+    {
+      "alpha": 0.25,
+      "beta": 0.0,
+      "success_flag": true,
+      "residual_norm": 0.0021961565303780205,
+      "stationarity_norm": 20.587278081581715,
+      "boundary_residual_norm": 0.0038230812330630375,
+      "steady_s": 35.37240403099986,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.25,
+      "beta": 0.005,
+      "success_flag": true,
+      "residual_norm": 0.002151580801224663,
+      "stationarity_norm": 6.358937973186564,
+      "boundary_residual_norm": 0.003740475701631271,
+      "steady_s": 34.0020746729997,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.25,
+      "beta": 0.01,
+      "success_flag": true,
+      "residual_norm": 0.002166102552080082,
+      "stationarity_norm": 5.916374049686994,
+      "boundary_residual_norm": 0.003770504745209003,
+      "steady_s": 35.650297707999925,
+      "linearizable": false
+    },
+    {
+      "alpha": 0.25,
+      "beta": 0.02,
+      "success_flag": true,
+      "residual_norm": 0.002069936476044307,
+      "stationarity_norm": 0.0014386360777762074,
+      "boundary_residual_norm": 0.0033284249456160884,
+      "steady_s": 34.15256320899971,
+      "linearizable": false
+    }
+  ]
+}
