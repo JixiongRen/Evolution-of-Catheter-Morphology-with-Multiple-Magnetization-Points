@@ -1,0 +1,1 @@
+{"ts": 1780557958.5403464, "case": "n3_mixed_rand20", "failure_class": "F1_baseline_unstable", "evidence": {"case": "n3_mixed_rand20", "success": false, "steady_s": 37.10282188799465, "residual_norm": 0.07357951017936414, "stationarity_norm": 742.870469293857, "boundary_residual_norm": 0.056355885054798736}}
