@@ -1,0 +1,6 @@
+{"ts": 1780592213.844239, "phase": "build", "case": "n2_z_pair_rand12_alpha_0.25"}
+{"ts": 1780592704.4858685, "phase": "audit", "case": "n2_z_pair_rand12_alpha_0.25", "direction": "主激活线圈_2"}
+{"ts": 1780592704.7633076, "phase": "audit", "case": "n2_z_pair_rand12_alpha_0.25", "direction": "随机方向_0"}
+{"ts": 1780592704.9849126, "phase": "build", "case": "n3_mixed_rand20_alpha_0.25"}
+{"ts": 1780593145.6647966, "phase": "audit", "case": "n3_mixed_rand20_alpha_0.25", "direction": "主激活线圈_5"}
+{"ts": 1780593146.2372425, "phase": "audit", "case": "n3_mixed_rand20_alpha_0.25", "direction": "随机方向_0"}
