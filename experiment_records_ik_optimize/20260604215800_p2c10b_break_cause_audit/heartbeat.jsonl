@@ -1,0 +1,6 @@
+{"ts": 1780581945.1937213, "phase": "build", "alpha": 0.2}
+{"ts": 1780582050.4900587, "phase": "solve", "alpha": 0.2, "branch": "冷启动参考分支"}
+{"ts": 1780582256.8044734, "phase": "solve", "alpha": 0.2, "branch": "竞争分支"}
+{"ts": 1780582257.2119746, "phase": "build", "alpha": 0.25}
+{"ts": 1780582342.7994487, "phase": "solve", "alpha": 0.25, "branch": "冷启动参考分支"}
+{"ts": 1780582541.0206935, "phase": "solve", "alpha": 0.25, "branch": "竞争分支"}

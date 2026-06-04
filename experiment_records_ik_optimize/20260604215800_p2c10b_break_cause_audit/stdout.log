@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260604215800_p2c10b_break_cause_audit/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "total_wall_s": 597.118052109
+  },
+  "classification": "break-cause-audited",
+  "block_rows": [
+    {
+      "alpha": 0.2,
+      "branch": "冷启动参考分支",
+      "block": "末端位置残差",
+      "residual_norm": 2.0542961520169878e-05,
+      "residual_share": 0.010904252212420085,
+      "stationarity_contribution_norm": 0.12804401235512813,
+      "stationarity_contribution_share": 16399.27990600377,
+      "cosine_with_total_stationarity": -0.9854124819902212
+    },
+    {
+      "alpha": 0.2,
+      "branch": "冷启动参考分支",
+      "block": "末端姿态残差",
+      "residual_norm": 7.943632458085082e-05,
+      "residual_share": 0.04216498761421521,
+      "stationarity_contribution_norm": 2.685906791964002,
+      "stationarity_contribution_share": 343998.4148629363,
+      "cosine_with_total_stationarity": -0.9968627920722252
+    },
+    {
+      "alpha": 0.2,
+      "branch": "冷启动参考分支",
+      "block": "末端边界残差",
+      "residual_norm": 0.0013532169024251654,
+      "residual_share": 0.7182907093344856,
+      "stationarity_contribution_norm": 2.956083941038502,
+      "stationarity_contribution_share": 378601.4440119317,
+      "cosine_with_total_stationarity": 0.9972918090293791
+    },
+    {
+      "alpha": 0.2,
+      "branch": "冷启动参考分支",
+      "block": "分支保持残差",
+      "residual_norm": 0.0005971972729149197,
+      "residual_share": 0.31699371475919036,
+      "stationarity_contribution_norm": 5.971972729149196e-06,
+      "stationarity_contribution_share": 0.7648624139074519,
+      "cosine_with_total_stationarity": -2.2260979947124393e-05
+    },
+    {
+      "alpha": 0.2,
+      "branch": "冷启动参考分支",
+      "block": "段间连续残差",
+      "residual_norm": 0.0011638981075815593,
+      "residual_share": 0.6177998484866372,
+      "stationarity_contribution_norm": 0.14707362741024577,
+      "stationarity_contribution_share": 18836.504248262358,
+      "cosine_with_total_stationarity": -0.9819148667545583
+    },
+    {
+      "alpha": 0.25,
+      "branch": "冷启动参考分支",
+      "block": "末端位置残差",
+      "residual_norm": 8.380937880071615e-05,
+      "residual_share": 0.03816184212807892,
+      "stationarity_contribution_norm": 11.80269476722841,
+      "stationarity_contribution_share": 0.5733004007223962,
+      "cosine_with_total_stationarity": 0.9999724645278515
+    },
+    {
+      "alpha": 0.25,
+      "branch": "冷启动参考分支",
+      "block": "末端姿态残差",
+      "residual_norm": 0.00011738756910454578,
+      "residual_share": 0.053451367186703826,
+      "stationarity_contribution_norm": 0.8007212219993489,
+      "stationarity_contribution_share": 0.038893981967048,
+      "cosine_with_total_stationarity": 0.8724755019224815
+    },
+    {
+      "alpha": 0.25,
+      "branch": "冷启动参考分支",
+      "block": "末端边界残差",
+      "residual_norm": 0.0019115406165302153,
+      "residual_share": 0.8704027195201378,
+      "stationarity_contribution_norm": 8.277715143440371,
+      "stationarity_contribution_share": 0.40207914399150485,
+      "cosine_with_total_stationarity": 0.9989696337428673
+    },
+    {
+      "alpha": 0.25,
+      "branch": "冷启动参考分支",
+      "block": "分支保持残差",
+      "residual_norm": 0.00020611008636905667,
+      "residual_share": 0.0938503624483784,
+      "stationarity_contribution_norm": 2.061100863690567e-06,
+      "stationarity_contribution_share": 1.0011526811351722e-07,
+      "cosine_with_total_stationarity": -2.2086949185266086e-05
+    },
+    {
+      "alpha": 0.25,
+      "branch": "冷启动参考分支",
+      "block": "段间连续残差",
+      "residual_norm": 0.0010515848782695898,
+      "residual_share": 0.4788296570509393,
+      "stationarity_contribution_norm": 0.19077970410316258,
+      "stationarity_contribution_share": 0.009266873622431842,
+      "cosine_with_total_stationarity": -0.9586314254645135
+    }
+  ],
+  "solve_rows": [
+    {
+      "alpha": 0.2,
+      "branch": "冷启动参考分支",
+      "success_flag": true,
+      "residual_norm": 0.001883940422505193,
+      "stationarity_norm": 7.8079045597759e-06,
+      "boundary_residual_norm": 0.0027064338048503308,
+      "steady_s": 55.78414359400085
+    },
+    {
+      "alpha": 0.2,
+      "branch": "竞争分支",
+      "success_flag": true,
+      "residual_norm": 0.005285979044414954,
+      "stationarity_norm": 65.4000311927997,
+      "boundary_residual_norm": 0.006526229978324692,
+      "steady_s": 0.3712095480004791
+    },
+    {
+      "alpha": 0.25,
+      "branch": "冷启动参考分支",
+      "success_flag": true,
+      "residual_norm": 0.002196156530374891,
+      "stationarity_norm": 20.587278069850008,
+      "boundary_residual_norm": 0.0038230812330604306,
+      "steady_s": 45.083873747000325
+    },
+    {
+      "alpha": 0.25,
+      "branch": "竞争分支",
+      "success_flag": false,
+      "residual_norm": 0.015479387207499574,
+      "stationarity_norm": 660.9194600531624,
+      "boundary_residual_norm": 0.005222970789051077,
+      "steady_s": 0.36092841400022735
+    }
+  ],
+  "total_rows": [
+    {
+      "alpha": 0.2,
+      "branch": "冷启动参考分支",
+      "total_residual_norm": 0.001883940422505193,
+      "total_stationarity_norm": 7.8079045597759e-06,
+      "total_jacobian_rank": 18,
+      "total_condition_number": 12037706.289467575,
+      "contribution_closure_error": 4.795831575749517e-16
+    },
+    {
+      "alpha": 0.25,
+      "branch": "冷启动参考分支",
+      "total_residual_norm": 0.002196156530374891,
+      "total_stationarity_norm": 20.587278069850008,
+      "total_jacobian_rank": 18,
+      "total_condition_number": 15919902.124318624,
+      "contribution_closure_error": 2.5752395027317723e-16
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"ts": 1780582541.0200331, "alpha": 0.25, "failure_class": "一阶最优性退化", "evidence": {"alpha": 0.25, "branch": "冷启动参考分支", "total_residual_norm": 0.002196156530374891, "total_stationarity_norm": 20.587278069850008, "total_jacobian_rank": 18, "total_condition_number": 15919902.124318624, "contribution_closure_error": 2.5752395027317723e-16}}

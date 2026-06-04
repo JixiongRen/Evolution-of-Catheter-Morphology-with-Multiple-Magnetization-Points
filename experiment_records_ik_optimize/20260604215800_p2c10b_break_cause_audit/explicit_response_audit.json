@@ -1,0 +1,7 @@
+{
+  "source": "experiment_records_ik_optimize/20260604134900_p2c9e_continuation_coupling_audit/summary.json",
+  "classification": "model-coupling-suspect",
+  "explicit_nonzero_count": 0,
+  "interpretation": "固定内部打靶状态时，电流变化没有产生非零末端显式响应；该现象提示刚性磁体段载荷到位姿传播存在模型耦合疑点。",
+  "note": "本文件引用 P2c9e 已完成审计，P2c10b 本轮主要新增残差分块贡献证据。"
+}
