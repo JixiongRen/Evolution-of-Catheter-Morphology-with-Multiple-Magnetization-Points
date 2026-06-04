@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260604232300_p2c10d_centered_magnetic_wrench_prototype/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "total_wall_s": 214.46358701699955
+  },
+  "classification": "centered-magnetic-wrench-prototype",
+  "interpretation_scope": "The magnetic wrench is evaluated at the rigid magnet center and shifted to the proximal point by the force moment arm.",
+  "rows": [
+    {
+      "alpha": 0.2,
+      "success_flag": true,
+      "residual_norm": 0.001998508510232206,
+      "stationarity_norm": 2.2008046408009475e-05,
+      "boundary_residual_norm": 0.0029283796209842576,
+      "steady_s": 30.84959409200019,
+      "linearizable": true
+    },
+    {
+      "alpha": 0.25,
+      "success_flag": true,
+      "residual_norm": 0.0023771093106709417,
+      "stationarity_norm": 27.43522708143358,
+      "boundary_residual_norm": 0.004224230951968561,
+      "steady_s": 27.63412177600003,
+      "linearizable": false
+    }
+  ]
+}

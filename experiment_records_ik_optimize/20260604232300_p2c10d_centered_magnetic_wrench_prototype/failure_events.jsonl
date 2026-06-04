@@ -1,0 +1,1 @@
+{"ts": 1780585896.6333654, "failure_class": "中心磁载原型未通过可线性化门禁", "evidence": {"alpha": 0.25, "success_flag": true, "residual_norm": 0.0023771093106709417, "stationarity_norm": 27.43522708143358, "boundary_residual_norm": 0.004224230951968561, "steady_s": 27.63412177600003, "linearizable": false}}
