@@ -1,0 +1,8 @@
+W0605 02:42:01.211453   30864 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 02:42:01.216952   30786 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605023924_p2c10l_drive_rank_audit/run_p2c10l_drive_rank_audit.py:136: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  ax.set_yscale("log")
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605023924_p2c10l_drive_rank_audit/run_p2c10l_drive_rank_audit.py:176: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  ax.set_xscale("log")
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605023924_p2c10l_drive_rank_audit/run_p2c10l_drive_rank_audit.py:182: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all Axes decorations.
+  fig.tight_layout()
