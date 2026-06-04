@@ -1,0 +1,3 @@
+alpha,any_physics_feasible,any_publishable,best_physics_boundary_norm,best_physics_continuity_norm,best_physics_stationarity_norm,best_physics_task_scale,best_task_norm,best_task_scale
+0.2,False,False,0.00899807565472167,0.002549406240599535,252641.58865461376,0.0,0.42343018050864656,1.0
+0.25,True,False,0.004863554268308163,6.646701739008335e-05,2920.836047923834,0.0,0.20660063906305212,1.0
