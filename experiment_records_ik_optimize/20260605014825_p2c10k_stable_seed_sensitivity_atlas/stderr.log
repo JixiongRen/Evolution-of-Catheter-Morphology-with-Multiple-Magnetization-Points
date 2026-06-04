@@ -1,0 +1,52 @@
+W0605 01:51:06.492826   27047 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 01:51:06.501089   26970 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:125: UserWarning: Glyph 35786 (\N{CJK UNIFIED IDEOGRAPH-8BCA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:125: UserWarning: Glyph 26029 (\N{CJK UNIFIED IDEOGRAPH-65AD}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:125: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:126: UserWarning: Glyph 35786 (\N{CJK UNIFIED IDEOGRAPH-8BCA}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "gate_scatter.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:126: UserWarning: Glyph 26029 (\N{CJK UNIFIED IDEOGRAPH-65AD}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "gate_scatter.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:126: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "gate_scatter.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 20027 (\N{CJK UNIFIED IDEOGRAPH-4E3B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 28608 (\N{CJK UNIFIED IDEOGRAPH-6FC0}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 27963 (\N{CJK UNIFIED IDEOGRAPH-6D3B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 22280 (\N{CJK UNIFIED IDEOGRAPH-5708}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 38543 (\N{CJK UNIFIED IDEOGRAPH-968F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 26426 (\N{CJK UNIFIED IDEOGRAPH-673A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 26041 (\N{CJK UNIFIED IDEOGRAPH-65B9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:148: UserWarning: Glyph 21521 (\N{CJK UNIFIED IDEOGRAPH-5411}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 20027 (\N{CJK UNIFIED IDEOGRAPH-4E3B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 28608 (\N{CJK UNIFIED IDEOGRAPH-6FC0}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 27963 (\N{CJK UNIFIED IDEOGRAPH-6D3B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 22280 (\N{CJK UNIFIED IDEOGRAPH-5708}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 38543 (\N{CJK UNIFIED IDEOGRAPH-968F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 26426 (\N{CJK UNIFIED IDEOGRAPH-673A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 26041 (\N{CJK UNIFIED IDEOGRAPH-65B9}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605014825_p2c10k_stable_seed_sensitivity_atlas/run_p2c10k_stable_seed_sensitivity_atlas.py:149: UserWarning: Glyph 21521 (\N{CJK UNIFIED IDEOGRAPH-5411}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "direction_gate_metrics.png", dpi=180)
+W0605 02:26:21.393668   29508 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 02:26:21.400331   29430 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
