@@ -1,0 +1,9 @@
+{
+  "function": "forward_kinematics_optimized.segments_nondim.rigid_state_along_dim",
+  "p_sigma_expr": "pp + sigma * (R_p @ rigid.v_star)",
+  "Q_sigma_expr": "Qp",
+  "pose_depends_on_force": false,
+  "pose_depends_on_torque": false,
+  "source_excerpt": "def rigid_state_along_dim(\n    x_prox_dim: Array,\n    sigma: float,\n    *,\n    rigid: RigidParams,\n    f_ext_total_dim: Array,\n    tau_ext_total_dim: Array,\n) -> Array:\n    L = float(rigid.length)\n    sigma = jnp.clip(jnp.asarray(sigma, dtype=x_prox_dim.dtype), 0.0, L)\n\n    pp = x_prox_dim[0:3]\n    Qp = quat_normalize(x_prox_dim[3:7])\n    fp = x_prox_dim[7:10]\n    tau_p = x_prox_dim[10:13]\n    R_p = quat_to_rotmat(Qp)\n\n    p_sigma = pp + sigma * (R_p @ rigid.v_star)\n    Q_sigma = Qp\n\n    f_sigma = fp - (sigma / L) * f_ext_total_dim\n\n    r = p_sigma - pp\n    term1 = tau_p - (sigma / L) * tau_ext_total_dim\n    term2 = -skew(r) @ fp\n    term3 = (sigma / (2.0 * L)) * (skew(r) @ f_ext_total_dim)\n    tau_sigma = term1 + term2 + term3\n\n    x = jnp.zeros((13,), dtype=x_prox_dim.dtype)\n    x = x.at[0:3].set(p_sigma)\n    x = x.at[3:7].set(Q_sigma)\n    x = x.at[7:10].set(f_sigma)\n    x = x.at[10:13].set(tau_sigma)\n    return x\n",
+  "interpretation": "Rigid external wrench updates distal force/moment but does not update rigid pose in this implementation."
+}

@@ -1,0 +1,288 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M docs/experiment_records/project_memory.md\n M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260604134900_p2c9e_continuation_coupling_audit/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "cases": [
+      "n3_mixed_base_i4",
+      "n3_mixed_rand20"
+    ],
+    "continuity_mu_values": [
+      0.0,
+      0.0001,
+      0.01,
+      1.0,
+      100.0
+    ],
+    "total_wall_s": 935.861077456997
+  },
+  "classification": "model-coupling-suspect",
+  "hard_recovered_count": 0,
+  "explicit_nonzero_count": 0,
+  "continuation_rows": [
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 0.0,
+      "success": true,
+      "steady_s": 1.3037698559928685,
+      "residual_norm": 0.001213554513828867,
+      "stationarity_norm": 2.463143372240892,
+      "boundary_residual_norm": 0.0024098407436299782,
+      "continuity_norm": 0.2259821169048296,
+      "y_norm": 0.3971933659277038
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 0.0001,
+      "success": true,
+      "steady_s": 1.27367202800815,
+      "residual_norm": 0.001734997616378278,
+      "stationarity_norm": 6.347385316811426,
+      "boundary_residual_norm": 0.0019107572727537735,
+      "continuity_norm": 0.14196095752509455,
+      "y_norm": 0.3981880690735378
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 0.01,
+      "success": true,
+      "steady_s": 1.2681201880041044,
+      "residual_norm": 0.0007009502746058004,
+      "stationarity_norm": 1.1458083698446095,
+      "boundary_residual_norm": 0.0005514912083151544,
+      "continuity_norm": 0.003920185101420649,
+      "y_norm": 0.41846757119483735
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 1.0,
+      "success": true,
+      "steady_s": 0.32835099700605497,
+      "residual_norm": 0.00161323066168629,
+      "stationarity_norm": 3.1276572301293944e-07,
+      "boundary_residual_norm": 0.0005662790657777267,
+      "continuity_norm": 0.0014597788761605782,
+      "y_norm": 0.4303109906089105
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 100.0,
+      "success": false,
+      "steady_s": 0.2835304359905422,
+      "residual_norm": 0.014529994556270746,
+      "stationarity_norm": 1.605512606826386e-06,
+      "boundary_residual_norm": 0.001197163746748456,
+      "continuity_norm": 0.0014469921918990468,
+      "y_norm": 0.414011058784868
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 0.0,
+      "success": false,
+      "steady_s": 1.152452970010927,
+      "residual_norm": 0.022186262280659598,
+      "stationarity_norm": 260.4959882800608,
+      "boundary_residual_norm": 0.04377681101625905,
+      "continuity_norm": 0.15161247121982555,
+      "y_norm": 0.09347004606021045
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 0.0001,
+      "success": false,
+      "steady_s": 1.3401598749915138,
+      "residual_norm": 0.01770849735419609,
+      "stationarity_norm": 50.584303027963216,
+      "boundary_residual_norm": 0.03491996669468198,
+      "continuity_norm": 0.16152054036719068,
+      "y_norm": 0.09388233316105798
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 0.01,
+      "success": false,
+      "steady_s": 1.2904901970177889,
+      "residual_norm": 0.014995673295607989,
+      "stationarity_norm": 53.03712109596462,
+      "boundary_residual_norm": 0.027500610404226578,
+      "continuity_norm": 0.057987367871954854,
+      "y_norm": 0.09860823444525633
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 1.0,
+      "success": false,
+      "steady_s": 1.3402022309892345,
+      "residual_norm": 0.02388624174053684,
+      "stationarity_norm": 204.36853280197346,
+      "boundary_residual_norm": 0.037681613304971225,
+      "continuity_norm": 0.014595278654836112,
+      "y_norm": 0.11743277322728073
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 100.0,
+      "success": false,
+      "steady_s": 1.2273605939990375,
+      "residual_norm": 0.05598878718724725,
+      "stationarity_norm": 53.998030080228396,
+      "boundary_residual_norm": 0.07108790719979682,
+      "continuity_norm": 0.004318535179630071,
+      "y_norm": 0.14814030000677383
+    }
+  ],
+  "explicit_response_rows": [
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 0.0,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 0.0001,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 0.01,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 1.0,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "continuity_mu": 100.0,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 0.0,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 0.0001,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 0.01,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 1.0,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "continuity_mu": 100.0,
+      "active_coil": 5,
+      "fixed_y_explicit_task_response_norm": 0.0,
+      "fixed_y_explicit_task_response": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "rigid_coupling_audit": {
+    "function": "forward_kinematics_optimized.segments_nondim.rigid_state_along_dim",
+    "p_sigma_expr": "pp + sigma * (R_p @ rigid.v_star)",
+    "Q_sigma_expr": "Qp",
+    "pose_depends_on_force": false,
+    "pose_depends_on_torque": false,
+    "source_excerpt": "def rigid_state_along_dim(\n    x_prox_dim: Array,\n    sigma: float,\n    *,\n    rigid: RigidParams,\n    f_ext_total_dim: Array,\n    tau_ext_total_dim: Array,\n) -> Array:\n    L = float(rigid.length)\n    sigma = jnp.clip(jnp.asarray(sigma, dtype=x_prox_dim.dtype), 0.0, L)\n\n    pp = x_prox_dim[0:3]\n    Qp = quat_normalize(x_prox_dim[3:7])\n    fp = x_prox_dim[7:10]\n    tau_p = x_prox_dim[10:13]\n    R_p = quat_to_rotmat(Qp)\n\n    p_sigma = pp + sigma * (R_p @ rigid.v_star)\n    Q_sigma = Qp\n\n    f_sigma = fp - (sigma / L) * f_ext_total_dim\n\n    r = p_sigma - pp\n    term1 = tau_p - (sigma / L) * tau_ext_total_dim\n    term2 = -skew(r) @ fp\n    term3 = (sigma / (2.0 * L)) * (skew(r) @ f_ext_total_dim)\n    tau_sigma = term1 + term2 + term3\n\n    x = jnp.zeros((13,), dtype=x_prox_dim.dtype)\n    x = x.at[0:3].set(p_sigma)\n    x = x.at[3:7].set(Q_sigma)\n    x = x.at[7:10].set(f_sigma)\n    x = x.at[10:13].set(tau_sigma)\n    return x\n",
+    "interpretation": "Rigid external wrench updates distal force/moment but does not update rigid pose in this implementation."
+  }
+}

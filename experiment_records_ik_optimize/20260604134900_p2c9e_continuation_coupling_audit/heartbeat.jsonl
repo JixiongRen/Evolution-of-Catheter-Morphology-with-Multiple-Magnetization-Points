@@ -1,0 +1,12 @@
+{"ts": 1780552281.6681361, "case": "n3_mixed_base_i4", "phase": "oracle"}
+{"ts": 1780552355.8755202, "case": "n3_mixed_base_i4", "phase": "stage", "continuity_mu": 0.0}
+{"ts": 1780552442.9089408, "case": "n3_mixed_base_i4", "phase": "stage", "continuity_mu": 0.0001}
+{"ts": 1780552518.859691, "case": "n3_mixed_base_i4", "phase": "stage", "continuity_mu": 0.01}
+{"ts": 1780552591.9462163, "case": "n3_mixed_base_i4", "phase": "stage", "continuity_mu": 1.0}
+{"ts": 1780552663.071993, "case": "n3_mixed_base_i4", "phase": "stage", "continuity_mu": 100.0}
+{"ts": 1780552733.3990421, "case": "n3_mixed_rand20", "phase": "oracle"}
+{"ts": 1780552797.539643, "case": "n3_mixed_rand20", "phase": "stage", "continuity_mu": 0.0}
+{"ts": 1780552879.5866535, "case": "n3_mixed_rand20", "phase": "stage", "continuity_mu": 0.0001}
+{"ts": 1780552960.4488628, "case": "n3_mixed_rand20", "phase": "stage", "continuity_mu": 0.01}
+{"ts": 1780553041.1315565, "case": "n3_mixed_rand20", "phase": "stage", "continuity_mu": 1.0}
+{"ts": 1780553126.7209585, "case": "n3_mixed_rand20", "phase": "stage", "continuity_mu": 100.0}
