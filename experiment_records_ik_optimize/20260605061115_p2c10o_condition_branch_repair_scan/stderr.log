@@ -1,0 +1,25 @@
+W0605 06:13:10.617088   43322 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 06:13:10.622967   43245 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+	Command being timed: "experiment_records_ik_optimize/20260605061115_p2c10o_condition_branch_repair_scan/commands.sh"
+	User time (seconds): 5541.45
+	System time (seconds): 923.65
+	Percent of CPU this job got: 125%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:25:58
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 5933380
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 216
+	Minor (reclaiming a frame) page faults: 20077942
+	Voluntary context switches: 15330003
+	Involuntary context switches: 38263
+	Swaps: 0
+	File system inputs: 20128
+	File system outputs: 712944
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
