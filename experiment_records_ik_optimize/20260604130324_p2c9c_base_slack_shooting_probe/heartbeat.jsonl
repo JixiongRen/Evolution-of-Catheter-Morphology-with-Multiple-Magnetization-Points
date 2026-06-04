@@ -1,0 +1,16 @@
+{"ts": 1780549603.6674595, "case": "n3_mixed_base_i4", "phase": "oracle"}
+{"ts": 1780549938.5847487, "case": "n3_mixed_base_i4", "phase": "audit", "direction": "active_coil_5", "eps": 0.02, "status": "untrusted", "rel_err": 1.0540287794718755}
+{"ts": 1780549938.94175, "case": "n3_mixed_base_i4", "phase": "audit", "direction": "active_coil_5", "eps": 0.05, "status": "untrusted", "rel_err": 1.0541847714404338}
+{"ts": 1780549939.2201679, "case": "n3_mixed_base_i4", "phase": "audit", "direction": "active_coil_5", "eps": 0.1, "status": "untrusted", "rel_err": 1.054723618426022}
+{"ts": 1780549939.556528, "case": "n3_mixed_base_i4", "phase": "audit", "direction": "random_0", "eps": 0.02, "status": "usable", "rel_err": 0.10783472662125185}
+{"ts": 1780549939.7949026, "case": "n3_mixed_base_i4", "phase": "audit", "direction": "random_0", "eps": 0.05, "status": "usable", "rel_err": 0.10772263765099864}
+{"ts": 1780549940.061344, "case": "n3_mixed_base_i4", "phase": "audit", "direction": "random_0", "eps": 0.1, "status": "usable", "rel_err": 0.10810913076179243}
+{"ts": 1780549940.0620103, "case": "n3_mixed_rand20", "phase": "oracle"}
+{"ts": 1780550160.0307512, "case": "n2_z_pair_rand12", "phase": "oracle"}
+{"ts": 1780550397.3261409, "case": "n1_tip_z_rand15", "phase": "oracle"}
+{"ts": 1780550762.0146933, "case": "n1_tip_z_rand15", "phase": "audit", "direction": "active_coil_4", "eps": 0.02, "status": "usable", "rel_err": 0.18767026430222403}
+{"ts": 1780550762.3215919, "case": "n1_tip_z_rand15", "phase": "audit", "direction": "active_coil_4", "eps": 0.05, "status": "usable", "rel_err": 0.18672427044162843}
+{"ts": 1780550762.5592175, "case": "n1_tip_z_rand15", "phase": "audit", "direction": "active_coil_4", "eps": 0.1, "status": "usable", "rel_err": 0.18336582821740555}
+{"ts": 1780550762.9267955, "case": "n1_tip_z_rand15", "phase": "audit", "direction": "random_0", "eps": 0.02, "status": "usable", "rel_err": 0.09342549405348045}
+{"ts": 1780550763.1636262, "case": "n1_tip_z_rand15", "phase": "audit", "direction": "random_0", "eps": 0.05, "status": "usable", "rel_err": 0.09649724449930182}
+{"ts": 1780550764.045508, "case": "n1_tip_z_rand15", "phase": "audit", "direction": "random_0", "eps": 0.1, "status": "usable", "rel_err": 0.1077166855955944}
