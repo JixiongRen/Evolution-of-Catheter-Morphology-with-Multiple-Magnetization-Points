@@ -1,0 +1,235 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260605004600_p2c10g_feasible_manifold_distance_map/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "total_wall_s": 681.3079129350008,
+    "continuity_scale": 1000.0,
+    "boundary_scale": 1.0,
+    "reg_mu": 1e-06
+  },
+  "classification": "feasible-manifold-distance-map",
+  "max_terminal_position_error_m": 0.012725578934946828,
+  "max_terminal_orientation_error_deg": 33.32868719108316,
+  "rows": [
+    {
+      "alpha": 0.2,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.4573643780004204,
+      "feasibility_residual_norm": 0.005713947412181336,
+      "boundary_norm": 0.005712274697032457,
+      "raw_continuity_norm": 1.103771621560375e-07,
+      "stationarity_norm": 10627.244388006962,
+      "terminal_position_error_m": 0.00862717510276146,
+      "terminal_orientation_error_rad": 0.47573525217251095,
+      "terminal_orientation_error_deg": 27.257622115076806,
+      "tip_p": [
+        0.10702999108762289,
+        -0.0013818729220393588,
+        0.01785829268034861
+      ],
+      "target_p": [
+        0.10660506882786597,
+        0.005814556044806515,
+        0.013119199786976302
+      ],
+      "tip_q": [
+        0.763949359536407,
+        0.19870662967318942,
+        0.5483310035867095,
+        0.2760981019373871
+      ],
+      "target_q": [
+        0.6872835395263753,
+        0.00433335240880322,
+        0.6472692026307351,
+        0.32964600510177294
+      ],
+      "diagnostic_class": "feasible-branch-distance"
+    },
+    {
+      "alpha": 0.21,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.4276497150003706,
+      "feasibility_residual_norm": 0.00466370759604754,
+      "boundary_norm": 0.004662645431668358,
+      "raw_continuity_norm": 4.722558365014696e-08,
+      "stationarity_norm": 1903.1117420774938,
+      "terminal_position_error_m": 0.010973824441876199,
+      "terminal_orientation_error_rad": 0.5216726622895641,
+      "terminal_orientation_error_deg": 29.889641836545522,
+      "tip_p": [
+        0.10527195034485322,
+        -0.0010981270865739736,
+        0.021863517557653193
+      ],
+      "target_p": [
+        0.10644016371340397,
+        0.006148522304723345,
+        0.013705933785097192
+      ],
+      "tip_q": [
+        0.7934401268415275,
+        0.1935375043555233,
+        0.5063005019715171,
+        0.2768678407271715
+      ],
+      "target_q": [
+        0.6929996957535366,
+        0.0025081839464798604,
+        0.6425660432626216,
+        0.3268879019591927
+      ],
+      "diagnostic_class": "feasible-branch-distance"
+    },
+    {
+      "alpha": 0.22,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.5108941739999864,
+      "feasibility_residual_norm": 0.004424198786853056,
+      "boundary_norm": 0.004422990843949755,
+      "raw_continuity_norm": 5.419045696631054e-08,
+      "stationarity_norm": 1874.5284628171457,
+      "terminal_position_error_m": 0.010574213037318269,
+      "terminal_orientation_error_rad": 0.5115866934651728,
+      "terminal_orientation_error_deg": 29.311758390607373,
+      "tip_p": [
+        0.10505160640258684,
+        -0.0010881810629956305,
+        0.0214617504877063
+      ],
+      "target_p": [
+        0.10627635119040199,
+        0.006523435324969917,
+        0.01422453572470765
+      ],
+      "tip_q": [
+        0.7961561258889698,
+        0.18970194215970101,
+        0.5047019720165072,
+        0.2746352413528772
+      ],
+      "target_q": [
+        0.6987380677652376,
+        0.001461960097335333,
+        0.6377687260213787,
+        0.3240618638935627
+      ],
+      "diagnostic_class": "feasible-branch-distance"
+    },
+    {
+      "alpha": 0.23,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.445654144999935,
+      "feasibility_residual_norm": 0.0037355858556085515,
+      "boundary_norm": 0.003734141285986042,
+      "raw_continuity_norm": 1.4206590833926288e-08,
+      "stationarity_norm": 145.338811262749,
+      "terminal_position_error_m": 0.012725578934946828,
+      "terminal_orientation_error_rad": 0.5816953268516617,
+      "terminal_orientation_error_deg": 33.32868719108316,
+      "tip_p": [
+        0.10293168706489667,
+        -0.00024237791647408738,
+        0.024338560805346732
+      ],
+      "target_p": [
+        0.1062570783379406,
+        0.006807435727562236,
+        0.014279621512603934
+      ],
+      "tip_q": [
+        0.8251219562058737,
+        0.19123725695207242,
+        0.4549653295636373,
+        0.2749702126330967
+      ],
+      "target_q": [
+        0.7035815516338533,
+        0.004143855629762587,
+        0.634311753932909,
+        0.32031978003879263
+      ],
+      "diagnostic_class": "feasible-branch-distance"
+    },
+    {
+      "alpha": 0.24,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.4376791499998944,
+      "feasibility_residual_norm": 0.0036770799107242328,
+      "boundary_norm": 0.0036755330331231986,
+      "raw_continuity_norm": 3.548392950360786e-08,
+      "stationarity_norm": 617.5045512056964,
+      "terminal_position_error_m": 0.012535865497676026,
+      "terminal_orientation_error_rad": 0.5703150689865975,
+      "terminal_orientation_error_deg": 32.67664644564442,
+      "tip_p": [
+        0.10274176414456451,
+        -0.00044445550050266184,
+        0.02427648955384573
+      ],
+      "target_p": [
+        0.10596173889740115,
+        0.007381972033556399,
+        0.015028423895501766
+      ],
+      "tip_q": [
+        0.8269250071546512,
+        0.1893119998644663,
+        0.4541138274168074,
+        0.2722804271306593
+      ],
+      "target_q": [
+        0.7104745969418154,
+        0.002332274502038644,
+        0.6277473812301771,
+        0.3180471079316584
+      ],
+      "diagnostic_class": "feasible-branch-distance"
+    },
+    {
+      "alpha": 0.25,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.4773702890015556,
+      "feasibility_residual_norm": 0.0036324236906004745,
+      "boundary_norm": 0.0036308689621858442,
+      "raw_continuity_norm": 3.6564836211265486e-08,
+      "stationarity_norm": 604.3075491004798,
+      "terminal_position_error_m": 0.012582801908247504,
+      "terminal_orientation_error_rad": 0.5557061181036229,
+      "terminal_orientation_error_deg": 31.839615216936064,
+      "tip_p": [
+        0.10259852420625987,
+        -0.000655246626500552,
+        0.024158014955539524
+      ],
+      "target_p": [
+        0.1057618882978096,
+        0.007841479745512739,
+        0.015433012236592977
+      ],
+      "tip_q": [
+        0.8279712377799391,
+        0.18716183295746552,
+        0.4546193486907241,
+        0.2697319511833537
+      ],
+      "target_q": [
+        0.7164724717118265,
+        0.002557408590539938,
+        0.6223263266561957,
+        0.31523627884433514
+      ],
+      "diagnostic_class": "feasible-branch-distance"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{"ts": 1780588792.2172332, "alpha": 0.2, "failure_class": "物理可行分支驻值性不足", "evidence": {"stationarity_norm": 10627.244388006962, "position_error_m": 0.00862717510276146, "orientation_error_deg": 27.257622115076806}}
+{"ts": 1780588898.6482542, "alpha": 0.21, "failure_class": "物理可行分支驻值性不足", "evidence": {"stationarity_norm": 1903.1117420774938, "position_error_m": 0.010973824441876199, "orientation_error_deg": 29.889641836545522}}
+{"ts": 1780589005.601004, "alpha": 0.22, "failure_class": "物理可行分支驻值性不足", "evidence": {"stationarity_norm": 1874.5284628171457, "position_error_m": 0.010574213037318269, "orientation_error_deg": 29.311758390607373}}
+{"ts": 1780589118.1473365, "alpha": 0.23, "failure_class": "物理可行分支驻值性不足", "evidence": {"stationarity_norm": 145.338811262749, "position_error_m": 0.012725578934946828, "orientation_error_deg": 33.32868719108316}}
+{"ts": 1780589230.1272018, "alpha": 0.24, "failure_class": "物理可行分支驻值性不足", "evidence": {"stationarity_norm": 617.5045512056964, "position_error_m": 0.012535865497676026, "orientation_error_deg": 32.67664644564442}}
+{"ts": 1780589343.5113082, "alpha": 0.25, "failure_class": "物理可行分支驻值性不足", "evidence": {"stationarity_norm": 604.3075491004798, "position_error_m": 0.012582801908247504, "orientation_error_deg": 31.839615216936064}}
