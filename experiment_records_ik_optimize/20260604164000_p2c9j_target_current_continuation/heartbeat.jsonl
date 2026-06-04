@@ -1,0 +1,23 @@
+{"ts": 1780562449.9200158, "phase": "build", "alpha": 0.0}
+{"ts": 1780562528.5900562, "phase": "solve", "alpha": 0.0, "init": "oracle"}
+{"ts": 1780562565.8411953, "phase": "solve", "alpha": 0.0, "init": "half_oracle"}
+{"ts": 1780562566.1648054, "phase": "build", "alpha": 0.2}
+{"ts": 1780562629.3585625, "phase": "solve", "alpha": 0.2, "init": "oracle"}
+{"ts": 1780562663.7922227, "phase": "solve", "alpha": 0.2, "init": "continuation"}
+{"ts": 1780562664.1589704, "phase": "solve", "alpha": 0.2, "init": "half_oracle"}
+{"ts": 1780562664.4433935, "phase": "build", "alpha": 0.4}
+{"ts": 1780562727.2673175, "phase": "solve", "alpha": 0.4, "init": "oracle"}
+{"ts": 1780562763.6130075, "phase": "solve", "alpha": 0.4, "init": "continuation"}
+{"ts": 1780562763.970763, "phase": "solve", "alpha": 0.4, "init": "half_oracle"}
+{"ts": 1780562764.2503002, "phase": "build", "alpha": 0.6}
+{"ts": 1780562839.8116071, "phase": "solve", "alpha": 0.6, "init": "oracle"}
+{"ts": 1780562882.022105, "phase": "solve", "alpha": 0.6, "init": "continuation"}
+{"ts": 1780562882.4403486, "phase": "solve", "alpha": 0.6, "init": "half_oracle"}
+{"ts": 1780562882.832418, "phase": "build", "alpha": 0.8}
+{"ts": 1780562956.6628146, "phase": "solve", "alpha": 0.8, "init": "oracle"}
+{"ts": 1780563000.5080738, "phase": "solve", "alpha": 0.8, "init": "continuation"}
+{"ts": 1780563000.8504314, "phase": "solve", "alpha": 0.8, "init": "half_oracle"}
+{"ts": 1780563001.1878455, "phase": "build", "alpha": 1.0}
+{"ts": 1780563081.1208339, "phase": "solve", "alpha": 1.0, "init": "oracle"}
+{"ts": 1780563128.073728, "phase": "solve", "alpha": 1.0, "init": "continuation"}
+{"ts": 1780563128.4563282, "phase": "solve", "alpha": 1.0, "init": "half_oracle"}

@@ -1,0 +1,236 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M docs/experiment_records/project_memory.md\n M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260604164000_p2c9j_target_current_continuation/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "total_wall_s": 687.7073639050068
+  },
+  "classification": "continuation-break",
+  "first_failure_alpha": 1.0,
+  "recovered_target": false,
+  "per_alpha": [
+    {
+      "alpha": 0.0,
+      "any_success": true,
+      "best_init": "oracle",
+      "best_residual_norm": 0.0016132306616863114,
+      "best_stationarity_norm": 3.597666577195948e-10,
+      "best_boundary_residual_norm": 0.000566278979998014
+    },
+    {
+      "alpha": 0.2,
+      "any_success": true,
+      "best_init": "oracle",
+      "best_residual_norm": 0.0018839404225051842,
+      "best_stationarity_norm": 7.80449897542395e-06,
+      "best_boundary_residual_norm": 0.002706433804849514
+    },
+    {
+      "alpha": 0.4,
+      "any_success": true,
+      "best_init": "oracle",
+      "best_residual_norm": 0.002405032846427118,
+      "best_stationarity_norm": 28.320428267913417,
+      "best_boundary_residual_norm": 0.0028679743969252927
+    },
+    {
+      "alpha": 0.6,
+      "any_success": true,
+      "best_init": "half_oracle",
+      "best_residual_norm": 0.006995625027675166,
+      "best_stationarity_norm": 216.9095510612173,
+      "best_boundary_residual_norm": 0.006937059914356028
+    },
+    {
+      "alpha": 0.8,
+      "any_success": true,
+      "best_init": "oracle",
+      "best_residual_norm": 0.004347665285145892,
+      "best_stationarity_norm": 12.770241257687935,
+      "best_boundary_residual_norm": 0.00356506378836806
+    },
+    {
+      "alpha": 1.0,
+      "any_success": false,
+      "best_init": "half_oracle",
+      "best_residual_norm": 0.0359941615442489,
+      "best_stationarity_norm": 25.6367951128691,
+      "best_boundary_residual_norm": 0.057476120706927245
+    }
+  ],
+  "rows": [
+    {
+      "alpha": 0.0,
+      "init": "oracle",
+      "success": true,
+      "residual_norm": 0.0016132306616863114,
+      "stationarity_norm": 3.597666577195948e-10,
+      "boundary_residual_norm": 0.000566278979998014,
+      "steady_s": 30.901954695989843,
+      "state_norm": 0.43031099589181127
+    },
+    {
+      "alpha": 0.0,
+      "init": "half_oracle",
+      "success": false,
+      "residual_norm": 0.017247846647416548,
+      "stationarity_norm": 18.11216513854428,
+      "boundary_residual_norm": 0.011562508729596997,
+      "steady_s": 0.29800206699292175,
+      "state_norm": 0.21466171656550367
+    },
+    {
+      "alpha": 0.2,
+      "init": "oracle",
+      "success": true,
+      "residual_norm": 0.0018839404225051842,
+      "stationarity_norm": 7.80449897542395e-06,
+      "boundary_residual_norm": 0.002706433804849514,
+      "steady_s": 27.108490541984793,
+      "state_norm": 0.26173624701254006
+    },
+    {
+      "alpha": 0.2,
+      "init": "continuation",
+      "success": false,
+      "residual_norm": 0.6332319096399168,
+      "stationarity_norm": 42.44356935544536,
+      "boundary_residual_norm": 0.5086299312032214,
+      "steady_s": 0.3391856210073456,
+      "state_norm": 0.430671450764465
+    },
+    {
+      "alpha": 0.2,
+      "init": "half_oracle",
+      "success": true,
+      "residual_norm": 0.005285979044417676,
+      "stationarity_norm": 65.40003119350831,
+      "boundary_residual_norm": 0.006526229978325137,
+      "steady_s": 0.25453129000379704,
+      "state_norm": 0.1332458072267904
+    },
+    {
+      "alpha": 0.4,
+      "init": "oracle",
+      "success": true,
+      "residual_norm": 0.002405032846427118,
+      "stationarity_norm": 28.320428267913417,
+      "boundary_residual_norm": 0.0028679743969252927,
+      "steady_s": 28.389209093002137,
+      "state_norm": 0.13052837032297962
+    },
+    {
+      "alpha": 0.4,
+      "init": "continuation",
+      "success": false,
+      "residual_norm": 0.12371747255769804,
+      "stationarity_norm": 2095.468004461215,
+      "boundary_residual_norm": 0.18908010575607698,
+      "steady_s": 0.323549697000999,
+      "state_norm": 0.26028837481374617
+    },
+    {
+      "alpha": 0.4,
+      "init": "half_oracle",
+      "success": true,
+      "residual_norm": 0.0044346136098303,
+      "stationarity_norm": 32.56221086004597,
+      "boundary_residual_norm": 0.004495705844835937,
+      "steady_s": 0.24776143400231376,
+      "state_norm": 0.07446822616220428
+    },
+    {
+      "alpha": 0.6,
+      "init": "oracle",
+      "success": true,
+      "residual_norm": 0.008585321975099921,
+      "stationarity_norm": 81.50000799750796,
+      "boundary_residual_norm": 0.013341987985824862,
+      "steady_s": 32.47535162902204,
+      "state_norm": 0.1156363892288081
+    },
+    {
+      "alpha": 0.6,
+      "init": "continuation",
+      "success": false,
+      "residual_norm": 0.44719047075723106,
+      "stationarity_norm": 1027.5470955205112,
+      "boundary_residual_norm": 0.5363367137843101,
+      "steady_s": 0.38290172300185077,
+      "state_norm": 0.13310291041875955
+    },
+    {
+      "alpha": 0.6,
+      "init": "half_oracle",
+      "success": true,
+      "residual_norm": 0.006995625027675166,
+      "stationarity_norm": 216.9095510612173,
+      "boundary_residual_norm": 0.006937059914356028,
+      "steady_s": 0.35567085398361087,
+      "state_norm": 0.09329231280019473
+    },
+    {
+      "alpha": 0.8,
+      "init": "oracle",
+      "success": true,
+      "residual_norm": 0.004347665285145892,
+      "stationarity_norm": 12.770241257687935,
+      "boundary_residual_norm": 0.00356506378836806,
+      "steady_s": 34.24970306700561,
+      "state_norm": 0.14078972656783276
+    },
+    {
+      "alpha": 0.8,
+      "init": "continuation",
+      "success": false,
+      "residual_norm": 10.138936347387943,
+      "stationarity_norm": 15457.876472323014,
+      "boundary_residual_norm": 3.5699831194124294,
+      "steady_s": 0.30728417201316915,
+      "state_norm": 0.1429765886138014
+    },
+    {
+      "alpha": 0.8,
+      "init": "half_oracle",
+      "success": false,
+      "residual_norm": 0.01696045166948229,
+      "stationarity_norm": 179.36007494801498,
+      "boundary_residual_norm": 0.027239640428523566,
+      "steady_s": 0.30291017299168743,
+      "state_norm": 0.07712287414980061
+    },
+    {
+      "alpha": 1.0,
+      "init": "oracle",
+      "success": false,
+      "residual_norm": 0.0735795101793623,
+      "stationarity_norm": 742.8704692922792,
+      "boundary_residual_norm": 0.0563558850547994,
+      "steady_s": 36.758894919999875,
+      "state_norm": 0.09294209807403402
+    },
+    {
+      "alpha": 1.0,
+      "init": "continuation",
+      "success": false,
+      "residual_norm": 3.643456890385891,
+      "stationarity_norm": 20512.66040496671,
+      "boundary_residual_norm": 0.3780896070675402,
+      "steady_s": 0.34767982599441893,
+      "state_norm": 0.2067070662906443
+    },
+    {
+      "alpha": 1.0,
+      "init": "half_oracle",
+      "success": false,
+      "residual_norm": 0.0359941615442489,
+      "stationarity_norm": 25.6367951128691,
+      "boundary_residual_norm": 0.057476120706927245,
+      "steady_s": 0.33940997399622574,
+      "state_norm": 0.05662704687452143
+    }
+  ]
+}
