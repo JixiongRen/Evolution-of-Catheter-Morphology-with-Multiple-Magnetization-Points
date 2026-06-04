@@ -1,0 +1,8 @@
+{"ts": 1780586350.6501548, "phase": "solve", "alpha": 0.2, "continuity_mu": 1.0}
+{"ts": 1780586474.7928276, "phase": "solve", "alpha": 0.2, "continuity_mu": 10.0}
+{"ts": 1780586581.9044173, "phase": "solve", "alpha": 0.2, "continuity_mu": 100.0}
+{"ts": 1780586686.4208608, "phase": "solve", "alpha": 0.2, "continuity_mu": 1000.0}
+{"ts": 1780586792.8444855, "phase": "solve", "alpha": 0.25, "continuity_mu": 1.0}
+{"ts": 1780586902.2274888, "phase": "solve", "alpha": 0.25, "continuity_mu": 10.0}
+{"ts": 1780587031.064566, "phase": "solve", "alpha": 0.25, "continuity_mu": 100.0}
+{"ts": 1780587159.5473442, "phase": "solve", "alpha": 0.25, "continuity_mu": 1000.0}

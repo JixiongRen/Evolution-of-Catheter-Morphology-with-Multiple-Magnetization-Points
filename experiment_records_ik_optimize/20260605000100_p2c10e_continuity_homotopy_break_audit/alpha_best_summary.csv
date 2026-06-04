@@ -1,0 +1,3 @@
+alpha,any_linearizable_with_continuity_gate,best_boundary_residual_norm,best_continuity_mu,best_raw_continuity_norm,best_residual_norm,best_stationarity_norm
+0.2,False,0.002706433804850027,1.0,0.0011638981075815615,0.0018839404225052024,7.806557824803116e-06
+0.25,False,0.015911378607457064,1000.0,0.0007992000560973726,0.02666253682179234,0.0006086839569189
