@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M docs/experiment_records/project_memory.md\n M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260604132850_p2c9d_hard_continuity_kkt_probe/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "cases": [
+      "n3_mixed_base_i4",
+      "n3_mixed_rand20"
+    ],
+    "eps_values": [
+      0.02,
+      0.05,
+      0.1
+    ],
+    "total_wall_s": 810.5816588239977
+  },
+  "classification": "untrusted",
+  "usable_count": 0,
+  "row_count": 0,
+  "median_rel_err_total": NaN,
+  "baseline_rows": [
+    {
+      "case": "n3_mixed_base_i4",
+      "success": false,
+      "steady_s": 5.398644148983294,
+      "kkt_norm": 82.06357358502169,
+      "objective_norm": 0.334632525090407,
+      "constraint_norm": 0.8773055484904705,
+      "stationarity_norm": 82.05888400727162,
+      "boundary_residual_norm": 0.405769213904338
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "success": false,
+      "steady_s": 5.921143243991537,
+      "kkt_norm": 29.075274465380875,
+      "objective_norm": 0.13922156387148973,
+      "constraint_norm": 0.17560722475892274,
+      "stationarity_norm": 29.07474414917252,
+      "boundary_residual_norm": 0.226228408799435
+    }
+  ],
+  "rows": []
+}
