@@ -1,0 +1,4 @@
+active_magnet_count,boundary_alpha_max,case,high_risk_count,max_orientation_error_deg,max_position_error_m,safe_alpha_max
+1,,n1_tip_z_rand15,4,89.77291204883757,0.03010459468663969,
+2,0.25,n2_z_pair_rand12,3,129.29451912694384,0.08685924083800371,
+3,0.25,n3_mixed_rand20,3,128.6429849649947,0.0929141616259128,

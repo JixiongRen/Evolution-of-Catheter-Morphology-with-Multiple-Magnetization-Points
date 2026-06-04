@@ -1,0 +1,26 @@
+W0605 00:19:06.140584   19511 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 00:19:06.149106   19434 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:167: UserWarning: Glyph 39640 (\N{CJK UNIFIED IDEOGRAPH-9AD8}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:167: UserWarning: Glyph 39118 (\N{CJK UNIFIED IDEOGRAPH-98CE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:167: UserWarning: Glyph 38505 (\N{CJK UNIFIED IDEOGRAPH-9669}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:167: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:167: UserWarning: Glyph 36793 (\N{CJK UNIFIED IDEOGRAPH-8FB9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:167: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:168: UserWarning: Glyph 39640 (\N{CJK UNIFIED IDEOGRAPH-9AD8}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "representative_zone_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:168: UserWarning: Glyph 39118 (\N{CJK UNIFIED IDEOGRAPH-98CE}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "representative_zone_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:168: UserWarning: Glyph 38505 (\N{CJK UNIFIED IDEOGRAPH-9669}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "representative_zone_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:168: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "representative_zone_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:168: UserWarning: Glyph 36793 (\N{CJK UNIFIED IDEOGRAPH-8FB9}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "representative_zone_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/run_p2c10h_representative_feasible_distance_phase_map.py:168: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "representative_zone_map.png", dpi=180)

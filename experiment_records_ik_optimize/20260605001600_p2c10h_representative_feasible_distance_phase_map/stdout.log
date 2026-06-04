@@ -1,0 +1,348 @@
+{
+  "metadata": {
+    "branch": "ik_optimize",
+    "git_status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260605001600_p2c10h_representative_feasible_distance_phase_map/\n?? references/\n?? research_outputs/",
+    "jax_devices": [
+      "cuda:0"
+    ],
+    "xla_preallocate": "false",
+    "total_wall_s": 1397.8764158169997,
+    "classification_thresholds": {
+      "safe_candidate": "stationarity <= 1e-3, position <= 0.005 m, orientation <= 15 deg",
+      "boundary_candidate": "position <= 0.008 m and orientation <= 25 deg",
+      "high_risk": "otherwise"
+    }
+  },
+  "classification": "representative-feasible-distance-phase-map",
+  "per_case": [
+    {
+      "case": "n1_tip_z_rand15",
+      "active_magnet_count": 1,
+      "safe_alpha_max": null,
+      "boundary_alpha_max": null,
+      "high_risk_count": 4,
+      "max_position_error_m": 0.03010459468663969,
+      "max_orientation_error_deg": 89.77291204883757
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "active_magnet_count": 2,
+      "safe_alpha_max": null,
+      "boundary_alpha_max": 0.25,
+      "high_risk_count": 3,
+      "max_position_error_m": 0.08685924083800371,
+      "max_orientation_error_deg": 129.29451912694384
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "active_magnet_count": 3,
+      "safe_alpha_max": null,
+      "boundary_alpha_max": 0.25,
+      "high_risk_count": 3,
+      "max_position_error_m": 0.0929141616259128,
+      "max_orientation_error_deg": 128.6429849649947
+    }
+  ],
+  "rows": [
+    {
+      "case": "n1_tip_z_rand15",
+      "active_magnet_count": 1,
+      "alpha": 0.25,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.5868782210000063,
+      "boundary_norm": 0.011975035157890803,
+      "raw_continuity_norm": 3.430942055552472e-06,
+      "stationarity_norm": 6014.90458308335,
+      "terminal_position_error_m": 0.017453525994700823,
+      "terminal_orientation_error_deg": 20.7889434006761,
+      "tip_p": [
+        0.10179819368630368,
+        -0.002992635762034928,
+        -0.03375005343024985
+      ],
+      "target_p": [
+        0.1072198311261835,
+        -0.009913599329054576,
+        -0.018672531073371138
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "active_magnet_count": 1,
+      "alpha": 0.5,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.285249410000688,
+      "boundary_norm": 0.003485940470421208,
+      "raw_continuity_norm": 1.5279768820211362e-08,
+      "stationarity_norm": 11.723121189213066,
+      "terminal_position_error_m": 0.01779731466357091,
+      "terminal_orientation_error_deg": 23.535067571013457,
+      "tip_p": [
+        0.10194570403894301,
+        -0.0038316621226271697,
+        -0.023343673008217172
+      ],
+      "target_p": [
+        0.10228645563892871,
+        -0.021309262454113874,
+        -0.026684598663492848
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "active_magnet_count": 1,
+      "alpha": 0.75,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.415132497999366,
+      "boundary_norm": 0.0031711753572435776,
+      "raw_continuity_norm": 1.1634751028914472e-08,
+      "stationarity_norm": 19.026553529503246,
+      "terminal_position_error_m": 0.023003653940303934,
+      "terminal_orientation_error_deg": 63.91273175708862,
+      "tip_p": [
+        0.10067481990060936,
+        -0.008094553096862677,
+        -0.009361645443378606
+      ],
+      "target_p": [
+        0.10119005241633465,
+        -0.024841597226908478,
+        -0.02512359782772169
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "active_magnet_count": 1,
+      "alpha": 1.0,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.5176478770008544,
+      "boundary_norm": 0.002919065807464672,
+      "raw_continuity_norm": 1.9583804158090705e-08,
+      "stationarity_norm": 34.43677056372863,
+      "terminal_position_error_m": 0.03010459468663969,
+      "terminal_orientation_error_deg": 89.77291204883757,
+      "tip_p": [
+        0.09742677879802666,
+        -0.012758992445829393,
+        0.00018066560163330924
+      ],
+      "target_p": [
+        0.10024767881116804,
+        -0.02711299588497863,
+        -0.02613077163831247
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "active_magnet_count": 2,
+      "alpha": 0.25,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.6398673370003962,
+      "boundary_norm": 0.09153440057347537,
+      "raw_continuity_norm": 0.0008014566509730156,
+      "stationarity_norm": 4732353.496869542,
+      "terminal_position_error_m": 0.002283455669051736,
+      "terminal_orientation_error_deg": 8.892816186321545,
+      "tip_p": [
+        0.10899781416751687,
+        -0.010120475299246928,
+        0.006348595228087546
+      ],
+      "target_p": [
+        0.10841717255259276,
+        -0.011731075216016379,
+        0.007859552876615479
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "边界候选区"
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "active_magnet_count": 2,
+      "alpha": 0.5,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.4878132409994578,
+      "boundary_norm": 1.2927974721108577,
+      "raw_continuity_norm": 0.0352737449442901,
+      "stationarity_norm": 793781850.1272486,
+      "terminal_position_error_m": 0.035957842445160274,
+      "terminal_orientation_error_deg": 122.4411050321634,
+      "tip_p": [
+        0.08023679405225922,
+        -0.012137413569176515,
+        -0.011455541576403756
+      ],
+      "target_p": [
+        0.10619200234895855,
+        -0.021627796755827107,
+        0.011549375779597764
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "active_magnet_count": 2,
+      "alpha": 0.75,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.4334015260010347,
+      "boundary_norm": 4.6010305125348365,
+      "raw_continuity_norm": 0.3509249004855786,
+      "stationarity_norm": 10729917.555337312,
+      "terminal_position_error_m": 0.08685924083800371,
+      "terminal_orientation_error_deg": 129.29451912694384,
+      "tip_p": [
+        0.0163560803121015,
+        -0.03106322018007918,
+        0.01417233088557131
+      ],
+      "target_p": [
+        0.10317836624092284,
+        -0.029060348649704006,
+        0.015723746587803854
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "active_magnet_count": 2,
+      "alpha": 1.0,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.3204429439992964,
+      "boundary_norm": 1.1953532782318728,
+      "raw_continuity_norm": 0.16518080035473634,
+      "stationarity_norm": 553548959.3952472,
+      "terminal_position_error_m": 0.05443995285309403,
+      "terminal_orientation_error_deg": 98.9757120273499,
+      "tip_p": [
+        0.05004498415610259,
+        -0.01632773900115279,
+        0.014590696036587147
+      ],
+      "target_p": [
+        0.10115507692994058,
+        -0.03491726351258348,
+        0.01701895914747366
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "active_magnet_count": 3,
+      "alpha": 0.25,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.6905121790005069,
+      "boundary_norm": 0.07894427359080003,
+      "raw_continuity_norm": 0.00011970788559342948,
+      "stationarity_norm": 11868591.033122424,
+      "terminal_position_error_m": 0.007028508814981839,
+      "terminal_orientation_error_deg": 19.44581936131549,
+      "tip_p": [
+        0.10865570974601327,
+        -0.0011636360858451582,
+        0.011463449817350521
+      ],
+      "target_p": [
+        0.10704091754524278,
+        0.0056389626698683986,
+        0.010744400111577276
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "边界候选区"
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "active_magnet_count": 3,
+      "alpha": 0.5,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.4056557889998658,
+      "boundary_norm": 2.6531083834742786,
+      "raw_continuity_norm": 0.11205533971828364,
+      "stationarity_norm": 396583966.6225433,
+      "terminal_position_error_m": 0.016215033392312714,
+      "terminal_orientation_error_deg": 84.53695824644605,
+      "tip_p": [
+        0.08674599028346598,
+        0.008333093232990979,
+        0.001712528321624948
+      ],
+      "target_p": [
+        0.09692247534651766,
+        0.011563480590974281,
+        0.013916259603191426
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "active_magnet_count": 3,
+      "alpha": 0.75,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.4580544829987048,
+      "boundary_norm": 1.184650284601507,
+      "raw_continuity_norm": 1.4295927897766718,
+      "stationarity_norm": 40360547001.61271,
+      "terminal_position_error_m": 0.06263288663416408,
+      "terminal_orientation_error_deg": 116.53436936811228,
+      "tip_p": [
+        0.037444070688395475,
+        -0.00149928075929918,
+        -0.0007800623532444476
+      ],
+      "target_p": [
+        0.09599087349846781,
+        0.020661538924836093,
+        -0.0027921358543367292
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "active_magnet_count": 3,
+      "alpha": 1.0,
+      "success_flag": false,
+      "nfev": 120,
+      "steady_s": 1.3993223639990902,
+      "boundary_norm": 0.6271607509802253,
+      "raw_continuity_norm": 0.07909046552371485,
+      "stationarity_norm": 116726053.3694476,
+      "terminal_position_error_m": 0.0929141616259128,
+      "terminal_orientation_error_deg": 128.6429849649947,
+      "tip_p": [
+        0.0022569484436363073,
+        0.015153647202380452,
+        0.0033358775331931503
+      ],
+      "target_p": [
+        0.09242531653674696,
+        0.026860913625993205,
+        -0.015786014082389804
+      ],
+      "diagnostic_class": "representative-feasible-distance",
+      "zone": "高风险区"
+    }
+  ]
+}
