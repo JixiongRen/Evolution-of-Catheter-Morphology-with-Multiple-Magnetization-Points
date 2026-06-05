@@ -1,0 +1,24 @@
+{"ts": 1780621360.3254793, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "force_axis"}
+{"ts": 1780621445.243318, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "force_axis", "init": "oracle"}
+{"ts": 1780621490.889988, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "force_axis", "init": "half_oracle"}
+{"ts": 1780621492.7072701, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "force_axis", "init": "zero"}
+{"ts": 1780621495.0252821, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "torque_axis"}
+{"ts": 1780621559.0257635, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "torque_axis", "init": "oracle"}
+{"ts": 1780621601.569067, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "torque_axis", "init": "half_oracle"}
+{"ts": 1780621603.0438645, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "torque_axis", "init": "zero"}
+{"ts": 1780621604.3685112, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "wrench_axis"}
+{"ts": 1780621666.1933384, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "wrench_axis", "init": "oracle"}
+{"ts": 1780621713.3621774, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "wrench_axis", "init": "half_oracle"}
+{"ts": 1780621715.0156615, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "variant": "wrench_axis", "init": "zero"}
+{"ts": 1780621716.9651206, "phase": "build", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "force_axis"}
+{"ts": 1780621784.2369204, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "force_axis", "init": "oracle"}
+{"ts": 1780621825.4712305, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "force_axis", "init": "half_oracle"}
+{"ts": 1780621826.7973738, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "force_axis", "init": "zero"}
+{"ts": 1780621828.7544851, "phase": "build", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "torque_axis"}
+{"ts": 1780621891.1402638, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "torque_axis", "init": "oracle"}
+{"ts": 1780621932.4701502, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "torque_axis", "init": "half_oracle"}
+{"ts": 1780621933.932938, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "torque_axis", "init": "zero"}
+{"ts": 1780621936.001358, "phase": "build", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "wrench_axis"}
+{"ts": 1780621998.5117397, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "wrench_axis", "init": "oracle"}
+{"ts": 1780622041.134633, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "wrench_axis", "init": "half_oracle"}
+{"ts": 1780622042.569095, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "variant": "wrench_axis", "init": "zero"}
