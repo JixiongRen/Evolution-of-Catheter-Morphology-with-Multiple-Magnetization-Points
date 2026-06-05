@@ -1,0 +1,249 @@
+W0605 13:18:49.311146   78534 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 13:18:49.316501   78436 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 25935 (\N{CJK UNIFIED IDEOGRAPH-654F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 24863 (\N{CJK UNIFIED IDEOGRAPH-611F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 33539 (\N{CJK UNIFIED IDEOGRAPH-8303}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 26368 (\N{CJK UNIFIED IDEOGRAPH-6700}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 38454 (\N{CJK UNIFIED IDEOGRAPH-9636}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 24179 (\N{CJK UNIFIED IDEOGRAPH-5E73}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 31283 (\N{CJK UNIFIED IDEOGRAPH-7A33}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 24322 (\N{CJK UNIFIED IDEOGRAPH-5F02}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 38754 (\N{CJK UNIFIED IDEOGRAPH-9762}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 21147 (\N{CJK UNIFIED IDEOGRAPH-529B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 26494 (\N{CJK UNIFIED IDEOGRAPH-677E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 24347 (\N{CJK UNIFIED IDEOGRAPH-5F1B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 21018 (\N{CJK UNIFIED IDEOGRAPH-521A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 27573 (\N{CJK UNIFIED IDEOGRAPH-6BB5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:319: UserWarning: Glyph 22806 (\N{CJK UNIFIED IDEOGRAPH-5916}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 25935 (\N{CJK UNIFIED IDEOGRAPH-654F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 24863 (\N{CJK UNIFIED IDEOGRAPH-611F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 33539 (\N{CJK UNIFIED IDEOGRAPH-8303}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 26368 (\N{CJK UNIFIED IDEOGRAPH-6700}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 38454 (\N{CJK UNIFIED IDEOGRAPH-9636}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 24179 (\N{CJK UNIFIED IDEOGRAPH-5E73}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 31283 (\N{CJK UNIFIED IDEOGRAPH-7A33}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 24322 (\N{CJK UNIFIED IDEOGRAPH-5F02}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 38754 (\N{CJK UNIFIED IDEOGRAPH-9762}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 21147 (\N{CJK UNIFIED IDEOGRAPH-529B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 26494 (\N{CJK UNIFIED IDEOGRAPH-677E}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 24347 (\N{CJK UNIFIED IDEOGRAPH-5F1B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 21018 (\N{CJK UNIFIED IDEOGRAPH-521A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 27573 (\N{CJK UNIFIED IDEOGRAPH-6BB5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:320: UserWarning: Glyph 22806 (\N{CJK UNIFIED IDEOGRAPH-5916}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_boundary_phase_map.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 25935 (\N{CJK UNIFIED IDEOGRAPH-654F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 24863 (\N{CJK UNIFIED IDEOGRAPH-611F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 21487 (\N{CJK UNIFIED IDEOGRAPH-53EF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 20449 (\N{CJK UNIFIED IDEOGRAPH-4FE1}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 12289 (\N{IDEOGRAPHIC COMMA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 20020 (\N{CJK UNIFIED IDEOGRAPH-4E34}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 19982 (\N{CJK UNIFIED IDEOGRAPH-4E0E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 22833 (\N{CJK UNIFIED IDEOGRAPH-5931}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 25928 (\N{CJK UNIFIED IDEOGRAPH-6548}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 19981 (\N{CJK UNIFIED IDEOGRAPH-4E0D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 29992 (\N{CJK UNIFIED IDEOGRAPH-7528}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 24037 (\N{CJK UNIFIED IDEOGRAPH-5DE5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:332: UserWarning: Glyph 20917 (\N{CJK UNIFIED IDEOGRAPH-51B5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 25935 (\N{CJK UNIFIED IDEOGRAPH-654F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 24863 (\N{CJK UNIFIED IDEOGRAPH-611F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 21487 (\N{CJK UNIFIED IDEOGRAPH-53EF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 20449 (\N{CJK UNIFIED IDEOGRAPH-4FE1}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 12289 (\N{IDEOGRAPHIC COMMA}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 20020 (\N{CJK UNIFIED IDEOGRAPH-4E34}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 19982 (\N{CJK UNIFIED IDEOGRAPH-4E0E}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 22833 (\N{CJK UNIFIED IDEOGRAPH-5931}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 25928 (\N{CJK UNIFIED IDEOGRAPH-6548}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 19981 (\N{CJK UNIFIED IDEOGRAPH-4E0D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 29992 (\N{CJK UNIFIED IDEOGRAPH-7528}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 24037 (\N{CJK UNIFIED IDEOGRAPH-5DE5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:333: UserWarning: Glyph 20917 (\N{CJK UNIFIED IDEOGRAPH-51B5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "alpha_classification_strip.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 19981 (\N{CJK UNIFIED IDEOGRAPH-4E0D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 21516 (\N{CJK UNIFIED IDEOGRAPH-540C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 21487 (\N{CJK UNIFIED IDEOGRAPH-53EF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 29992 (\N{CJK UNIFIED IDEOGRAPH-7528}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 24037 (\N{CJK UNIFIED IDEOGRAPH-5DE5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 20917 (\N{CJK UNIFIED IDEOGRAPH-51B5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 20449 (\N{CJK UNIFIED IDEOGRAPH-4FE1}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 20020 (\N{CJK UNIFIED IDEOGRAPH-4E34}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:348: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 19981 (\N{CJK UNIFIED IDEOGRAPH-4E0D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 21516 (\N{CJK UNIFIED IDEOGRAPH-540C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 21487 (\N{CJK UNIFIED IDEOGRAPH-53EF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 29992 (\N{CJK UNIFIED IDEOGRAPH-7528}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 24037 (\N{CJK UNIFIED IDEOGRAPH-5DE5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 20917 (\N{CJK UNIFIED IDEOGRAPH-51B5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 20449 (\N{CJK UNIFIED IDEOGRAPH-4FE1}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 20020 (\N{CJK UNIFIED IDEOGRAPH-4E34}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map/run_p2c16_alpha_boundary_phase_map.py:349: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "baseline_centerline_by_alpha.png", dpi=180)
+{
+  "alpha_count": 5,
+  "publishable_count": 2,
+  "trusted_count": 2,
+  "critical_count": 1,
+  "failed_count": 2
+}
