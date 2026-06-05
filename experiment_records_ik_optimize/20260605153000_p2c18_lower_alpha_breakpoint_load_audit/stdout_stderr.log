@@ -1,0 +1,195 @@
+W0605 14:03:56.642759   82548 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 14:03:56.647916   82447 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 25935 (\N{CJK UNIFIED IDEOGRAPH-654F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 24863 (\N{CJK UNIFIED IDEOGRAPH-611F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 33539 (\N{CJK UNIFIED IDEOGRAPH-8303}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 26368 (\N{CJK UNIFIED IDEOGRAPH-6700}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 38454 (\N{CJK UNIFIED IDEOGRAPH-9636}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 24179 (\N{CJK UNIFIED IDEOGRAPH-5E73}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 31283 (\N{CJK UNIFIED IDEOGRAPH-7A33}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 24322 (\N{CJK UNIFIED IDEOGRAPH-5F02}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 38754 (\N{CJK UNIFIED IDEOGRAPH-9762}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 21147 (\N{CJK UNIFIED IDEOGRAPH-529B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 26494 (\N{CJK UNIFIED IDEOGRAPH-677E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 24347 (\N{CJK UNIFIED IDEOGRAPH-5F1B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 21018 (\N{CJK UNIFIED IDEOGRAPH-521A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 27573 (\N{CJK UNIFIED IDEOGRAPH-6BB5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:339: UserWarning: Glyph 22806 (\N{CJK UNIFIED IDEOGRAPH-5916}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 25935 (\N{CJK UNIFIED IDEOGRAPH-654F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 24863 (\N{CJK UNIFIED IDEOGRAPH-611F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 33539 (\N{CJK UNIFIED IDEOGRAPH-8303}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 26368 (\N{CJK UNIFIED IDEOGRAPH-6700}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 38454 (\N{CJK UNIFIED IDEOGRAPH-9636}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 24179 (\N{CJK UNIFIED IDEOGRAPH-5E73}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 31283 (\N{CJK UNIFIED IDEOGRAPH-7A33}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 24322 (\N{CJK UNIFIED IDEOGRAPH-5F02}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 38754 (\N{CJK UNIFIED IDEOGRAPH-9762}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 21147 (\N{CJK UNIFIED IDEOGRAPH-529B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 26494 (\N{CJK UNIFIED IDEOGRAPH-677E}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 24347 (\N{CJK UNIFIED IDEOGRAPH-5F1B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 21018 (\N{CJK UNIFIED IDEOGRAPH-521A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 27573 (\N{CJK UNIFIED IDEOGRAPH-6BB5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:340: UserWarning: Glyph 22806 (\N{CJK UNIFIED IDEOGRAPH-5916}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 21487 (\N{CJK UNIFIED IDEOGRAPH-53EF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 20449 (\N{CJK UNIFIED IDEOGRAPH-4FE1}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 24037 (\N{CJK UNIFIED IDEOGRAPH-5DE5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 20917 (\N{CJK UNIFIED IDEOGRAPH-51B5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 36890 (\N{CJK UNIFIED IDEOGRAPH-901A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 36807 (\N{CJK UNIFIED IDEOGRAPH-8FC7}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 21021 (\N{CJK UNIFIED IDEOGRAPH-521D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 20540 (\N{CJK UNIFIED IDEOGRAPH-503C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 21035 (\N{CJK UNIFIED IDEOGRAPH-522B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 20005 (\N{CJK UNIFIED IDEOGRAPH-4E25}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 26684 (\N{CJK UNIFIED IDEOGRAPH-683C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 29420 (\N{CJK UNIFIED IDEOGRAPH-72EC}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 31435 (\N{CJK UNIFIED IDEOGRAPH-7ACB}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 24310 (\N{CJK UNIFIED IDEOGRAPH-5EF6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:352: UserWarning: Glyph 25299 (\N{CJK UNIFIED IDEOGRAPH-62D3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 21487 (\N{CJK UNIFIED IDEOGRAPH-53EF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 20449 (\N{CJK UNIFIED IDEOGRAPH-4FE1}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 24037 (\N{CJK UNIFIED IDEOGRAPH-5DE5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 20917 (\N{CJK UNIFIED IDEOGRAPH-51B5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 36890 (\N{CJK UNIFIED IDEOGRAPH-901A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 36807 (\N{CJK UNIFIED IDEOGRAPH-8FC7}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 21021 (\N{CJK UNIFIED IDEOGRAPH-521D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 20540 (\N{CJK UNIFIED IDEOGRAPH-503C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 21035 (\N{CJK UNIFIED IDEOGRAPH-522B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 20005 (\N{CJK UNIFIED IDEOGRAPH-4E25}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 26684 (\N{CJK UNIFIED IDEOGRAPH-683C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 29420 (\N{CJK UNIFIED IDEOGRAPH-72EC}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 31435 (\N{CJK UNIFIED IDEOGRAPH-7ACB}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 24310 (\N{CJK UNIFIED IDEOGRAPH-5EF6}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605153000_p2c18_lower_alpha_breakpoint_load_audit/run_p2c18_lower_alpha_breakpoint_load_audit.py:353: UserWarning: Glyph 25299 (\N{CJK UNIFIED IDEOGRAPH-62D3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "lower_breakpoint_initialization_gates.png", dpi=180)
+{
+  "alpha_count": 5,
+  "publishable_count": 5,
+  "trusted_count": 5,
+  "critical_count": 0,
+  "failed_count": 0,
+  "strict_independent_count": 5,
+  "continuation_count": 5
+}
