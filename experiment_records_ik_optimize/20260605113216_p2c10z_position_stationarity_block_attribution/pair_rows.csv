@@ -1,0 +1,13 @@
+alpha,block_a,block_b,eps,gradient_cosine,label,max_iter
+0.4,position,boundary,0.005,0.7204168801338867,a040_best_stationarity,100
+0.4,position,slack,0.005,0.2503102337069084,a040_best_stationarity,100
+0.4,boundary,slack,0.005,0.1355369567936068,a040_best_stationarity,100
+0.4,position,boundary,0.005,0.9493096813186902,a040_best_branch,250
+0.4,position,slack,0.005,0.006781096357592318,a040_best_branch,250
+0.4,boundary,slack,0.005,0.05688544758280212,a040_best_branch,250
+0.45,position,boundary,0.005,-0.9877099514143669,a045_best_stationarity,500
+0.45,position,slack,0.005,0.006768988460739459,a045_best_stationarity,500
+0.45,boundary,slack,0.005,0.013141255582353996,a045_best_stationarity,500
+0.45,position,boundary,0.01,0.9525331903146635,a045_best_branch,250
+0.45,position,slack,0.01,0.075477978108752,a045_best_branch,250
+0.45,boundary,slack,0.01,0.16386324929213786,a045_best_branch,250

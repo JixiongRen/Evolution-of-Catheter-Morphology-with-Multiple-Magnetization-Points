@@ -1,0 +1,92 @@
+{
+  "experiment": "20260605113216_p2c10z_position_stationarity_block_attribution",
+  "wall_s": 676.2905929780027,
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "441df06eaa87c195905a171574cafa0f46c4f42b",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260605113216_p2c10z_position_stationarity_block_attribution/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "case_count": 4,
+    "publishable_count": 0,
+    "antagonistic_case_count": 1
+  },
+  "case_summaries": [
+    {
+      "alpha": 0.4,
+      "eps": 0.005,
+      "max_iter": 100,
+      "label": "a040_best_stationarity",
+      "position_residual_norm": 2.2898047358292e-05,
+      "boundary_residual_norm": 0.0005004469334556636,
+      "slack_residual_norm": 0.00017647276477904936,
+      "total_residual_norm": 0.0005311441334390899,
+      "total_stationarity_norm": 0.10636498706211273,
+      "jacobian_condition": 84277907.53391843,
+      "jacobian_rank": 18,
+      "cancellation_ratio": 0.9646720605145295,
+      "dominant_gradient_block": "position",
+      "dominant_projection_block": "position",
+      "terminal_position_error_m": 1.908170613191e-07,
+      "physical_boundary_norm": 0.001000893866911327,
+      "antagonistic_pair_count": 0
+    },
+    {
+      "alpha": 0.4,
+      "eps": 0.005,
+      "max_iter": 250,
+      "label": "a040_best_branch",
+      "position_residual_norm": 1.501623631037814e-05,
+      "boundary_residual_norm": 0.00036177333758170865,
+      "slack_residual_norm": 0.00026199923954996104,
+      "total_residual_norm": 0.0004469329218827988,
+      "total_stationarity_norm": 0.49841428246748753,
+      "jacobian_condition": 141243915.13966307,
+      "jacobian_rank": 18,
+      "cancellation_ratio": 0.9984250257226231,
+      "dominant_gradient_block": "position",
+      "dominant_projection_block": "position",
+      "terminal_position_error_m": 1.251353025864845e-07,
+      "physical_boundary_norm": 0.0007235466751634173,
+      "antagonistic_pair_count": 0
+    },
+    {
+      "alpha": 0.45,
+      "eps": 0.005,
+      "max_iter": 500,
+      "label": "a045_best_stationarity",
+      "position_residual_norm": 2.3330037081557645e-06,
+      "boundary_residual_norm": 0.00033632351377636225,
+      "slack_residual_norm": 0.00022420154219771033,
+      "total_residual_norm": 0.00040420945108818633,
+      "total_stationarity_norm": 0.07480911301221829,
+      "jacobian_condition": 112163044.4608045,
+      "jacobian_rank": 18,
+      "cancellation_ratio": 0.9661797958946741,
+      "dominant_gradient_block": "position",
+      "dominant_projection_block": "position",
+      "terminal_position_error_m": 1.9441697567964704e-08,
+      "physical_boundary_norm": 0.0006726470275527245,
+      "antagonistic_pair_count": 1
+    },
+    {
+      "alpha": 0.45,
+      "eps": 0.01,
+      "max_iter": 250,
+      "label": "a045_best_branch",
+      "position_residual_norm": 1.0760735263157945e-05,
+      "boundary_residual_norm": 0.00043551388748223815,
+      "slack_residual_norm": 0.00017067100170874505,
+      "total_residual_norm": 0.000467885381730998,
+      "total_stationarity_norm": 0.14451772851054337,
+      "jacobian_condition": 74740393.29002783,
+      "jacobian_rank": 18,
+      "cancellation_ratio": 0.9992265863682922,
+      "dominant_gradient_block": "position",
+      "dominant_projection_block": "position",
+      "terminal_position_error_m": 8.967279385964954e-08,
+      "physical_boundary_norm": 0.0008710277749644763,
+      "antagonistic_pair_count": 0
+    }
+  ]
+}
