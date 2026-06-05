@@ -1,0 +1,10 @@
+{"ts": 1780634442.9123642, "phase": "solve", "alpha": 0.4, "slack_scale": 0.05}
+{"ts": 1780634492.715244, "phase": "solve", "alpha": 0.4, "slack_scale": 0.2}
+{"ts": 1780634501.0040033, "phase": "solve", "alpha": 0.4, "slack_scale": 1.0}
+{"ts": 1780634508.7731504, "phase": "solve", "alpha": 0.4, "slack_scale": 5.0}
+{"ts": 1780634516.7401438, "phase": "solve", "alpha": 0.4, "slack_scale": 20.0}
+{"ts": 1780634589.0711372, "phase": "solve", "alpha": 0.45, "slack_scale": 0.05}
+{"ts": 1780634645.7236753, "phase": "solve", "alpha": 0.45, "slack_scale": 0.2}
+{"ts": 1780634657.5593612, "phase": "solve", "alpha": 0.45, "slack_scale": 1.0}
+{"ts": 1780634668.8853297, "phase": "solve", "alpha": 0.45, "slack_scale": 5.0}
+{"ts": 1780634679.1503613, "phase": "solve", "alpha": 0.45, "slack_scale": 20.0}
