@@ -1,0 +1,184 @@
+W0605 08:34:06.046096   53221 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 08:34:06.052072   53123 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 36830 (\N{CJK UNIFIED IDEOGRAPH-8FDE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 32493 (\N{CJK UNIFIED IDEOGRAPH-7EED}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 31471 (\N{CJK UNIFIED IDEOGRAPH-7AEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 36733 (\N{CJK UNIFIED IDEOGRAPH-8F7D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 33655 (\N{CJK UNIFIED IDEOGRAPH-8377}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 25171 (\N{CJK UNIFIED IDEOGRAPH-6253}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 38774 (\N{CJK UNIFIED IDEOGRAPH-9776}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 21442 (\N{CJK UNIFIED IDEOGRAPH-53C2}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 29031 (\N{CJK UNIFIED IDEOGRAPH-7167}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 21021 (\N{CJK UNIFIED IDEOGRAPH-521D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:259: UserWarning: Glyph 20540 (\N{CJK UNIFIED IDEOGRAPH-503C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 36830 (\N{CJK UNIFIED IDEOGRAPH-8FDE}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 32493 (\N{CJK UNIFIED IDEOGRAPH-7EED}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 31471 (\N{CJK UNIFIED IDEOGRAPH-7AEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 36733 (\N{CJK UNIFIED IDEOGRAPH-8F7D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 33655 (\N{CJK UNIFIED IDEOGRAPH-8377}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 25171 (\N{CJK UNIFIED IDEOGRAPH-6253}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 38774 (\N{CJK UNIFIED IDEOGRAPH-9776}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 21442 (\N{CJK UNIFIED IDEOGRAPH-53C2}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 29031 (\N{CJK UNIFIED IDEOGRAPH-7167}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 21021 (\N{CJK UNIFIED IDEOGRAPH-521D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:260: UserWarning: Glyph 20540 (\N{CJK UNIFIED IDEOGRAPH-503C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"{case_name}_alpha_{alpha:.2f}_branches.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 26411 (\N{CJK UNIFIED IDEOGRAPH-672B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 31471 (\N{CJK UNIFIED IDEOGRAPH-7AEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 20301 (\N{CJK UNIFIED IDEOGRAPH-4F4D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 32622 (\N{CJK UNIFIED IDEOGRAPH-7F6E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 23039 (\N{CJK UNIFIED IDEOGRAPH-59FF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 24577 (\N{CJK UNIFIED IDEOGRAPH-6001}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 36793 (\N{CJK UNIFIED IDEOGRAPH-8FB9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 27531 (\N{CJK UNIFIED IDEOGRAPH-6B8B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 23616 (\N{CJK UNIFIED IDEOGRAPH-5C40}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 37096 (\N{CJK UNIFIED IDEOGRAPH-90E8}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 26465 (\N{CJK UNIFIED IDEOGRAPH-6761}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 20214 (\N{CJK UNIFIED IDEOGRAPH-4EF6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:281: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 26411 (\N{CJK UNIFIED IDEOGRAPH-672B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 31471 (\N{CJK UNIFIED IDEOGRAPH-7AEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 20301 (\N{CJK UNIFIED IDEOGRAPH-4F4D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 32622 (\N{CJK UNIFIED IDEOGRAPH-7F6E}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 23039 (\N{CJK UNIFIED IDEOGRAPH-59FF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 24577 (\N{CJK UNIFIED IDEOGRAPH-6001}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 36793 (\N{CJK UNIFIED IDEOGRAPH-8FB9}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 27531 (\N{CJK UNIFIED IDEOGRAPH-6B8B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 23616 (\N{CJK UNIFIED IDEOGRAPH-5C40}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 37096 (\N{CJK UNIFIED IDEOGRAPH-90E8}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 26465 (\N{CJK UNIFIED IDEOGRAPH-6761}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 20214 (\N{CJK UNIFIED IDEOGRAPH-4EF6}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:282: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 26411 (\N{CJK UNIFIED IDEOGRAPH-672B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 31471 (\N{CJK UNIFIED IDEOGRAPH-7AEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 36317 (\N{CJK UNIFIED IDEOGRAPH-8DDD}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 31163 (\N{CJK UNIFIED IDEOGRAPH-79BB}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 22343 (\N{CJK UNIFIED IDEOGRAPH-5747}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 26041 (\N{CJK UNIFIED IDEOGRAPH-65B9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 26681 (\N{CJK UNIFIED IDEOGRAPH-6839}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 36733 (\N{CJK UNIFIED IDEOGRAPH-8F7D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:299: UserWarning: Glyph 33655 (\N{CJK UNIFIED IDEOGRAPH-8377}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 26411 (\N{CJK UNIFIED IDEOGRAPH-672B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 31471 (\N{CJK UNIFIED IDEOGRAPH-7AEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 36317 (\N{CJK UNIFIED IDEOGRAPH-8DDD}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 31163 (\N{CJK UNIFIED IDEOGRAPH-79BB}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 22343 (\N{CJK UNIFIED IDEOGRAPH-5747}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 26041 (\N{CJK UNIFIED IDEOGRAPH-65B9}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 26681 (\N{CJK UNIFIED IDEOGRAPH-6839}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 36733 (\N{CJK UNIFIED IDEOGRAPH-8F7D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/run_p2c10s_base_wrench_continuous_shooting.py:300: UserWarning: Glyph 33655 (\N{CJK UNIFIED IDEOGRAPH-8377}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "base_wrench_pairwise.png", dpi=180)
+{
+  "trusted_count": 0,
+  "success_count": 2,
+  "row_count": 6,
+  "branch_consistent_count": 0
+}

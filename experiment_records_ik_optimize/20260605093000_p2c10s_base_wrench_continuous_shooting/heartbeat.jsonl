@@ -1,0 +1,8 @@
+{"ts": 1780619646.6403754, "phase": "build_case", "case": "n3_mixed_rand20", "alpha": 0.25}
+{"ts": 1780619727.598034, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "init": "oracle"}
+{"ts": 1780619773.2784538, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "init": "half_oracle"}
+{"ts": 1780619773.9341142, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "init": "zero"}
+{"ts": 1780619775.709773, "phase": "build_case", "case": "n3_mixed_base_i4", "alpha": 1.0}
+{"ts": 1780619835.3858147, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "init": "oracle"}
+{"ts": 1780619875.0067213, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "init": "half_oracle"}
+{"ts": 1780619876.4134123, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "init": "zero"}

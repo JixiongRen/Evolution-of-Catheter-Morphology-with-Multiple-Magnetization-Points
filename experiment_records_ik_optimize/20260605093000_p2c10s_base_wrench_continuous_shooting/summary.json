@@ -1,0 +1,57 @@
+{
+  "experiment": "20260605093000_p2c10s_base_wrench_continuous_shooting",
+  "wall_s": 231.71079035000002,
+  "args": {
+    "candidates": "n3_mixed_rand20:0.25,n3_mixed_base_i4:1.00",
+    "max_iter": 120,
+    "steps_per_flex": 4,
+    "position_scale": 120.0,
+    "so3_scale": 2.0,
+    "boundary_scale": 0.5
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "b71c6fe12fd1c84827931ca2c422c1da2da8e706",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260605093000_p2c10s_base_wrench_continuous_shooting/\n?? references/\n?? research_outputs/"
+  },
+  "case_summaries": [
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.25,
+      "trusted_count": 0,
+      "success_count": 2,
+      "branch_count": 3,
+      "max_tip_distance": 0.020289033427022773,
+      "max_centerline_rms": 0.015883653928224443,
+      "max_state_distance": 0.20085821206993168,
+      "min_terminal_position_error": 0.0100107069585317,
+      "min_terminal_so3_error_deg": 25.33164833164543,
+      "min_boundary_norm": 0.45446656924037093,
+      "min_stationarity_norm": 0.07002574110831389,
+      "min_jacobian_condition": 546217.2557908011,
+      "branch_consistent": false
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "trusted_count": 0,
+      "success_count": 0,
+      "branch_count": 3,
+      "max_tip_distance": 0.014550500139668382,
+      "max_centerline_rms": 0.006840133797570623,
+      "max_state_distance": 1.2188104944182225,
+      "min_terminal_position_error": 0.0006084932610677505,
+      "min_terminal_so3_error_deg": 12.106359768963367,
+      "min_boundary_norm": 0.6280353012067805,
+      "min_stationarity_norm": 1977.594122627836,
+      "min_jacobian_condition": 692285.8132452008,
+      "branch_consistent": false
+    }
+  ],
+  "overall": {
+    "trusted_count": 0,
+    "success_count": 2,
+    "row_count": 6,
+    "branch_consistent_count": 0
+  }
+}
