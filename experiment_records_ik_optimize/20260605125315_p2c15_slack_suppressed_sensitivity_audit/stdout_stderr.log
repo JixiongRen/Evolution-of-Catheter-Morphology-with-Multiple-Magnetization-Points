@@ -1,0 +1,170 @@
+W0605 12:56:19.322556   76128 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 12:56:19.331687   76026 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 25200 (\N{CJK UNIFIED IDEOGRAPH-6270}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 21160 (\N{CJK UNIFIED IDEOGRAPH-52A8}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 37325 (\N{CJK UNIFIED IDEOGRAPH-91CD}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 27714 (\N{CJK UNIFIED IDEOGRAPH-6C42}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 35299 (\N{CJK UNIFIED IDEOGRAPH-89E3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 23545 (\N{CJK UNIFIED IDEOGRAPH-5BF9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:258: UserWarning: Glyph 27604 (\N{CJK UNIFIED IDEOGRAPH-6BD4}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 25200 (\N{CJK UNIFIED IDEOGRAPH-6270}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 21160 (\N{CJK UNIFIED IDEOGRAPH-52A8}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 37325 (\N{CJK UNIFIED IDEOGRAPH-91CD}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 27714 (\N{CJK UNIFIED IDEOGRAPH-6C42}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 35299 (\N{CJK UNIFIED IDEOGRAPH-89E3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 23545 (\N{CJK UNIFIED IDEOGRAPH-5BF9}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:259: UserWarning: Glyph 27604 (\N{CJK UNIFIED IDEOGRAPH-6BD4}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / f"centerline_reoptimized_eps_{eps:.3f}.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 26368 (\N{CJK UNIFIED IDEOGRAPH-6700}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 38454 (\N{CJK UNIFIED IDEOGRAPH-9636}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 24179 (\N{CJK UNIFIED IDEOGRAPH-5E73}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 31283 (\N{CJK UNIFIED IDEOGRAPH-7A33}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 27531 (\N{CJK UNIFIED IDEOGRAPH-6B8B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 23616 (\N{CJK UNIFIED IDEOGRAPH-5C40}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 37096 (\N{CJK UNIFIED IDEOGRAPH-90E8}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 22343 (\N{CJK UNIFIED IDEOGRAPH-5747}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 26041 (\N{CJK UNIFIED IDEOGRAPH-65B9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 26681 (\N{CJK UNIFIED IDEOGRAPH-6839}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 24322 (\N{CJK UNIFIED IDEOGRAPH-5F02}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 38754 (\N{CJK UNIFIED IDEOGRAPH-9762}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 21147 (\N{CJK UNIFIED IDEOGRAPH-529B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 26494 (\N{CJK UNIFIED IDEOGRAPH-677E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 24347 (\N{CJK UNIFIED IDEOGRAPH-5F1B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 21018 (\N{CJK UNIFIED IDEOGRAPH-521A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 27573 (\N{CJK UNIFIED IDEOGRAPH-6BB5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:240: UserWarning: Glyph 22806 (\N{CJK UNIFIED IDEOGRAPH-5916}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 26368 (\N{CJK UNIFIED IDEOGRAPH-6700}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 38454 (\N{CJK UNIFIED IDEOGRAPH-9636}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 24179 (\N{CJK UNIFIED IDEOGRAPH-5E73}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 31283 (\N{CJK UNIFIED IDEOGRAPH-7A33}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 27531 (\N{CJK UNIFIED IDEOGRAPH-6B8B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 23616 (\N{CJK UNIFIED IDEOGRAPH-5C40}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 37096 (\N{CJK UNIFIED IDEOGRAPH-90E8}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 22343 (\N{CJK UNIFIED IDEOGRAPH-5747}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 26041 (\N{CJK UNIFIED IDEOGRAPH-65B9}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 26681 (\N{CJK UNIFIED IDEOGRAPH-6839}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 24322 (\N{CJK UNIFIED IDEOGRAPH-5F02}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 38754 (\N{CJK UNIFIED IDEOGRAPH-9762}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 21147 (\N{CJK UNIFIED IDEOGRAPH-529B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 26494 (\N{CJK UNIFIED IDEOGRAPH-677E}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 24347 (\N{CJK UNIFIED IDEOGRAPH-5F1B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 21018 (\N{CJK UNIFIED IDEOGRAPH-521A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 27573 (\N{CJK UNIFIED IDEOGRAPH-6BB5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/run_p2c15_slack_suppressed_sensitivity_audit.py:241: UserWarning: Glyph 22806 (\N{CJK UNIFIED IDEOGRAPH-5916}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "sensitivity_gate_summary.png", dpi=180)
+{
+  "eps_count": 3,
+  "publishable_count": 3,
+  "linearity_gate_count": 3,
+  "branch_gate_count": 3,
+  "load_gate_count": 3,
+  "stationarity_gate_count": 3
+}

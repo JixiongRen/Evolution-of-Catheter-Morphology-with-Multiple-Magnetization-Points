@@ -1,0 +1,94 @@
+{
+  "experiment": "20260605125315_p2c15_slack_suppressed_sensitivity_audit",
+  "wall_s": 162.25940626300144,
+  "args": {
+    "alpha": 0.4,
+    "eps_values": "0.005,0.01,0.02",
+    "position_scale": 60.0,
+    "boundary_scale": 0.5,
+    "slack_scale": 20.0,
+    "steps_per_flex": 4,
+    "max_iter": 240
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "bcc049999d8dba337cab1b88f25af25ae5babf10",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260605125315_p2c15_slack_suppressed_sensitivity_audit/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "eps_count": 3,
+    "publishable_count": 3,
+    "linearity_gate_count": 3,
+    "branch_gate_count": 3,
+    "load_gate_count": 3,
+    "stationarity_gate_count": 3
+  },
+  "case_summaries": [
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "eps_alpha": 0.005,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 1.992483193348677e-06,
+      "sensitivity_vector": [
+        -1.903805861569463e-06,
+        -4.6336867762925005e-07,
+        -3.61665571796399e-07
+      ],
+      "linearization_error_plus": 5.5134831938104685e-09,
+      "linearization_error_minus": 5.513483068005171e-09,
+      "linearization_error_symmetry": 5.5134831938104685e-09,
+      "max_linearization_error": 5.5134831938104685e-09,
+      "branch_rms_max": 8.987530164981445e-05,
+      "max_stage_stationarity": 1.075248077056204e-07,
+      "max_stage_condition": 486671.9539287525,
+      "max_slack_force_over_rigid_force": 0.03839605994061627,
+      "max_position_error_m": 6.049354116869484e-07,
+      "total_steady_s": 27.176726363999478
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "eps_alpha": 0.01,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 2.007317104636316e-06,
+      "sensitivity_vector": [
+        -1.918223936636654e-06,
+        -4.654583774833798e-07,
+        -3.648114393905999e-07
+      ],
+      "linearization_error_plus": 2.2152415059908935e-08,
+      "linearization_error_minus": 2.215241506169131e-08,
+      "linearization_error_symmetry": 2.2152415059908935e-08,
+      "max_linearization_error": 2.215241506169131e-08,
+      "branch_rms_max": 0.00017981597044674466,
+      "max_stage_stationarity": 1.4195241851806825e-07,
+      "max_stage_condition": 524463.3399522348,
+      "max_slack_force_over_rigid_force": 0.03900522426025321,
+      "max_position_error_m": 6.166482878205167e-07,
+      "total_steady_s": 27.50456308700086
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "eps_alpha": 0.02,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 2.06784069906383e-06,
+      "sensitivity_vector": [
+        -1.977050035489869e-06,
+        -4.7398129345010975e-07,
+        -3.7759773216169967e-07
+      ],
+      "linearization_error_plus": 9.027537634499868e-08,
+      "linearization_error_minus": 9.02753763368652e-08,
+      "linearization_error_symmetry": 9.027537634499868e-08,
+      "max_linearization_error": 9.027537634499868e-08,
+      "branch_rms_max": 0.0003601723870348972,
+      "max_stage_stationarity": 1.075248077056204e-07,
+      "max_stage_condition": 623484.0906413135,
+      "max_slack_force_over_rigid_force": 0.04027547521783629,
+      "max_position_error_m": 6.448009957037928e-07,
+      "total_steady_s": 27.916248664005252
+    }
+  ]
+}

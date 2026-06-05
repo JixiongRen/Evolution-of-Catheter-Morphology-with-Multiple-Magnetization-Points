@@ -1,0 +1,4 @@
+{"ts": 1780635380.3238502, "phase": "build", "alpha": 0.4}
+{"ts": 1780635501.9450507, "phase": "eps_start", "alpha": 0.4, "eps_alpha": 0.005}
+{"ts": 1780635514.4114451, "phase": "eps_start", "alpha": 0.4, "eps_alpha": 0.01}
+{"ts": 1780635527.4454618, "phase": "eps_start", "alpha": 0.4, "eps_alpha": 0.02}
