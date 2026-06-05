@@ -1,0 +1,159 @@
+{
+  "experiment": "20260605202000_p2c10x_position_alpha_linearity_audit",
+  "wall_s": 559.8973271070063,
+  "args": {
+    "case": "n3_mixed_rand20",
+    "alphas": "0.30,0.35,0.40,0.45,0.50",
+    "eps_alpha": 0.01,
+    "max_iter": 100,
+    "steps_per_flex": 4,
+    "position_scale": 120.0,
+    "axis_scale": 2.0,
+    "so3_scale": 2.0,
+    "boundary_scale": 0.5,
+    "slack_scale": 0.05
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "d14a7576e05ff443a502a0b90300d23c82e90c3c",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260605202000_p2c10x_position_alpha_linearity_audit/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "alpha_count": 5,
+    "publishable_count": 0,
+    "task_gate_count": 5,
+    "linearity_gate_count": 5
+  },
+  "case_summaries": [
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.3,
+      "eps_alpha": 0.01,
+      "best_init": "zero",
+      "publishable_gate": false,
+      "baseline_success": false,
+      "baseline_task_gate": true,
+      "baseline_position_error": 3.215749237073134e-05,
+      "baseline_boundary_norm": 0.005687035637212123,
+      "baseline_stationarity_norm": 4.910099865771813,
+      "baseline_jacobian_condition": 68995162.72173756,
+      "sensitivity_norm_m_per_alpha": 1.9816643204173315e-05,
+      "sensitivity_vector": [
+        -1.6345615645729783e-06,
+        -1.6920422225234072e-05,
+        -1.018463882977369e-05
+      ],
+      "linearization_error_plus": 0.00029875003611367837,
+      "linearization_error_minus": 0.0002987500361135541,
+      "linearization_error_symmetry": 0.0002987500361135518,
+      "max_perturb_stationarity": 0.31891578885938915,
+      "max_perturb_boundary": 0.003920031943540349,
+      "branch_rms_max": 0.0011183342150741565,
+      "branch_tip_distance_max": 3.211667621562135e-05
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.35,
+      "eps_alpha": 0.01,
+      "best_init": "zero",
+      "publishable_gate": false,
+      "baseline_success": false,
+      "baseline_task_gate": true,
+      "baseline_position_error": 7.395792587564116e-07,
+      "baseline_boundary_norm": 0.004048371046810993,
+      "baseline_stationarity_norm": 2.8311792598303325,
+      "baseline_jacobian_condition": 123733265.29688162,
+      "sensitivity_norm_m_per_alpha": 9.197958195572948e-07,
+      "sensitivity_vector": [
+        -6.2101807030146e-08,
+        -4.0754922102023694e-07,
+        -8.222355791891178e-07
+      ],
+      "linearization_error_plus": 8.600644321814268e-06,
+      "linearization_error_minus": 8.600644321795988e-06,
+      "linearization_error_symmetry": 8.600644321798165e-06,
+      "max_perturb_stationarity": 0.7799350449625437,
+      "max_perturb_boundary": 0.0033451977861056457,
+      "branch_rms_max": 0.0014863218569119965,
+      "branch_tip_distance_max": 9.218529395422479e-07
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "eps_alpha": 0.01,
+      "best_init": "zero",
+      "publishable_gate": false,
+      "baseline_success": false,
+      "baseline_task_gate": true,
+      "baseline_position_error": 2.4128906061417665e-07,
+      "baseline_boundary_norm": 0.0012813976489666659,
+      "baseline_stationarity_norm": 0.1796254983095201,
+      "baseline_jacobian_condition": 77296526.64058307,
+      "sensitivity_norm_m_per_alpha": 7.431368911884317e-06,
+      "sensitivity_vector": [
+        6.052567912140372e-07,
+        -6.64092138849548e-06,
+        3.279797437805154e-06
+      ],
+      "linearization_error_plus": 2.771838106185076e-06,
+      "linearization_error_minus": 2.7718381061381217e-06,
+      "linearization_error_symmetry": 2.7718381061381217e-06,
+      "max_perturb_stationarity": 0.4348587500337839,
+      "max_perturb_boundary": 0.0010115790850410403,
+      "branch_rms_max": 0.0017674590923181738,
+      "branch_tip_distance_max": 3.309946824656187e-07
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.45,
+      "eps_alpha": 0.01,
+      "best_init": "zero",
+      "publishable_gate": false,
+      "baseline_success": false,
+      "baseline_task_gate": true,
+      "baseline_position_error": 2.05719643743661e-07,
+      "baseline_boundary_norm": 0.0013600564975058205,
+      "baseline_stationarity_norm": 0.34851386881496205,
+      "baseline_jacobian_condition": 86428949.05312043,
+      "sensitivity_norm_m_per_alpha": 1.1032581281148246e-05,
+      "sensitivity_vector": [
+        7.764597367843074e-06,
+        3.239836695451137e-06,
+        -7.136689402463536e-06
+      ],
+      "linearization_error_plus": 2.7125180650868506e-06,
+      "linearization_error_minus": 2.7125180651142724e-06,
+      "linearization_error_symmetry": 2.7125180651142724e-06,
+      "max_perturb_stationarity": 0.18925787221544743,
+      "max_perturb_boundary": 0.0011505186085193967,
+      "branch_rms_max": 0.0012948384754684044,
+      "branch_tip_distance_max": 3.833478227069979e-07
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.5,
+      "eps_alpha": 0.01,
+      "best_init": "zero",
+      "publishable_gate": false,
+      "baseline_success": false,
+      "baseline_task_gate": true,
+      "baseline_position_error": 4.474998773827316e-07,
+      "baseline_boundary_norm": 0.006884828310976175,
+      "baseline_stationarity_norm": 21.516592838854944,
+      "baseline_jacobian_condition": 1270798062.156925,
+      "sensitivity_norm_m_per_alpha": 1.07254664004951e-06,
+      "sensitivity_vector": [
+        -5.148531406762302e-07,
+        8.9789268086643e-07,
+        2.8119614553512307e-07
+      ],
+      "linearization_error_plus": 1.0641310373258141e-05,
+      "linearization_error_minus": 1.0641310373258141e-05,
+      "linearization_error_symmetry": 1.0641310373258141e-05,
+      "max_perturb_stationarity": 26.35642222036887,
+      "max_perturb_boundary": 0.0066373177573500934,
+      "branch_rms_max": 0.0008598110079357573,
+      "branch_tip_distance_max": 1.0507445569990163e-06
+    }
+  ]
+}
