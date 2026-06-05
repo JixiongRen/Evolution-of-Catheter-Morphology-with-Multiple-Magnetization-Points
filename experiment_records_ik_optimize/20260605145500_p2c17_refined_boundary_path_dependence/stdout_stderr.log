@@ -1,0 +1,268 @@
+W0605 13:37:17.274559   80187 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 13:37:17.282380   80085 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 25935 (\N{CJK UNIFIED IDEOGRAPH-654F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 24863 (\N{CJK UNIFIED IDEOGRAPH-611F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 33539 (\N{CJK UNIFIED IDEOGRAPH-8303}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 26368 (\N{CJK UNIFIED IDEOGRAPH-6700}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 38454 (\N{CJK UNIFIED IDEOGRAPH-9636}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 24179 (\N{CJK UNIFIED IDEOGRAPH-5E73}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 31283 (\N{CJK UNIFIED IDEOGRAPH-7A33}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 24322 (\N{CJK UNIFIED IDEOGRAPH-5F02}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 38754 (\N{CJK UNIFIED IDEOGRAPH-9762}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 21147 (\N{CJK UNIFIED IDEOGRAPH-529B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 26494 (\N{CJK UNIFIED IDEOGRAPH-677E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 24347 (\N{CJK UNIFIED IDEOGRAPH-5F1B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 21018 (\N{CJK UNIFIED IDEOGRAPH-521A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 27573 (\N{CJK UNIFIED IDEOGRAPH-6BB5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:346: UserWarning: Glyph 22806 (\N{CJK UNIFIED IDEOGRAPH-5916}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 25935 (\N{CJK UNIFIED IDEOGRAPH-654F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 24863 (\N{CJK UNIFIED IDEOGRAPH-611F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 33539 (\N{CJK UNIFIED IDEOGRAPH-8303}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 26368 (\N{CJK UNIFIED IDEOGRAPH-6700}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 38454 (\N{CJK UNIFIED IDEOGRAPH-9636}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 24179 (\N{CJK UNIFIED IDEOGRAPH-5E73}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 31283 (\N{CJK UNIFIED IDEOGRAPH-7A33}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 35823 (\N{CJK UNIFIED IDEOGRAPH-8BEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 24046 (\N{CJK UNIFIED IDEOGRAPH-5DEE}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 24515 (\N{CJK UNIFIED IDEOGRAPH-5FC3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 25903 (\N{CJK UNIFIED IDEOGRAPH-652F}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 24322 (\N{CJK UNIFIED IDEOGRAPH-5F02}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 38754 (\N{CJK UNIFIED IDEOGRAPH-9762}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 21147 (\N{CJK UNIFIED IDEOGRAPH-529B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 26494 (\N{CJK UNIFIED IDEOGRAPH-677E}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 24347 (\N{CJK UNIFIED IDEOGRAPH-5F1B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 21018 (\N{CJK UNIFIED IDEOGRAPH-521A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 27573 (\N{CJK UNIFIED IDEOGRAPH-6BB5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:347: UserWarning: Glyph 22806 (\N{CJK UNIFIED IDEOGRAPH-5916}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_metrics.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 19979 (\N{CJK UNIFIED IDEOGRAPH-4E0B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 36793 (\N{CJK UNIFIED IDEOGRAPH-8FB9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 19978 (\N{CJK UNIFIED IDEOGRAPH-4E0A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 21152 (\N{CJK UNIFIED IDEOGRAPH-52A0}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 23494 (\N{CJK UNIFIED IDEOGRAPH-5BC6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 19982 (\N{CJK UNIFIED IDEOGRAPH-4E0E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 36335 (\N{CJK UNIFIED IDEOGRAPH-8DEF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 24452 (\N{CJK UNIFIED IDEOGRAPH-5F84}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 20381 (\N{CJK UNIFIED IDEOGRAPH-4F9D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 36182 (\N{CJK UNIFIED IDEOGRAPH-8D56}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 21487 (\N{CJK UNIFIED IDEOGRAPH-53EF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 20449 (\N{CJK UNIFIED IDEOGRAPH-4FE1}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 24037 (\N{CJK UNIFIED IDEOGRAPH-5DE5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 20917 (\N{CJK UNIFIED IDEOGRAPH-51B5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:360: UserWarning: Glyph 20020 (\N{CJK UNIFIED IDEOGRAPH-4E34}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 19979 (\N{CJK UNIFIED IDEOGRAPH-4E0B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 36793 (\N{CJK UNIFIED IDEOGRAPH-8FB9}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 30028 (\N{CJK UNIFIED IDEOGRAPH-754C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 19978 (\N{CJK UNIFIED IDEOGRAPH-4E0A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 21152 (\N{CJK UNIFIED IDEOGRAPH-52A0}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 23494 (\N{CJK UNIFIED IDEOGRAPH-5BC6}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 19982 (\N{CJK UNIFIED IDEOGRAPH-4E0E}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 36335 (\N{CJK UNIFIED IDEOGRAPH-8DEF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 24452 (\N{CJK UNIFIED IDEOGRAPH-5F84}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 20381 (\N{CJK UNIFIED IDEOGRAPH-4F9D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 36182 (\N{CJK UNIFIED IDEOGRAPH-8D56}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 21487 (\N{CJK UNIFIED IDEOGRAPH-53EF}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 20449 (\N{CJK UNIFIED IDEOGRAPH-4FE1}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 24037 (\N{CJK UNIFIED IDEOGRAPH-5DE5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 20917 (\N{CJK UNIFIED IDEOGRAPH-51B5}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:361: UserWarning: Glyph 20020 (\N{CJK UNIFIED IDEOGRAPH-4E34}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "refined_boundary_classification.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 36890 (\N{CJK UNIFIED IDEOGRAPH-901A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 36807 (\N{CJK UNIFIED IDEOGRAPH-8FC7}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 21021 (\N{CJK UNIFIED IDEOGRAPH-521D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 20540 (\N{CJK UNIFIED IDEOGRAPH-503C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 21035 (\N{CJK UNIFIED IDEOGRAPH-522B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 20005 (\N{CJK UNIFIED IDEOGRAPH-4E25}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 26684 (\N{CJK UNIFIED IDEOGRAPH-683C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 29420 (\N{CJK UNIFIED IDEOGRAPH-72EC}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 31435 (\N{CJK UNIFIED IDEOGRAPH-7ACB}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 36741 (\N{CJK UNIFIED IDEOGRAPH-8F85}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 21161 (\N{CJK UNIFIED IDEOGRAPH-52A9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 21442 (\N{CJK UNIFIED IDEOGRAPH-53C2}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 29031 (\N{CJK UNIFIED IDEOGRAPH-7167}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 24310 (\N{CJK UNIFIED IDEOGRAPH-5EF6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:380: UserWarning: Glyph 25299 (\N{CJK UNIFIED IDEOGRAPH-62D3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 36890 (\N{CJK UNIFIED IDEOGRAPH-901A}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 36807 (\N{CJK UNIFIED IDEOGRAPH-8FC7}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 21021 (\N{CJK UNIFIED IDEOGRAPH-521D}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 20540 (\N{CJK UNIFIED IDEOGRAPH-503C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 21035 (\N{CJK UNIFIED IDEOGRAPH-522B}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 20005 (\N{CJK UNIFIED IDEOGRAPH-4E25}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 26684 (\N{CJK UNIFIED IDEOGRAPH-683C}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 29420 (\N{CJK UNIFIED IDEOGRAPH-72EC}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 31435 (\N{CJK UNIFIED IDEOGRAPH-7ACB}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 36741 (\N{CJK UNIFIED IDEOGRAPH-8F85}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 21161 (\N{CJK UNIFIED IDEOGRAPH-52A9}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 21442 (\N{CJK UNIFIED IDEOGRAPH-53C2}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 29031 (\N{CJK UNIFIED IDEOGRAPH-7167}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 24310 (\N{CJK UNIFIED IDEOGRAPH-5EF6}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605145500_p2c17_refined_boundary_path_dependence/run_p2c17_refined_boundary_path_dependence.py:381: UserWarning: Glyph 25299 (\N{CJK UNIFIED IDEOGRAPH-62D3}) missing from font(s) DejaVu Sans.
+  fig.savefig(OUT_DIR / "initialization_gate_stack.png", dpi=180)
+{
+  "alpha_count": 7,
+  "publishable_count": 3,
+  "trusted_count": 3,
+  "critical_count": 4,
+  "failed_count": 0,
+  "strict_independent_count": 3,
+  "assisted_reference_count": 0,
+  "continuation_count": 7
+}
