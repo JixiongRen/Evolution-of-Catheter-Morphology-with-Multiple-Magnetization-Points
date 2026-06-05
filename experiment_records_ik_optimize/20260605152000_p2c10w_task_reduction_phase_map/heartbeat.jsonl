@@ -1,0 +1,48 @@
+{"ts": 1780625371.541325, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "position"}
+{"ts": 1780625451.1586983, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "position", "init": "oracle"}
+{"ts": 1780625494.287914, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "position", "init": "half_oracle"}
+{"ts": 1780625495.708263, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "position", "init": "zero"}
+{"ts": 1780625497.1132264, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "axis"}
+{"ts": 1780625557.9957442, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "axis", "init": "oracle"}
+{"ts": 1780625598.5351985, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "axis", "init": "half_oracle"}
+{"ts": 1780625599.7248127, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "axis", "init": "zero"}
+{"ts": 1780625601.0263886, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "position_axis"}
+{"ts": 1780625664.7533665, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "position_axis", "init": "oracle"}
+{"ts": 1780625707.234405, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "position_axis", "init": "half_oracle"}
+{"ts": 1780625708.6443741, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "position_axis", "init": "zero"}
+{"ts": 1780625710.2237842, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "full_pose"}
+{"ts": 1780625778.7492054, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "full_pose", "init": "oracle"}
+{"ts": 1780625820.226359, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "full_pose", "init": "half_oracle"}
+{"ts": 1780625821.5719123, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.25, "task_kind": "full_pose", "init": "zero"}
+{"ts": 1780625823.1952112, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "position"}
+{"ts": 1780625886.3499758, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "position", "init": "oracle"}
+{"ts": 1780625926.4559102, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "position", "init": "half_oracle"}
+{"ts": 1780625927.7181685, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "position", "init": "zero"}
+{"ts": 1780625929.2012267, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "axis"}
+{"ts": 1780625991.5517318, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "axis", "init": "oracle"}
+{"ts": 1780626036.2259665, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "axis", "init": "half_oracle"}
+{"ts": 1780626037.560335, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "axis", "init": "zero"}
+{"ts": 1780626039.1194942, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "position_axis"}
+{"ts": 1780626102.9843385, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "position_axis", "init": "oracle"}
+{"ts": 1780626142.6681228, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "position_axis", "init": "half_oracle"}
+{"ts": 1780626143.942248, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "position_axis", "init": "zero"}
+{"ts": 1780626145.4794414, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "full_pose"}
+{"ts": 1780626208.1035798, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "full_pose", "init": "oracle"}
+{"ts": 1780626248.8457847, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "full_pose", "init": "half_oracle"}
+{"ts": 1780626250.1503255, "phase": "solve", "case": "n3_mixed_rand20", "alpha": 0.4, "task_kind": "full_pose", "init": "zero"}
+{"ts": 1780626251.6339014, "phase": "build", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "position"}
+{"ts": 1780626314.8512409, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "position", "init": "oracle"}
+{"ts": 1780626354.4547884, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "position", "init": "half_oracle"}
+{"ts": 1780626355.7937255, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "position", "init": "zero"}
+{"ts": 1780626357.22836, "phase": "build", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "axis"}
+{"ts": 1780626419.7329423, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "axis", "init": "oracle"}
+{"ts": 1780626461.4869485, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "axis", "init": "half_oracle"}
+{"ts": 1780626462.7472198, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "axis", "init": "zero"}
+{"ts": 1780626464.4258156, "phase": "build", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "position_axis"}
+{"ts": 1780626526.818088, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "position_axis", "init": "oracle"}
+{"ts": 1780626566.521579, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "position_axis", "init": "half_oracle"}
+{"ts": 1780626567.874255, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "position_axis", "init": "zero"}
+{"ts": 1780626569.3445048, "phase": "build", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "full_pose"}
+{"ts": 1780626632.739419, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "full_pose", "init": "oracle"}
+{"ts": 1780626674.5103285, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "full_pose", "init": "half_oracle"}
+{"ts": 1780626675.7770178, "phase": "solve", "case": "n3_mixed_base_i4", "alpha": 1.0, "task_kind": "full_pose", "init": "zero"}

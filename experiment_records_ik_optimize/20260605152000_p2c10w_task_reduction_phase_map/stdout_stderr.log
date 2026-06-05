@@ -1,0 +1,8 @@
+W0605 10:09:30.908903   61057 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0605 10:09:30.918138   60959 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+{
+  "combo_count": 12,
+  "trusted_combo_count": 0,
+  "branch_consistent_count": 0,
+  "task_gate_combo_count": 12
+}
