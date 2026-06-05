@@ -1,0 +1,4 @@
+{"ts": 1780633410.2409468, "phase": "analyze", "alpha": 0.4, "eps": 0.005, "max_iter": 100, "label": "a040_best_stationarity"}
+{"ts": 1780633490.8148274, "phase": "analyze", "alpha": 0.4, "eps": 0.005, "max_iter": 250, "label": "a040_best_branch"}
+{"ts": 1780633549.329591, "phase": "analyze", "alpha": 0.45, "eps": 0.005, "max_iter": 500, "label": "a045_best_stationarity"}
+{"ts": 1780633613.0437772, "phase": "analyze", "alpha": 0.45, "eps": 0.01, "max_iter": 250, "label": "a045_best_branch"}

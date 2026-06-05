@@ -1,0 +1,68 @@
+{
+  "experiment": "20260605123000_p2c13_rigid_load_propagation_audit",
+  "wall_s": 265.17283500499616,
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "779db5f7a933004d1cad1c8a37b524994c038935",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260605123000_p2c13_rigid_load_propagation_audit/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "case_count": 4,
+    "interface_count": 8,
+    "mismatch_count": 8
+  },
+  "case_summaries": [
+    {
+      "alpha": 0.4,
+      "eps": 0.005,
+      "max_iter": 100,
+      "label": "a040_best_stationarity",
+      "boundary_norm": 0.001000893866911314,
+      "interface_count": 2,
+      "max_slack_force_over_rigid_force": 7.3530507487067265,
+      "max_slack_torque_over_rigid_torque": 0.0001833580970806337,
+      "min_slack_force_cosine_rigid_force": 0.40176900588507825,
+      "min_slack_torque_cosine_rigid_torque": 0.326710592188739,
+      "mismatch_count": 2
+    },
+    {
+      "alpha": 0.4,
+      "eps": 0.005,
+      "max_iter": 250,
+      "label": "a040_best_branch",
+      "boundary_norm": 0.000723546675163404,
+      "interface_count": 2,
+      "max_slack_force_over_rigid_force": 10.343287283321978,
+      "max_slack_torque_over_rigid_torque": 0.0005372795544199495,
+      "min_slack_force_cosine_rigid_force": 0.20555882386286678,
+      "min_slack_torque_cosine_rigid_torque": 0.19786478021688034,
+      "mismatch_count": 2
+    },
+    {
+      "alpha": 0.45,
+      "eps": 0.005,
+      "max_iter": 500,
+      "label": "a045_best_stationarity",
+      "boundary_norm": 0.0006726470275527236,
+      "interface_count": 2,
+      "max_slack_force_over_rigid_force": 9.025826902755455,
+      "max_slack_torque_over_rigid_torque": 0.00043194447686480353,
+      "min_slack_force_cosine_rigid_force": 0.33078990822232285,
+      "min_slack_torque_cosine_rigid_torque": -0.010221580631966286,
+      "mismatch_count": 2
+    },
+    {
+      "alpha": 0.45,
+      "eps": 0.01,
+      "max_iter": 250,
+      "label": "a045_best_branch",
+      "boundary_norm": 0.0008710277749644782,
+      "interface_count": 2,
+      "max_slack_force_over_rigid_force": 7.121901009407125,
+      "max_slack_torque_over_rigid_torque": 0.0002029139163212075,
+      "min_slack_force_cosine_rigid_force": 0.47629065857866093,
+      "min_slack_torque_cosine_rigid_torque": 0.04281012524959553,
+      "mismatch_count": 2
+    }
+  ]
+}
