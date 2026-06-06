@@ -1,0 +1,127 @@
+{
+  "experiment": "20260606170930_p2c26_reoptimized_sensitivity_gate",
+  "wall_s": 110.25232197199875,
+  "args": {
+    "case": "n3_mixed_base_i4",
+    "alpha": 1.0,
+    "eta": 0.75,
+    "eps_values": "0.005,0.01,0.02",
+    "max_iter": 180,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "axis_scale": 2.0,
+    "so3_scale": 2.0,
+    "boundary_scale": 0.5,
+    "slack_scale": 20.0
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "00be1651d29cc049ecf04bb540a4f30ac97a959f",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260606170930_p2c26_reoptimized_sensitivity_gate/\n?? references/\n?? research_outputs/"
+  },
+  "baseline": {
+    "success": true,
+    "nfev": 64,
+    "steady_s": 0.9113617169969075,
+    "message": "`ftol` termination condition is satisfied.",
+    "position_error_m": 8.144508724151432e-05,
+    "residual_norm": 0.01335031420475916,
+    "stationarity_norm": 7.500921090026215e-06,
+    "boundary_norm": 0.009598055928401442,
+    "jacobian_condition": 5536117.765051254,
+    "scaled_jacobian_condition": 36236.553070901886,
+    "scaled_stationarity_norm": 2.2024313724840295e-09,
+    "jacobian_rank": 18,
+    "tip_p": [
+      0.10842279678730239,
+      0.00873605600526264,
+      -0.011129618300112002
+    ],
+    "max_slack_force_over_rigid_force": 1.1859624176308001,
+    "max_slack_torque_over_rigid_torque": 1.929725471689451e-05,
+    "trace_boundary_norm": 0.00959805592840174,
+    "static_gate": true
+  },
+  "overall": {
+    "eps_count": 3,
+    "publishable_count": 0,
+    "diagnostic_count": 3,
+    "max_linearization_error": 5.315746161157666e-07,
+    "max_branch_rms": 4.605832432452413e-05,
+    "max_perturb_stationarity": 3.078258339815603e-05
+  },
+  "eps_summaries": [
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "eps_alpha": 0.005,
+      "publishable_gate": false,
+      "baseline_stationarity_norm": 7.500921090026215e-06,
+      "baseline_jacobian_condition": 5536117.765051254,
+      "baseline_slack_force_ratio": 1.1859624176308001,
+      "sensitivity_norm_m_per_alpha": 8.316599176386346e-06,
+      "sensitivity_vector": [
+        3.2844354097560924e-06,
+        1.7139778013541829e-06,
+        7.4458435382618315e-06
+      ],
+      "linearization_error_plus": 3.4138043536292255e-08,
+      "linearization_error_minus": 3.4138043536292255e-08,
+      "linearization_error_symmetry": 3.4138043536292255e-08,
+      "linearization_error_max": 3.4138043536292255e-08,
+      "max_perturb_stationarity": 3.078258339815603e-05,
+      "max_perturb_slack_force_ratio": 1.188819984931121,
+      "max_perturb_jacobian_condition": 5588659.339855224,
+      "branch_rms_max": 1.1512217295340004e-05,
+      "branch_tip_distance_max": 8.316599176386347e-08
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "eps_alpha": 0.01,
+      "publishable_gate": false,
+      "baseline_stationarity_norm": 7.500921090026215e-06,
+      "baseline_jacobian_condition": 5536117.765051254,
+      "baseline_slack_force_ratio": 1.1859624176308001,
+      "sensitivity_norm_m_per_alpha": 8.324947231196934e-06,
+      "sensitivity_vector": [
+        3.312834052915381e-06,
+        1.7108704554631704e-06,
+        7.443305665138372e-06
+      ],
+      "linearization_error_plus": 1.3470840543715413e-07,
+      "linearization_error_minus": 1.3470840543569324e-07,
+      "linearization_error_symmetry": 1.3470840543569324e-07,
+      "linearization_error_max": 1.3470840543715413e-07,
+      "max_perturb_stationarity": 2.7723615759932686e-05,
+      "max_perturb_slack_force_ratio": 1.1916566794256704,
+      "max_perturb_jacobian_condition": 5641405.885378366,
+      "branch_rms_max": 2.3022901578388935e-05,
+      "branch_tip_distance_max": 1.6649894462393868e-07
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "eps_alpha": 0.02,
+      "publishable_gate": false,
+      "baseline_stationarity_norm": 7.500921090026215e-06,
+      "baseline_jacobian_condition": 5536117.765051254,
+      "baseline_slack_force_ratio": 1.1859624176308001,
+      "sensitivity_norm_m_per_alpha": 8.384886379120302e-06,
+      "sensitivity_vector": [
+        3.4662230048027043e-06,
+        1.720515172432685e-06,
+        7.438510954025854e-06
+      ],
+      "linearization_error_plus": 5.31574615989291e-07,
+      "linearization_error_minus": 5.315746161157666e-07,
+      "linearization_error_symmetry": 5.31574615989291e-07,
+      "linearization_error_max": 5.315746161157666e-07,
+      "max_perturb_stationarity": 2.1086964729526975e-05,
+      "max_perturb_slack_force_ratio": 1.1972534229117506,
+      "max_perturb_jacobian_condition": 5747312.165189857,
+      "branch_rms_max": 4.605832432452413e-05,
+      "branch_tip_distance_max": 3.353954551648121e-07
+    }
+  ]
+}

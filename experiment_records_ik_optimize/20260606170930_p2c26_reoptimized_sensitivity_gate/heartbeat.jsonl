@@ -1,0 +1,14 @@
+{"ts": 1780737296.4500854, "phase": "baseline_start", "case": "n3_mixed_base_i4", "alpha": 1.0}
+{"ts": 1780737355.3043194, "phase": "baseline_done", "stationarity_norm": 7.500921090026215e-06, "static_gate": true}
+{"ts": 1780737355.3048708, "phase": "minus_start", "eps": 0.005}
+{"ts": 1780737362.8792052, "phase": "minus_done", "eps": 0.005, "stationarity_norm": 1.52458992591983e-05, "static_gate": false}
+{"ts": 1780737362.8796613, "phase": "plus_start", "eps": 0.005}
+{"ts": 1780737370.480238, "phase": "plus_done", "eps": 0.005, "stationarity_norm": 3.078258339815603e-05, "static_gate": false}
+{"ts": 1780737370.5220819, "phase": "minus_start", "eps": 0.01}
+{"ts": 1780737378.0326161, "phase": "minus_done", "eps": 0.01, "stationarity_norm": 1.9901826347563488e-05, "static_gate": false}
+{"ts": 1780737378.0332704, "phase": "plus_start", "eps": 0.01}
+{"ts": 1780737385.6138663, "phase": "plus_done", "eps": 0.01, "stationarity_norm": 2.7723615759932686e-05, "static_gate": false}
+{"ts": 1780737385.652152, "phase": "minus_start", "eps": 0.02}
+{"ts": 1780737393.342597, "phase": "minus_done", "eps": 0.02, "stationarity_norm": 1.4784244144773945e-05, "static_gate": false}
+{"ts": 1780737393.343153, "phase": "plus_start", "eps": 0.02}
+{"ts": 1780737400.7205262, "phase": "plus_done", "eps": 0.02, "stationarity_norm": 2.1086964729526975e-05, "static_gate": false}
