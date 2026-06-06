@@ -34,11 +34,13 @@ import matplotlib.pyplot as plt
 import scipy.optimize
 
 from forward_kinematics_optimized.equilibrium_solver_nondim import with_coil_currents
+from experiment_records_ik_optimize.plotting_fonts import configure_matplotlib_cjk
 
 import run_p2c10w_task_reduction_phase_map as p2c10w
 import run_p2c10x_position_alpha_linearity_audit as p2c10x
 import run_p2c13_rigid_load_propagation_audit as p2c13
 
+configure_matplotlib_cjk()
 jax.config.update("jax_enable_x64", True)
 
 OUT_DIR = Path(__file__).resolve().parent

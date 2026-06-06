@@ -1,0 +1,3 @@
+{"failure_mode": "一阶最优性退化", "count": 16}
+{"failure_mode": "分支不一致或分支切换", "count": 1}
+{"failure_mode": "证据不足或边界临界", "count": 6}

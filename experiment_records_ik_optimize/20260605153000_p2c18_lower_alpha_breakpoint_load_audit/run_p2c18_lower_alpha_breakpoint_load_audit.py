@@ -31,12 +31,14 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from experiment_records_ik_optimize.plotting_fonts import configure_matplotlib_cjk
 import run_p2c10w_task_reduction_phase_map as p2c10w
 import run_p2c10x_position_alpha_linearity_audit as p2c10x
 import run_p2c13_rigid_load_propagation_audit as p2c13
 import run_p2c15_slack_suppressed_sensitivity_audit as p2c15
 import run_p2c16_alpha_boundary_phase_map as p2c16
 
+configure_matplotlib_cjk()
 jax.config.update("jax_enable_x64", True)
 
 OUT_DIR = Path(__file__).resolve().parent

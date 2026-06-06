@@ -1,0 +1,13 @@
+{
+  "case_row_count": 25,
+  "seed_row_count": 19,
+  "publishable_case_count": 17,
+  "diagnostic_case_count": 8,
+  "physical_seed_count": 4,
+  "diagnostic_seed_count": 15,
+  "failure_mode_count": {
+    "一阶最优性退化": 16,
+    "分支不一致或分支切换": 1,
+    "证据不足或边界临界": 6
+  }
+}

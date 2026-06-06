@@ -1,0 +1,71 @@
+{
+  "experiment": "20260606144145_p2c21_sensitivity_reliability_framework_synthesis",
+  "wall_s": 3.1583583280007588,
+  "source_experiments": {
+    "P2c15": "20260605125315_p2c15_slack_suppressed_sensitivity_audit",
+    "P2c16": "20260605132600_p2c16_alpha_boundary_phase_map",
+    "P2c17": "20260605145500_p2c17_refined_boundary_path_dependence",
+    "P2c18": "20260605153000_p2c18_lower_alpha_breakpoint_load_audit",
+    "P2c19": "20260606103000_p2c19_ultrafine_lower_alpha_breakpoint",
+    "P2c20": "20260606143000_p2c20_alpha0375_branch_clustering_roundtrip"
+  },
+  "overall": {
+    "case_row_count": 25,
+    "seed_row_count": 19,
+    "publishable_case_count": 17,
+    "diagnostic_case_count": 8,
+    "physical_seed_count": 4,
+    "diagnostic_seed_count": 15,
+    "failure_mode_count": {
+      "一阶最优性退化": 16,
+      "分支不一致或分支切换": 1,
+      "证据不足或边界临界": 6
+    }
+  },
+  "recommendations": {
+    "verified_conclusions": [
+      "在 n3_mixed_rand20 工况下，alpha=0.3752 至 0.425 附近已有高置信敏感度证据，但不同实验覆盖密度不同。",
+      "alpha=0.3750 处存在物理分支，但该分支吸引域很窄，不能作为高置信敏感度点直接发布。",
+      "末端位置误差本身不足以判定敏感度质量；必须同时检查一阶最优性、分支一致性和刚性磁体段载荷传播一致性。"
+    ],
+    "working_alpha_guidance": {
+      "trusted_alpha_samples": [
+        0.3752,
+        0.3754,
+        0.3756,
+        0.3758,
+        0.376,
+        0.378,
+        0.38,
+        0.382,
+        0.384,
+        0.385,
+        0.39,
+        0.395,
+        0.4,
+        0.425
+      ],
+      "diagnostic_alpha_samples": [
+        0.35,
+        0.375,
+        0.435,
+        0.44,
+        0.445,
+        0.45
+      ],
+      "lower_boundary_statement": "独立高置信下界目前定位在 0.3750 < alpha <= 0.3752；alpha=0.3750 属于临界分支吸引域过窄点。",
+      "upper_boundary_statement": "已有证据显示 0.425 仍可信，0.435 及以上表现为路径依赖或临界诊断，应继续加密验证。"
+    },
+    "configuration_guidance": [
+      "低电流或弱磁驱动区域需要先做分支可进入性判定，再计算敏感度。",
+      "三磁化段混合磁化构型在边界区可能出现多解竞争，应优先采用逐级增载和多初值审计。",
+      "若界面力松弛与刚段外力比值超过 2.0，应将结果归为载荷传播失配，不发布敏感度。",
+      "若必须穿越 alpha=0.3750 附近，应使用路径延续控制，不建议独立点求解。"
+    ],
+    "p2c20_branch_evidence": {
+      "seed_count": 19,
+      "physical_branch_count": 4,
+      "strict_independent_physical_count": 1
+    }
+  }
+}
