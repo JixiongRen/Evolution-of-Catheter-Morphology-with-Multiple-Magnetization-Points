@@ -1,0 +1,24 @@
+{"ts": 1780732440.949351, "phase": "build", "case": "n1_tip_z_rand15", "alpha": 0.1}
+{"ts": 1780732533.0378864, "phase": "seed", "case": "n1_tip_z_rand15", "alpha": 0.1, "seed": "truncated_oracle"}
+{"ts": 1780732586.786615, "phase": "seed", "case": "n1_tip_z_rand15", "alpha": 0.1, "seed": "full_reference"}
+{"ts": 1780732596.0464404, "phase": "seed", "case": "n1_tip_z_rand15", "alpha": 0.1, "seed": "half_full_reference"}
+{"ts": 1780732606.4213588, "phase": "seed", "case": "n1_tip_z_rand15", "alpha": 0.1, "seed": "interface_only"}
+{"ts": 1780732615.1599624, "phase": "seed", "case": "n1_tip_z_rand15", "alpha": 0.1, "seed": "zero"}
+{"ts": 1780732624.4942434, "phase": "build", "case": "n2_z_pair_rand12", "alpha": 0.1}
+{"ts": 1780732688.3445842, "phase": "seed", "case": "n2_z_pair_rand12", "alpha": 0.1, "seed": "truncated_oracle"}
+{"ts": 1780732744.647827, "phase": "seed", "case": "n2_z_pair_rand12", "alpha": 0.1, "seed": "full_reference"}
+{"ts": 1780732755.230465, "phase": "seed", "case": "n2_z_pair_rand12", "alpha": 0.1, "seed": "half_full_reference"}
+{"ts": 1780732766.9839356, "phase": "seed", "case": "n2_z_pair_rand12", "alpha": 0.1, "seed": "interface_only"}
+{"ts": 1780732777.8410432, "phase": "seed", "case": "n2_z_pair_rand12", "alpha": 0.1, "seed": "zero"}
+{"ts": 1780732788.209319, "phase": "build", "case": "n3_mixed_base_i4", "alpha": 1.0}
+{"ts": 1780732858.0297444, "phase": "seed", "case": "n3_mixed_base_i4", "alpha": 1.0, "seed": "truncated_oracle"}
+{"ts": 1780732907.0020506, "phase": "seed", "case": "n3_mixed_base_i4", "alpha": 1.0, "seed": "full_reference"}
+{"ts": 1780732916.2971122, "phase": "seed", "case": "n3_mixed_base_i4", "alpha": 1.0, "seed": "half_full_reference"}
+{"ts": 1780732925.490024, "phase": "seed", "case": "n3_mixed_base_i4", "alpha": 1.0, "seed": "interface_only"}
+{"ts": 1780732934.2304196, "phase": "seed", "case": "n3_mixed_base_i4", "alpha": 1.0, "seed": "zero"}
+{"ts": 1780732943.1627936, "phase": "build", "case": "n3_mixed_rand20", "alpha": 0.4}
+{"ts": 1780733008.5763156, "phase": "seed", "case": "n3_mixed_rand20", "alpha": 0.4, "seed": "truncated_oracle"}
+{"ts": 1780733059.2666085, "phase": "seed", "case": "n3_mixed_rand20", "alpha": 0.4, "seed": "full_reference"}
+{"ts": 1780733068.6975694, "phase": "seed", "case": "n3_mixed_rand20", "alpha": 0.4, "seed": "half_full_reference"}
+{"ts": 1780733080.799338, "phase": "seed", "case": "n3_mixed_rand20", "alpha": 0.4, "seed": "interface_only"}
+{"ts": 1780733093.9822233, "phase": "seed", "case": "n3_mixed_rand20", "alpha": 0.4, "seed": "zero"}

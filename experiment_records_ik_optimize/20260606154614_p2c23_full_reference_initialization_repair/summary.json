@@ -1,0 +1,110 @@
+{
+  "experiment": "20260606154614_p2c23_full_reference_initialization_repair",
+  "wall_s": 667.4111983139992,
+  "args": {
+    "candidates": "n1_tip_z_rand15:0.10,n2_z_pair_rand12:0.10,n3_mixed_base_i4:1.00,n3_mixed_rand20:0.40",
+    "max_iter": 220,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "axis_scale": 2.0,
+    "so3_scale": 2.0,
+    "boundary_scale": 0.5,
+    "slack_scale": 20.0
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "08e3f6d436bd7e9858d2c315c8b34dc7f8689f80",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260606154614_p2c23_full_reference_initialization_repair/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "case_count": 4,
+    "trusted_case_count": 0,
+    "diagnostic_case_count": 4,
+    "trusted_seed_count": 0,
+    "failure_mode_count": {
+      "一阶最优性退化": 4
+    }
+  },
+  "case_summaries": [
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "magnet_count": 1,
+      "best_seed": "half_full_reference",
+      "best_seed_class": "scaled_reference",
+      "trusted_baseline_gate": false,
+      "best_stationarity_norm": 0.025161640413264783,
+      "best_position_error_m": 0.0001580203880550978,
+      "best_jacobian_condition": 15495525.301674483,
+      "best_slack_force_ratio": 2.707843916825101,
+      "best_boundary_norm": 0.0010489815825424627,
+      "best_success": false,
+      "trusted_seed_count": 0,
+      "max_pair_centerline_rms": 0.0023616148940033056,
+      "max_pair_tip_distance": 0.0002303475578062397,
+      "total_steady_s": 39.679854154997884,
+      "primary_failure_mode": "一阶最优性退化",
+      "failure_modes": "求解器达到迭代上限;一阶最优性退化;刚性磁体段载荷传播失配"
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "magnet_count": 2,
+      "best_seed": "truncated_oracle",
+      "best_seed_class": "baseline_truncated",
+      "trusted_baseline_gate": false,
+      "best_stationarity_norm": 0.4180138766070535,
+      "best_position_error_m": 0.0003329372717833487,
+      "best_jacobian_condition": 89327655.61232166,
+      "best_slack_force_ratio": 4.81275809153519,
+      "best_boundary_norm": 0.011214419578726839,
+      "best_success": false,
+      "trusted_seed_count": 0,
+      "max_pair_centerline_rms": 0.028682157212540055,
+      "max_pair_tip_distance": 0.05950441973165806,
+      "total_steady_s": 43.570939026001724,
+      "primary_failure_mode": "一阶最优性退化",
+      "failure_modes": "求解器达到迭代上限;一阶最优性退化;刚性磁体段载荷传播失配"
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "magnet_count": 3,
+      "best_seed": "half_full_reference",
+      "best_seed_class": "scaled_reference",
+      "trusted_baseline_gate": false,
+      "best_stationarity_norm": 0.022744741770953102,
+      "best_position_error_m": 9.105055700189002e-05,
+      "best_jacobian_condition": 424342.2210579246,
+      "best_slack_force_ratio": 2.8592168731751744,
+      "best_boundary_norm": 0.0020559940878021265,
+      "best_success": false,
+      "trusted_seed_count": 0,
+      "max_pair_centerline_rms": 0.009093821916111773,
+      "max_pair_tip_distance": 0.0017454394329611137,
+      "total_steady_s": 37.321574396999495,
+      "primary_failure_mode": "一阶最优性退化",
+      "failure_modes": "求解器达到迭代上限;一阶最优性退化;刚性磁体段载荷传播失配"
+    },
+    {
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "magnet_count": 3,
+      "best_seed": "zero",
+      "best_seed_class": "zero",
+      "trusted_baseline_gate": false,
+      "best_stationarity_norm": 0.44952815939135077,
+      "best_position_error_m": 0.0001422429562671239,
+      "best_jacobian_condition": 260385.7156738502,
+      "best_slack_force_ratio": 10.84842080351522,
+      "best_boundary_norm": 0.0449183603714222,
+      "best_success": false,
+      "trusted_seed_count": 0,
+      "max_pair_centerline_rms": 0.019865385235929244,
+      "max_pair_tip_distance": 0.022117417443647727,
+      "total_steady_s": 40.761592052000196,
+      "primary_failure_mode": "一阶最优性退化",
+      "failure_modes": "求解器达到迭代上限;一阶最优性退化;刚性磁体段载荷传播失配"
+    }
+  ]
+}
