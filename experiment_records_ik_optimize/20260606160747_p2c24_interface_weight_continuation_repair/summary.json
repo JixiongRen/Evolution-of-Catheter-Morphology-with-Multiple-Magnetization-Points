@@ -1,0 +1,67 @@
+{
+  "experiment": "20260606160747_p2c24_interface_weight_continuation_repair",
+  "wall_s": 266.72799893299816,
+  "args": {
+    "candidates": "n1_tip_z_rand15:0.10,n3_mixed_base_i4:1.00",
+    "eta_values": "0.00,0.25,0.50,0.75,1.00",
+    "start_eta": 0.5,
+    "start_base_scale": 0.5,
+    "weight_schedule": "0.10:2.0;0.20:5.0;0.35:10.0;0.50:20.0",
+    "target_boundary_scale": 0.5,
+    "target_slack_scale": 20.0,
+    "max_iter": 180,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "axis_scale": 2.0,
+    "so3_scale": 2.0
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "1bac3cae768f9a48f6e852f63ddc7b477830fd51",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260606160747_p2c24_interface_weight_continuation_repair/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "case_count": 2,
+    "trusted_count": 0,
+    "diagnostic_count": 2,
+    "failure_mode_count": {
+      "一阶最优性退化": 2
+    }
+  },
+  "case_summaries": [
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "best_method": "direct_eta_scan",
+      "best_stage": "eta_1.00",
+      "trusted_gate": false,
+      "best_stationarity_norm": 0.18711241772263018,
+      "best_slack_force_ratio": 3.785438854838569,
+      "best_position_error_m": 0.0002821034994517245,
+      "best_jacobian_condition": 609702969.5405192,
+      "best_boundary_norm": 0.0022423382431570544,
+      "direct_best_stationarity": 0.18711241772263018,
+      "continuation_final_stationarity": 2702331.698884189,
+      "primary_failure_mode": "一阶最优性退化",
+      "failure_modes": "求解器达到迭代上限;一阶最优性退化;刚性磁体段载荷传播失配",
+      "total_steady_s": 55.34096888199929
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "best_method": "direct_eta_scan",
+      "best_stage": "eta_0.75",
+      "trusted_gate": false,
+      "best_stationarity_norm": 7.077597204812523e-05,
+      "best_slack_force_ratio": 1.1859587024759015,
+      "best_position_error_m": 8.144508826613385e-05,
+      "best_jacobian_condition": 5536317.752529416,
+      "best_boundary_norm": 0.009598061713367249,
+      "direct_best_stationarity": 7.077597204812523e-05,
+      "continuation_final_stationarity": 0.09205332038163487,
+      "primary_failure_mode": "一阶最优性退化",
+      "failure_modes": "求解器达到迭代上限;一阶最优性退化",
+      "total_steady_s": 51.594423945003655
+    }
+  ]
+}
