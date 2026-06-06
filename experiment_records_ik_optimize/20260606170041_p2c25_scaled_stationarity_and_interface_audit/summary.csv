@@ -1,0 +1,3 @@
+alpha,best_jacobian_condition,best_position_error_m,best_scaled_jacobian_condition,best_scaled_stationarity_norm,best_slack_force_ratio,best_stationarity_norm,best_strategy,case,eta,failure_modes,primary_failure_mode,total_steady_s,trusted_gate
+0.1,17732648.029037092,0.00010785945438376072,98825.8600652485,3.0144432964645254e-09,2.718228030458653,2.468236587005402e-05,jac_column_variable,n1_tip_z_rand15,1.0,一阶最优性退化;刚性磁体段载荷传播失配,一阶最优性退化,42.736044187004154,False
+1.0,5536117.765068074,8.144508724149844e-05,36236.55307094114,2.2025106200037425e-09,1.1859624176307968,7.50134105502709e-06,jac_column_variable,n3_mixed_base_i4,0.75,,,36.09495090500059,True
