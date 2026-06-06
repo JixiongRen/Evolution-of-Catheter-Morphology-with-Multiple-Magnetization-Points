@@ -1,0 +1,127 @@
+{
+  "experiment": "20260606172200_p2c27_stationarity_refinement_gate",
+  "wall_s": 223.3614222369979,
+  "args": {
+    "case": "n3_mixed_base_i4",
+    "alpha": 1.0,
+    "eta": 0.75,
+    "eps_values": "0.005,0.01,0.02",
+    "strategies": "trf_strict_restart,lm_refine,trf_then_lm",
+    "max_iter": 180,
+    "restarts": 3,
+    "tol": 1e-12,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "axis_scale": 2.0,
+    "so3_scale": 2.0,
+    "boundary_scale": 0.5,
+    "slack_scale": 20.0
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "d5cd3d9a8202697061397137d5496757c2c3c1fb",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260606172200_p2c27_stationarity_refinement_gate/\n?? references/\n?? research_outputs/"
+  },
+  "baseline": {
+    "success": true,
+    "nfev": 64,
+    "steady_s": 0.8365198579995194,
+    "message": "`ftol` termination condition is satisfied.",
+    "position_error_m": 8.144508724153583e-05,
+    "residual_norm": 0.013350314204759796,
+    "stationarity_norm": 7.500716226906798e-06,
+    "boundary_norm": 0.009598055928401766,
+    "jacobian_condition": 5536117.765075175,
+    "scaled_jacobian_condition": 36236.55307092128,
+    "scaled_stationarity_norm": 2.202393195302661e-09,
+    "jacobian_rank": 18,
+    "tip_p": [
+      0.10842279678730236,
+      0.00873605600526268,
+      -0.011129618300112025
+    ],
+    "max_slack_force_over_rigid_force": 1.1859624176308086,
+    "max_slack_torque_over_rigid_torque": 1.92972547168962e-05,
+    "trace_boundary_norm": 0.00959805592840187,
+    "static_gate": true
+  },
+  "overall": {
+    "eps_count": 3,
+    "publishable_count": 3,
+    "diagnostic_count": 0,
+    "max_linearization_error": 5.318881707601695e-07,
+    "max_branch_rms": 4.6064293010233994e-05,
+    "max_perturb_stationarity": 1.3687010520191168e-06
+  },
+  "eps_summaries": [
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "eps_alpha": 0.005,
+      "publishable_gate": true,
+      "minus_strategy": "trf_strict_restart",
+      "plus_strategy": "trf_strict_restart",
+      "sensitivity_norm_m_per_alpha": 8.313272934676965e-06,
+      "sensitivity_vector": [
+        3.284960285732108e-06,
+        1.7096778002004265e-06,
+        7.4428855040969966e-06
+      ],
+      "linearization_error_plus": 3.212685258484443e-08,
+      "linearization_error_minus": 3.2126852459852076e-08,
+      "linearization_error_symmetry": 3.21268525862623e-08,
+      "linearization_error_max": 3.21268525862623e-08,
+      "max_perturb_stationarity": 1.3687010520191168e-06,
+      "max_perturb_slack_force_ratio": 1.188820693061538,
+      "max_perturb_jacobian_condition": 5588674.648484053,
+      "branch_rms_max": 1.1510813629344505e-05,
+      "branch_tip_distance_max": 8.313272934676964e-08
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "eps_alpha": 0.01,
+      "publishable_gate": true,
+      "minus_strategy": "lm_refine",
+      "plus_strategy": "lm_refine",
+      "sensitivity_norm_m_per_alpha": 8.326882837675966e-06,
+      "sensitivity_vector": [
+        3.3204232141592627e-06,
+        1.7115010075841042e-06,
+        7.441944085539304e-06
+      ],
+      "linearization_error_plus": 1.318388718710338e-07,
+      "linearization_error_minus": 1.3183887187088058e-07,
+      "linearization_error_symmetry": 1.3183887187088058e-07,
+      "linearization_error_max": 1.318388718710338e-07,
+      "max_perturb_stationarity": 2.5965544253153696e-07,
+      "max_perturb_slack_force_ratio": 1.1916573850455483,
+      "max_perturb_jacobian_condition": 5641426.49686104,
+      "branch_rms_max": 2.3022890785412925e-05,
+      "branch_tip_distance_max": 1.6653765675351932e-07
+    },
+    {
+      "case": "n3_mixed_base_i4",
+      "alpha": 1.0,
+      "eps_alpha": 0.02,
+      "publishable_gate": true,
+      "minus_strategy": "trf_strict_restart",
+      "plus_strategy": "lm_refine",
+      "sensitivity_norm_m_per_alpha": 8.391218341165785e-06,
+      "sensitivity_vector": [
+        3.476348813327701e-06,
+        1.7253915218437554e-06,
+        7.439796252152464e-06
+      ],
+      "linearization_error_plus": 5.318881706338587e-07,
+      "linearization_error_minus": 5.318881707601695e-07,
+      "linearization_error_symmetry": 5.318881707601695e-07,
+      "linearization_error_max": 5.318881707601695e-07,
+      "max_perturb_stationarity": 1.1328527117917243e-06,
+      "max_perturb_slack_force_ratio": 1.1972528473566189,
+      "max_perturb_jacobian_condition": 5747287.727322756,
+      "branch_rms_max": 4.6064293010233994e-05,
+      "branch_tip_distance_max": 3.3564873364663144e-07
+    }
+  ]
+}
