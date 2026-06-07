@@ -1,0 +1,188 @@
+{
+  "experiment": "20260607145635_p2c42_stationarity_block_attribution",
+  "wall_s": 352.93965063500036,
+  "args": {
+    "specs": "n1_tip_z_rand15:0.10,n2_z_pair_rand12:0.10",
+    "schedule": "loose:0.10:0.50;mid:0.25:1.00;strict:0.50:2.00",
+    "boundary_scale": 0.5,
+    "slack_scale": 2.0,
+    "max_iter": 120,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "load_floor": 0.05
+  },
+  "summaries": [
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "position_error_m": 0.0004847273576340033,
+      "stationarity_norm": 0.8243921852521784,
+      "jacobian_condition": 66260585.85830761,
+      "max_slack_force_over_rigid_force": 2.4629981420333578,
+      "max_slack_torque_over_rigid_torque": 8.672782275041295e-05,
+      "boundary_norm": 0.011049822887807315,
+      "dominant_gradient_block": "boundary",
+      "dominant_residual_block": "slack",
+      "steady_s": 1.4392703659996187,
+      "nfev": 120
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "position_error_m": 0.00011268205558727333,
+      "stationarity_norm": 18715.410749539093,
+      "jacobian_condition": 1529236761.053186,
+      "max_slack_force_over_rigid_force": 1.1019999190819008,
+      "max_slack_torque_over_rigid_torque": 0.0003518454390704671,
+      "boundary_norm": 0.01682670963927248,
+      "dominant_gradient_block": "boundary",
+      "dominant_residual_block": "slack",
+      "steady_s": 1.4787707489995228,
+      "nfev": 120
+    }
+  ],
+  "block_rows": [
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "block": "position",
+      "residual_norm": 0.0290836414580402,
+      "gradient_norm": 7.7421266367240245,
+      "jacobian_rank": 3,
+      "jacobian_condition": 69.70176726266764,
+      "jacobian_col_norm_max": 6319.967548381932,
+      "jacobian_col_norm_median": 52.4844127820945,
+      "residual_norm_share": 0.35533284756430694,
+      "gradient_norm_share": 0.4325943641539602
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "block": "boundary",
+      "residual_norm": 0.005524911443903657,
+      "gradient_norm": 8.265233510453559,
+      "jacobian_rank": 6,
+      "jacobian_condition": 212852.7315036829,
+      "jacobian_col_norm_max": 33583.60788296304,
+      "jacobian_col_norm_median": 392.85445074089887,
+      "residual_norm_share": 0.0675012624789524,
+      "gradient_norm_share": 0.46182316601212076
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "block": "slack",
+      "residual_norm": 0.047240456153648,
+      "gradient_norm": 1.8896058751735647,
+      "jacobian_rank": 12,
+      "jacobian_condition": 2.2603653069559067,
+      "jacobian_col_norm_max": 40.00000032222891,
+      "jacobian_col_norm_median": 17.758336708562794,
+      "residual_norm_share": 0.5771658899567407,
+      "gradient_norm_share": 0.10558246983391907
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "block": "position",
+      "residual_norm": 0.0067609233352364,
+      "gradient_norm": 397.355825033033,
+      "jacobian_rank": 3,
+      "jacobian_condition": 3264.5865558828727,
+      "jacobian_col_norm_max": 243958.624629302,
+      "jacobian_col_norm_median": 39.8719253828101,
+      "residual_norm_share": 0.19398483803857022,
+      "gradient_norm_share": 0.021230598059322748
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "block": "boundary",
+      "residual_norm": 0.00841335481963624,
+      "gradient_norm": 18318.043780551106,
+      "jacobian_rank": 6,
+      "jacobian_condition": 7015339.621152525,
+      "jacobian_col_norm_max": 3432220.3612324395,
+      "jacobian_col_norm_median": 306.3674793623826,
+      "residual_norm_share": 0.24139650623491268,
+      "gradient_norm_share": 0.9787273779253826
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "block": "slack",
+      "residual_norm": 0.019678566034383626,
+      "gradient_norm": 0.7865292923937467,
+      "jacobian_rank": 12,
+      "jacobian_condition": 13.722396734576193,
+      "jacobian_col_norm_max": 54.28584199944895,
+      "jacobian_col_norm_median": 4.769392207934618,
+      "residual_norm_share": 0.5646186557265171,
+      "gradient_norm_share": 4.202401529487329e-05
+    }
+  ],
+  "gradient_rows": [
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "block_a": "position",
+      "block_b": "boundary",
+      "gradient_cosine": -0.9788912066260828,
+      "gradient_sum_norm": 1.7248665550132485,
+      "gradient_diff_norm": 15.92275274725413
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "block_a": "position",
+      "block_b": "slack",
+      "gradient_cosine": 0.5971675177445412,
+      "gradient_sum_norm": 8.999096666558273,
+      "gradient_diff_norm": 6.785169830672181
+    },
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "block_a": "boundary",
+      "block_b": "slack",
+      "gradient_cosine": -0.7471733769375356,
+      "gradient_sum_norm": 6.96749145914998,
+      "gradient_diff_norm": 9.758250532667315
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "block_a": "position",
+      "block_b": "boundary",
+      "gradient_cosine": 0.9999955147232475,
+      "gradient_sum_norm": 18715.397861173056,
+      "gradient_diff_norm": 17920.689777286712
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "block_a": "position",
+      "block_b": "slack",
+      "gradient_cosine": 0.016447227312020186,
+      "gradient_sum_norm": 397.3695394536017,
+      "gradient_diff_norm": 397.34366705215353
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "block_a": "boundary",
+      "block_b": "slack",
+      "gradient_cosine": 0.016363593220967816,
+      "gradient_sum_norm": 18318.056667877732,
+      "gradient_diff_norm": 18318.030926986965
+    }
+  ],
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "14500e60989777523aa935fcbf4f0882493a8a6a",
+    "status_short": "?? .codegraph/\n?? experiment_records_ik_optimize/20260607145635_p2c42_stationarity_block_attribution/"
+  },
+  "jax_devices": [
+    "cuda:0"
+  ]
+}
