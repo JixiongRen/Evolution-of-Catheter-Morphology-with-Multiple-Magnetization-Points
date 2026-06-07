@@ -1,0 +1,77 @@
+{
+  "experiment": "20260607194500_p2c56_n1_combined_gate_subspace_audit",
+  "wall_s": 73.2987861319998,
+  "case": "n1_tip_z_rand15",
+  "alpha": 0.1,
+  "base": {
+    "case": "n1_tip_z_rand15",
+    "alpha": 0.1,
+    "position_error_m": 9.612408957042144e-05,
+    "stationarity_norm": 2.4465196971225978,
+    "jacobian_condition": 4495374218.86507,
+    "jacobian_rank": 18,
+    "continuity_norm": 0.006638856106157295,
+    "terminal_force_norm": 0.002242881175098929,
+    "terminal_torque_norm": 0.009888292202543053,
+    "nfev": 120,
+    "steady_s": 31.182660376998683,
+    "success": false,
+    "max_interface_force_jump_over_rigid_force": 17.70617141187832,
+    "max_interface_torque_jump_over_rigid_torque": 0.005071389898289309,
+    "max_interface_jump_norm": 0.006524377469678635,
+    "baseline_gate": false
+  },
+  "subspace": {
+    "implicit_singular_values": [
+      0.0009212581776836146,
+      0.0002586083032164797,
+      1.856019148553863e-12
+    ],
+    "implicit_effective_rank_rel_0p1": 2,
+    "direct_effective_rank_rel_0p1": 0
+  },
+  "summary": {
+    "publish_gate": false,
+    "subspace_publishable": false,
+    "diagnostic_subspace_rank": 2,
+    "stationarity_norm": 2.4465196971225978,
+    "jacobian_condition": 4495374218.86507,
+    "continuity_norm": 0.006638856106157295,
+    "max_force_ratio_to_rigid_load": 17.70617141187832,
+    "max_force_ratio_to_internal_force": 0.8149854386235259,
+    "max_abs_force_jump_N": 0.006906350087347038,
+    "max_torque_ratio_to_internal_torque": 0.00046342139158383154
+  },
+  "rows": [
+    {
+      "interface": 0,
+      "jump_force_norm": 0.006906350087347038,
+      "jump_torque_norm": 1.9308531471544983e-09,
+      "rigid_force_norm": 0.000390053271635779,
+      "rigid_torque_norm": 5.849682431581243e-07,
+      "force_ratio_to_rigid_load": 17.70617141187832,
+      "force_ratio_to_internal_force": 0.8149854386235259,
+      "torque_ratio_to_internal_torque": 0.00024857093657776786,
+      "normalized_jump_norm": 0.006524377469678635
+    },
+    {
+      "interface": 1,
+      "jump_force_norm": 0.0011539517714197886,
+      "jump_torque_norm": 2.932710394946911e-09,
+      "rigid_force_norm": 0.000390053271635779,
+      "rigid_torque_norm": 5.78285332771629e-07,
+      "force_ratio_to_rigid_load": 2.9584465900783856,
+      "force_ratio_to_internal_force": 0.47148320645001357,
+      "torque_ratio_to_internal_torque": 0.00046342139158383154,
+      "normalized_jump_norm": 0.0012275622311767368
+    }
+  ],
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "e40654bf73e1812ee143f5c167a6fa37de8b422b",
+    "status_short": "?? .codegraph/\n?? experiment_records_ik_optimize/20260607194500_p2c56_n1_combined_gate_subspace_audit/"
+  },
+  "jax_devices": [
+    "cuda:0"
+  ]
+}

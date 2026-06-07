@@ -1,0 +1,2 @@
+continuity_norm,diagnostic_subspace_rank,jacobian_condition,max_abs_force_jump_N,max_force_ratio_to_internal_force,max_force_ratio_to_rigid_load,max_torque_ratio_to_internal_torque,publish_gate,stationarity_norm,subspace_publishable
+0.006638856106157295,2,4495374218.86507,0.006906350087347038,0.8149854386235259,17.70617141187832,0.00046342139158383154,False,2.4465196971225978,False
