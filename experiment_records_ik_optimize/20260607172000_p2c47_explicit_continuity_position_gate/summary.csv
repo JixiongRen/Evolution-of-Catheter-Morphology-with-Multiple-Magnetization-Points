@@ -1,0 +1,3 @@
+any_gate_pass,best_boundary_mode,best_condition,best_continuity_norm,best_continuity_scale,best_force_jump_ratio,best_position_error_m,best_stationarity_norm,case,dominant_failure,min_continuity_norm,min_continuity_scale,row_count
+False,full,4495374218.846339,0.006638856106156577,1.0,17.706171411869047,9.612408957026465e-05,2.4465194933799026,n1_tip_z_rand15,一阶最优性退化,0.001661302212683487,16.0,8
+False,full,276744759.55066186,0.002762570645043746,0.25,5.971479891469165,7.094955948814125e-08,0.24823602627945046,n2_z_pair_rand12,一阶最优性退化,0.0018481731191044134,16.0,8
