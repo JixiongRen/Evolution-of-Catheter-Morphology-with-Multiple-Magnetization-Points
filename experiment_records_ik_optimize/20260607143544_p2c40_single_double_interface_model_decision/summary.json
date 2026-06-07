@@ -1,0 +1,19 @@
+{
+  "experiment_id": "20260607143544_p2c40_single_double_interface_model_decision",
+  "type": "evidence_synthesis",
+  "scope": [
+    "single_magnet_n1",
+    "double_magnet_n2"
+  ],
+  "publishable_sensitivity_claim": false,
+  "recommended_next_model": "scaled_interface_slack",
+  "reason": "n1/n2 evidence points to rigid magnet load propagation mismatch rather than pure terminal linearization failure.",
+  "hard_continuity_rejected": true,
+  "pure_weight_scan_rejected": true,
+  "next_gate": {
+    "stationarity_norm": "<=1e-5",
+    "load_propagation_ratio": "<=1.5 target, >2 reject",
+    "branch_rms_m": "<=1e-3",
+    "linearization_error": "<0.05"
+  }
+}

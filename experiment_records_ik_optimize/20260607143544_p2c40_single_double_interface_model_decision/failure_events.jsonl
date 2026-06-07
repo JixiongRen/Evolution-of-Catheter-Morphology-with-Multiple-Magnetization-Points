@@ -1,0 +1,4 @@
+{"case": "n1_tip_z_rand15", "source": "20260606173500_p2c28", "primary_failure": "刚性磁体段载荷传播失配", "evidence": "线性化误差约 1.14e-6，但载荷传播比约 2.73；末端线性化好不能证明物理灵敏度可信。", "next_action": "暂停纯扫参，进入接口载荷闭合修复。"}
+{"case": "n2_z_pair_rand12", "source": "20260606173500_p2c28", "primary_failure": "一阶最优性退化与刚性磁体段载荷传播失配并存", "evidence": "基线一阶最优性约 1.10，扰动后约 0.585，载荷传播比约 2.94。", "next_action": "先修复接口模型，再做三维末端位置灵敏度。"}
+{"case": "hard_continuity_probe", "source": "20260605080801_p2c10r", "primary_failure": "硬连续约束导致数值病态", "evidence": "约束方程组条件数约 1e16-1e17，代表工况多初值失败。", "next_action": "不直接使用硬连续 KKT；改用受控松弛或重参数化。"}
+{"case": "centered_wrench_probe", "source": "20260604232300_p2c10d", "primary_failure": "单纯载荷作用点修正不足", "evidence": "alpha=0.25 一阶最优性从约 20.59 恶化至约 27.44。", "next_action": "将刚段中心载荷定义作为组成部分，而非单独方案。"}
