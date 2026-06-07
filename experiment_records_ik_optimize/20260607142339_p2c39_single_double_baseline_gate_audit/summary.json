@@ -1,10 +1,10 @@
 {
   "experiment": "20260607142339_p2c39_single_double_baseline_gate_audit",
-  "wall_s": 2.8991379369999777,
+  "wall_s": 1.1075244590010698,
   "git": {
     "branch": "ik_optimize",
-    "commit": "f22da75f4fb2941634861599ca14b59362d23282",
-    "status_short": "?? .codegraph/\n?? experiment_records_ik_optimize/20260607142339_p2c39_single_double_baseline_gate_audit/"
+    "commit": "3dd00f3a3a044218ede2a16e5e7b2cb194ef53ef",
+    "status_short": "M experiment_records_ik_optimize/20260607142339_p2c39_single_double_baseline_gate_audit/run_p2c39_single_double_baseline_gate_audit.py\n M experiment_records_ik_optimize/20260607142339_p2c39_single_double_baseline_gate_audit/single_double_baseline_gate_cn.png\n M experiment_records_ik_optimize/20260607142339_p2c39_single_double_baseline_gate_audit/stdout_stderr.log\n?? .codegraph/"
   },
   "overall": {
     "p2c28_case_count": 2,

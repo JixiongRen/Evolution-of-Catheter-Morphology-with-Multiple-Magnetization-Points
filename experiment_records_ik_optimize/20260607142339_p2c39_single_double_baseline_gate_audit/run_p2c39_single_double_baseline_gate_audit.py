@@ -177,6 +177,7 @@ def write_failure_events(rows: list[dict[str, object]]) -> None:
 def plot_rows(rows: list[dict[str, object]]) -> None:
     import matplotlib.pyplot as plt
     from matplotlib import font_manager
+    from matplotlib.ticker import FuncFormatter
 
     font_path = "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc"
     if Path(font_path).exists():
@@ -191,9 +192,17 @@ def plot_rows(rows: list[dict[str, object]]) -> None:
     condition = [float(row["condition"]) for row in p2c28]
 
     fig, axes = plt.subplots(1, 3, figsize=(11, 4), dpi=160)
+
+    def sci_tick(value: float, _position: int) -> str:
+        if value <= 0:
+            return ""
+        exponent = int(round(math.log10(value)))
+        return f"1e{exponent}"
+
     axes[0].bar(labels, stationarity, color="#8c564b")
     axes[0].axhline(1e-5, color="black", linestyle="--", linewidth=1)
     axes[0].set_yscale("log")
+    axes[0].yaxis.set_major_formatter(FuncFormatter(sci_tick))
     axes[0].set_title("一阶最优性")
     axes[0].set_ylabel("残差范数")
 
@@ -206,6 +215,7 @@ def plot_rows(rows: list[dict[str, object]]) -> None:
     axes[2].axhline(1e7, color="gray", linestyle=":", linewidth=1)
     axes[2].axhline(1e9, color="black", linestyle="--", linewidth=1)
     axes[2].set_yscale("log")
+    axes[2].yaxis.set_major_formatter(FuncFormatter(sci_tick))
     axes[2].set_title("局部条件数")
 
     fig.suptitle("P2c39 单点/两点末端位置灵敏度基线门禁")
