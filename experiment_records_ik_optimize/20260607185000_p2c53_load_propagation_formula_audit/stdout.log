@@ -1,0 +1,128 @@
+{
+  "experiment": "20260607185000_p2c53_load_propagation_formula_audit",
+  "wall_s": 416.9222301489972,
+  "case": "n2_z_pair_rand12",
+  "alpha": 0.1,
+  "base_row": {
+    "case": "n2_z_pair_rand12",
+    "alpha": 0.1,
+    "stage": 6,
+    "position_scale": 60.0,
+    "continuity_scale": 0.25,
+    "max_iter": 240,
+    "position_error_m": 1.190103984882916e-07,
+    "stationarity_norm": 1.3143529928693216e-07,
+    "jacobian_condition": 116924116.23542637,
+    "jacobian_rank": 18,
+    "continuity_norm": 0.0019572957019055918,
+    "terminal_force_norm": 0.000772011517244755,
+    "terminal_torque_norm": 1.0553735960003942e-05,
+    "steady_s": 28.532161523002287,
+    "nfev": 185,
+    "success": true,
+    "max_interface_force_jump_over_rigid_force": 4.365870197630814,
+    "max_interface_torque_jump_over_rigid_torque": 2.3908001200140036e-05,
+    "max_interface_jump_norm": 0.0015383870909302004,
+    "baseline_gate": false,
+    "failure_class": "刚性磁体段载荷传播失配"
+  },
+  "summaries": [
+    {
+      "formula": "刚段外载反号",
+      "max_force_ratio": 3.323371705495648,
+      "max_torque_ratio": 1.9324770168576058,
+      "max_normalized_jump_norm": 0.9322882524697188,
+      "sum_normalized_jump_norm": 1.5935161126824413
+    },
+    {
+      "formula": "当前刚段传播",
+      "max_force_ratio": 4.365870197630814,
+      "max_torque_ratio": 2.3908001200140036e-05,
+      "max_normalized_jump_norm": 0.0015383870909302004,
+      "sum_normalized_jump_norm": 0.0027484993266990274
+    },
+    {
+      "formula": "忽略刚段外载",
+      "max_force_ratio": 3.748707915765776,
+      "max_torque_ratio": 0.9640171938251151,
+      "max_normalized_jump_norm": 0.46507334194471434,
+      "sum_normalized_jump_norm": 0.8024901509968796
+    }
+  ],
+  "rows": [
+    {
+      "interface": 0,
+      "formula": "当前刚段传播",
+      "jump_force_norm": 0.0012830568464844152,
+      "jump_torque_norm": 3.701896202894519e-11,
+      "rigid_force_norm": 0.0004075068263249483,
+      "rigid_torque_norm": 3.7276964623929877e-06,
+      "force_ratio": 3.1485530145728116,
+      "torque_ratio": 9.930787659996581e-06,
+      "normalized_jump_norm": 0.001210112235768827
+    },
+    {
+      "interface": 0,
+      "formula": "忽略刚段外载",
+      "jump_force_norm": 0.0010559885001039874,
+      "jump_torque_norm": 3.5935634831078967e-06,
+      "rigid_force_norm": 0.0004075068263249483,
+      "rigid_torque_norm": 3.7276964623929877e-06,
+      "force_ratio": 2.5913394129548544,
+      "torque_ratio": 0.9640171938251151,
+      "normalized_jump_norm": 0.46507334194471434
+    },
+    {
+      "interface": 0,
+      "formula": "刚段外载反号",
+      "jump_force_norm": 0.0009571374929424032,
+      "jump_torque_norm": 7.203687739395851e-06,
+      "rigid_force_norm": 0.0004075068263249483,
+      "rigid_torque_norm": 3.7276964623929877e-06,
+      "force_ratio": 2.3487643178256263,
+      "torque_ratio": 1.9324770168576058,
+      "normalized_jump_norm": 0.9322882524697188
+    },
+    {
+      "interface": 1,
+      "formula": "当前刚段传播",
+      "jump_force_norm": 0.0016310934828344717,
+      "jump_torque_norm": 8.235927425089885e-11,
+      "rigid_force_norm": 0.00037360100254918297,
+      "rigid_torque_norm": 3.4448414805339917e-06,
+      "force_ratio": 4.365870197630814,
+      "torque_ratio": 2.3908001200140036e-05,
+      "normalized_jump_norm": 0.0015383870909302004
+    },
+    {
+      "interface": 1,
+      "formula": "忽略刚段外载",
+      "jump_force_norm": 0.001400521035594152,
+      "jump_torque_norm": 2.607163437513022e-06,
+      "rigid_force_norm": 0.00037360100254918297,
+      "rigid_torque_norm": 3.4448414805339917e-06,
+      "force_ratio": 3.748707915765776,
+      "torque_ratio": 0.7568311785159068,
+      "normalized_jump_norm": 0.33741680905216526
+    },
+    {
+      "interface": 1,
+      "formula": "刚段外载反号",
+      "jump_force_norm": 0.0012416150010167621,
+      "jump_torque_norm": 5.109228589144175e-06,
+      "rigid_force_norm": 0.00037360100254918297,
+      "rigid_torque_norm": 3.4448414805339917e-06,
+      "force_ratio": 3.323371705495648,
+      "torque_ratio": 1.4831534681683476,
+      "normalized_jump_norm": 0.6612278602127225
+    }
+  ],
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "04d14814b3a535fdc78b03c6340e455cd5e61483",
+    "status_short": "?? .codegraph/\n?? experiment_records_ik_optimize/20260607185000_p2c53_load_propagation_formula_audit/"
+  },
+  "jax_devices": [
+    "cuda:0"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "experiment": "20260607190000_p2c54_load_gate_scale_audit",
+  "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260607185000_p2c53_load_propagation_formula_audit",
+  "rows": [
+    {
+      "interface": 0,
+      "force_jump_norm": 0.0012830568464844152,
+      "rigid_force_norm": 0.0004075068263249483,
+      "force_ratio": 3.1485530145728116,
+      "normalized_jump_norm": 0.001210112235768827,
+      "ratio_if_force_floor_1e-6": 3.1485530145728116,
+      "ratio_if_force_floor_1e-5": 3.1485530145728116,
+      "ratio_if_force_floor_1e-4": 3.1485530145728116,
+      "ratio_if_force_floor_1e-3": 1.2830568464844152
+    },
+    {
+      "interface": 1,
+      "force_jump_norm": 0.0016310934828344717,
+      "rigid_force_norm": 0.00037360100254918297,
+      "force_ratio": 4.365870197630814,
+      "normalized_jump_norm": 0.0015383870909302004,
+      "ratio_if_force_floor_1e-6": 4.365870197630814,
+      "ratio_if_force_floor_1e-5": 4.365870197630814,
+      "ratio_if_force_floor_1e-4": 4.365870197630814,
+      "ratio_if_force_floor_1e-3": 1.6310934828344716
+    }
+  ],
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "04d14814b3a535fdc78b03c6340e455cd5e61483",
+    "status_short": "?? .codegraph/\n?? experiment_records_ik_optimize/20260607185000_p2c53_load_propagation_formula_audit/\n?? experiment_records_ik_optimize/20260607190000_p2c54_load_gate_scale_audit/"
+  }
+}
