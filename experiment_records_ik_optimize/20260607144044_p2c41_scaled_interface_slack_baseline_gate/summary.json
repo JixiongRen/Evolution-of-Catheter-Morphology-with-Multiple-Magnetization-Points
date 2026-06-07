@@ -1,0 +1,61 @@
+{
+  "experiment": "20260607144044_p2c41_scaled_interface_slack_baseline_gate",
+  "wall_s": 259.9349540780004,
+  "args": {
+    "specs": "n1_tip_z_rand15:0.10,n2_z_pair_rand12:0.10",
+    "schedule": "loose:0.10:0.50;mid:0.25:1.00;strict:0.50:2.00",
+    "max_iter": 120,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "load_floor": 0.05,
+    "start_eta": 1.0,
+    "start_base_scale": 1.0
+  },
+  "summaries": [
+    {
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "best_mode": "load_scaled",
+      "best_stage": "strict",
+      "baseline_gate": false,
+      "best_position_error_m": 0.0004847273576335899,
+      "best_stationarity_norm": 0.8243921868728359,
+      "best_jacobian_condition": 66260585.86079126,
+      "best_slack_force_ratio": 2.462998142035538,
+      "best_slack_torque_ratio": 8.672782275022422e-05,
+      "best_boundary_norm": 0.011049822887801274,
+      "raw_best_slack_force_ratio": 6.616471475291603,
+      "load_scaled_best_slack_force_ratio": 2.462998142035538,
+      "primary_failure_mode": "刚性磁体段载荷传播失配",
+      "failure_modes": "求解器未报告成功;一阶最优性退化;条件数偏高;刚性磁体段载荷传播失配",
+      "total_steady_s": 57.645051176999914
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "best_mode": "load_scaled",
+      "best_stage": "strict",
+      "baseline_gate": false,
+      "best_position_error_m": 0.0001126820555876973,
+      "best_stationarity_norm": 18715.410756834517,
+      "best_jacobian_condition": 1529236761.0587087,
+      "best_slack_force_ratio": 1.1019999190816507,
+      "best_slack_torque_ratio": 0.00035184543907031086,
+      "best_boundary_norm": 0.0168267096419698,
+      "raw_best_slack_force_ratio": 6.321388823722822,
+      "load_scaled_best_slack_force_ratio": 1.1019999190816507,
+      "primary_failure_mode": "一阶最优性退化",
+      "failure_modes": "求解器未报告成功;一阶最优性退化;条件数严重病态",
+      "total_steady_s": 54.75816600399776
+    }
+  ],
+  "baseline_pass_count": 0,
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "f33695015c25291bddaf4523fd95badb6686a480",
+    "status_short": "?? .codegraph/\n?? experiment_records_ik_optimize/20260607144044_p2c41_scaled_interface_slack_baseline_gate/"
+  },
+  "jax_devices": [
+    "cuda:0"
+  ]
+}
