@@ -1,0 +1,13 @@
+alpha,eps_alpha,expected_role,required_before_publish
+0.375,0.005,failure-boundary diagnosis,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.375,0.01,failure-boundary diagnosis,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.375,0.0125,failure-boundary diagnosis,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.4,0.005,trusted-window replication,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.4,0.01,trusted-window replication,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.4,0.0125,failure-boundary diagnosis,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.425,0.005,trusted-window replication,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.425,0.01,trusted-window replication,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.425,0.0125,failure-boundary diagnosis,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.45,0.005,failure-boundary diagnosis,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.45,0.01,failure-boundary diagnosis,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"
+0.45,0.0125,failure-boundary diagnosis,"same target convention, same seed policy, strict multi-strategy refinement, re-optimized perturbation solves"

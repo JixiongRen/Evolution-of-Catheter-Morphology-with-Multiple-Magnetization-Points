@@ -1,0 +1,209 @@
+{
+  "experiment": "20260606215000_p2c36_trusted_branch_sensitivity_replay",
+  "wall_s": 138.70119010500002,
+  "args": {
+    "eps_values": "0.005,0.01,0.0125",
+    "strategies": "trf_strict_restart,lm_refine,trf_then_lm",
+    "max_iter": 180,
+    "restarts": 3,
+    "tol": 1e-12,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "axis_scale": 2.0,
+    "so3_scale": 2.0,
+    "boundary_scale": 0.5,
+    "slack_scale": 20.0
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "a87ceb29f77aba3d0601a725099b9e412d40e40c",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260606175600_p2c29_rand20_load_continuation_refine/\n?? experiment_records_ik_optimize/20260606194500_p2c30_rand20_multi_eps_recheck/\n?? experiment_records_ik_optimize/20260606201000_p2c31_rand20_eps_boundary_refine/\n?? experiment_records_ik_optimize/20260606202500_p2c32_rand20_boundary_synthesis/\n?? experiment_records_ik_optimize/20260606204500_p2c33_strict_alpha_protocol_audit/\n?? experiment_records_ik_optimize/20260606210000_p2c34_arbitrary_alpha_canonical_state_generation/\n?? experiment_records_ik_optimize/20260606213500_p2c35_branch_reproduction_repair/\n?? experiment_records_ik_optimize/20260606215000_p2c36_trusted_branch_sensitivity_replay/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "baseline_count": 2,
+    "baseline_static_pass_count": 2,
+    "eps_count": 6,
+    "publishable_eps_count": 5,
+    "diagnostic_eps_count": 1,
+    "max_branch_rms": 0.0015652479922056003,
+    "max_linearization_error": 5.3206605264067265e-06
+  },
+  "baselines": [
+    {
+      "position_error_m": 6.658714163181674e-07,
+      "residual_norm": 0.0034352637303765284,
+      "stationarity_norm": 1.8564783445374385e-08,
+      "boundary_norm": 0.006733995954727187,
+      "jacobian_condition": 1731463.2498480398,
+      "jacobian_rank": 18,
+      "max_slack_force_over_rigid_force": 0.06918832304817746,
+      "max_slack_torque_over_rigid_torque": 2.340697560042935e-06,
+      "trace_boundary_norm": 0.006733995954727161,
+      "static_gate": true,
+      "tip_p": [
+        0.10273123773180359,
+        0.011191735089280104,
+        0.017152017923150124
+      ],
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "seed_name": "p2c22_saved_trusted_seed",
+      "branch_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606213500_p2c35_branch_reproduction_repair/alpha_0.400_p2c22_saved_trusted_seed_branch.npz"
+    },
+    {
+      "position_error_m": 4.008819859188813e-07,
+      "residual_norm": 0.003795694530805358,
+      "stationarity_norm": 8.330875795740971e-11,
+      "boundary_norm": 0.00756955726884155,
+      "jacobian_condition": 514803.42494848365,
+      "jacobian_rank": 18,
+      "max_slack_force_over_rigid_force": 0.028643612980616826,
+      "max_slack_torque_over_rigid_torque": 1.7197632125381147e-07,
+      "trace_boundary_norm": 0.007569557268841592,
+      "static_gate": true,
+      "tip_p": [
+        0.10191730450082079,
+        0.011215920465981067,
+        0.01714928756370575
+      ],
+      "case": "n3_mixed_rand20",
+      "alpha": 0.425,
+      "seed_name": "p2c16_historical_base_seed",
+      "branch_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606213500_p2c35_branch_reproduction_repair/alpha_0.425_p2c16_historical_base_seed_branch.npz"
+    }
+  ],
+  "eps_rows": [
+    {
+      "eps_alpha": 0.005,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 2.2031176262758268e-05,
+      "sensitivity_vector": [
+        2.0821859995912018e-05,
+        6.5899676165645515e-06,
+        -2.897447263366937e-06
+      ],
+      "linearization_error_max": 1.7767144882175088e-07,
+      "max_perturb_stationarity": 3.2473760581261083e-07,
+      "max_perturb_slack_force_ratio": 0.0818613704235752,
+      "branch_rms_max": 0.00030568746505978773,
+      "branch_tip_distance_max": 2.2031176262758265e-07,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "seed_name": "p2c22_saved_trusted_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 1.8564783445374385e-08,
+      "baseline_slack_force_ratio": 0.06918832304817746,
+      "overall_publishable": true
+    },
+    {
+      "eps_alpha": 0.01,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 3.598305450482204e-05,
+      "sensitivity_vector": [
+        3.537332668446247e-05,
+        6.501250269554115e-06,
+        -1.1143229800697485e-06
+      ],
+      "linearization_error_max": 1.749562148435605e-06,
+      "max_perturb_stationarity": 3.5195251535836994e-07,
+      "max_perturb_slack_force_ratio": 0.09949186965626684,
+      "branch_rms_max": 0.0007349758383922355,
+      "branch_tip_distance_max": 7.196610900964408e-07,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "seed_name": "p2c22_saved_trusted_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 1.8564783445374385e-08,
+      "baseline_slack_force_ratio": 0.06918832304817746,
+      "overall_publishable": true
+    },
+    {
+      "eps_alpha": 0.0125,
+      "publishable_gate": false,
+      "sensitivity_norm_m_per_alpha": 3.088334902514931e-05,
+      "sensitivity_vector": [
+        -2.5957645770624538e-05,
+        1.1843032015693145e-05,
+        -1.1820510383703242e-05
+      ],
+      "linearization_error_max": 5.3206605264067265e-06,
+      "max_perturb_stationarity": 2.842959475728304e-07,
+      "max_perturb_slack_force_ratio": 0.1100599492840066,
+      "branch_rms_max": 0.0015652479922056003,
+      "branch_tip_distance_max": 9.211057094192428e-07,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.4,
+      "seed_name": "p2c22_saved_trusted_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 1.8564783445374385e-08,
+      "baseline_slack_force_ratio": 0.06918832304817746,
+      "overall_publishable": false
+    },
+    {
+      "eps_alpha": 0.005,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 1.0959910954818327e-06,
+      "sensitivity_vector": [
+        -1.0497179889212838e-06,
+        -2.527891234879731e-07,
+        -1.8811242424865426e-07
+      ],
+      "linearization_error_max": 2.119356738511639e-09,
+      "max_perturb_stationarity": 3.4381663776157097e-09,
+      "max_perturb_slack_force_ratio": 0.02895215496714706,
+      "branch_rms_max": 9.318652885537422e-05,
+      "branch_tip_distance_max": 1.0959910954818328e-08,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.425,
+      "seed_name": "p2c16_historical_base_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 8.330875795740971e-11,
+      "baseline_slack_force_ratio": 0.028643612980616826,
+      "overall_publishable": true
+    },
+    {
+      "eps_alpha": 0.01,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 1.0997864806347836e-06,
+      "sensitivity_vector": [
+        -1.0533856974193068e-06,
+        -2.533912251030668e-07,
+        -1.8894910028960377e-07
+      ],
+      "linearization_error_max": 8.499940878437133e-09,
+      "max_perturb_stationarity": 8.433537834614727e-09,
+      "max_perturb_slack_force_ratio": 0.02927229431418053,
+      "branch_rms_max": 0.00018632877336410947,
+      "branch_tip_distance_max": 2.199572961269567e-08,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.425,
+      "seed_name": "p2c16_historical_base_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 8.330875795740971e-11,
+      "baseline_slack_force_ratio": 0.028643612980616826,
+      "overall_publishable": true
+    },
+    {
+      "eps_alpha": 0.0125,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 1.1026445113431922e-06,
+      "sensitivity_vector": [
+        -1.0561475627390848e-06,
+        -2.5384489024671275e-07,
+        -1.8957852149226184e-07
+      ],
+      "linearization_error_max": 1.3307528938688798e-08,
+      "max_perturb_stationarity": 7.08644608658577e-08,
+      "max_perturb_slack_force_ratio": 0.02943672644736454,
+      "branch_rms_max": 0.00023286964304582118,
+      "branch_tip_distance_max": 2.7566112783579803e-08,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.425,
+      "seed_name": "p2c16_historical_base_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 8.330875795740971e-11,
+      "baseline_slack_force_ratio": 0.028643612980616826,
+      "overall_publishable": true
+    }
+  ]
+}

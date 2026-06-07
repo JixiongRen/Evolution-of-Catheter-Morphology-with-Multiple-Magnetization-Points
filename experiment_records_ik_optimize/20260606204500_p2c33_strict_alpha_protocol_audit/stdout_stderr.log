@@ -1,0 +1,28 @@
+{
+  "experiment": "20260606204500_p2c33_strict_alpha_protocol_audit",
+  "source_evidence": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map",
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606194500_p2c30_rand20_multi_eps_recheck",
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606201000_p2c31_rand20_eps_boundary_refine"
+  ],
+  "candidate_alphas": [
+    0.375,
+    0.4,
+    0.425,
+    0.45
+  ],
+  "candidate_eps": [
+    0.005,
+    0.01,
+    0.0125
+  ],
+  "p2c22_available_alpha_count": 1,
+  "p2c22_missing_alpha_count": 3,
+  "direct_p2c30_alpha_sweep_is_valid": false,
+  "reason": "Only alpha=0.40 has the saved target/seed state required by the current P2c30/P2c31 loader.",
+  "next_required_implementation": [
+    "Add a canonical arbitrary-alpha target/seed generation stage.",
+    "Inject P2c27/P2c29 strict multi-strategy refinement into the arbitrary-alpha path.",
+    "Run alpha={0.375,0.400,0.425,0.450}, eps={0.005,0.010,0.0125} with re-optimized perturbation solves."
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "experiment": "20260606210000_p2c34_arbitrary_alpha_canonical_state_generation",
+  "wall_s": 276.4653744850002,
+  "args": {
+    "case": "n3_mixed_rand20",
+    "alphas": "0.375,0.4,0.425,0.45",
+    "strategies": "trf_strict_restart,lm_refine,trf_then_lm",
+    "max_iter": 180,
+    "restarts": 3,
+    "tol": 1e-12,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "axis_scale": 2.0,
+    "so3_scale": 2.0,
+    "boundary_scale": 0.5,
+    "slack_scale": 20.0
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "a87ceb29f77aba3d0601a725099b9e412d40e40c",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260606175600_p2c29_rand20_load_continuation_refine/\n?? experiment_records_ik_optimize/20260606194500_p2c30_rand20_multi_eps_recheck/\n?? experiment_records_ik_optimize/20260606201000_p2c31_rand20_eps_boundary_refine/\n?? experiment_records_ik_optimize/20260606202500_p2c32_rand20_boundary_synthesis/\n?? experiment_records_ik_optimize/20260606204500_p2c33_strict_alpha_protocol_audit/\n?? experiment_records_ik_optimize/20260606210000_p2c34_arbitrary_alpha_canonical_state_generation/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "alpha_count": 4,
+    "static_pass_count": 2,
+    "static_fail_count": 2
+  },
+  "rows": [
+    {
+      "method": "trf_strict_restart_r2",
+      "success": true,
+      "nfev": 150,
+      "steady_s": 0.6331624169997667,
+      "message": "`ftol` termination condition is satisfied.",
+      "position_error_m": 7.472492349464371e-06,
+      "residual_norm": 0.009880839238058308,
+      "stationarity_norm": 8.395664669558938e-06,
+      "boundary_norm": 0.008646260899428602,
+      "jacobian_condition": 1527000037.7225902,
+      "jacobian_rank": 18,
+      "tip_p": [
+        0.10393322370189421,
+        0.010663108256759882,
+        0.015974415298783524
+      ],
+      "max_slack_force_over_rigid_force": 0.8588736302075691,
+      "max_slack_torque_over_rigid_torque": 5.4301811845928897e-05,
+      "trace_boundary_norm": 0.00864626089942999,
+      "static_gate": true,
+      "strategy": "trf_strict_restart",
+      "restart_count": 3,
+      "total_nfev": 510,
+      "total_steady_s": 1.983951488999537,
+      "label": "oracle_seed",
+      "alpha": 0.375,
+      "case": "n3_mixed_rand20",
+      "seed_name": "oracle_seed",
+      "strategy_count": 3,
+      "state_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606210000_p2c34_arbitrary_alpha_canonical_state_generation/n3_mixed_rand20_alpha_0.375_canonical_state.npz",
+      "candidate_count": 2,
+      "target_p": [
+        0.10393347705175902,
+        0.010664943886612977,
+        0.015981654388422507
+      ]
+    },
+    {
+      "method": "lm_refine",
+      "success": true,
+      "nfev": 522,
+      "steady_s": 1.5613292359998923,
+      "message": "`ftol` termination condition is satisfied.",
+      "position_error_m": 5.155262681638969e-05,
+      "residual_norm": 0.03007122599135965,
+      "stationarity_norm": 0.0008359182058833766,
+      "boundary_norm": 0.015963166112441547,
+      "jacobian_condition": 99140550.33930236,
+      "jacobian_rank": 18,
+      "tip_p": [
+        0.10269616826122455,
+        0.011163904904038251,
+        0.01712739533358358
+      ],
+      "max_slack_force_over_rigid_force": 3.2041188639046165,
+      "max_slack_torque_over_rigid_torque": 4.173468688011599e-05,
+      "trace_boundary_norm": 0.015963166112480366,
+      "static_gate": false,
+      "strategy": "lm_refine",
+      "restart_count": 1,
+      "total_nfev": 522,
+      "total_steady_s": 1.5613292359998923,
+      "label": "zero_seed",
+      "alpha": 0.4,
+      "case": "n3_mixed_rand20",
+      "seed_name": "zero_seed",
+      "strategy_count": 3,
+      "state_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606210000_p2c34_arbitrary_alpha_canonical_state_generation/n3_mixed_rand20_alpha_0.400_canonical_state.npz",
+      "candidate_count": 3,
+      "target_p": [
+        0.10273186385431674,
+        0.011191613565692886,
+        0.017152209201375116
+      ]
+    },
+    {
+      "method": "trf_strict_restart_r2",
+      "success": true,
+      "nfev": 38,
+      "steady_s": 0.11910500600015439,
+      "message": "`ftol` termination condition is satisfied.",
+      "position_error_m": 4.038533484434192e-05,
+      "residual_norm": 0.057345940281029774,
+      "stationarity_norm": 4.349484455993873e-06,
+      "boundary_norm": 0.03156468464660721,
+      "jacobian_condition": 6121888.93313915,
+      "jacobian_rank": 18,
+      "tip_p": [
+        0.10187736497805319,
+        0.011216377929824115,
+        0.017151477026264086
+      ],
+      "max_slack_force_over_rigid_force": 5.896500470539466,
+      "max_slack_torque_over_rigid_torque": 7.17367109506057e-05,
+      "trace_boundary_norm": 0.03156468464660687,
+      "static_gate": false,
+      "strategy": "trf_strict_restart",
+      "restart_count": 3,
+      "total_nfev": 398,
+      "total_steady_s": 1.301096635000249,
+      "label": "oracle_seed",
+      "alpha": 0.425,
+      "case": "n3_mixed_rand20",
+      "seed_name": "oracle_seed",
+      "strategy_count": 3,
+      "state_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606210000_p2c34_arbitrary_alpha_canonical_state_generation/n3_mixed_rand20_alpha_0.425_canonical_state.npz",
+      "candidate_count": 3,
+      "target_p": [
+        0.10191769352480076,
+        0.011215953161002098,
+        0.017149378655666094
+      ]
+    },
+    {
+      "method": "lm_refine",
+      "success": true,
+      "nfev": 189,
+      "steady_s": 0.5677060130001337,
+      "message": "`ftol` termination condition is satisfied.",
+      "position_error_m": 2.6023193240972e-07,
+      "residual_norm": 0.0034934930998397652,
+      "stationarity_norm": 4.040713686764339e-08,
+      "boundary_norm": 0.006972566591777033,
+      "jacobian_condition": 477582.0218616796,
+      "jacobian_rank": 18,
+      "tip_p": [
+        0.10103089241355925,
+        0.011365968701196376,
+        0.01632032893155821
+      ],
+      "max_slack_force_over_rigid_force": 0.02172272882703031,
+      "max_slack_torque_over_rigid_torque": 1.3179435111268391e-07,
+      "trace_boundary_norm": 0.0069725665917770374,
+      "static_gate": true,
+      "strategy": "lm_refine",
+      "restart_count": 1,
+      "total_nfev": 189,
+      "total_steady_s": 0.5677060130001337,
+      "label": "zero_seed",
+      "alpha": 0.45,
+      "case": "n3_mixed_rand20",
+      "seed_name": "zero_seed",
+      "strategy_count": 3,
+      "state_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606210000_p2c34_arbitrary_alpha_canonical_state_generation/n3_mixed_rand20_alpha_0.450_canonical_state.npz",
+      "candidate_count": 3,
+      "target_p": [
+        0.10103114560831716,
+        0.01136599446209631,
+        0.01632038324039034
+      ]
+    }
+  ]
+}

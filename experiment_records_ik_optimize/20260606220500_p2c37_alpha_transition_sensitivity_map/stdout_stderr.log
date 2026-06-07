@@ -1,0 +1,66 @@
+ERROR:2026-06-06 20:51:52,113:jax._src.xla_bridge:477: Jax plugin configuration error: Exception when calling jax_plugins.xla_cuda12.initialize()
+Traceback (most recent call last):
+  File "/home/ub22/miniconda3/envs/evolution_of_mcrs/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 475, in discover_pjrt_plugins
+    plugin_module.initialize()
+  File "/home/ub22/miniconda3/envs/evolution_of_mcrs/lib/python3.11/site-packages/jax_plugins/xla_cuda12/__init__.py", line 328, in initialize
+    _check_cuda_versions(raise_on_first_error=True)
+  File "/home/ub22/miniconda3/envs/evolution_of_mcrs/lib/python3.11/site-packages/jax_plugins/xla_cuda12/__init__.py", line 285, in _check_cuda_versions
+    local_device_count = cuda_versions.cuda_device_count()
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: jaxlib/cuda/versions_helpers.cc:113: operation cuInit(0) failed: Unknown CUDA error 100; cuGetErrorName failed. This probably means that JAX was unable to load the CUDA libraries.
+E0606 20:58:07.840181     118 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.843430     129 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.843945     131 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.844230     122 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.844596     111 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.845054     108 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.845526     126 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.845670     127 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.847076     113 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.847134     119 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.847639     110 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.847926     114 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.848241     124 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.848578     121 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.848989     130 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.849385     123 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.850531     116 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.850817     128 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.850824     115 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.851216     120 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.851760     112 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.853339     109 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+E0606 20:58:07.866223     117 execution_engine.cc:54] LLVM compilation error: Cannot allocate memory
+Traceback (most recent call last):
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606220500_p2c37_alpha_transition_sensitivity_map/run_p2c37_alpha_transition_sensitivity_map.py", line 350, in <module>
+    main()
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606220500_p2c37_alpha_transition_sensitivity_map/run_p2c37_alpha_transition_sensitivity_map.py", line 318, in main
+    candidates, eps_rows = _solve_alpha(alpha, eps_values, args, heartbeat, failures)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606220500_p2c37_alpha_transition_sensitivity_map/run_p2c37_alpha_transition_sensitivity_map.py", line 156, in _solve_alpha
+    best, y, strategy_rows = p2c29._compete(
+                             ^^^^^^^^^^^^^^^
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606175600_p2c29_rand20_load_continuation_refine/run_p2c29_rand20_load_continuation_refine.py", line 108, in _compete
+    row, y, inner = p2c27._solve_strategy(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606172200_p2c27_stationarity_refinement_gate/run_p2c27_stationarity_refinement_gate.py", line 209, in _solve_strategy
+    row, y = _solve_scaled_once(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606172200_p2c27_stationarity_refinement_gate/run_p2c27_stationarity_refinement_gate.py", line 174, in _solve_scaled_once
+    row = _physical_row(
+          ^^^^^^^^^^^^^^
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606172200_p2c27_stationarity_refinement_gate/run_p2c27_stationarity_refinement_gate.py", line 103, in _physical_row
+    load = p2c24._audit_load(params, I, y)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606160747_p2c24_interface_weight_continuation_repair/run_p2c24_interface_weight_continuation_repair.py", line 220, in _audit_load
+    trace = p2c13._trace_state(params, y, steps_per_flex=4)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605123000_p2c13_rigid_load_propagation_audit/run_p2c13_rigid_load_propagation_audit.py", line 124, in _trace_state
+    x, _flex_points = _integrate_flex(params, x, i, steps_per_flex)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/inverse_kinematics/ik_terminal_shooting_jax.py", line 146, in _integrate_flex
+    (x_end, _sigma_end), flex_points = jax.lax.scan(body, (x0, jnp.asarray(0.0, dtype=jnp.float64)), jnp.arange(n_steps))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jax.errors.JaxRuntimeError: INTERNAL: Failed to materialize symbols: { (<xla_jit_dylib_4>, { concatenate_dot_fusion }) }
+--------------------
+For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.

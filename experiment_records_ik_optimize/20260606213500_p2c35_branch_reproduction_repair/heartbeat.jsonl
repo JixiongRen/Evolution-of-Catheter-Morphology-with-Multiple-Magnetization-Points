@@ -1,0 +1,80 @@
+{"phase": "candidate_start", "alpha": 0.4, "seed": "oracle_seed", "ts": 1780749361.0102398}
+{"ts": 1780749361.0105364, "phase": "strategy_start", "label": "oracle_seed", "alpha": 0.4, "strategy": "trf_strict_restart"}
+{"ts": 1780749381.7784603, "phase": "strategy_done", "label": "oracle_seed", "alpha": 0.4, "strategy": "trf_strict_restart", "stationarity_norm": 0.048839685699712795, "static_gate": false}
+{"ts": 1780749381.7787879, "phase": "strategy_start", "label": "oracle_seed", "alpha": 0.4, "strategy": "lm_refine"}
+{"ts": 1780749384.6666594, "phase": "strategy_done", "label": "oracle_seed", "alpha": 0.4, "strategy": "lm_refine", "stationarity_norm": 0.42347515730041946, "static_gate": false}
+{"ts": 1780749384.6670098, "phase": "strategy_start", "label": "oracle_seed", "alpha": 0.4, "strategy": "trf_then_lm"}
+{"ts": 1780749389.7508986, "phase": "strategy_done", "label": "oracle_seed", "alpha": 0.4, "strategy": "trf_then_lm", "stationarity_norm": 0.2721473049303402, "static_gate": false}
+{"phase": "candidate_done", "alpha": 0.4, "seed": "oracle_seed", "static_gate": false, "ts": 1780749389.7567887}
+{"phase": "candidate_start", "alpha": 0.4, "seed": "zero_seed", "ts": 1780749389.7569005}
+{"ts": 1780749389.7569609, "phase": "strategy_start", "label": "zero_seed", "alpha": 0.4, "strategy": "trf_strict_restart"}
+{"ts": 1780749395.7792125, "phase": "strategy_done", "label": "zero_seed", "alpha": 0.4, "strategy": "trf_strict_restart", "stationarity_norm": 10.361060112784433, "static_gate": false}
+{"ts": 1780749395.779541, "phase": "strategy_start", "label": "zero_seed", "alpha": 0.4, "strategy": "lm_refine"}
+{"ts": 1780749398.674718, "phase": "strategy_done", "label": "zero_seed", "alpha": 0.4, "strategy": "lm_refine", "stationarity_norm": 0.0008359182058833766, "static_gate": false}
+{"ts": 1780749398.6751618, "phase": "strategy_start", "label": "zero_seed", "alpha": 0.4, "strategy": "trf_then_lm"}
+{"ts": 1780749404.7168946, "phase": "strategy_done", "label": "zero_seed", "alpha": 0.4, "strategy": "trf_then_lm", "stationarity_norm": 92.21485228814852, "static_gate": false}
+{"phase": "candidate_done", "alpha": 0.4, "seed": "zero_seed", "static_gate": false, "ts": 1780749404.7220423}
+{"phase": "candidate_start", "alpha": 0.4, "seed": "p2c34_canonical_seed", "ts": 1780749404.7221437}
+{"ts": 1780749404.7222006, "phase": "strategy_start", "label": "p2c34_canonical_seed", "alpha": 0.4, "strategy": "trf_strict_restart"}
+{"ts": 1780749408.7632568, "phase": "strategy_done", "label": "p2c34_canonical_seed", "alpha": 0.4, "strategy": "trf_strict_restart", "stationarity_norm": 6.5861372903855235e-06, "static_gate": false}
+{"ts": 1780749408.7636993, "phase": "strategy_start", "label": "p2c34_canonical_seed", "alpha": 0.4, "strategy": "lm_refine"}
+{"ts": 1780749410.0943093, "phase": "strategy_done", "label": "p2c34_canonical_seed", "alpha": 0.4, "strategy": "lm_refine", "stationarity_norm": 0.0008359182058833766, "static_gate": false}
+{"ts": 1780749410.0947633, "phase": "strategy_start", "label": "p2c34_canonical_seed", "alpha": 0.4, "strategy": "trf_then_lm"}
+{"ts": 1780749413.1142855, "phase": "strategy_done", "label": "p2c34_canonical_seed", "alpha": 0.4, "strategy": "trf_then_lm", "stationarity_norm": 0.00016718451970476638, "static_gate": false}
+{"phase": "candidate_done", "alpha": 0.4, "seed": "p2c34_canonical_seed", "static_gate": false, "ts": 1780749413.1200376}
+{"phase": "candidate_start", "alpha": 0.4, "seed": "p2c22_saved_trusted_seed", "ts": 1780749413.120136}
+{"ts": 1780749413.1201904, "phase": "strategy_start", "label": "p2c22_saved_trusted_seed", "alpha": 0.4, "strategy": "trf_strict_restart"}
+{"ts": 1780749417.1600666, "phase": "strategy_done", "label": "p2c22_saved_trusted_seed", "alpha": 0.4, "strategy": "trf_strict_restart", "stationarity_norm": 1.8564783445374385e-08, "static_gate": true}
+{"ts": 1780749417.1608522, "phase": "strategy_start", "label": "p2c22_saved_trusted_seed", "alpha": 0.4, "strategy": "lm_refine"}
+{"ts": 1780749419.3420794, "phase": "strategy_done", "label": "p2c22_saved_trusted_seed", "alpha": 0.4, "strategy": "lm_refine", "stationarity_norm": 4.746471509474736e-07, "static_gate": true}
+{"ts": 1780749419.342442, "phase": "strategy_start", "label": "p2c22_saved_trusted_seed", "alpha": 0.4, "strategy": "trf_then_lm"}
+{"ts": 1780749422.7785194, "phase": "strategy_done", "label": "p2c22_saved_trusted_seed", "alpha": 0.4, "strategy": "trf_then_lm", "stationarity_norm": 9.933352916159892e-08, "static_gate": true}
+{"phase": "candidate_done", "alpha": 0.4, "seed": "p2c22_saved_trusted_seed", "static_gate": true, "ts": 1780749422.7832189}
+{"phase": "candidate_start", "alpha": 0.425, "seed": "oracle_seed", "ts": 1780749439.4766846}
+{"ts": 1780749439.4770494, "phase": "strategy_start", "label": "oracle_seed", "alpha": 0.425, "strategy": "trf_strict_restart"}
+{"ts": 1780749458.0937557, "phase": "strategy_done", "label": "oracle_seed", "alpha": 0.425, "strategy": "trf_strict_restart", "stationarity_norm": 4.349484455993873e-06, "static_gate": false}
+{"ts": 1780749458.0941153, "phase": "strategy_start", "label": "oracle_seed", "alpha": 0.425, "strategy": "lm_refine"}
+{"ts": 1780749461.126619, "phase": "strategy_done", "label": "oracle_seed", "alpha": 0.425, "strategy": "lm_refine", "stationarity_norm": 78.494173977671, "static_gate": false}
+{"ts": 1780749461.1274242, "phase": "strategy_start", "label": "oracle_seed", "alpha": 0.425, "strategy": "trf_then_lm"}
+{"ts": 1780749465.332309, "phase": "strategy_done", "label": "oracle_seed", "alpha": 0.425, "strategy": "trf_then_lm", "stationarity_norm": 9.125947979381529e-06, "static_gate": false}
+{"phase": "candidate_done", "alpha": 0.425, "seed": "oracle_seed", "static_gate": false, "ts": 1780749465.3373091}
+{"phase": "candidate_start", "alpha": 0.425, "seed": "zero_seed", "ts": 1780749465.3374069}
+{"ts": 1780749465.3374598, "phase": "strategy_start", "label": "zero_seed", "alpha": 0.425, "strategy": "trf_strict_restart"}
+{"ts": 1780749472.4362068, "phase": "strategy_done", "label": "zero_seed", "alpha": 0.425, "strategy": "trf_strict_restart", "stationarity_norm": 16.988682607481824, "static_gate": false}
+{"ts": 1780749472.4365282, "phase": "strategy_start", "label": "zero_seed", "alpha": 0.425, "strategy": "lm_refine"}
+{"ts": 1780749475.4265487, "phase": "strategy_done", "label": "zero_seed", "alpha": 0.425, "strategy": "lm_refine", "stationarity_norm": 396.4457404075444, "static_gate": false}
+{"ts": 1780749475.4270403, "phase": "strategy_start", "label": "zero_seed", "alpha": 0.425, "strategy": "trf_then_lm"}
+{"ts": 1780749480.4002142, "phase": "strategy_done", "label": "zero_seed", "alpha": 0.425, "strategy": "trf_then_lm", "stationarity_norm": 48.40606377645545, "static_gate": false}
+{"phase": "candidate_done", "alpha": 0.425, "seed": "zero_seed", "static_gate": false, "ts": 1780749480.4053602}
+{"phase": "candidate_start", "alpha": 0.425, "seed": "p2c34_canonical_seed", "ts": 1780749480.40546}
+{"ts": 1780749480.4055152, "phase": "strategy_start", "label": "p2c34_canonical_seed", "alpha": 0.425, "strategy": "trf_strict_restart"}
+{"ts": 1780749485.5740442, "phase": "strategy_done", "label": "p2c34_canonical_seed", "alpha": 0.425, "strategy": "trf_strict_restart", "stationarity_norm": 3.2330986920418916e-06, "static_gate": false}
+{"ts": 1780749485.5745435, "phase": "strategy_start", "label": "p2c34_canonical_seed", "alpha": 0.425, "strategy": "lm_refine"}
+{"ts": 1780749486.9306226, "phase": "strategy_done", "label": "p2c34_canonical_seed", "alpha": 0.425, "strategy": "lm_refine", "stationarity_norm": 1.5016371378168388e-05, "static_gate": false}
+{"ts": 1780749486.9310896, "phase": "strategy_start", "label": "p2c34_canonical_seed", "alpha": 0.425, "strategy": "trf_then_lm"}
+{"ts": 1780749489.656159, "phase": "strategy_done", "label": "p2c34_canonical_seed", "alpha": 0.425, "strategy": "trf_then_lm", "stationarity_norm": 3.2330986920418916e-06, "static_gate": false}
+{"phase": "candidate_done", "alpha": 0.425, "seed": "p2c34_canonical_seed", "static_gate": false, "ts": 1780749489.6609998}
+{"phase": "candidate_start", "alpha": 0.425, "seed": "p2c16_historical_base_seed", "ts": 1780749489.6612318}
+{"ts": 1780749489.661425, "phase": "strategy_start", "label": "p2c16_historical_base_seed", "alpha": 0.425, "strategy": "trf_strict_restart"}
+{"ts": 1780749490.9955637, "phase": "strategy_done", "label": "p2c16_historical_base_seed", "alpha": 0.425, "strategy": "trf_strict_restart", "stationarity_norm": 8.330875795740971e-11, "static_gate": true}
+{"ts": 1780749490.996018, "phase": "strategy_start", "label": "p2c16_historical_base_seed", "alpha": 0.425, "strategy": "lm_refine"}
+{"ts": 1780749492.3356156, "phase": "strategy_done", "label": "p2c16_historical_base_seed", "alpha": 0.425, "strategy": "lm_refine", "stationarity_norm": 5.93485388667133e-10, "static_gate": true}
+{"ts": 1780749492.3361104, "phase": "strategy_start", "label": "p2c16_historical_base_seed", "alpha": 0.425, "strategy": "trf_then_lm"}
+{"ts": 1780749495.0977674, "phase": "strategy_done", "label": "p2c16_historical_base_seed", "alpha": 0.425, "strategy": "trf_then_lm", "stationarity_norm": 8.330875795740971e-11, "static_gate": true}
+{"phase": "candidate_done", "alpha": 0.425, "seed": "p2c16_historical_base_seed", "static_gate": true, "ts": 1780749495.1023624}
+{"phase": "candidate_start", "alpha": 0.425, "seed": "reverse_from_alpha_0.450_seed", "ts": 1780749495.1025336}
+{"ts": 1780749495.102645, "phase": "strategy_start", "label": "reverse_from_alpha_0.450_seed", "alpha": 0.425, "strategy": "trf_strict_restart"}
+{"ts": 1780749496.6514084, "phase": "strategy_done", "label": "reverse_from_alpha_0.450_seed", "alpha": 0.425, "strategy": "trf_strict_restart", "stationarity_norm": 3.8695551440012245e-08, "static_gate": true}
+{"ts": 1780749496.6519065, "phase": "strategy_start", "label": "reverse_from_alpha_0.450_seed", "alpha": 0.425, "strategy": "lm_refine"}
+{"ts": 1780749498.786381, "phase": "strategy_done", "label": "reverse_from_alpha_0.450_seed", "alpha": 0.425, "strategy": "lm_refine", "stationarity_norm": 5.783806815789658e-08, "static_gate": true}
+{"ts": 1780749498.7867806, "phase": "strategy_start", "label": "reverse_from_alpha_0.450_seed", "alpha": 0.425, "strategy": "trf_then_lm"}
+{"ts": 1780749502.2848594, "phase": "strategy_done", "label": "reverse_from_alpha_0.450_seed", "alpha": 0.425, "strategy": "trf_then_lm", "stationarity_norm": 3.8695551440012245e-08, "static_gate": true}
+{"phase": "candidate_done", "alpha": 0.425, "seed": "reverse_from_alpha_0.450_seed", "static_gate": true, "ts": 1780749502.2897575}
+{"phase": "candidate_start", "alpha": 0.425, "seed": "forward_from_alpha_0.375_seed", "ts": 1780749502.2899313}
+{"ts": 1780749502.2900424, "phase": "strategy_start", "label": "forward_from_alpha_0.375_seed", "alpha": 0.425, "strategy": "trf_strict_restart"}
+{"ts": 1780749508.6958067, "phase": "strategy_done", "label": "forward_from_alpha_0.375_seed", "alpha": 0.425, "strategy": "trf_strict_restart", "stationarity_norm": 1542.494504758956, "static_gate": false}
+{"ts": 1780749508.69635, "phase": "strategy_start", "label": "forward_from_alpha_0.375_seed", "alpha": 0.425, "strategy": "lm_refine"}
+{"ts": 1780749511.7111075, "phase": "strategy_done", "label": "forward_from_alpha_0.375_seed", "alpha": 0.425, "strategy": "lm_refine", "stationarity_norm": 1038.7867629855175, "static_gate": false}
+{"ts": 1780749511.7116213, "phase": "strategy_start", "label": "forward_from_alpha_0.375_seed", "alpha": 0.425, "strategy": "trf_then_lm"}
+{"ts": 1780749516.8836918, "phase": "strategy_done", "label": "forward_from_alpha_0.375_seed", "alpha": 0.425, "strategy": "trf_then_lm", "stationarity_norm": 14154.448922922598, "static_gate": false}
+{"phase": "candidate_done", "alpha": 0.425, "seed": "forward_from_alpha_0.375_seed", "static_gate": false, "ts": 1780749516.8903332}

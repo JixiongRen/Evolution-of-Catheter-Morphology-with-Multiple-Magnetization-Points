@@ -1,0 +1,294 @@
+{
+  "experiment": "20260606220500_p2c37_alpha_transition_sensitivity_map",
+  "recovery_wall_s": 251.86464725400037,
+  "args": {
+    "eps_values": "0.010,0.0125",
+    "strategies": "trf_strict_restart,lm_refine,trf_then_lm",
+    "max_iter": 180,
+    "restarts": 3,
+    "tol": 1e-12,
+    "steps_per_flex": 4,
+    "position_scale": 60.0,
+    "axis_scale": 2.0,
+    "so3_scale": 2.0,
+    "boundary_scale": 0.5,
+    "slack_scale": 20.0
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "a87ceb29f77aba3d0601a725099b9e412d40e40c",
+    "status_short": "M experiment_records_fk_optimize/20260525094651_fk_new_tol_sweep/run_tol_sweep.py\n?? docs/efficiency_optimization_experiment/manual_fk_probe_20260523_user_case/\n?? experiment_records_ik_optimize/20260606175600_p2c29_rand20_load_continuation_refine/\n?? experiment_records_ik_optimize/20260606194500_p2c30_rand20_multi_eps_recheck/\n?? experiment_records_ik_optimize/20260606201000_p2c31_rand20_eps_boundary_refine/\n?? experiment_records_ik_optimize/20260606202500_p2c32_rand20_boundary_synthesis/\n?? experiment_records_ik_optimize/20260606204500_p2c33_strict_alpha_protocol_audit/\n?? experiment_records_ik_optimize/20260606210000_p2c34_arbitrary_alpha_canonical_state_generation/\n?? experiment_records_ik_optimize/20260606213500_p2c35_branch_reproduction_repair/\n?? experiment_records_ik_optimize/20260606215000_p2c36_trusted_branch_sensitivity_replay/\n?? experiment_records_ik_optimize/20260606220500_p2c37_alpha_transition_sensitivity_map/\n?? references/\n?? research_outputs/"
+  },
+  "overall": {
+    "baseline_count": 4,
+    "baseline_static_pass_count": 4,
+    "eps_count": 8,
+    "publishable_eps_count": 4,
+    "diagnostic_eps_count": 4,
+    "max_branch_rms": 0.00604162926260426
+  },
+  "baselines": [
+    {
+      "position_error_m": 5.362369933475414e-07,
+      "residual_norm": 0.0040284863673534345,
+      "stationarity_norm": 5.015028133854125e-10,
+      "boundary_norm": 0.008027276770886457,
+      "jacobian_condition": 474527.98829318443,
+      "jacobian_rank": 18,
+      "max_slack_force_over_rigid_force": 0.03520434477199229,
+      "max_slack_torque_over_rigid_torque": 2.1062109031394564e-07,
+      "trace_boundary_norm": 0.00802727677088642,
+      "static_gate": true,
+      "tip_p": [
+        0.10249363584398345,
+        0.01125169337059732,
+        0.017314162768738227
+      ],
+      "case": "n3_mixed_rand20",
+      "alpha": 0.405,
+      "seed_name": "trusted_alpha_0.425_seed",
+      "branch_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606220500_p2c37_alpha_transition_sensitivity_map/alpha_0.405_trusted_alpha_0.425_seed_baseline_branch.npz"
+    },
+    {
+      "position_error_m": 4.733947723641742e-07,
+      "residual_norm": 0.003927662941033887,
+      "stationarity_norm": 3.393329282032753e-10,
+      "boundary_norm": 0.007829064287315488,
+      "jacobian_condition": 483998.9531519366,
+      "jacobian_rank": 18,
+      "max_slack_force_over_rigid_force": 0.032543604292431916,
+      "max_slack_torque_over_rigid_torque": 1.9093784826236905e-07,
+      "trace_boundary_norm": 0.007829064287315583,
+      "static_gate": true,
+      "tip_p": [
+        0.10219155060922368,
+        0.011313498967393336,
+        0.017546201202069265
+      ],
+      "case": "n3_mixed_rand20",
+      "alpha": 0.41,
+      "seed_name": "reverse_alpha_0.425_seed",
+      "branch_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606220500_p2c37_alpha_transition_sensitivity_map/alpha_0.410_reverse_alpha_0.425_seed_baseline_branch.npz"
+    },
+    {
+      "position_error_m": 4.6682602383556267e-07,
+      "residual_norm": 0.003913367734934263,
+      "stationarity_norm": 1.342822200135925e-10,
+      "boundary_norm": 0.007801218861557562,
+      "jacobian_condition": 503104.36562259216,
+      "jacobian_rank": 18,
+      "max_slack_force_over_rigid_force": 0.031791290101425604,
+      "max_slack_torque_over_rigid_torque": 1.9000572909107614e-07,
+      "trace_boundary_norm": 0.007801218861557577,
+      "static_gate": true,
+      "tip_p": [
+        0.10219569622458624,
+        0.011240324487198514,
+        0.017355443955233963
+      ],
+      "case": "n3_mixed_rand20",
+      "alpha": 0.415,
+      "seed_name": "trusted_alpha_0.425_seed",
+      "branch_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606220500_p2c37_alpha_transition_sensitivity_map/alpha_0.415_trusted_alpha_0.425_seed_baseline_branch.npz"
+    },
+    {
+      "position_error_m": 4.443054930811085e-08,
+      "residual_norm": 0.0026781504478262776,
+      "stationarity_norm": 3.3319453047286517e-10,
+      "boundary_norm": 0.005347337115076693,
+      "jacobian_condition": 340392.83741098584,
+      "jacobian_rank": 18,
+      "max_slack_force_over_rigid_force": 0.01578131354058932,
+      "max_slack_torque_over_rigid_torque": 2.7600441158492024e-07,
+      "trace_boundary_norm": 0.005347337115076705,
+      "static_gate": true,
+      "tip_p": [
+        0.10232971251134337,
+        0.011150503319084272,
+        0.016854357440942536
+      ],
+      "case": "n3_mixed_rand20",
+      "alpha": 0.42,
+      "seed_name": "trusted_alpha_0.400_seed",
+      "branch_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606220500_p2c37_alpha_transition_sensitivity_map/alpha_0.420_trusted_alpha_0.400_seed_baseline_branch.npz"
+    }
+  ],
+  "eps_rows": [
+    {
+      "eps_alpha": 0.01,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 1.6983007420727477e-06,
+      "sensitivity_vector": [
+        -1.6239115330218823e-06,
+        -3.921862223865702e-07,
+        -3.0549420684117257e-07
+      ],
+      "linearization_error_max": 1.687726297609168e-08,
+      "max_perturb_stationarity": 1.4391664431279344e-09,
+      "max_perturb_slack_force_ratio": 0.03620160686873202,
+      "branch_rms_max": 0.00017892099705430804,
+      "branch_tip_distance_max": 3.3966014841454956e-08,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.405,
+      "seed_name": "trusted_alpha_0.425_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 5.015028133854125e-10,
+      "baseline_slack_force_ratio": 0.03520434477199229,
+      "overall_publishable": true
+    },
+    {
+      "eps_alpha": 0.0125,
+      "publishable_gate": false,
+      "sensitivity_norm_m_per_alpha": 0.001633984751100756,
+      "sensitivity_vector": [
+        -0.001541484753440625,
+        -0.0001142072707869396,
+        -0.0005297996046046971
+      ],
+      "linearization_error_max": 0.00019518086755207026,
+      "max_perturb_stationarity": 108.57804586047162,
+      "max_perturb_slack_force_ratio": 2.420715465162274,
+      "branch_rms_max": 0.005891346078559312,
+      "branch_tip_distance_max": 4.08496187775189e-05,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.405,
+      "seed_name": "trusted_alpha_0.425_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 5.015028133854125e-10,
+      "baseline_slack_force_ratio": 0.03520434477199229,
+      "overall_publishable": false
+    },
+    {
+      "eps_alpha": 0.01,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 1.359166881032344e-06,
+      "sensitivity_vector": [
+        -1.2991683701057966e-06,
+        -3.210807395133408e-07,
+        -2.374938216573308e-07
+      ],
+      "linearization_error_max": 1.2091038560177172e-08,
+      "max_perturb_stationarity": 3.929059241758673e-09,
+      "max_perturb_slack_force_ratio": 0.03338049731277716,
+      "branch_rms_max": 0.0001798510084214791,
+      "branch_tip_distance_max": 2.718333762064688e-08,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.41,
+      "seed_name": "reverse_alpha_0.425_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 3.393329282032753e-10,
+      "baseline_slack_force_ratio": 0.032543604292431916,
+      "overall_publishable": true
+    },
+    {
+      "eps_alpha": 0.0125,
+      "publishable_gate": false,
+      "sensitivity_norm_m_per_alpha": 0.001622881005011604,
+      "sensitivity_vector": [
+        -0.0015429722017218372,
+        -9.58233656617874e-05,
+        -0.0004937584670001993
+      ],
+      "linearization_error_max": 0.00019435179798993622,
+      "max_perturb_stationarity": 150.69297974310587,
+      "max_perturb_slack_force_ratio": 2.384667103370071,
+      "branch_rms_max": 0.00602874101765261,
+      "branch_tip_distance_max": 4.05720251252901e-05,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.41,
+      "seed_name": "reverse_alpha_0.425_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 3.393329282032753e-10,
+      "baseline_slack_force_ratio": 0.032543604292431916,
+      "overall_publishable": false
+    },
+    {
+      "eps_alpha": 0.01,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 1.3893944116912263e-06,
+      "sensitivity_vector": [
+        -1.330004483629521e-06,
+        -3.167018434828417e-07,
+        -2.4739613396079774e-07
+      ],
+      "linearization_error_max": 1.2182382186323467e-08,
+      "max_perturb_stationarity": 4.942690599815137e-10,
+      "max_perturb_slack_force_ratio": 0.03257706457340496,
+      "branch_rms_max": 0.0001810498456610347,
+      "branch_tip_distance_max": 2.778788823382452e-08,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.415,
+      "seed_name": "trusted_alpha_0.425_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 1.342822200135925e-10,
+      "baseline_slack_force_ratio": 0.031791290101425604,
+      "overall_publishable": true
+    },
+    {
+      "eps_alpha": 0.0125,
+      "publishable_gate": false,
+      "sensitivity_norm_m_per_alpha": 0.001527731888836262,
+      "sensitivity_vector": [
+        -0.0014555104838870347,
+        -9.227922330053151e-05,
+        -0.00045490493557356904
+      ],
+      "linearization_error_max": 0.00018300763572833218,
+      "max_perturb_stationarity": 151.47365228232283,
+      "max_perturb_slack_force_ratio": 2.272512418448685,
+      "branch_rms_max": 0.00604162926260426,
+      "branch_tip_distance_max": 3.819329722090655e-05,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.415,
+      "seed_name": "trusted_alpha_0.425_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 1.342822200135925e-10,
+      "baseline_slack_force_ratio": 0.031791290101425604,
+      "overall_publishable": false
+    },
+    {
+      "eps_alpha": 0.01,
+      "publishable_gate": true,
+      "sensitivity_norm_m_per_alpha": 7.857558164285802e-06,
+      "sensitivity_vector": [
+        -7.742551608180825e-06,
+        2.693825657332227e-07,
+        -1.312077716093818e-06
+      ],
+      "linearization_error_max": 2.822583668480729e-07,
+      "max_perturb_stationarity": 2.9474947591789614e-08,
+      "max_perturb_slack_force_ratio": 0.01812598120374024,
+      "branch_rms_max": 0.0009839860365519473,
+      "branch_tip_distance_max": 1.5715116328571606e-07,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.42,
+      "seed_name": "trusted_alpha_0.400_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 3.3319453047286517e-10,
+      "baseline_slack_force_ratio": 0.01578131354058932,
+      "overall_publishable": true
+    },
+    {
+      "eps_alpha": 0.0125,
+      "publishable_gate": false,
+      "sensitivity_norm_m_per_alpha": 8.659630545909107e-06,
+      "sensitivity_vector": [
+        -8.529462377504515e-06,
+        3.7398374549968416e-07,
+        -1.4483124319286667e-06
+      ],
+      "linearization_error_max": 4.829408045088927e-07,
+      "max_perturb_stationarity": 1.285362590437585e-09,
+      "max_perturb_slack_force_ratio": 0.01999026929817086,
+      "branch_rms_max": 0.0012420668331601442,
+      "branch_tip_distance_max": 2.164907636477277e-07,
+      "case": "n3_mixed_rand20",
+      "alpha": 0.42,
+      "seed_name": "trusted_alpha_0.400_seed",
+      "baseline_static_gate": true,
+      "baseline_stationarity_norm": 3.3319453047286517e-10,
+      "baseline_slack_force_ratio": 0.01578131354058932,
+      "overall_publishable": false
+    }
+  ]
+}
