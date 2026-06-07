@@ -1,0 +1,3 @@
+any_gate_pass,best_jacobian_condition,best_mode,best_position_error_m,best_slack_force_ratio,best_stationarity_norm,case,min_terminal_force_mode,min_terminal_force_norm,min_terminal_torque_mode,min_terminal_torque_norm,pass_modes,row_count
+False,29477605.172550257,full,0.0003495249303190312,2.4916989519984325,0.009294627957892121,n1_tip_z_rand15,none,0.0018310809766409638,full,0.02925035058584912,,4
+False,66364948.724450454,torque,0.000549725615021906,3.920805682273095,6.154197483752991,n2_z_pair_rand12,full,0.005140009253445605,torque,0.0902802049863234,,4
