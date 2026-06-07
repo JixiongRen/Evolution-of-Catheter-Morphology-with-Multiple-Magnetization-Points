@@ -1,0 +1,88 @@
+{
+  "experiment": "20260607193000_p2c55_combined_load_gate_audit",
+  "wall_s": 414.1465857869989,
+  "case": "n2_z_pair_rand12",
+  "alpha": 0.1,
+  "base_row": {
+    "case": "n2_z_pair_rand12",
+    "alpha": 0.1,
+    "stage": 6,
+    "position_scale": 60.0,
+    "continuity_scale": 0.25,
+    "max_iter": 240,
+    "position_error_m": 1.1901039851890361e-07,
+    "stationarity_norm": 1.3147105790574265e-07,
+    "jacobian_condition": 116924116.22903484,
+    "jacobian_rank": 18,
+    "continuity_norm": 0.00195729570188392,
+    "terminal_force_norm": 0.0007720115172379216,
+    "terminal_torque_norm": 1.0553735960440518e-05,
+    "steady_s": 28.37785224899926,
+    "nfev": 185,
+    "success": true,
+    "max_interface_force_jump_over_rigid_force": 4.365870197604777,
+    "max_interface_torque_jump_over_rigid_torque": 2.3908001198880407e-05,
+    "max_interface_jump_norm": 0.0015383870909209997,
+    "baseline_gate": false,
+    "failure_class": "刚性磁体段载荷传播失配"
+  },
+  "summary": {
+    "publish_gate": false,
+    "diagnostic_gate": false,
+    "max_force_jump_abs_N": 0.0016310934828247202,
+    "max_force_ratio_to_rigid_load": 4.365870197604777,
+    "max_force_ratio_to_internal_force": 1.012050419697709,
+    "max_torque_ratio_to_internal_torque": 1.285722908256251e-05,
+    "max_normalized_jump_norm": 0.0015383870909209997,
+    "stationarity_norm": 1.3147105790574265e-07,
+    "jacobian_condition": 116924116.22903484,
+    "continuity_norm": 0.00195729570188392,
+    "position_error_m": 1.1901039851890361e-07
+  },
+  "rows": [
+    {
+      "interface": 0,
+      "jump_force_norm": 0.0012830568464596449,
+      "jump_torque_norm": 3.7018962030617684e-11,
+      "rigid_force_norm": 0.00040750682632495006,
+      "rigid_torque_norm": 3.7276964623872397e-06,
+      "pre_force_norm": 0.001361359840333384,
+      "post_force_norm": 0.0015297990068626763,
+      "next_force_norm": 0.0014151224492067076,
+      "pre_torque_norm": 2.8338433729933034e-05,
+      "post_torque_norm": 2.4753761811070598e-05,
+      "next_torque_norm": 2.475376027185616e-05,
+      "force_ratio_to_rigid_load": 3.148553014512013,
+      "force_ratio_to_internal_force": 0.8387094256852394,
+      "torque_ratio_to_rigid_load": 9.93078766046056e-06,
+      "torque_ratio_to_internal_torque": 1.306316445835031e-06,
+      "normalized_jump_norm": 0.001210112235745466
+    },
+    {
+      "interface": 1,
+      "jump_force_norm": 0.0016310934828247202,
+      "jump_torque_norm": 8.235927424654679e-11,
+      "rigid_force_norm": 0.0003736010025491775,
+      "rigid_torque_norm": 3.4448414805334547e-06,
+      "pre_force_norm": 0.001473359222621721,
+      "post_force_norm": 0.0016116721569187377,
+      "next_force_norm": 0.0007051340895172092,
+      "pre_torque_norm": 5.110564226910276e-06,
+      "post_torque_norm": 6.405677440437454e-06,
+      "next_torque_norm": 6.40567837110764e-06,
+      "force_ratio_to_rigid_load": 4.365870197604777,
+      "force_ratio_to_internal_force": 1.012050419697709,
+      "torque_ratio_to_rigid_load": 2.3908001198880407e-05,
+      "torque_ratio_to_internal_torque": 1.285722908256251e-05,
+      "normalized_jump_norm": 0.0015383870909209997
+    }
+  ],
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "c24186559436c41394090d9a17f029abca825f2d",
+    "status_short": "?? .codegraph/\n?? experiment_records_ik_optimize/20260607193000_p2c55_combined_load_gate_audit/"
+  },
+  "jax_devices": [
+    "cuda:0"
+  ]
+}
