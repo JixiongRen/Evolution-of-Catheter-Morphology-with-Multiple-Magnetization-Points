@@ -1,0 +1,36 @@
+{
+  "experiment": "20260606202500_p2c32_rand20_boundary_synthesis",
+  "sources": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260605132600_p2c16_alpha_boundary_phase_map",
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606194500_p2c30_rand20_multi_eps_recheck",
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260606201000_p2c31_rand20_eps_boundary_refine"
+  ],
+  "alpha_evidence": {
+    "trusted_alpha_interval_observed": [
+      0.4,
+      0.425
+    ],
+    "failed_low_alpha_observed": [
+      0.35,
+      0.375
+    ],
+    "critical_high_alpha_observed": [
+      0.45
+    ]
+  },
+  "eps_boundary_at_alpha_0p4": {
+    "publishable_eps_max_observed": 0.01,
+    "failed_eps_min_observed": 0.0125,
+    "critical_interval": [
+      0.01,
+      0.0125
+    ],
+    "dominant_failure": "branch drift"
+  },
+  "failure_count": 7,
+  "recommendations": [
+    "Do not publish sensitivities for n3_mixed_rand20 at alpha=0.4 with eps greater than 0.01.",
+    "Use alpha=0.40-0.425 as the current local trusted loading window, pending same-protocol replication.",
+    "Run the next experiment with the P2c30/P2c31 refinement protocol across alpha values to remove protocol mismatch."
+  ]
+}
