@@ -1,0 +1,10 @@
+{"case": "n1_tip_z_rand15", "source": "P2c28", "failure_class": "刚性磁体段载荷传播失配", "failure_modes": "一阶最优性退化;条件数偏高;刚性磁体段载荷传播失配", "recommendation": "停止扰动扫描，优先做接口物理闭合或载荷传播重参数化。"}
+{"case": "n2_z_pair_rand12", "source": "P2c28", "failure_class": "刚性磁体段载荷传播失配", "failure_modes": "一阶最优性退化;条件数偏高;刚性磁体段载荷传播失配", "recommendation": "停止扰动扫描，优先做接口物理闭合或载荷传播重参数化。"}
+{"case": "n1_tip_z_rand15", "source": "P2c10n", "failure_class": "一阶平稳性不足", "failure_modes": "一阶最优性退化;条件数病态;有效秩不足", "recommendation": "仅发布有效子空间灵敏度；不得宣称完整三维位置灵敏度。"}
+{"case": "n1_tip_z_rand15", "source": "P2c10n", "failure_class": "局部条件数过高", "failure_modes": "条件数病态;有效秩不足", "recommendation": "仅发布有效子空间灵敏度；不得宣称完整三维位置灵敏度。"}
+{"case": "n1_tip_z_rand15", "source": "P2c10n", "failure_class": "局部条件数过高", "failure_modes": "条件数病态;有效秩不足", "recommendation": "仅发布有效子空间灵敏度；不得宣称完整三维位置灵敏度。"}
+{"case": "n1_tip_z_rand15", "source": "P2c10n", "failure_class": "局部条件数过高", "failure_modes": "条件数病态;有效秩不足", "recommendation": "仅发布有效子空间灵敏度；不得宣称完整三维位置灵敏度。"}
+{"case": "n2_z_pair_rand12", "source": "P2c10n", "failure_class": "一阶平稳性不足", "failure_modes": "一阶最优性退化;条件数病态", "recommendation": "先做任务降维和病态方向识别，不做大规模扫描。"}
+{"case": "n2_z_pair_rand12", "source": "P2c10n", "failure_class": "一阶平稳性不足", "failure_modes": "一阶最优性退化;条件数病态", "recommendation": "先做任务降维和病态方向识别，不做大规模扫描。"}
+{"case": "n2_z_pair_rand12", "source": "P2c10n", "failure_class": "局部条件数过高", "failure_modes": "条件数病态;有效秩不足", "recommendation": "先做任务降维和病态方向识别，不做大规模扫描。"}
+{"case": "n2_z_pair_rand12", "source": "P2c10n", "failure_class": "局部条件数过高", "failure_modes": "条件数病态;有效秩不足", "recommendation": "先做任务降维和病态方向识别，不做大规模扫描。"}
