@@ -1,0 +1,3 @@
+any_gate_pass,best_boundary_scale,best_dominant_gradient_block,best_failure_class,best_jacobian_condition,best_position_error_m,best_slack_force_ratio,best_stationarity_norm,boundary_dominant_count,case,min_condition,min_slack_force_ratio,row_count
+False,0.25,boundary,载荷传播失配,29477605.173167508,0.0003495249303180894,2.491698951999271,0.009294627930906308,3,n1_tip_z_rand15,5163855.724367644,2.3794782360431026,6
+False,0.25,boundary,载荷传播失配,65892235.261831835,0.0005495851664880306,3.921011606924805,6.160201335529769,5,n2_z_pair_rand12,8812961.921475077,0.22315810503131117,6
