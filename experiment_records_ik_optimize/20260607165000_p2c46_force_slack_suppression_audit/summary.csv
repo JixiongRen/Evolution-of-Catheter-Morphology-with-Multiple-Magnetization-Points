@@ -1,0 +1,3 @@
+any_gate_pass,best_condition,best_force_slack_scale,best_mode,best_slack_force_ratio,best_stationarity_norm,case,min_slack_force_ratio,min_slack_force_scale,min_slack_mode,min_terminal_torque_norm,min_torque_force_scale,min_torque_mode,row_count
+False,29477605.173604466,2.0,full,2.4916989520002604,0.009294627930763827,n1_tip_z_rand15,1.228112865787039,16.0,full,0.029250350585463852,2.0,full,8
+False,66364948.72435611,2.0,torque,3.9208056822731696,6.15419748170878,n2_z_pair_rand12,1.7965479359993937,16.0,torque,0.0902802049863086,2.0,torque,8
