@@ -1,0 +1,4 @@
+{"experiment":"20260606223000_p2c38_alpha_boundary_zoom_batched","case":"n3_mixed_rand20","alpha":0.421,"eps_alpha":0.0125,"failure_class":"分支切换","reason":"扰动重求解后中心线分支漂移为0.001341 m，超过0.001 m可发布门限；一阶最优性、局部线性化误差和载荷传播比例均通过。","publishable":false}
+{"experiment":"20260606223000_p2c38_alpha_boundary_zoom_batched","case":"n3_mixed_rand20","alpha":0.422,"eps_alpha":0.0125,"failure_class":"分支切换","reason":"扰动重求解后中心线分支漂移为0.001017 m，略高于0.001 m可发布门限；该点处于临界区。","publishable":false}
+{"experiment":"20260606223000_p2c38_alpha_boundary_zoom_batched","case":"n3_mixed_rand20","alpha":0.423,"eps_alpha":0.0125,"failure_class":"分支切换","reason":"扰动重求解后中心线分支漂移为0.004911 m，明显超过0.001 m可发布门限；末端位置响应表面上线性，但整体形态不稳定。","publishable":false}
+{"experiment":"20260606223000_p2c38_alpha_boundary_zoom_batched","case":"n3_mixed_rand20","alpha":0.424,"eps_alpha":0.0125,"failure_class":"分支切换","reason":"扰动重求解后中心线分支漂移为0.004937 m，明显超过0.001 m可发布门限；应标记为多平衡分支竞争区。","publishable":false}
