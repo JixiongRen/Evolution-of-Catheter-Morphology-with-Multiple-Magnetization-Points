@@ -1,0 +1,3 @@
+best_stationarity_mode,best_stationarity_norm,case,full_mode_slack_force_ratio,mechanism,min_slack_force_mode,min_slack_force_ratio,slack_force_increase_none_to_full,terminal_torque_reduction_none_to_full,torque_mode_slack_force_ratio
+full,0.009294627910855963,n1_tip_z_rand15,2.491698951998935,接口力松弛未随内矩闭合升高,full,2.491698951998935,0.8209068580995973,67.92498154277008,2.498698033946011
+torque,6.154197481149973,n2_z_pair_rand12,3.921011606924786,末端内矩闭合与接口力松弛替代,none,1.0876043463247234,3.605181994881528,48.154084479955685,3.9208056822730817
