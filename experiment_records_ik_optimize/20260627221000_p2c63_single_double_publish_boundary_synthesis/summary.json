@@ -1,0 +1,49 @@
+{
+  "experiment": "20260627221000_p2c63_single_double_publish_boundary_synthesis",
+  "boundary_rows": [
+    {
+      "object": "单点 n1",
+      "task_level": "有效子空间末端位置",
+      "publish_status": "不可发布，仅诊断",
+      "passed_items": "有效秩约为 2，提示存在二维可控方向",
+      "failed_items": "一阶最优性、条件数、接口连续、载荷传播",
+      "main_evidence": "stationarity=2.447e+00, condition=4.495e+09, force_ratio=1.771e+01",
+      "engineering_recommendation": "先修复物理闭合，再复核二维有效子空间；不得接入外层 IK"
+    },
+    {
+      "object": "两点 n2",
+      "task_level": "三维末端位置",
+      "publish_status": "不可发布，已形成失败边界",
+      "passed_items": "末端位置拟合可达；部分显式连续样本一阶最优性和载荷传播可接近门禁",
+      "failed_items": "条件数病态、秩亏、不可辨识松弛方向、载荷传播失配",
+      "main_evidence": "null_slack=0.950, null_tip_change=3.156e-10 m, force_ratio=2.938e+00",
+      "engineering_recommendation": "停止扰动灵敏度扫描；转入显式物理耦合或物理方程确定松弛幅值"
+    }
+  ],
+  "n2": {
+    "p2c59_best_condition": 49051439.62416861,
+    "p2c59_best_stationarity": 2.2361686877284174e-07,
+    "p2c59_best_continuity": 0.0004371258381057311,
+    "p2c59_best_force_ratio": 0.7409042942042529,
+    "p2c59_best_position_error_m": 1.4019863348483269e-06,
+    "p2c60_best_physical_condition": 49051206.5325655,
+    "p2c60_best_scaled_condition": 12263099.012348955,
+    "p2c61_base_position_error_m": 0.007048941622934882,
+    "p2c61_load_position_error_m": 6.057682795572351e-08,
+    "p2c61_load_force_ratio": 2.937602941684981,
+    "p2c62_null_slack_fraction": 0.9496643095673571,
+    "p2c62_null_tip_change_m": 3.155892182199695e-10
+  },
+  "n1": {
+    "stationarity": 2.4465196971225978,
+    "condition": 4495374218.86507,
+    "continuity": 0.006638856106157295,
+    "force_ratio": 17.70617141187832,
+    "diagnostic_rank": 2
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "522ab2af822af89b9082bbb1ae026337fee3def6",
+    "status_short": "?? experiment_records_ik_optimize/20260627221000_p2c63_single_double_publish_boundary_synthesis/"
+  }
+}
