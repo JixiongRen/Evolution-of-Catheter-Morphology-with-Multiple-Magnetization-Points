@@ -1,0 +1,226 @@
+{
+  "experiment": "20260627230500_p2c69_n2_condition_precondition_audit",
+  "wall_s": 314.26906847300415,
+  "case": "n2_z_pair_rand12",
+  "alpha": 0.1,
+  "force_scale": 4.0,
+  "reg_scale": 0.0003,
+  "stage_rows": [
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "force_continuity_scale": 4.0,
+      "torque_continuity_scale": 0.25,
+      "stage": 1,
+      "position_scale": 10.0,
+      "max_iter": 120,
+      "position_error_m": 0.00026868639295514013,
+      "stationarity_norm": 26.827195782394092,
+      "jacobian_condition": 99777399.06148846,
+      "continuity_norm": 0.002941291673321638,
+      "terminal_force_norm": 0.005517907201989356,
+      "terminal_torque_norm": 0.0017345650998931944,
+      "nfev": 120,
+      "steady_s": 37.62421660700056,
+      "success": false,
+      "max_interface_force_jump_over_rigid_force": 3.468963757209373,
+      "max_interface_torque_jump_over_rigid_torque": 0.004667658476115895,
+      "max_interface_jump_norm": 0.0021302510528091933,
+      "max_force_jump_abs_N": 0.0014133319085089127,
+      "max_force_ratio_to_rigid_load": 3.468963757209373,
+      "max_force_ratio_to_internal_force": 0.2400536285159844,
+      "baseline_gate": false,
+      "failure_class": "一阶最优性退化",
+      "reg_scale": 0.0003
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "force_continuity_scale": 4.0,
+      "torque_continuity_scale": 0.25,
+      "stage": 2,
+      "position_scale": 20.0,
+      "max_iter": 120,
+      "position_error_m": 6.733470056933743e-05,
+      "stationarity_norm": 6.506956806957801,
+      "jacobian_condition": 23843244.72864325,
+      "continuity_norm": 0.0036731040296240206,
+      "terminal_force_norm": 0.0030270984028734137,
+      "terminal_torque_norm": 0.0008043408722259998,
+      "nfev": 120,
+      "steady_s": 30.84283704900008,
+      "success": false,
+      "max_interface_force_jump_over_rigid_force": 2.5867536194891274,
+      "max_interface_torque_jump_over_rigid_torque": 0.005262311934225282,
+      "max_interface_jump_norm": 0.0026706038490662103,
+      "max_force_jump_abs_N": 0.0009838164251581695,
+      "max_force_ratio_to_rigid_load": 2.5867536194891274,
+      "max_force_ratio_to_internal_force": 0.31064768160699985,
+      "baseline_gate": false,
+      "failure_class": "一阶最优性退化",
+      "reg_scale": 0.0003
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "force_continuity_scale": 4.0,
+      "torque_continuity_scale": 0.25,
+      "stage": 3,
+      "position_scale": 40.0,
+      "max_iter": 120,
+      "position_error_m": 2.823434286894842e-06,
+      "stationarity_norm": 2.1341256707184,
+      "jacobian_condition": 35589963.330551274,
+      "continuity_norm": 0.0009954863956484453,
+      "terminal_force_norm": 0.00644298877642806,
+      "terminal_torque_norm": 0.00021988311689179882,
+      "nfev": 120,
+      "steady_s": 29.13670752500184,
+      "success": false,
+      "max_interface_force_jump_over_rigid_force": 1.7141290570497008,
+      "max_interface_torque_jump_over_rigid_torque": 0.0012338773566558114,
+      "max_interface_jump_norm": 0.0007332603811435019,
+      "max_force_jump_abs_N": 0.0006984358988465778,
+      "max_force_ratio_to_rigid_load": 1.7141290570497008,
+      "max_force_ratio_to_internal_force": 0.10512817085256862,
+      "baseline_gate": false,
+      "failure_class": "一阶最优性退化",
+      "reg_scale": 0.0003
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "force_continuity_scale": 4.0,
+      "torque_continuity_scale": 0.25,
+      "stage": 4,
+      "position_scale": 60.0,
+      "max_iter": 240,
+      "position_error_m": 1.4019863348492378e-06,
+      "stationarity_norm": 2.235962024772379e-07,
+      "jacobian_condition": 49051439.62425622,
+      "continuity_norm": 0.00043712583810597005,
+      "terminal_force_norm": 0.009714148574214007,
+      "terminal_torque_norm": 0.00014651817335082935,
+      "nfev": 148,
+      "steady_s": 28.64289054300025,
+      "success": true,
+      "max_interface_force_jump_over_rigid_force": 0.7409042942042682,
+      "max_interface_torque_jump_over_rigid_torque": 0.0005597602163785035,
+      "max_interface_jump_norm": 0.0003456564014963119,
+      "max_force_jump_abs_N": 0.0003018691415183278,
+      "max_force_ratio_to_rigid_load": 0.7409042942042682,
+      "max_force_ratio_to_internal_force": 0.029835605154509882,
+      "baseline_gate": false,
+      "failure_class": "综合失败",
+      "reg_scale": 0.0003
+    }
+  ],
+  "condition_rows": [
+    {
+      "variant": "physical",
+      "condition": 49051439.62425622,
+      "largest_singular": 27671.19374565754,
+      "smallest_singular": 0.0005641260268327369,
+      "rank": 18
+    },
+    {
+      "variant": "column_scaled",
+      "condition": 10784.580203190666,
+      "largest_singular": 2.7667713814292556,
+      "smallest_singular": 0.0002565488252023657,
+      "rank": 18
+    },
+    {
+      "variant": "block_whitened",
+      "condition": 4.659100481344089,
+      "largest_singular": 4.659100481344099,
+      "smallest_singular": 1.0000000000000022,
+      "rank": 18
+    },
+    {
+      "variant": "block_and_column_scaled",
+      "condition": 17670.272871067875,
+      "largest_singular": 2.9477780300686525,
+      "smallest_singular": 0.00016682130783023433,
+      "rank": 18
+    }
+  ],
+  "attribution": {
+    "physical_condition": 49051439.62425622,
+    "weakest_singular": 0.0005641260268327367,
+    "largest_singular": 27671.193745657543,
+    "weak_segment_energy": [
+      {
+        "segment": 0,
+        "force_energy": 6.391001914515634e-07,
+        "torque_energy": 0.7409471012036555,
+        "total_energy": 0.7409477403038469
+      },
+      {
+        "segment": 1,
+        "force_energy": 6.365093145804432e-07,
+        "torque_energy": 0.24884970924691974,
+        "total_energy": 0.24885034575623433
+      },
+      {
+        "segment": 2,
+        "force_energy": 6.307355133503301e-07,
+        "torque_energy": 0.01020128320440446,
+        "total_energy": 0.01020191393991781
+      }
+    ],
+    "residual_blocks": [
+      {
+        "block": "terminal_position",
+        "residual_norm": 8.411918009095426e-05,
+        "jacobian_fro_norm": 3426.4171073223747,
+        "weak_projection_norm": 2.851113830484871e-05,
+        "stationarity_contribution_norm": 0.049246380022174026
+      },
+      {
+        "block": "terminal_boundary",
+        "residual_norm": 0.002428813368924037,
+        "jacobian_fro_norm": 15205.391762733332,
+        "weak_projection_norm": 0.00019857794933357138,
+        "stationarity_contribution_norm": 0.012477285042035447
+      },
+      {
+        "block": "interface_continuity",
+        "residual_norm": 0.001230727212828643,
+        "jacobian_fro_norm": 23026.003557163203,
+        "weak_projection_norm": 0.0004335805429003658,
+        "stationarity_contribution_norm": 0.06133243083544468
+      },
+      {
+        "block": "regularization",
+        "residual_norm": 0.0013329964304275971,
+        "jacobian_fro_norm": 0.0012727922061357855,
+        "weak_projection_norm": 0.0002999999999999998,
+        "stationarity_contribution_norm": 3.998989291282791e-07
+      }
+    ],
+    "weak_vector": [
+      -0.0007931458261020024,
+      0.00010000617001468648,
+      -4.3192531216907875e-06,
+      0.02662718714791994,
+      -0.007792828509041004,
+      0.8603356123816297,
+      -0.0007929188110706009,
+      6.98579852761614e-05,
+      -5.3934548519325835e-05,
+      0.03247408569656127,
+      0.22482222721609257,
+      -0.44412848271045147,
+      -0.0007797666688246839,
+      4.9707840196643654e-05,
+      -0.00014222723425339785,
+      0.009813736147623216,
+      0.07193132237395033,
+      -0.07022007297606665
+    ]
+  },
+  "jax_devices": [
+    "cuda:0"
+  ]
+}
