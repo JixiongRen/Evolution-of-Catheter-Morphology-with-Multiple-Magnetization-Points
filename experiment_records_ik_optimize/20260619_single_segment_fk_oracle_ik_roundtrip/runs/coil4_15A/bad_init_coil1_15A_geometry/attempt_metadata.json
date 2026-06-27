@@ -1,0 +1,48 @@
+{
+  "case": "coil4_15A",
+  "attempt": "bad_init_coil1_15A_geometry",
+  "role": "blind",
+  "I_init_A": [
+    15.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "I_ref_A": [
+    15.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "I_FK_A": [
+    0.0,
+    0.0,
+    0.0,
+    15.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "x_init_m": 0.045000000000000005,
+  "x_ref_m": 0.05,
+  "x_min_m": 0.045000000000000005,
+  "x_max_m": 0.05500000000000001,
+  "p_des_m": [
+    0.0112729906121,
+    -0.0391586630598,
+    0.015288150773
+  ],
+  "failure_design": "target is coil4_15A; initial current and current reference use coil1_15A",
+  "I_init_description": "C1 15 A",
+  "target_description": "C4 15 A same-source FK target",
+  "max_iter": 45
+}

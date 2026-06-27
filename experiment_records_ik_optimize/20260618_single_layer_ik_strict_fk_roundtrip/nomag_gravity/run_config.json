@@ -1,0 +1,290 @@
+{
+  "created_at": "2026-06-18T11:25:23",
+  "argv": {
+    "p_des": "0.100,0.000,-0.060",
+    "run_mode": "v1_staged",
+    "flex_lengths_tail": "0.03,0.03",
+    "rigid_lengths": "0.003,0.003,0.003",
+    "M_list": "10,5,5",
+    "x_min": 0.06,
+    "x_max": 0.18,
+    "L_protrude_max": 0.18,
+    "L1_min": 1e-06,
+    "enforce_feasible_x_bounds": true,
+    "I_max": 5.0,
+    "I_scale": 1.0,
+    "I_ref": null,
+    "I_init": "0,0,0,0,0,0,0,0",
+    "x_init": 0.1,
+    "init_mode": "geometry",
+    "init_fk_max_iter": 400,
+    "init_fk_tol": 1e-05,
+    "init_fk_lm_damping": 0.01,
+    "p0_dim": "0,0,-0.05",
+    "Q0_wxyz": "1,0,0,0",
+    "axis_body": "1,0,0",
+    "enable_gravity": true,
+    "g_world": "0,0,-9.81",
+    "enable_magnetics": false,
+    "calib_file": null,
+    "actuation_table_pkl": null,
+    "m_body_list": null,
+    "w_E": 30.0,
+    "sigma_p": 0.01,
+    "w_I": 0.0,
+    "w_x": 0.001,
+    "x_ref": 0.1,
+    "w_smooth": 5.0,
+    "w_smooth_baseline": 0.0,
+    "smooth_include_rigid": true,
+    "w_gap": 0.0,
+    "sigma_gap": 0.001,
+    "centerline_rigid_samples": 2,
+    "max_iter": 80,
+    "tol": 1e-06,
+    "dist_tol_mm": 1.0,
+    "bound_stall_patience": 20,
+    "bound_stall_dist_mm": 20.0,
+    "bound_stall_current_util": 0.15,
+    "bound_stall_eps_x": 0.0001,
+    "progress_stall_patience": 30,
+    "progress_stall_dist_mm": 20.0,
+    "progress_stall_min_delta_mm": 6.0,
+    "progress_stall_min_x_ratio": 0.75,
+    "progress_stall_max_current_util": 0.1,
+    "lm_damping": 0.01,
+    "lam_max": 10000000000.0,
+    "gtol": 1e-12,
+    "xtol": 1e-12,
+    "stagnation_patience": 80,
+    "stagnation_rtol": 1e-06,
+    "reject_patience": 20,
+    "high_rho_lam_scale": 0.3,
+    "mid_rho_lam_scale": 0.5,
+    "low_rho_lam_gain": 10.0,
+    "reject_lam_gain": 10.0,
+    "jac_method": "fwd",
+    "step_norm_clip": 0.0,
+    "backtrack_max": 6,
+    "backtrack_factor": 0.5,
+    "block_clip_dz": 20.0,
+    "block_clip_dI": 5.0,
+    "block_clip_dx": 0.015,
+    "accept_kappa_E": 1.05,
+    "accept_eps_E": 0.0001,
+    "accept_eps_smooth": 0.0,
+    "stage1_sigma_scale": 4.0,
+    "stage1_w_smooth_scale": 0.8,
+    "stage1_block_clip_scale": 0.75,
+    "stage1_max_iter": 24,
+    "trace_block_topk": 0,
+    "trace_block_every": 0,
+    "pose_save_every": 10,
+    "out_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260618_single_layer_ik_strict_fk_roundtrip/nomag_gravity"
+  },
+  "runtime": {
+    "jax_enable_x64": true
+  },
+  "geometry": {
+    "flex_lengths_tail": [
+      0.03,
+      0.03
+    ],
+    "rigid_lengths": [
+      0.003,
+      0.003,
+      0.003
+    ],
+    "M_list": [
+      10,
+      5,
+      5
+    ],
+    "L1_min": 1e-06,
+    "L_protrude_max": 0.18,
+    "p0_dim": [
+      0.0,
+      0.0,
+      -0.05
+    ],
+    "Q0_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "axis_body": [
+      1.0,
+      0.0,
+      0.0
+    ]
+  },
+  "materials": {
+    "flex_d_outer": [
+      0.0015
+    ],
+    "flex_E": [
+      1800000.0
+    ],
+    "flex_G": [
+      600000.0
+    ],
+    "flex_rho": [
+      970.0
+    ],
+    "rigid_d_outer": [
+      0.0015
+    ],
+    "rigid_rho": [
+      7500.0
+    ]
+  },
+  "loads": {
+    "enable_gravity": true,
+    "g_world": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "enable_magnetics": false,
+    "calib_file": null,
+    "actuation_table_pkl": null,
+    "m_body_list": null
+  },
+  "bounds": {
+    "x_min": 0.06,
+    "x_max": 0.18,
+    "x_min_opt": 0.069001,
+    "x_max_opt": 0.18,
+    "feasible_x_min": 0.069001,
+    "I_max": 5.0,
+    "enforce_feasible_x_bounds": true
+  },
+  "mode": {
+    "run_mode": "v1_staged",
+    "p_des": [
+      0.1,
+      0.0,
+      -0.06
+    ],
+    "target": {
+      "p_des_m": [
+        0.1,
+        0.0,
+        -0.06
+      ],
+      "init_tip_m": [
+        0.177,
+        0.0,
+        -0.05
+      ]
+    }
+  },
+  "init": {
+    "centerline_npz": "poses/iter_0000.npz"
+  },
+  "final": {
+    "centerline_npz": "poses/final.npz",
+    "state_npz": "state_final.npz",
+    "I_A": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "x_m": 0.10298103994600842,
+    "p_tip_m": [
+      0.09998963090530077,
+      0.0,
+      -0.059106453750139745
+    ]
+  },
+  "ik": {
+    "w_E": 30.0,
+    "sigma_p": 0.01,
+    "dist_tol_mm": 1.0,
+    "w_I": 0.0,
+    "w_x": 0.001,
+    "w_smooth": 5.0,
+    "w_smooth_baseline": 0.0,
+    "w_gap": 0.0,
+    "sigma_gap": 0.001,
+    "x_ref": 0.1,
+    "I_scale": 1.0
+  },
+  "solver": {
+    "max_iter": 80,
+    "tol": 1e-06,
+    "lm_damping": 0.01,
+    "lam_max": 10000000000.0,
+    "gtol": 1e-12,
+    "xtol": 1e-12,
+    "stagnation_patience": 80,
+    "stagnation_rtol": 1e-06,
+    "reject_patience": 20,
+    "high_rho_lam_scale": 0.3,
+    "mid_rho_lam_scale": 0.5,
+    "low_rho_lam_gain": 10.0,
+    "reject_lam_gain": 10.0,
+    "jac_method": "fwd",
+    "step_norm_clip": 0.0,
+    "backtrack_max": 6,
+    "backtrack_factor": 0.5,
+    "block_clip_dz": 20.0,
+    "block_clip_dI": 5.0,
+    "block_clip_dx": 0.015,
+    "accept_kappa_E": 1.05,
+    "accept_eps_E": 0.0001,
+    "accept_eps_smooth": 0.0
+  },
+  "stages": [
+    {
+      "name": "stage1_feasible",
+      "sigma_p": 0.04,
+      "w_smooth": 4.0,
+      "max_iter": 24,
+      "block_clip_dz": 15.0,
+      "block_clip_dI": 3.75,
+      "block_clip_dx": 0.01125,
+      "enable_acceptance_guard": true,
+      "accept_kappa_E": 1.05,
+      "accept_eps_E": 0.0001,
+      "accept_eps_smooth": 0.0
+    },
+    {
+      "name": "stage2_refine",
+      "sigma_p": 0.01,
+      "w_smooth": 5.0,
+      "max_iter": 80,
+      "block_clip_dz": 20.0,
+      "block_clip_dI": 5.0,
+      "block_clip_dx": 0.015,
+      "enable_acceptance_guard": true,
+      "accept_kappa_E": 1.05,
+      "accept_eps_E": 0.0001,
+      "accept_eps_smooth": 0.0
+    }
+  ],
+  "initialization": {
+    "mode": "geometry"
+  },
+  "diagnostics": {
+    "trace_block_topk": 0,
+    "trace_block_every": 0,
+    "smooth_include_rigid": true,
+    "centerline_rigid_samples": 2
+  },
+  "trace": {
+    "path": "trace.jsonl",
+    "controls_csv": "trace_controls.csv",
+    "poses_dir": "poses"
+  },
+  "storage": {
+    "pose_save_every": 10,
+    "intermediate_pose_pattern": "poses/iter_*.npz"
+  }
+}

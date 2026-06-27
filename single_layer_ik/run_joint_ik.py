@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
 from dataclasses import dataclass
@@ -23,7 +24,6 @@ from .joint_problem import (
     Ix_to_u,
     build_static_fk,
     extract_centerline_p_dim,
-    extract_tip_p_dim,
     joint_residual,
     joint_residual_components,
     make_initial_z0_bar,
@@ -101,6 +101,37 @@ def _is_success_stop_reason(stop_reason: str) -> bool:
     return str(stop_reason) in {"converged", "dist_tol"}
 
 
+def _write_trace_controls_csv(trace_path: Path, out_path: Path) -> None:
+    fields = [
+        "iter",
+        "stage",
+        "accepted",
+        "x_m",
+        "dist_to_target_mm",
+        "norm_E_raw",
+        "normR",
+        "rho",
+        "max_interface_gap_mm",
+        *[f"I{i}_A" for i in range(8)],
+    ]
+    rows: list[dict[str, Any]] = []
+    if trace_path.exists():
+        for line in trace_path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            rec = json.loads(line)
+            row = {name: rec.get(name, "") for name in fields}
+            currents = rec.get("I_A", [])
+            for i in range(8):
+                row[f"I{i}_A"] = currents[i] if i < len(currents) else ""
+            rows.append(row)
+
+    with out_path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def _build_stage_configs(args: argparse.Namespace) -> list[StageConfig]:
     if str(args.run_mode) == "baseline":
         return [
@@ -173,7 +204,8 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--I_ref", type=str, default=None, help="Reference currents [A] for regularisation r_I=w_I*(I-I_ref); default=I_init when magnetics enabled, else zeros")
     p.add_argument("--I_init", type=str, default="0,0,0,0,0,0,0,0", help="Initial currents [A], 8 values")
     p.add_argument("--x_init", type=float, default=None, help="Initial protruding length [m]; default midpoint of [x_min,x_max]")
-    p.add_argument("--init_mode", type=str, default="geometry", choices=["geometry", "equilibrium"], help="Initialization mode for z0")
+    p.add_argument("--init_mode", type=str, default="geometry", choices=["geometry", "equilibrium", "npz"], help="Initialization mode for z0")
+    p.add_argument("--init_z_npz", type=str, default=None, help="NPZ file containing z or z_star_bar for init_mode=npz")
     p.add_argument("--init_fk_max_iter", type=int, default=400, help="FK warm-start max_iter when init_mode=equilibrium")
     p.add_argument("--init_fk_tol", type=float, default=1e-5, help="FK warm-start tol when init_mode=equilibrium")
     p.add_argument("--init_fk_lm_damping", type=float, default=1e-2, help="FK warm-start LM damping when init_mode=equilibrium")
@@ -181,6 +213,13 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--p0_dim", type=str, default="0,0,-0.05", help="Base position [m]")
     p.add_argument("--Q0_wxyz", type=str, default="1,0,0,0", help="Base quaternion w,x,y,z")
     p.add_argument("--axis_body", type=str, default="0,0,1", help="Body axis direction")
+    p.add_argument(
+        "--tip_mode",
+        type=str,
+        default="flex_tip",
+        choices=["flex_tip", "distal_tip"],
+        help="Tip point used in the position task. distal_tip includes the terminal rigid/magnet segment.",
+    )
 
     p.add_argument("--enable_gravity", action="store_true")
     p.add_argument("--g_world", type=str, default="0,0,-9.81")
@@ -305,7 +344,21 @@ def main() -> None:
         )
 
     init_summary: Dict[str, Any] = {"mode": str(args.init_mode)}
-    if str(args.init_mode) == "equilibrium":
+    if str(args.init_mode) == "npz":
+        if args.init_z_npz is None:
+            raise ValueError("--init_z_npz is required when --init_mode=npz")
+        init_npz = np.load(str(args.init_z_npz))
+        if "z" in init_npz.files:
+            z0_arr = np.asarray(init_npz["z"], dtype=np.float64).reshape(-1)
+        elif "z_star_bar" in init_npz.files:
+            z0_arr = np.asarray(init_npz["z_star_bar"], dtype=np.float64).reshape(-1)
+        else:
+            raise ValueError(f"{args.init_z_npz} must contain z or z_star_bar")
+        if z0_arr.size != int(static_fk.z_len):
+            raise ValueError(f"init z length mismatch: got {z0_arr.size}, expected {int(static_fk.z_len)}")
+        z0_bar = jnp.asarray(z0_arr, dtype=jnp.float64)
+        init_summary.update({"path": str(args.init_z_npz), "z_len": int(z0_arr.size)})
+    elif str(args.init_mode) == "equilibrium":
         fk_engine = ForwardKinematicsEngine(
             flex_lengths_tail=flex_lengths_tail,
             rigid_lengths=rigid_lengths,
@@ -396,6 +449,7 @@ def main() -> None:
             centerline_rigid_samples=int(args.centerline_rigid_samples),
             I_scale=float(args.I_scale),
             I_ref=I_ref,
+            tip_mode=str(args.tip_mode),
         )
 
     def _make_step_filter(stage: StageConfig):
@@ -599,6 +653,7 @@ def main() -> None:
                 centerline_rigid_samples=int(args.centerline_rigid_samples),
                 I_scale=float(args.I_scale),
                 I_ref=I_ref,
+                tip_mode=str(args.tip_mode),
             )
 
         solver = JointLMSolver(
@@ -815,9 +870,21 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    init_tip = extract_tip_p_dim(z_bar=jnp.asarray(y0[:nZ], dtype=jnp.float64), scales=static_fk.scales, M_list=static_fk.M_list)
-    init_tip_np = _to_numpy(init_tip, shape=(3,))
-    np.savez_compressed(poses_dir / "final.npz", centerline=_centerline_from_z(z_star))
+    init_parts = _parts_for_stage(y0, final_stage)
+    init_tip_np = _to_numpy(init_parts["p_tip"], shape=(3,))
+    centerline_final = _centerline_from_z(z_star)
+    np.savez_compressed(poses_dir / "final.npz", centerline=centerline_final)
+    np.savez_compressed(
+        out_dir / "state_final.npz",
+        z_star_bar=_to_numpy(z_star),
+        y_star=_to_numpy(y_current),
+        I_star=I_star,
+        x_star=np.asarray([x_star], dtype=np.float64),
+        centerline_ik=centerline_final,
+        p_tip_ik=p_tip_star,
+        p_des=_to_numpy(p_des, shape=(3,)),
+    )
+    _write_trace_controls_csv(trace_path, out_dir / "trace_controls.csv")
 
     run_cfg = {
         "created_at": datetime.now().isoformat(timespec="seconds"),
@@ -825,12 +892,48 @@ def main() -> None:
         "runtime": {
             "jax_enable_x64": bool(JAX_ENABLE_X64),
         },
+        "geometry": {
+            "flex_lengths_tail": [float(v) for v in flex_lengths_tail],
+            "rigid_lengths": [float(v) for v in rigid_lengths],
+            "M_list": [int(v) for v in M_list],
+            "L1_min": float(args.L1_min),
+            "L_protrude_max": float(L_protrude_max),
+            "p0_dim": [float(v) for v in _to_numpy(p0_dim, shape=(3,)).tolist()],
+            "Q0_wxyz": [float(v) for v in _to_numpy(Q0_wxyz, shape=(4,)).tolist()],
+            "axis_body": [float(v) for v in _to_numpy(axis_body, shape=(3,)).tolist()],
+        },
+        "materials": {
+            "flex_d_outer": [float(v) for v in (0.0015,)],
+            "flex_E": [float(v) for v in (1.8e6,)],
+            "flex_G": [float(v) for v in (0.6e6,)],
+            "flex_rho": [float(v) for v in (970.0,)],
+            "rigid_d_outer": [float(v) for v in (0.0015,)],
+            "rigid_rho": [float(v) for v in (7500.0,)],
+        },
+        "loads": {
+            "enable_gravity": bool(args.enable_gravity),
+            "g_world": [float(v) for v in _to_numpy(g_world, shape=(3,)).tolist()],
+            "enable_magnetics": bool(args.enable_magnetics),
+            "calib_file": None if args.calib_file is None else str(args.calib_file),
+            "actuation_table_pkl": None if args.actuation_table_pkl is None else str(args.actuation_table_pkl),
+            "m_body_list": None if m_body_list is None else [[float(v) for v in row] for row in m_body_list],
+        },
+        "bounds": {
+            "x_min": float(args.x_min),
+            "x_max": float(args.x_max),
+            "x_min_opt": float(x_min_opt),
+            "x_max_opt": float(x_max_opt),
+            "feasible_x_min": float(feasible_x_min),
+            "I_max": float(args.I_max),
+            "enforce_feasible_x_bounds": bool(args.enforce_feasible_x_bounds),
+        },
         "mode": {
             "run_mode": str(args.run_mode),
             "p_des": [float(v) for v in _to_numpy(p_des, shape=(3,)).tolist()],
             "target": {
                 "p_des_m": [float(v) for v in _to_numpy(p_des, shape=(3,)).tolist()],
                 "init_tip_m": [float(v) for v in init_tip_np.tolist()],
+                "tip_mode": str(args.tip_mode),
             },
         },
         "init": {
@@ -838,6 +941,10 @@ def main() -> None:
         },
         "final": {
             "centerline_npz": "poses/final.npz",
+            "state_npz": "state_final.npz",
+            "I_A": [float(v) for v in I_star.tolist()],
+            "x_m": float(x_star),
+            "p_tip_m": [float(v) for v in p_tip_star.tolist()],
         },
         "ik": {
             "w_E": float(args.w_E),
@@ -851,6 +958,7 @@ def main() -> None:
             "sigma_gap": float(args.sigma_gap),
             "x_ref": float(args.x_ref),
             "I_scale": float(args.I_scale),
+            "tip_mode": str(args.tip_mode),
         },
         "solver": {
             "max_iter": int(args.max_iter),
@@ -891,13 +999,17 @@ def main() -> None:
             "smooth_include_rigid": bool(args.smooth_include_rigid),
             "centerline_rigid_samples": int(args.centerline_rigid_samples),
         },
-        "trace": {"path": "trace.jsonl", "poses_dir": "poses"},
+        "trace": {"path": "trace.jsonl", "controls_csv": "trace_controls.csv", "poses_dir": "poses"},
         "storage": {
             "pose_save_every": int(args.pose_save_every),
             "intermediate_pose_pattern": "poses/iter_*.npz",
         },
     }
     (out_dir / "run_config.json").write_text(
+        json.dumps(run_cfg, indent=2),
+        encoding="utf-8",
+    )
+    (out_dir / "config_full.json").write_text(
         json.dumps(run_cfg, indent=2),
         encoding="utf-8",
     )

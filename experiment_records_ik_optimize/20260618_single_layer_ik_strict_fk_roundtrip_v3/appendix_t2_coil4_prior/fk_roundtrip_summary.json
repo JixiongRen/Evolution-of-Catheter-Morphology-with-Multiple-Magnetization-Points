@@ -1,0 +1,25 @@
+{
+  "classification": "rejected",
+  "complete": true,
+  "criteria": {
+    "fk_normE_max": 1e-06,
+    "ik_fk_tip_mm_max": 0.1,
+    "ik_fk_centerline_rms_mm_max": 0.1,
+    "target_err_delta_mm_max": 0.05
+  },
+  "rows": [
+    {
+      "mode": "state_inherited",
+      "fk_ok_flag": true,
+      "fk_stop_reason": "converged",
+      "fk_n_iter": 1673,
+      "fk_normE": 9.782403552888454e-07,
+      "ik_target_err_mm": 29.234780151172775,
+      "fk_target_err_mm": 72.19204293070928,
+      "target_err_delta_mm": 42.95726277953651,
+      "ik_fk_tip_mm": 42.965944556203816,
+      "ik_fk_centerline_rms_mm": 27.509232786710825,
+      "pass": false
+    }
+  ]
+}

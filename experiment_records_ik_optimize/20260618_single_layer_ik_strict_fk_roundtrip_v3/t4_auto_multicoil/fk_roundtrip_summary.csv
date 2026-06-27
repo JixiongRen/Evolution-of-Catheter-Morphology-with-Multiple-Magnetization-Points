@@ -1,0 +1,2 @@
+mode,pass,fk_ok_flag,fk_stop_reason,fk_n_iter,fk_normE,ik_target_err_mm,fk_target_err_mm,target_err_delta_mm,ik_fk_tip_mm,ik_fk_centerline_rms_mm
+state_inherited,False,True,converged,2343,9.662354434321963e-07,13.117544896572209,39.52695674378876,26.40941184721655,31.72321269842285,18.556758655479847

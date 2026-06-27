@@ -1,0 +1,53 @@
+{
+  "m_body_list": "0.005301,0,0; 0.005301,0,0; 0.005301,0,0",
+  "cases": [
+    {
+      "name": "nomag_gravity",
+      "label": "\u65e0\u78c1\u573a\u91cd\u529b",
+      "target": "0.100,0.000,-0.060",
+      "mode": "direct_nomag",
+      "prior": "\u65e0\u78c1\u573a",
+      "appendix_only": false
+    },
+    {
+      "name": "t2_coil0_prior",
+      "label": "T2 0\u53f7\u7ebf\u5708\u5148\u9a8c",
+      "target": "0.058,0.000,-0.118",
+      "mode": "direct_mag_c0",
+      "prior": "0\u53f7\u7ebf\u5708\u7ea615A",
+      "appendix_only": false
+    },
+    {
+      "name": "t2_auto_multicoil",
+      "label": "T2 \u591a\u7ebf\u5708\u5148\u9a8c",
+      "target": "0.058,0.000,-0.118",
+      "mode": "auto_mag",
+      "prior": "\u81ea\u52a8\u591a\u7ebf\u5708",
+      "appendix_only": false
+    },
+    {
+      "name": "t1_auto_multicoil",
+      "label": "T1 \u591a\u7ebf\u5708\u5148\u9a8c",
+      "target": "0.050,0.000,-0.123",
+      "mode": "auto_mag",
+      "prior": "\u81ea\u52a8\u591a\u7ebf\u5708",
+      "appendix_only": false
+    },
+    {
+      "name": "t4_auto_multicoil",
+      "label": "T4 \u591a\u7ebf\u5708\u5148\u9a8c",
+      "target": "0.064,0.000,-0.115",
+      "mode": "auto_mag",
+      "prior": "\u81ea\u52a8\u591a\u7ebf\u5708",
+      "appendix_only": false
+    },
+    {
+      "name": "appendix_t2_coil4_prior",
+      "label": "T2 4\u53f7\u7ebf\u5708\u5148\u9a8c",
+      "target": "0.058,0.000,-0.118",
+      "mode": "direct_mag_c4",
+      "prior": "4\u53f7\u7ebf\u5708\u7ea615A",
+      "appendix_only": true
+    }
+  ]
+}

@@ -260,6 +260,32 @@ def extract_tip_p_dim(*, z_bar: Array, scales: NondimScales, M_list: Sequence[in
     return jnp.asarray(z_bar[idx] * float(scales.L_ref), dtype=jnp.float64)
 
 
+def extract_distal_tip_p_dim(*, z_bar: Array, scales: NondimScales, M_list: Sequence[int]) -> Array:
+    """Extract the distal catheter tip, including the last rigid/magnet segment."""
+    centerline = extract_centerline_p_dim(
+        z_bar=z_bar,
+        scales=scales,
+        M_list=M_list,
+        include_rigid=True,
+        rigid_sample_count=0,
+    )
+    return jnp.asarray(centerline[-1, :], dtype=jnp.float64)
+
+
+def extract_task_tip_p_dim(
+    *,
+    z_bar: Array,
+    scales: NondimScales,
+    M_list: Sequence[int],
+    tip_mode: str = "flex_tip",
+) -> Array:
+    if str(tip_mode) in {"flex", "flex_tip", "flexible_tip"}:
+        return extract_tip_p_dim(z_bar=z_bar, scales=scales, M_list=M_list)
+    if str(tip_mode) in {"distal", "distal_tip", "centerline_end"}:
+        return extract_distal_tip_p_dim(z_bar=z_bar, scales=scales, M_list=M_list)
+    raise ValueError(f"Unknown tip_mode: {tip_mode}")
+
+
 def extract_interface_position_gaps_dim(
     *,
     z_bar: Array,
@@ -404,6 +430,7 @@ def joint_residual_components(
     centerline_rigid_samples: int = 0,
     I_scale: float = 1.0,
     I_ref: Optional[Array] = None,
+    tip_mode: str = "flex_tip",
 ) -> dict:
     """Compute decoded controls, raw equilibrium residual, and weighted residual blocks.
 
@@ -427,7 +454,12 @@ def joint_residual_components(
     r_E = jnp.asarray(w_E, dtype=jnp.float64) * E
 
     p_des = jnp.asarray(p_des, dtype=jnp.float64).reshape(3,)
-    p_tip = extract_tip_p_dim(z_bar=z_bar, scales=params.scales, M_list=params.M_list)
+    p_tip = extract_task_tip_p_dim(
+        z_bar=z_bar,
+        scales=params.scales,
+        M_list=params.M_list,
+        tip_mode=str(tip_mode),
+    )
     r_p = (p_tip - p_des) / jnp.asarray(sigma_p, dtype=jnp.float64)
 
     _I_ref = jnp.zeros(8, dtype=jnp.float64) if I_ref is None else jnp.asarray(I_ref, dtype=jnp.float64).reshape(8,)
@@ -468,6 +500,7 @@ def joint_residual_components(
         "params": params,
         "E": E,
         "p_tip": p_tip,
+        "tip_mode": str(tip_mode),
         "r_E": r_E,
         "r_p": r_p,
         "r_I": r_I,
@@ -505,6 +538,7 @@ def joint_residual(
     centerline_rigid_samples: int = 0,
     I_scale: float = 1.0,
     I_ref: Optional[Array] = None,
+    tip_mode: str = "flex_tip",
 ) -> Array:
     """Unified residual R(y) for single-layer joint IK.
 
@@ -533,7 +567,12 @@ def joint_residual(
     r_E = jnp.asarray(w_E, dtype=jnp.float64) * E
 
     p_des = jnp.asarray(p_des, dtype=jnp.float64).reshape(3,)
-    p_tip = extract_tip_p_dim(z_bar=z_bar, scales=params.scales, M_list=params.M_list)
+    p_tip = extract_task_tip_p_dim(
+        z_bar=z_bar,
+        scales=params.scales,
+        M_list=params.M_list,
+        tip_mode=str(tip_mode),
+    )
     r_p = (p_tip - p_des) / jnp.asarray(sigma_p, dtype=jnp.float64)
 
     _I_ref = jnp.zeros(8, dtype=jnp.float64) if I_ref is None else jnp.asarray(I_ref, dtype=jnp.float64).reshape(8,)

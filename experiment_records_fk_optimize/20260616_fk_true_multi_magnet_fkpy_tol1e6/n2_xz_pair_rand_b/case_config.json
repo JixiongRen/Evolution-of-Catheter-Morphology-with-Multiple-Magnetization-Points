@@ -1,0 +1,15 @@
+{
+  "case_name": "n2_xz_pair_rand_b",
+  "label": "真实双磁体段-x/z组合",
+  "source_script": "forward_kinematics/fk.py",
+  "flex_lengths": "0.041,0.03",
+  "rigid_lengths": "0.003,0.003",
+  "M_list": "5,5",
+  "total_length_m": 0.077,
+  "coil_currents": "-19.3,7.1,-4.8,16.6,-10.9,2.3,13.7,-8.2",
+  "m_body_list": "0.005301,0,0;0,0,0.005301",
+  "tol": 1e-6,
+  "max_iter": 12000,
+  "callback_every": 20,
+  "physical_note": "No inactive zero-moment magnetic segment is included; segment count equals magnetic segment count."
+}

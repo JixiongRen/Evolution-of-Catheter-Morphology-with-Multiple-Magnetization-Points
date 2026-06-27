@@ -1,0 +1,7 @@
+case,label,prior,appendix_only,dominant_current,x_mm,ik_target_err_mm,state_fk_target_err_mm,cold_fk_target_err_mm,max_ik_fk_centerline_rms_mm,classification
+nomag_gravity,无磁场重力,无磁场,False,,103.23816925842824,0.9790658277924783,116.89624589464329,nan,64.80330815778538,rejected
+t2_coil0_prior,T2 0号线圈先验,0号线圈约15A,False,I0=15A; I4=0.0928A,96.07406786311233,0.9818456467559826,30.025555976820414,nan,16.882350207517884,rejected
+t2_auto_multicoil,T2 多线圈先验,自动多线圈,False,I4=-3.03A; I0=-1.92A,69.06725746769963,27.586885996149388,34.75766907242122,nan,19.36187262771615,rejected
+t1_auto_multicoil,T1 多线圈先验,自动多线圈,False,I4=-3.02A; I0=-1.94A,69.03829813015014,31.65761360177153,29.603206653143715,nan,17.624646571890434,rejected
+t4_auto_multicoil,T4 多线圈先验,自动多线圈,False,I4=-2.72A; I0=-1.77A,69.16960339383844,13.117544896572209,39.52695674378876,nan,18.556758655479847,rejected
+appendix_t2_coil4_prior,T2 4号线圈先验,4号线圈约15A,True,I4=14.2A; I6=0.703A,69.001,29.234780151172775,72.19204293070928,nan,27.509232786710825,rejected

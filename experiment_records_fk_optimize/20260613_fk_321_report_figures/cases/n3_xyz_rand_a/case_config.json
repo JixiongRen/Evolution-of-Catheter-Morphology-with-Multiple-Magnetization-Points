@@ -1,0 +1,15 @@
+{
+  "case_name": "n3_xyz_rand_a",
+  "condition_label": "m555_random_current",
+  "magnet_key": "n3_xyz",
+  "magnet_label": "三磁化点-xyz组合",
+  "active_magnets": 3,
+  "coil_currents": "11.2,-6.7,18.4,-15.1,3.6,9.8,-12.5,5.4",
+  "M_list": "5,5,5",
+  "tol": 1e-05,
+  "max_total_iter": 2000,
+  "checkpoint_iter": 20,
+  "enable_gravity": true,
+  "enable_magnetics": true,
+  "linear_solver": "dense"
+}

@@ -1,0 +1,33 @@
+{
+  "case_name": "n1_tip_z_gravity_only",
+  "condition_label": "gravity_only",
+  "magnet_key": "n1_tip_z",
+  "magnet_label": "单磁化点-末端z向",
+  "active_magnets": 1,
+  "coil_currents": "0,0,0,0,0,0,0,0",
+  "M_list": "5,5,5",
+  "tol": 1e-05,
+  "max_total_iter": 5000,
+  "checkpoint_iter": 20,
+  "enable_gravity": true,
+  "enable_magnetics": false,
+  "linear_solver": "dense",
+  "m_body_list": "0,0,0; 0,0,0; 0,0,0.005301",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 5000,
+  "wall_s": 1562.7388499430017,
+  "final_normE": 0.00047643958710900914,
+  "max_abs_E": 0.00010744061668843563,
+  "checkpoint_count": 251,
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "centerline_end_m": [
+    0.09860032928933277,
+    0.0,
+    -0.0466048063991955
+  ],
+  "rss_mb": 2054.41796875
+}

@@ -1,0 +1,7 @@
+{
+  "case_name": "coil1_15A",
+  "coil_currents": "15,0,0,0,0,0,0,0",
+  "tol": 1e-6,
+  "max_iter": 20000,
+  "m_body_list": "0,0,0; 0,0,0; 0,0,0.005301"
+}

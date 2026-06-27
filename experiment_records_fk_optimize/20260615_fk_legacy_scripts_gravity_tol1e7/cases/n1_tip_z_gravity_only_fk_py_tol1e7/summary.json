@@ -1,0 +1,22 @@
+{
+  "case_name": "n1_tip_z_gravity_only_fk_py_tol1e7",
+  "condition_label": "gravity_only",
+  "source_script": "forward_kinematics/fk.py",
+  "tol": 1e-07,
+  "max_iter": 20000,
+  "ok": false,
+  "n_iter": 4630,
+  "final_normE": 2.491e-07,
+  "checkpoint_count": 233,
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "centerline_end_m": [
+    0.019778471775257073,
+    0.0,
+    -0.10240869649795263
+  ],
+  "tip_sag_mm": 102.40869649795263,
+  "tip_x_mm": 19.778471775257074
+}

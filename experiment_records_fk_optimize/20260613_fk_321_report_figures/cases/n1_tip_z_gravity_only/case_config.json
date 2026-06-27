@@ -1,0 +1,15 @@
+{
+  "case_name": "n1_tip_z_gravity_only",
+  "condition_label": "gravity_only",
+  "magnet_key": "n1_tip_z",
+  "magnet_label": "单磁化点-末端z向",
+  "active_magnets": 1,
+  "coil_currents": "0,0,0,0,0,0,0,0",
+  "M_list": "5,5,5",
+  "tol": 1e-05,
+  "max_total_iter": 5000,
+  "checkpoint_iter": 20,
+  "enable_gravity": true,
+  "enable_magnetics": false,
+  "linear_solver": "dense"
+}

@@ -1,0 +1,52 @@
+{
+  "gravity_only_with_callback": {
+    "ok": true,
+    "tol": 1e-05,
+    "max_iter": 6000,
+    "tip_m": [
+      0.033677140702747695,
+      0.0,
+      -0.10011502426446443
+    ],
+    "initial_tip_m": [
+      0.11000000000000001,
+      0.0,
+      0.0
+    ],
+    "tip_delta_m": [
+      -0.07632285929725233,
+      0.0,
+      -0.10011502426446443
+    ],
+    "max_abs_y_m": 0.0,
+    "max_abs_z_m": 0.10011502426446443,
+    "tip_z_minus_initial_m": -0.10011502426446443,
+    "tip_x_minus_initial_m": -0.07632285929725233,
+    "centerline_samples": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_fk_optimize/20260613_forward_kinematics_fk_legacy_gravity_single_coil/gravity_only_with_callback/final_centerline_samples.npz"
+  },
+  "single_tip_axial_coil6_20A_with_callback": {
+    "ok": false,
+    "tol": 1e-05,
+    "max_iter": 6000,
+    "tip_m": [
+      0.04058522550353307,
+      -0.025629160114304543,
+      -0.08230221792534088
+    ],
+    "initial_tip_m": [
+      0.11000000000000001,
+      0.0,
+      0.0
+    ],
+    "tip_delta_m": [
+      -0.06941477449646694,
+      -0.025629160114304543,
+      -0.08230221792534088
+    ],
+    "max_abs_y_m": 0.025629160114304543,
+    "max_abs_z_m": 0.08265594239576025,
+    "tip_z_minus_initial_m": -0.08230221792534088,
+    "tip_x_minus_initial_m": -0.06941477449646694,
+    "centerline_samples": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_fk_optimize/20260613_forward_kinematics_fk_legacy_gravity_single_coil/single_tip_axial_coil6_20A_with_callback/final_centerline_samples.npz"
+  }
+}

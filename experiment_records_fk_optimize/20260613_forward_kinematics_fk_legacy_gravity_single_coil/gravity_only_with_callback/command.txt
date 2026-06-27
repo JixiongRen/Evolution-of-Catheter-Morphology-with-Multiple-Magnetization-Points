@@ -1,0 +1,3 @@
+# gravity_only_with_callback
+script=fk.py
+/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/forward_kinematics/fk.py --config=/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_fk_optimize/20260613_forward_kinematics_fk_legacy_gravity_single_coil/config_gravity_only.json --flex_lengths=0.041\,0.03\,0.03 --rigid_lengths=0.003\,0.003\,0.003 --M_list=5\,5\,5 --p0=0\,0\,0 --Q0=0.70710678\,0\,0.70710678\,0 --axis_body=0\,0\,1 --enable_gravity --g_world=0\,0\,-9.81 --max_iter=6000 --tol=1e-5 --lm_damping=0.1 --jac_method=fwd --callback_every=20 --callback_save_every=20 --callback_dir=callback_snaps --final_npz=final_solution.npz 

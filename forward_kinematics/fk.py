@@ -471,6 +471,10 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--lm_damping", type=float, default=1e-1)
     p.add_argument("--jac_method", type=str, default="fwd", choices=["fwd", "rev"])
     p.add_argument("--plot", action="store_true", help="Plot converged pose (matplotlib).")
+    p.add_argument("--callback_every", type=int, default=100, help="Run visualization/data callback every N solver iterations.")
+    p.add_argument("--callback_save_every", type=int, default=100, help="Save callback PNG/NPZ every N solver iterations.")
+    p.add_argument("--callback_dir", type=str, default="callback_snaps", help="Directory for callback snapshots.")
+    p.add_argument("--final_npz", type=str, default="final_solution.npz", help="Path for final solution NPZ; set empty to disable.")
     return p
 
 
@@ -810,8 +814,15 @@ def main():
 
     # ===================== DIAG PATCH END =====================
 
-    cb = create_iteration_callback(params, scales, every=100, n_samples_rigid=10, save_every=100,
-                                   save_dir="callback_snaps", save_npz=True)
+    cb = create_iteration_callback(
+        params,
+        scales,
+        every=int(_get("callback_every", args.callback_every)),
+        n_samples_rigid=10,
+        save_every=int(_get("callback_save_every", args.callback_save_every)),
+        save_dir=str(_get("callback_dir", args.callback_dir)),
+        save_npz=True,
+    )
 
     z_star, ok = solver.solve_lm(
         z0_bar,
@@ -823,11 +834,15 @@ def main():
     )
     print("Converged:", ok)
 
+    final_npz = str(_get("final_npz", args.final_npz) or "").strip()
+    if final_npz:
+        np.savez(final_npz, z=np.asarray(z_star), ok=bool(ok), max_iter=int(_get("max_iter", args.max_iter)), tol=float(_get("tol", args.tol)))
+        print(f"[final] saved {final_npz}")
+
     if args.plot or bool(cfg.get("plot", False)):
         plot_converged_pose_3d(z_star, params, scales, n_samples_rigid=8, show=True)
 
 
 if __name__ == "__main__":
     main()
-
 

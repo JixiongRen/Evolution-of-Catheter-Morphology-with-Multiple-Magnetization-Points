@@ -46,7 +46,16 @@ def _copy_tree_contents(src: Path, dst: Path) -> None:
 
 
 def _promote_attempt(best_dir: Path, out_dir: Path) -> None:
-    for name in ["auto_current_init.json", "history.json", "result.json", "run_config.json", "trace.jsonl"]:
+    for name in [
+        "auto_current_init.json",
+        "config_full.json",
+        "history.json",
+        "result.json",
+        "run_config.json",
+        "state_final.npz",
+        "trace.jsonl",
+        "trace_controls.csv",
+    ]:
         src = best_dir / name
         if src.exists():
             shutil.copy2(src, out_dir / name)
@@ -141,6 +150,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--current_init_ridge_lambda", type=float, default=1e-6)
     p.add_argument("--I_ref_scale", type=float, default=0.5)
     p.add_argument("--current_init_torque_gain", type=float, default=1.0)
+    p.add_argument("--max_attempts", type=int, default=0, help="Maximum auto attempts to run; <=0 keeps all built-in attempts")
 
     p.add_argument("--run_mode", type=str, default="v1_staged", choices=["baseline", "v1_staged"])
     p.add_argument("--dist_tol_mm", type=float, default=1.0, help="Stop early when dist_to_target_mm falls below this threshold; <=0 disables")
@@ -233,7 +243,11 @@ def main() -> None:
     prev_attempt_name: str | None = None
     child_env = _child_env()
 
-    for attempt in _attempt_variants(args):
+    attempts = _attempt_variants(args)
+    if int(args.max_attempts) > 0:
+        attempts = attempts[: int(args.max_attempts)]
+
+    for attempt in attempts:
         attempt_dir = out_dir / attempt["name"]
         attempt_dir.mkdir(parents=True, exist_ok=True)
 

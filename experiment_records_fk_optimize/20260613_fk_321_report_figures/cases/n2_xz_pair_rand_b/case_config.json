@@ -1,0 +1,15 @@
+{
+  "case_name": "n2_xz_pair_rand_b",
+  "condition_label": "m555_random_current",
+  "magnet_key": "n2_xz_pair",
+  "magnet_label": "双磁化点-x/z组合",
+  "active_magnets": 2,
+  "coil_currents": "-19.3,7.1,-4.8,16.6,-10.9,2.3,13.7,-8.2",
+  "M_list": "5,5,5",
+  "tol": 1e-05,
+  "max_total_iter": 2000,
+  "checkpoint_iter": 20,
+  "enable_gravity": true,
+  "enable_magnetics": true,
+  "linear_solver": "dense"
+}

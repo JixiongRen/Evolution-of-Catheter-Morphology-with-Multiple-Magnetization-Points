@@ -1,0 +1,11 @@
+{
+  "case_name": "coil3_15A",
+  "coil_currents": "0,0,15,0,0,0,0,0",
+  "tol": 1e-6,
+  "max_iter": 12000,
+  "flex_lengths": "0.047",
+  "rigid_lengths": "0.003",
+  "M_list": "12",
+  "total_length_m": 0.05,
+  "m_body_list": "0,0,0.005301"
+}

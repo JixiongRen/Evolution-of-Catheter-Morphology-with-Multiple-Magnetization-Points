@@ -1,0 +1,22 @@
+{
+  "case": "coil4_15A",
+  "active_coil": 4,
+  "attempt": "bad_init_coil1_15A_geometry",
+  "role": "blind",
+  "pass": false,
+  "failure_type": "bad_initialization_branch",
+  "ik_stop_reason": "max_iter",
+  "ik_n_iter": 60,
+  "ik_normE_raw": 0.22181690479333474,
+  "ik_target_err_mm": 11.825178333035147,
+  "oracle_ik_centerline_rms_mm": 7.20347586575883,
+  "x_star_m": 0.045,
+  "x_init_m": 0.045000000000000005,
+  "I_FK_A": "0,0,0,15,0,0,0,0",
+  "I_init_A": "15,0,0,0,0,0,0,0",
+  "I_star_A": "12.835436,-1.2823893,-2.9864541,-0.46578992,1.9789624,0.41456952,3.0237556,1.2335281",
+  "I_recovery_l2_A": 20.71847874134176,
+  "dominant_I_index_1based": 1,
+  "dominant_I_A": 12.835436232967142,
+  "run_dir": "runs/coil4_15A/bad_init_coil1_15A_geometry"
+}

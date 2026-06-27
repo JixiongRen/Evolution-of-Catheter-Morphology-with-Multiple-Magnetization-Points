@@ -1,0 +1,23 @@
+[
+  {
+    "case_name": "n2_z_pair_rand_a",
+    "label": "真实双磁体段-z向配对",
+    "final_norm": 9.96e-07,
+    "converged": true,
+    "output_base": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_fk_optimize/20260616_fk_true_multi_magnet_fkpy_tol1e6/report_style_figures/n2_z_pair_rand_a_evolution_3d"
+  },
+  {
+    "case_name": "n2_xz_pair_rand_b",
+    "label": "真实双磁体段-x/z组合",
+    "final_norm": 9.999e-07,
+    "converged": true,
+    "output_base": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_fk_optimize/20260616_fk_true_multi_magnet_fkpy_tol1e6/report_style_figures/n2_xz_pair_rand_b_evolution_3d"
+  },
+  {
+    "case_name": "n3_xyz_rand_a",
+    "label": "真实三磁体段-xyz组合",
+    "final_norm": 3.252e-06,
+    "converged": false,
+    "output_base": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_fk_optimize/20260616_fk_true_multi_magnet_fkpy_tol1e6/report_style_figures/n3_xyz_rand_a_evolution_3d"
+  }
+]

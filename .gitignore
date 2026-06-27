@@ -5,14 +5,37 @@
 !/docs/experiment_records/**
 !/docs/efficiency_optimization_experiment/
 !/docs/efficiency_optimization_experiment/**
+!/docs/ik_optimization/
+!/docs/ik_optimization/**
 /calib/
 /callback_snaps/
 /ik_out/
 /workspace_determine/workspace_out/
 /.agents/
+.codegraph/
 .env
 skills-lock.json
 .codex
 
+__pycache__/
 *.pyc
 *.bak*
+
+# Generated experiment caches and raw arrays. Keep reports, scripts, summaries,
+# and final figures trackable; force-add raw data only when explicitly needed.
+experiment_records_*/**/__pycache__/
+experiment_records_*/tmp_*/
+experiment_records_*/**/callback_snaps/
+experiment_records_*/**/poses/iter_*.npz
+experiment_records_*/**/poses/final.npz
+experiment_records_*/**/*.log
+experiment_records_*/**/*.npz
+experiment_records_*/**/*.npy
+experiment_records_*/**/*.pid
+experiment_records_*/**/pid.txt
+experiment_records_*/**/*.partial.csv
+experiment_records_*/**/*.partial.json
+experiment_records_*/**/*.svg
+experiment_records_*/**/history.json
+experiment_records_*/**/trace.jsonl
+experiment_records_*/**/trace_controls.csv

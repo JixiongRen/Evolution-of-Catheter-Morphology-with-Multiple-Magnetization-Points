@@ -1,0 +1,9 @@
+{
+  "fk_normE": 1e-06,
+  "ik_target_err_mm": 1.0,
+  "fk_target_err_mm": 1.0,
+  "ik_fk_tip_mm": 0.5,
+  "ik_fk_centerline_rms_mm": 1.0,
+  "oracle_fk_centerline_rms_mm": 1.0,
+  "x_abs_err_mm": 0.05
+}

@@ -1,0 +1,33 @@
+{
+  "case_name": "n1_base_x_rand_b",
+  "condition_label": "m555_random_current",
+  "magnet_key": "n1_base_x",
+  "magnet_label": "单磁化点-基部x向",
+  "active_magnets": 1,
+  "coil_currents": "-19.3,7.1,-4.8,16.6,-10.9,2.3,13.7,-8.2",
+  "M_list": "5,5,5",
+  "tol": 1e-05,
+  "max_total_iter": 2000,
+  "checkpoint_iter": 20,
+  "enable_gravity": true,
+  "enable_magnetics": true,
+  "linear_solver": "dense",
+  "m_body_list": "0.005301,0,0; 0,0,0; 0,0,0",
+  "ok": false,
+  "stop_reason": "max_iter",
+  "n_iter": 2000,
+  "wall_s": 720.2876367270001,
+  "final_normE": 0.00021830114333725042,
+  "max_abs_E": 8.067685098533417e-05,
+  "checkpoint_count": 101,
+  "centerline_shape": [
+    48,
+    3
+  ],
+  "centerline_end_m": [
+    0.10007028636453848,
+    -0.003922967036598029,
+    -0.0225056304840135
+  ],
+  "rss_mb": 2704.5
+}

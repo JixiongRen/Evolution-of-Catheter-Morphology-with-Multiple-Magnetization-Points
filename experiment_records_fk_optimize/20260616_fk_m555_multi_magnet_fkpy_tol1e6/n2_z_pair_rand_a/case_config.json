@@ -1,0 +1,14 @@
+{
+  "case_name": "n2_z_pair_rand_a",
+  "label": "双磁化点-z向配对",
+  "source_script": "forward_kinematics/fk.py",
+  "flex_lengths": "0.041,0.03,0.03",
+  "rigid_lengths": "0.003,0.003,0.003",
+  "M_list": "5,5,5",
+  "total_length_m": 0.11,
+  "coil_currents": "11.2,-6.7,18.4,-15.1,3.6,9.8,-12.5,5.4",
+  "m_body_list": "0,0,-0.005301;0,0,0.005301;0,0,0",
+  "tol": 1e-6,
+  "max_iter": 12000,
+  "callback_every": 20
+}
