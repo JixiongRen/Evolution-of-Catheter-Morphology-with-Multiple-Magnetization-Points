@@ -42,6 +42,8 @@ OUT_DIR = Path(__file__).resolve().parent
 EPS = 0.005
 REMOVE_WEAK_DIRECTIONS = 2
 MAX_NFEV = 180
+PUBLISH_LINEARIZATION_GATE = 0.05
+DIAGNOSTIC_LINEARIZATION_GATE = 0.30
 
 
 def _jsonable(value: Any) -> Any:
@@ -240,7 +242,8 @@ def _record(rows: list[dict[str, Any]], base_row: dict[str, Any], wall_s: float)
             f"| {row['direction']} | {row['status']} | {row['rel_err']:.3e} | {row['cosine']:.3e} | "
             f"{row['fd_norm']:.3e} | {row['branch_drift_norm']:.3e} | {row['max_gate_violation']:.3e} | {row['failure_class']} |"
         )
-    usable = [row for row in rows if row["status"] == "usable"]
+    publishable = [row for row in rows if row["status"] == "publishable"]
+    diagnostic = [row for row in rows if row["status"] == "diagnostic_only"]
     return "\n".join(
         [
             "# P2c72 n2 子空间扰动重求解记录",
@@ -267,17 +270,17 @@ def _record(rows: list[dict[str, Any]], base_row: dict[str, Any], wall_s: float)
             "",
             "## 结论",
             "",
-            f"本轮共有 `{len(usable)}` / `{len(rows)}` 个扰动方向达到可用判定。可用判定要求：有限差分与隐式导数相对误差不超过 `0.3`、夹角余弦为正、重求解状态漂移不超过阈值，并且扰动后物理门禁不明显退化。",
+            f"本轮共有 `{len(publishable)}` / `{len(rows)}` 个扰动方向达到发布门禁，`{len(diagnostic)}` / `{len(rows)}` 个方向达到诊断门禁。",
             "",
-            "若至少两个方向可用，则该 16 维子空间可进入下一轮更严格的 eps 平台审计；若全部不可用，则说明静态子空间条件数过门不足以保证扰动稳定性，需要继续收缩子空间或归因为分支敏感。",
+            f"发布门禁要求局部线性化相对误差不超过 `{PUBLISH_LINEARIZATION_GATE}`；诊断门禁放宽到 `{DIAGNOSTIC_LINEARIZATION_GATE}`，仅用于判断分支是否可跟踪。本轮结果只能说明 16 维子空间在小扰动下可被稳定重求解，不能发布为高质量灵敏度。",
             "",
             f"- 总耗时：`{wall_s:.2f} s`",
             "",
             "## 下一步计划",
             "",
-            "1. 若本轮通过，扩展到 eps=0.010 并检查平台一致性。",
-            "2. 若只部分通过，保留方向性工程边界。",
-            "3. 若全部失败，回到最弱方向和分支漂移归因。",
+            "1. 继续做 eps=0.010 与 eps=0.0025 平台审计，确认误差是否随扰动尺度收敛。",
+            "2. 若误差不随扰动缩小，则优先检查隐式导数中的任务输出导数和残差电流导数。",
+            "3. 若误差随扰动缩小，则保留该工况为诊断候选，继续寻找发布级方向或更小有效子空间。",
             "",
         ]
     )
@@ -349,13 +352,34 @@ def main() -> None:
             minus_row["max_interface_force_jump_over_rigid_force"] / 1.5,
         ]
         max_gate = float(max(gate_terms))
-        status = "usable" if rel <= 0.3 and cosine > 0.0 and branch_drift <= 5.0 and max_gate <= 1.5 and plus_info["success"] and minus_info["success"] else "untrusted"
-        failure = "PASS" if status == "usable" else ("分支漂移" if branch_drift > 5.0 else ("局部线性化失效" if rel > 0.3 or cosine <= 0.0 else "物理门禁退化"))
+        branch_ok = branch_drift <= 5.0
+        physical_ok = max_gate <= 1.5 and plus_info["success"] and minus_info["success"]
+        diagnostic_ok = rel <= DIAGNOSTIC_LINEARIZATION_GATE and cosine > 0.0 and branch_ok and physical_ok
+        publish_ok = rel <= PUBLISH_LINEARIZATION_GATE and cosine > 0.0 and branch_ok and physical_ok
+        if publish_ok:
+            status = "publishable"
+            failure = "PASS"
+        elif diagnostic_ok:
+            status = "diagnostic_only"
+            failure = "局部线性化未达发布门禁"
+        elif not branch_ok:
+            status = "untrusted"
+            failure = "分支漂移"
+        elif rel > DIAGNOSTIC_LINEARIZATION_GATE or cosine <= 0.0:
+            status = "untrusted"
+            failure = "局部线性化失效"
+        else:
+            status = "untrusted"
+            failure = "物理门禁退化"
         row = {
             "direction": name,
             "eps": EPS,
             "status": status,
             "failure_class": failure,
+            "publish_ok": publish_ok,
+            "diagnostic_ok": diagnostic_ok,
+            "publish_linearization_gate": PUBLISH_LINEARIZATION_GATE,
+            "diagnostic_linearization_gate": DIAGNOSTIC_LINEARIZATION_GATE,
             "rel_err": rel,
             "cosine": cosine,
             "fd_norm": fd_norm,
@@ -376,7 +400,7 @@ def main() -> None:
             "implicit_vector": np.asarray(pred, dtype=float).tolist(),
         }
         rows.append(row)
-        if status != "usable":
+        if status != "publishable":
             with failures.open("a", encoding="utf-8") as f:
                 f.write(json.dumps({"failure": failure, "evidence": row}, ensure_ascii=False) + "\n")
     _plot(rows)
