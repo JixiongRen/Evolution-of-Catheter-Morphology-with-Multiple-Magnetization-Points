@@ -1,0 +1,240 @@
+{
+  "experiment": "20260627213500_p2c62_slack_nullspace_attribution",
+  "wall_s": 312.01405086800514,
+  "case": "n2_z_pair_rand12",
+  "alpha": 0.1,
+  "analyses": [
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "mode": "load_scaled",
+      "init_name": "zero",
+      "position_scale": 60.0,
+      "slack_reg_scale": 0.0,
+      "position_error_m": 6.057682803043818e-08,
+      "position_error_fraction_length": 5.506984366403471e-07,
+      "stationarity_norm": 0.09317948171795401,
+      "jacobian_condition": Infinity,
+      "jacobian_rank": 9,
+      "boundary_norm": 0.00046463857499976294,
+      "continuity_norm": 3.7063604817403593,
+      "nfev": 180,
+      "steady_s": 40.39649082699907,
+      "success": false,
+      "message": "The maximum number of function evaluations is exceeded.",
+      "max_interface_force_jump_over_rigid_force": 2.937602941684687,
+      "max_interface_torque_jump_over_rigid_torque": 0.5335450600190684,
+      "max_interface_jump_norm": 0.26613385794116917,
+      "max_force_jump_abs_N": 0.0010974978734393788,
+      "max_force_ratio_to_rigid_load": 2.937602941684687,
+      "max_force_ratio_to_internal_force": 1.5744477444544103,
+      "baseline_gate": false,
+      "failure_class": "一阶最优性退化",
+      "label": "task_fit_rank_deficient",
+      "full_residual_norm": 0.00011621649290721335,
+      "full_stationarity_norm_recomputed": 0.09317948171795401,
+      "singular_values": [
+        26193.252950055292,
+        3755.2034929904635,
+        268.88293167399894,
+        3.9901966424484767,
+        0.040929325805068514,
+        0.02196208897548266,
+        0.0006084314342238797,
+        3.267434425791386e-05,
+        1.4103606168809016e-05,
+        0.0
+      ],
+      "rank_recomputed": 9,
+      "condition_recomputed": Infinity,
+      "null_base_fraction": 0.3132693715222653,
+      "null_slack_fraction": 0.9496643095673571,
+      "null_tip_change_per_1e3": 3.155892182199695e-10,
+      "null_boundary_change_per_1e3": 1.0482846259571486e-08,
+      "null_slack_change_per_1e3": 0.0009496643095673571,
+      "base_components": [
+        -6.310704268922595e-05,
+        2.0404529950952526e-05,
+        -0.00038019621218835165,
+        -0.01614095912584929,
+        0.3251751205510284,
+        0.4064130621516578
+      ],
+      "slack_components": [
+        2.1618563596845632,
+        -0.5335450600190689,
+        2.9376029416846876,
+        -0.3863984040245939
+      ],
+      "oracle_seed_base": [
+        0.004133108612591236,
+        -0.0008668493705656036,
+        -0.0002005821593798935,
+        0.013157919733776053,
+        0.054920793175243364,
+        0.12766881811897193
+      ]
+    },
+    {
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "mode": "load_scaled",
+      "init_name": "zero",
+      "position_scale": 60.0,
+      "slack_reg_scale": 0.01,
+      "position_error_m": 0.00018514841371285035,
+      "position_error_fraction_length": 0.0016831673973895487,
+      "stationarity_norm": 0.7036436203907365,
+      "jacobian_condition": 8071349.976013676,
+      "jacobian_rank": 10,
+      "boundary_norm": 0.07770204899216607,
+      "continuity_norm": 3.460644365834407,
+      "nfev": 180,
+      "steady_s": 31.07521842999995,
+      "success": false,
+      "message": "The maximum number of function evaluations is exceeded.",
+      "max_interface_force_jump_over_rigid_force": 2.8025056475994634,
+      "max_interface_torque_jump_over_rigid_torque": 0.6331418889485683,
+      "max_interface_jump_norm": 0.28010889323898597,
+      "max_force_jump_abs_N": 0.001141921603843704,
+      "max_force_ratio_to_rigid_load": 2.8025056475994634,
+      "max_force_ratio_to_internal_force": 0.376310755796625,
+      "baseline_gate": false,
+      "failure_class": "一阶最优性退化",
+      "label": "regularized_condition_probe",
+      "full_residual_norm": 0.04121121491946505,
+      "full_stationarity_norm_recomputed": 0.7036436203907365,
+      "singular_values": [
+        6491.44017243154,
+        3593.869305576495,
+        186.2667262444768,
+        2.3627223680192233,
+        0.03407195290782225,
+        0.019523187341101245,
+        0.010000130602962193,
+        0.00998821987485387,
+        0.009624828800286022,
+        0.0008042570563440702
+      ],
+      "rank_recomputed": 10,
+      "condition_recomputed": 8071349.976013675,
+      "null_base_fraction": 0.9975562437975788,
+      "null_slack_fraction": 0.06986802173001523,
+      "null_tip_change_per_1e3": 3.372124946936443e-09,
+      "null_boundary_change_per_1e3": 1.6657784320599489e-06,
+      "null_slack_change_per_1e3": 6.986802173001524e-05,
+      "base_components": [
+        -0.002763759519755873,
+        0.00024052234807285736,
+        -0.0005804639709635483,
+        -0.1509630044386794,
+        0.6425612662913838,
+        2.383258281397873
+      ],
+      "slack_components": [
+        2.8025056475994634,
+        -0.015947620854309272,
+        1.9289630747638118,
+        -0.6331418889485705
+      ],
+      "oracle_seed_base": [
+        0.004133108612591236,
+        -0.0008668493705656036,
+        -0.0002005821593798935,
+        0.013157919733776053,
+        0.054920793175243364,
+        0.12766881811897193
+      ]
+    }
+  ],
+  "block_rows": [
+    {
+      "label": "task_fit_rank_deficient",
+      "block_name": "position",
+      "block_cn": "末端位置",
+      "residual_norm": 3.634609681826291e-06,
+      "jacobian_fro_norm": 25966.625012693767,
+      "stationarity_contribution_norm": 0.0932298812575949,
+      "null_projection_norm": 1.443603691037192e-16
+    },
+    {
+      "label": "task_fit_rank_deficient",
+      "block_name": "boundary",
+      "block_cn": "终端边界",
+      "residual_norm": 0.00011615964374994073,
+      "jacobian_fro_norm": 5098.504955795161,
+      "stationarity_contribution_norm": 0.0002574870051794875,
+      "null_projection_norm": 6.276996819409585e-17
+    },
+    {
+      "label": "task_fit_rank_deficient",
+      "block_name": "slack_regularization",
+      "block_cn": "松弛正则",
+      "residual_norm": 0.0,
+      "jacobian_fro_norm": 0.0,
+      "stationarity_contribution_norm": 0.0,
+      "null_projection_norm": 0.0
+    },
+    {
+      "label": "regularized_condition_probe",
+      "block_name": "position",
+      "block_cn": "末端位置",
+      "residual_norm": 0.01110890482277102,
+      "jacobian_fro_norm": 5328.594969703181,
+      "stationarity_contribution_norm": 3.1326894946009367,
+      "null_projection_norm": 0.0001593652155043143
+    },
+    {
+      "label": "regularized_condition_probe",
+      "block_name": "boundary",
+      "block_cn": "终端边界",
+      "residual_norm": 0.019425512248041517,
+      "jacobian_fro_norm": 5166.765779854427,
+      "stationarity_contribution_norm": 3.23572566873996,
+      "null_projection_norm": 0.000365072725247876
+    },
+    {
+      "label": "regularized_condition_probe",
+      "block_name": "slack_regularization",
+      "block_cn": "松弛正则",
+      "residual_norm": 0.03460644365834407,
+      "jacobian_fro_norm": 0.02,
+      "stationarity_contribution_norm": 0.00034606443658344066,
+      "null_projection_norm": 0.0006986802173001523
+    }
+  ],
+  "null_vectors": {
+    "task_fit_rank_deficient": [
+      4.0467767688301267e-07,
+      2.83678385275978e-07,
+      -2.3528669868940613e-05,
+      0.02089529268413876,
+      0.044821580155940226,
+      -0.3093414153909582,
+      -0.02710737482032039,
+      0.9066690661441029,
+      -0.03727201508651193,
+      0.278728348908336
+    ],
+    "regularized_condition_probe": [
+      -0.0007740176935948509,
+      8.562618352419665e-05,
+      -5.138402442730995e-05,
+      -0.04452721579063494,
+      0.12678602650060414,
+      0.9884636973617723,
+      0.04710082947910379,
+      0.007640686074069253,
+      0.050946536684743804,
+      -0.003020370671597506
+    ]
+  },
+  "git": {
+    "branch": "ik_optimize",
+    "commit": "4aebd55c70b68a624919af672701a4bb078b058f",
+    "status_short": "?? experiment_records_ik_optimize/20260627213500_p2c62_slack_nullspace_attribution/"
+  },
+  "jax_devices": [
+    "cuda:0"
+  ]
+}

@@ -1,0 +1,7 @@
+block_cn,block_name,jacobian_fro_norm,label,null_projection_norm,residual_norm,stationarity_contribution_norm
+末端位置,position,25966.625012693767,task_fit_rank_deficient,1.443603691037192e-16,3.634609681826291e-06,0.0932298812575949
+终端边界,boundary,5098.504955795161,task_fit_rank_deficient,6.276996819409585e-17,0.00011615964374994073,0.0002574870051794875
+松弛正则,slack_regularization,0.0,task_fit_rank_deficient,0.0,0.0,0.0
+末端位置,position,5328.594969703181,regularized_condition_probe,0.0001593652155043143,0.01110890482277102,3.1326894946009367
+终端边界,boundary,5166.765779854427,regularized_condition_probe,0.000365072725247876,0.019425512248041517,3.23572566873996
+松弛正则,slack_regularization,0.02,regularized_condition_probe,0.0006986802173001523,0.03460644365834407,0.00034606443658344066
