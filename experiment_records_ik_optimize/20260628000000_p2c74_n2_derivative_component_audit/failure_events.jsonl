@@ -1,0 +1,2 @@
+{"failure": "较大状态扰动非线性", "evidence": {"component": "tip_state_subspace_derivative", "direction": "subspace_e0", "eps": 1e-06, "rel_err": 0.0006216882534248604, "cosine": 0.9999999136797603, "fd_norm": 56.08681021581885, "pred_norm": 56.11274246567843}}
+{"failure": "较大状态扰动非线性", "evidence": {"component": "tip_state_subspace_derivative", "direction": "subspace_e0", "eps": 1e-05, "rel_err": 0.06482339276590197, "cosine": 0.9989719726414324, "fd_norm": 53.680556615726196, "pred_norm": 56.11274246567843}}

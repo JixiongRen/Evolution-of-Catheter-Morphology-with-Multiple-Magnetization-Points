@@ -1,0 +1,298 @@
+{
+  "experiment": "20260628000000_p2c74_n2_derivative_component_audit",
+  "eps_values": [
+    0.0001,
+    0.0003,
+    0.001
+  ],
+  "task_eps_values": [
+    1e-07,
+    1e-06,
+    1e-05
+  ],
+  "wall_s": 348.46698441499757,
+  "base_row": {
+    "case": "n2_z_pair_rand12",
+    "alpha": 0.1,
+    "force_continuity_scale": 4.0,
+    "torque_continuity_scale": 0.25,
+    "stage": 4,
+    "position_scale": 60.0,
+    "max_iter": 240,
+    "position_error_m": 1.4019863348218168e-06,
+    "stationarity_norm": 2.2392651346215557e-07,
+    "jacobian_condition": 49051439.62425452,
+    "continuity_norm": 0.0004371258381049961,
+    "terminal_force_norm": 0.009714148574214218,
+    "terminal_torque_norm": 0.00014651817335143655,
+    "nfev": 148,
+    "steady_s": 27.408450304006692,
+    "success": true,
+    "max_interface_force_jump_over_rigid_force": 0.7409042942043373,
+    "max_interface_torque_jump_over_rigid_torque": 0.0005597602163761381,
+    "max_interface_jump_norm": 0.0003456564014953,
+    "max_force_jump_abs_N": 0.00030186914151835597,
+    "max_force_ratio_to_rigid_load": 0.7409042942043373,
+    "max_force_ratio_to_internal_force": 0.029835605154511977,
+    "baseline_gate": false,
+    "failure_class": "综合失败",
+    "reg_scale": 0.0003
+  },
+  "rows": [
+    {
+      "component": "residual_current_derivative",
+      "direction": "max_active_coil",
+      "eps": 0.0001,
+      "rel_err": 2.8572228408495595e-12,
+      "cosine": 1.0,
+      "fd_norm": 0.06436214916880206,
+      "pred_norm": 0.06436214916872361
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "max_active_coil",
+      "eps": 0.0001,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "residual_current_derivative",
+      "direction": "current_direction",
+      "eps": 0.0001,
+      "rel_err": 4.400624838335733e-12,
+      "cosine": 1.0,
+      "fd_norm": 0.08453080280799312,
+      "pred_norm": 0.08453080280765166
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "current_direction",
+      "eps": 0.0001,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "residual_current_derivative",
+      "direction": "random_unit",
+      "eps": 0.0001,
+      "rel_err": 1.5785253816446714e-11,
+      "cosine": 1.0000000000000002,
+      "fd_norm": 0.042081322645909226,
+      "pred_norm": 0.04208132264614795
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "random_unit",
+      "eps": 0.0001,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "residual_current_derivative",
+      "direction": "max_active_coil",
+      "eps": 0.0003,
+      "rel_err": 1.1791352966431658e-12,
+      "cosine": 0.9999999999999998,
+      "fd_norm": 0.06436214916872744,
+      "pred_norm": 0.06436214916872361
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "max_active_coil",
+      "eps": 0.0003,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "residual_current_derivative",
+      "direction": "current_direction",
+      "eps": 0.0003,
+      "rel_err": 2.809928714266364e-12,
+      "cosine": 1.0000000000000002,
+      "fd_norm": 0.0845308028075266,
+      "pred_norm": 0.08453080280765166
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "current_direction",
+      "eps": 0.0003,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "residual_current_derivative",
+      "direction": "random_unit",
+      "eps": 0.0003,
+      "rel_err": 1.809640250181697e-12,
+      "cosine": 1.0000000000000002,
+      "fd_norm": 0.04208132264611774,
+      "pred_norm": 0.04208132264614795
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "random_unit",
+      "eps": 0.0003,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "residual_current_derivative",
+      "direction": "max_active_coil",
+      "eps": 0.001,
+      "rel_err": 7.040047507209433e-13,
+      "cosine": 1.0,
+      "fd_norm": 0.06436214916871869,
+      "pred_norm": 0.06436214916872361
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "max_active_coil",
+      "eps": 0.001,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "residual_current_derivative",
+      "direction": "current_direction",
+      "eps": 0.001,
+      "rel_err": 5.993481889050381e-13,
+      "cosine": 1.0,
+      "fd_norm": 0.08453080280766698,
+      "pred_norm": 0.08453080280765166
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "current_direction",
+      "eps": 0.001,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "residual_current_derivative",
+      "direction": "random_unit",
+      "eps": 0.001,
+      "rel_err": 4.753315670298426e-13,
+      "cosine": 1.0000000000000002,
+      "fd_norm": 0.042081322646129835,
+      "pred_norm": 0.04208132264614795
+    },
+    {
+      "component": "tip_current_direct_derivative",
+      "direction": "random_unit",
+      "eps": 0.001,
+      "rel_err": 0.0,
+      "cosine": 0.0,
+      "fd_norm": 0.0,
+      "pred_norm": 0.0
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_e0",
+      "eps": 1e-07,
+      "rel_err": 6.214191523046677e-06,
+      "cosine": 0.9999999999913838,
+      "fd_norm": 56.11248298973977,
+      "pred_norm": 56.11274246567843
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_mid",
+      "eps": 1e-07,
+      "rel_err": 9.287254068831164e-10,
+      "cosine": 1.0000000000000002,
+      "fd_norm": 1.7685704553889483,
+      "pred_norm": 1.768570453784941
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_last",
+      "eps": 1e-07,
+      "rel_err": 1.4345730518802751e-10,
+      "cosine": 1.0,
+      "fd_norm": 0.5446729776979039,
+      "pred_norm": 0.5446729776691132
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_e0",
+      "eps": 1e-06,
+      "rel_err": 0.0006216882534248604,
+      "cosine": 0.9999999136797603,
+      "fd_norm": 56.08681021581885,
+      "pred_norm": 56.11274246567843
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_mid",
+      "eps": 1e-06,
+      "rel_err": 8.015527521312969e-08,
+      "cosine": 0.9999999999999997,
+      "fd_norm": 1.7685705901817854,
+      "pred_norm": 1.768570453784941
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_last",
+      "eps": 1e-06,
+      "rel_err": 3.2381476810031265e-09,
+      "cosine": 1.0,
+      "fd_norm": 0.544672979101042,
+      "pred_norm": 0.5446729776691132
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_e0",
+      "eps": 1e-05,
+      "rel_err": 0.06482339276590197,
+      "cosine": 0.9989719726414324,
+      "fd_norm": 53.680556615726196,
+      "pred_norm": 56.11274246567843
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_mid",
+      "eps": 1e-05,
+      "rel_err": 8.016661789621587e-06,
+      "cosine": 0.9999999999976149,
+      "fd_norm": 1.768584095581026,
+      "pred_norm": 1.768570453784941
+    },
+    {
+      "component": "tip_state_subspace_derivative",
+      "direction": "subspace_last",
+      "eps": 1e-05,
+      "rel_err": 3.224369146367519e-07,
+      "cosine": 0.9999999999999825,
+      "fd_norm": 0.5446731204570516,
+      "pred_norm": 0.5446729776691132
+    },
+    {
+      "component": "effective_jacobian_condition",
+      "direction": "all",
+      "eps": 0.0,
+      "rel_err": 5427971.288873467,
+      "cosine": 1.0,
+      "fd_norm": 0.005097888745723701,
+      "pred_norm": 27671.193745659417
+    }
+  ],
+  "jax_devices": [
+    "cuda:0"
+  ]
+}
