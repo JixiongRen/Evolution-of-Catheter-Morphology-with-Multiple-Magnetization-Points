@@ -1,0 +1,12 @@
+{
+  "experiment_id": "20260629150000_p2c127_n1_rigid_load_repair_interface_design",
+  "status": "n1_rigid_load_repair_interface_designed",
+  "publishable_claim": false,
+  "outer_ik_allowed": false,
+  "disturbance_scan_allowed": false,
+  "next_stage": "P2c128 readonly rigid-load propagation observer",
+  "code_components": 4,
+  "equations": 4,
+  "milestones": 4,
+  "wall_s": 9.466999472351745e-06
+}

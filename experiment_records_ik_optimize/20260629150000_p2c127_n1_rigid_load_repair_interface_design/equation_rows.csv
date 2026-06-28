@@ -1,0 +1,5 @@
+equation,gate,meaning,residual
+刚段平衡传播,几何残差进入基线残差；不允许只由正则项吸收。,刚段远端状态必须由柔性段末端状态和磁体段合外载传播得到。,"r_x = x_rigid_end - Phi_rigid(x_flex_end, F_m, tau_m)"
+力连续,"||r_F|| / max(||F_m||, floor) <= 1.5。",柔性段远端内力应平衡刚性磁体段对接口的等效外力。,r_F = n_flex_distal + F_m
+矩连续,与力连续同时满足；不能只满足矩而破坏力。,柔性段远端内矩应平衡外力矩和力臂引起的附加力矩。,r_M = m_flex_distal + tau_m + r_cm x F_m
+任务残差,任务维度不得超过有效秩；基线物理门禁不过时不扫描扰动。,末端位置拟合仍保留，但不能覆盖物理闭合失败。,r_p = p_tip - p_target
