@@ -1,0 +1,4 @@
+baseline_ok,branch,branch_ok,continuity_norm,direction,eps,failure_class,fd_norm,force_ratio,minus_nfev,minus_success,plus_nfev,plus_success,position_error_m,pred_norm,sensitivity_cosine,sensitivity_rel_err,sigma_1,sigma_2,sigma_3,state_diff_norm,stationarity_norm,status,task_condition,tip_diff_m,vector_cosine,vector_rel_err
+True,trusted_seed,True,0.0004371258381054746,,,,,0.7409042942042756,,,,,1.4019863348494303e-06,,1.0,0.0,1.516387558083991e-06,8.594725748234625e-08,4.697015192448005e-09,0.0,2.2369090928535076e-07,,322.8406756107755,0.0,,
+,trusted_seed,,,rand_current_10,0.0125,PASS,6.134326256383913e-08,,6,True,6,True,,6.137097146267911e-08,,,,,,,,publishable,,,0.37646949612261327,0.0007430784520042161
+,trusted_seed,,,rand_current_19,0.0125,PASS,1.404537947541011e-06,,7,True,7,True,,1.4045592021320324e-06,,,,,,,,publishable,,,0.9999999999964607,1.5364906397628235e-05

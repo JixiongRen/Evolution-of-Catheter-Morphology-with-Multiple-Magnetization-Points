@@ -1,0 +1,3 @@
+branch,direction,eps,failure_class,fd_norm,minus_nfev,minus_success,plus_nfev,plus_success,pred_norm,status,vector_cosine,vector_rel_err
+trusted_seed,rand_current_10,0.0125,PASS,6.134326256383913e-08,6,True,6,True,6.137097146267911e-08,publishable,0.37646949612261327,0.0007430784520042161
+trusted_seed,rand_current_19,0.0125,PASS,1.404537947541011e-06,7,True,7,True,1.4045592021320324e-06,publishable,0.9999999999964607,1.5364906397628235e-05
