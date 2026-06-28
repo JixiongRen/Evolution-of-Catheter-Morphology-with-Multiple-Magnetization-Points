@@ -1,0 +1,7 @@
+example,accepted,current_step_norm_A,projected_task_norm_m,reasons
+合法二维小步请求,True,0.00011355654171378756,9.964080819301517e-11,无
+错误请求完整三维位置,False,0.00011355654171378756,9.964080819301517e-11,full_3d_position_not_publishable
+错误请求完整末端位姿,False,0.00011355654171378756,9.964080819301517e-11,full_pose_not_publishable
+错误跨工作点,False,0.0,0.0,workpoint_not_audited
+错误接入默认外层逆运动学,False,0.00011355654171378756,9.964080819301517e-11,default_outer_ik_forbidden
+错误超过半径,False,1135.5654171378758,0.0009964080819301517,current_step_radius_exceeded
