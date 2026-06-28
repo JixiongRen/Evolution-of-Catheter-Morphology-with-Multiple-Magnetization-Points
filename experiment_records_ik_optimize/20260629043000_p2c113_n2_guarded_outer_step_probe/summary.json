@@ -1,0 +1,77 @@
+{
+  "experiment_id": "20260629043000_p2c113_n2_guarded_outer_step_probe",
+  "status": "local_step_probe_only",
+  "branch_scope": "同一模型、同一目标点、同一基准电流、同一任务口径下的分支条件局部导数复核",
+  "forbidden_scope": "全局灵敏度、完整末端位姿灵敏度、跨目标点复用、跨电流基点复用、默认外层 IK 模型",
+  "outer_ik_default_allowed": false,
+  "interface_evidence": {
+    "task_name": "三维末端位置",
+    "eps": 0.0125,
+    "stationarity_norm": 2.2403099847038915e-07,
+    "force_ratio": 0.7409042942042787,
+    "task_condition": 322.8400991945264,
+    "random_direction_passed": 20,
+    "random_direction_total": 20,
+    "random_direction_max_rel_err": 0.0007249292540128786,
+    "guarded_repeat_passed": 40,
+    "guarded_repeat_total": 40,
+    "guarded_repeat_max_rel_err": 0.0007505523734167382,
+    "guarded_repeat_same_status": true,
+    "status": "branch_conditioned_candidate"
+  },
+  "request_validation": [
+    {
+      "case": "required_request",
+      "accepted": true,
+      "reasons": ""
+    },
+    {
+      "case": "full_pose_request",
+      "accepted": false,
+      "reasons": "task_dimension_mismatch;terminal_quantity_mismatch"
+    },
+    {
+      "case": "wrong_eps",
+      "accepted": false,
+      "reasons": "eps_mismatch"
+    },
+    {
+      "case": "wrong_branch",
+      "accepted": false,
+      "reasons": "branch_label_mismatch"
+    }
+  ],
+  "S_shape": [
+    3,
+    8
+  ],
+  "singular_values": [
+    1.5163967580767339e-06,
+    8.594677354420822e-08,
+    4.697052075811169e-09
+  ],
+  "condition": 322.8400991945264,
+  "damping": 4.69705207581117e-10,
+  "current_limit_A": 5.0,
+  "accepted_count": 6,
+  "rejected_count": 3,
+  "singular_mode_accepted_count": 6,
+  "cartesian_50um_rejected_count": 3,
+  "target_p_m": [
+    0.10948751195638046,
+    -0.0025226204491387914,
+    0.008425192649546396
+  ],
+  "I0_A": [
+    -0.8,
+    0.5,
+    1.1,
+    -0.4,
+    0.0,
+    0.9500000000000001,
+    -0.6000000000000001,
+    0.30000000000000004
+  ],
+  "wall_s": 0.552096145998803,
+  "interpretation": "该实验只证明在已缓存可信分支附近，可以根据三维末端位置灵敏度给出受电流预算约束的局部步长建议。它不证明全局逆运动学可用，也不允许默认接入外层 IK。"
+}

@@ -1,0 +1,2 @@
+status,condition,accepted_count,rejected_count,singular_mode_accepted_count,cartesian_50um_rejected_count,outer_ik_default_allowed,wall_s
+local_step_probe_only,322.8400991945264,6,3,6,3,False,0.552096145998803

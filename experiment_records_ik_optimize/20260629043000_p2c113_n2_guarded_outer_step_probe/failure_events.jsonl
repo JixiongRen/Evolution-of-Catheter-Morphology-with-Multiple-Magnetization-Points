@@ -1,0 +1,3 @@
+{"case": "cart_x_50um", "failure_class": "proposal_rejected", "reasons": ["所需电流步长超过局部预算"]}
+{"case": "cart_y_50um", "failure_class": "proposal_rejected", "reasons": ["所需电流步长超过局部预算"]}
+{"case": "cart_z_50um", "failure_class": "proposal_rejected", "reasons": ["所需电流步长超过局部预算"]}

@@ -1,0 +1,5 @@
+case,accepted,reasons
+required_request,True,
+full_pose_request,False,task_dimension_mismatch;terminal_quantity_mismatch
+wrong_eps,False,eps_mismatch
+wrong_branch,False,branch_label_mismatch
