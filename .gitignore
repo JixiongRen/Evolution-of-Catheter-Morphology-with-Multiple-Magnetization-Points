@@ -20,6 +20,10 @@ skills-lock.json
 __pycache__/
 *.pyc
 *.bak*
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
 
 # Generated experiment caches and raw arrays. Keep reports, scripts, summaries,
 # and final figures trackable; force-add raw data only when explicitly needed.
