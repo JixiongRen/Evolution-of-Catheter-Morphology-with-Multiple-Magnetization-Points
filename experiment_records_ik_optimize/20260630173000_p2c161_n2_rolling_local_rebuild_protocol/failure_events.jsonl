@@ -1,0 +1,2 @@
+{"failure_class": "固定子空间复用失败", "evidence": "experiment_records_ik_optimize/20260630143000_p2c156_n2_2d_multistep_prototype/summary.json", "interpretation": "第二步不重新建模时，接口连续残差跨过门禁。", "repair_hypothesis": "每一步重新求解分支并重建局部二维有效子空间。"}
+{"failure_class": "完整三维有效秩不足", "evidence": "experiment_records_ik_optimize/20260630170000_p2c160_n2_3d_position_boundary_synthesis/summary.json", "interpretation": "第三主方向扰动响应不能稳定线性化。", "repair_hypothesis": "滚动协议仍只发布二维子空间，不扩展三维声明。"}

@@ -1,0 +1,24 @@
+{
+  "experiment_id": "20260630173000_p2c161_n2_rolling_local_rebuild_protocol",
+  "status": "rolling_local_rebuild_protocol_defined_not_yet_validated",
+  "purpose": "define_n2_rolling_branch_and_sensitivity_rebuild_protocol",
+  "fixed_subspace_multistep_allowed": false,
+  "rolling_rebuild_prototype_allowed": true,
+  "outer_ik_allowed": false,
+  "full_3d_position_publishable": false,
+  "effective_subspace_dimension": 2,
+  "current_step_radius_A": 0.001,
+  "required_gates": {
+    "stationarity_norm": "<=1e-5",
+    "centerline_branch_drift_m": "<1e-3",
+    "linearization_error": "<0.05",
+    "force_ratio": "<=1.5 preferred",
+    "continuity_norm": "must not exceed audited interface threshold"
+  },
+  "source_summaries": {
+    "single_step": "experiment_records_ik_optimize/20260630150000_p2c157_n2_single_step_interface/summary.json",
+    "multistep_fixed": "experiment_records_ik_optimize/20260630143000_p2c156_n2_2d_multistep_prototype/summary.json",
+    "boundary": "experiment_records_ik_optimize/20260630170000_p2c160_n2_3d_position_boundary_synthesis/summary.json"
+  },
+  "next_experiment": "P2c162 run one rolling two-step prototype on one n2 workpoint; compare against P2c156 fixed-subspace failure."
+}

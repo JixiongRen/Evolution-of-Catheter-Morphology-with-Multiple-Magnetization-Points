@@ -1,0 +1,53 @@
+{
+  "name": "n2_rolling_local_branch_sensitivity_rebuild",
+  "scope": "branch-conditioned 2D effective-subspace terminal-position sensitivity",
+  "not_scope": [
+    "full 3D terminal-position sensitivity",
+    "full terminal-pose sensitivity",
+    "default outer IK"
+  ],
+  "loop": [
+    {
+      "step": 1,
+      "name": "当前分支重求解",
+      "required": "以上一步接受状态为初值，对当前电流重新求解物理分支。",
+      "gate": "一阶最优性、载荷传播、接口连续、中心线分支漂移均需重新通过。"
+    },
+    {
+      "step": 2,
+      "name": "局部灵敏度重建",
+      "required": "在当前分支重新构造末端位置灵敏度矩阵并做奇异值分解。",
+      "gate": "只保留通过有效秩与条件数门禁的前两主方向；第三方向默认不可发布。"
+    },
+    {
+      "step": 3,
+      "name": "二维任务投影",
+      "required": "将目标末端位移投影到当前二维有效子空间。",
+      "gate": "投影外残差必须报告；不得伪装成完整三维跟踪。"
+    },
+    {
+      "step": 4,
+      "name": "保守电流步生成",
+      "required": "按当前二维基计算电流增量，并限制在 0.001 A 半径内。",
+      "gate": "超过半径则缩步或拒绝；禁止使用 0.0015 A 作为默认半径。"
+    },
+    {
+      "step": 5,
+      "name": "扰动重求解闭合",
+      "required": "对新电流重新求解物理状态，比较预测位移与实际位移。",
+      "gate": "局部线性化误差 <0.05，中心线漂移 <1e-3 m，载荷传播比例 <=1.5。"
+    }
+  ],
+  "acceptance": {
+    "stationarity_norm": "<=1e-5",
+    "centerline_branch_drift_m": "<1e-3",
+    "linearization_error": "<0.05",
+    "force_ratio": "<=1.5 preferred",
+    "continuity_norm": "must not exceed audited interface threshold"
+  },
+  "stop_rules": [
+    "If current step exceeds 0.001 A, shrink or reject.",
+    "If third singular direction is required, reject full 3D task claim.",
+    "If any gate fails, stop and classify failure; do not continue multistep scan."
+  ]
+}
