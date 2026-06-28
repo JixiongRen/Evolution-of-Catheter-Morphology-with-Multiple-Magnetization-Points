@@ -1,0 +1,5 @@
+{"init_mode": "small_random_pos", "failure_class": "任务误差超限", "baseline_gate": false}
+{"init_mode": "small_random_neg", "failure_class": "任务误差超限", "baseline_gate": false}
+{"init_mode": "medium_random", "failure_class": "任务误差超限", "baseline_gate": false}
+{"init_mode": "basis_axis_pos", "failure_class": "任务误差超限", "baseline_gate": false}
+{"init_mode": "basis_axis_neg", "failure_class": "任务误差超限", "baseline_gate": false}
