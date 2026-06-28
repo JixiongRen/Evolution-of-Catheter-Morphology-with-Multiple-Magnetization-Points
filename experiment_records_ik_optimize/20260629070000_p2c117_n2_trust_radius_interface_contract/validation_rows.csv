@@ -1,0 +1,9 @@
+accepted,case,current_step_norm_A,expectation_ok,expected_accept,max_linear_current_step_A,physical_current_step_budget_A,reasons
+True,valid_half_radius,0.00625,True,True,0.0125,5.0,
+True,valid_boundary_radius,0.0125,True,True,0.0125,5.0,
+False,too_large_radius,0.012625,True,False,0.0125,5.0,linear_trust_radius_exceeded
+False,physical_budget_misuse,5.0,True,False,0.0125,5.0,physical_budget_used_as_linear_radius;linear_trust_radius_exceeded
+False,full_pose_request,0.00625,True,False,0.0125,5.0,task_dimension_mismatch;terminal_quantity_mismatch
+False,wrong_branch,0.00625,True,False,0.0125,5.0,branch_label_mismatch
+False,target_displacement_request,0.00625,True,False,0.0125,5.0,step_type_mismatch
+False,bad_shape,0.0125,True,False,0.0125,5.0,dI_shape_mismatch

@@ -1,0 +1,2 @@
+accepted_count,experiment_id,interpretation,max_linear_current_step_A,outer_ik_default_allowed,physical_current_step_budget_A,status,total_cases,wall_s
+2,20260629070000_p2c117_n2_trust_radius_interface_contract,该接口将线性信赖域半径与物理电流预算分离，防止外层 IK 使用 5 A 级单步线性外推。,0.0125,False,5.0,contract_pass,8,0.0008288330027426127
