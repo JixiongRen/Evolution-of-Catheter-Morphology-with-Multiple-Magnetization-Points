@@ -1,0 +1,26 @@
+{
+  "experiment_id": "20260629080000_p2c119_n2_diagnostic_outer_ik_policy",
+  "status": "diagnostic_policy_ready",
+  "policy": {
+    "task": "n2 三维末端位置",
+    "mode": "诊断模式外层 IK 策略",
+    "max_linear_current_step_A": 0.0125,
+    "physical_current_budget_A": 5.0,
+    "singular_values": [
+      1.5163967580767339e-06,
+      8.594677354420822e-08,
+      4.697052075811169e-09
+    ],
+    "allowed": "可信分支、小电流半径内、位置任务的小步诊断推进",
+    "forbidden": "完整位姿、跨分支、跨基准电流、大步线性外推、默认生产 IK"
+  },
+  "action_counts": {
+    "快速局部校正": 2,
+    "慢速诊断推进": 2,
+    "拒绝直接外层 IK": 4
+  },
+  "total_cases": 8,
+  "failure_count": 0,
+  "wall_s": 0.004965864998666802,
+  "interpretation": "该策略把 n2 灵敏度限制为诊断模式局部外层 IK，不允许默认生产接入或大步全局求解。"
+}
