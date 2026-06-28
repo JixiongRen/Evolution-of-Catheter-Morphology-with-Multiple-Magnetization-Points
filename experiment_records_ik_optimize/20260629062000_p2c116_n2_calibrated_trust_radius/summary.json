@@ -1,0 +1,34 @@
+{
+  "experiment_id": "20260629062000_p2c116_n2_calibrated_trust_radius",
+  "status": "calibrated_radius_pass",
+  "tested_cases": 18,
+  "pass_count": 18,
+  "radii_A": [
+    0.0025,
+    0.005,
+    0.0125
+  ],
+  "by_radius": {
+    "0.0025": {
+      "passed": 6,
+      "total": 6,
+      "max_rel_err": 0.04327214043186882,
+      "max_centerline_change_m": 2.509468226815591e-06
+    },
+    "0.005": {
+      "passed": 6,
+      "total": 6,
+      "max_rel_err": 0.03180527462140324,
+      "max_centerline_change_m": 5.02253457104093e-06
+    },
+    "0.0125": {
+      "passed": 6,
+      "total": 6,
+      "max_rel_err": 0.03536961045540809,
+      "max_centerline_change_m": 1.2577599229167183e-05
+    }
+  },
+  "wall_s": 58.34892475099696,
+  "total_solve_steady_s": 32.132253358002345,
+  "interpretation": "该实验检验 P2c107 已审计扰动尺度附近的真实重求解闭环，用于估计当前 n2 分支可线性化电流半径。"
+}
