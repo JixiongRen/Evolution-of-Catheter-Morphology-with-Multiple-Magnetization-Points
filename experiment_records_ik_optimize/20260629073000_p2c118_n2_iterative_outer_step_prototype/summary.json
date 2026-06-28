@@ -1,0 +1,44 @@
+{
+  "experiment_id": "20260629073000_p2c118_n2_iterative_outer_step_prototype",
+  "status": "iterative_probe_completed",
+  "max_linear_current_step_A": 0.0125,
+  "targets": [
+    {
+      "target": "mode1_three_steps",
+      "initial_error_um": 0.056864878421613724,
+      "final_error_um": 0.001385193811434257,
+      "reduction_ratio": 0.975640608933268,
+      "steps_recorded": 3,
+      "status": "improved"
+    },
+    {
+      "target": "mode2_three_steps",
+      "initial_error_um": 0.003223004008399556,
+      "final_error_um": 0.003223004008399556,
+      "reduction_ratio": 0.0,
+      "steps_recorded": 0,
+      "status": "not_improved"
+    },
+    {
+      "target": "cart_x_small",
+      "initial_error_um": 0.03790991895402662,
+      "final_error_um": 0.03256504049767691,
+      "reduction_ratio": 0.1409889180409869,
+      "steps_recorded": 8,
+      "status": "improved"
+    },
+    {
+      "target": "cart_y_weak",
+      "initial_error_um": 0.03790991895185822,
+      "final_error_um": 0.03743258425239137,
+      "reduction_ratio": 0.012591287786001826,
+      "steps_recorded": 8,
+      "status": "improved"
+    }
+  ],
+  "improved_count": 3,
+  "total_targets": 4,
+  "failure_count": 0,
+  "wall_s": 50.748842254997726,
+  "interpretation": "该原型只验证小步迭代外层 IK 的局部趋势，不声明全局 IK 可用。"
+}
