@@ -1,0 +1,57 @@
+{
+  "experiment": "20260628222500_p2c100_ik_sensitivity_milestone_synthesis",
+  "status": "milestone_synthesis",
+  "sources": {
+    "P2c97": "experiment_records_ik_optimize/20260628211500_p2c97_n2_publish_candidate_synthesis/summary.json",
+    "P2c98": "experiment_records_ik_optimize/20260628213500_p2c98_n2_eps0125_random_current_batch/summary.json",
+    "P2c99": "experiment_records_ik_optimize/20260628215500_p2c99_n1_nonpublishable_boundary_synthesis/summary.json"
+  },
+  "rows": [
+    {
+      "object": "n1 单点磁控",
+      "task": "有效子空间末端位置",
+      "decision": "当前模型不可发布",
+      "publishable": false,
+      "main_evidence": "P2c99",
+      "hard_gate_summary": "载荷传播比例约 2.769，高于 1.5",
+      "failure_class": "刚性磁体段载荷传播失配；模型耦合缺失",
+      "allowed_use": "诊断与模型修复",
+      "forbidden_use": "发布灵敏度；接入外层 IK",
+      "next_step": "重写接口力连续残差或显式刚段力传递参数"
+    },
+    {
+      "object": "n2 两点磁控",
+      "task": "三维末端位置",
+      "decision": "分支条件发布候选",
+      "publishable": true,
+      "main_evidence": "P2c97-P2c98",
+      "hard_gate_summary": "P2c98 随机电流方向 20/20 通过，最大线性化误差 7.236e-04",
+      "failure_class": "初始化敏感；多平衡分支竞争",
+      "allowed_use": "受信任分支条件局部导数；position-only 诊断",
+      "forbidden_use": "初始化无关结论；完整末端位姿灵敏度；默认生产 IK",
+      "next_step": "可靠分支选择与效率优化"
+    },
+    {
+      "object": "n2 两点磁控",
+      "task": "完整末端位姿",
+      "decision": "不可发布",
+      "publishable": false,
+      "main_evidence": "P2c97",
+      "hard_gate_summary": "近期仅推进 position-only；姿态任务未通过完整证据链",
+      "failure_class": "证据不足；任务维度尚未建立可发布门禁",
+      "allowed_use": "诊断记录",
+      "forbidden_use": "发布；接入外层 IK",
+      "next_step": "待 position-only 分支选择稳定后再审计"
+    }
+  ],
+  "decision": {
+    "n2_position_only_branch_conditioned": "publish_candidate",
+    "n2_full_pose": "not_publishable",
+    "n2_production_default": "not_ready",
+    "n1_current_model": "not_publishable",
+    "recommended_next": [
+      "n2_sensitivity_interface_and_efficiency",
+      "n1_interface_force_model_repair"
+    ]
+  }
+}

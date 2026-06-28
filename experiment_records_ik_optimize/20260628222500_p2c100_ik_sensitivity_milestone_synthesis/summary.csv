@@ -1,0 +1,4 @@
+allowed_use,decision,failure_class,forbidden_use,hard_gate_summary,main_evidence,next_step,object,publishable,task
+诊断与模型修复,当前模型不可发布,刚性磁体段载荷传播失配；模型耦合缺失,发布灵敏度；接入外层 IK,载荷传播比例约 2.769，高于 1.5,P2c99,重写接口力连续残差或显式刚段力传递参数,n1 单点磁控,False,有效子空间末端位置
+受信任分支条件局部导数；position-only 诊断,分支条件发布候选,初始化敏感；多平衡分支竞争,初始化无关结论；完整末端位姿灵敏度；默认生产 IK,P2c98 随机电流方向 20/20 通过，最大线性化误差 7.236e-04,P2c97-P2c98,可靠分支选择与效率优化,n2 两点磁控,True,三维末端位置
+诊断记录,不可发布,证据不足；任务维度尚未建立可发布门禁,发布；接入外层 IK,近期仅推进 position-only；姿态任务未通过完整证据链,P2c97,待 position-only 分支选择稳定后再审计,n2 两点磁控,False,完整末端位姿
