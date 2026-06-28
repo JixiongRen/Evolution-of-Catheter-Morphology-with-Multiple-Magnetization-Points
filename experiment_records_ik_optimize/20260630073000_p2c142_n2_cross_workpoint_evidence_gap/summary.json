@@ -1,0 +1,17 @@
+{
+  "experiment_id": "20260630073000_p2c142_n2_cross_workpoint_evidence_gap",
+  "purpose": "audit_n2_cross_workpoint_evidence_gap",
+  "workpoints_seen": [
+    "n2_z_pair_rand12",
+    "unknown"
+  ],
+  "strict_candidate_workpoints": [
+    "n2_z_pair_rand12"
+  ],
+  "strict_candidate_workpoint_count": 1,
+  "recommended_min_workpoint_count": 5,
+  "cross_workpoint_publishable": false,
+  "full_3d_position_publishable": false,
+  "outer_ik_allowed": false,
+  "next_step": "run_3_to_5_new_n2_workpoints_with_baseline_gate_then_principal_direction_reopt"
+}
