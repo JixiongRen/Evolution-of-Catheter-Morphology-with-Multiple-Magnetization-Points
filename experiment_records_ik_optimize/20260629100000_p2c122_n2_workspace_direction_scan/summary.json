@@ -1,0 +1,40 @@
+{
+  "experiment_id": "20260629100000_p2c122_n2_workspace_direction_scan",
+  "status": "n2_workspace_direction_scan_done",
+  "task_scope": "两点磁控可信分支下的三维末端位置局部导数方向扫描",
+  "publish_scope": "仅用于分支条件下局部位置灵敏度解释；不构成全局 IK 或完整位姿灵敏度",
+  "max_linear_current_step_A": 0.0125,
+  "singular_values_m_per_A": [
+    1.5163967580767339e-06,
+    8.594677354420822e-08,
+    4.697052075811169e-09
+  ],
+  "condition_number": 322.8400991945264,
+  "one_step_reach_um": {
+    "min": 5.87131509476396e-05,
+    "median": 0.00011905918976492524,
+    "max": 0.01895495947595916
+  },
+  "best_direction": {
+    "direction": "主灵敏方向1+",
+    "one_step_reach_um": 0.01895495947595916
+  },
+  "worst_direction": {
+    "direction": "主灵敏方向3+",
+    "one_step_reach_um": 5.87131509476396e-05
+  },
+  "actions_by_target_radius": {
+    "5e-08_m": {
+      "拒绝直接外层 IK": 250,
+      "快速局部校正": 2
+    },
+    "5e-07_m": {
+      "拒绝直接外层 IK": 252
+    },
+    "5e-06_m": {
+      "拒绝直接外层 IK": 252
+    }
+  },
+  "interpretation": "该工作点方向性极强。可信线性半径内，强方向也主要只适合纳米级诊断推进；微米级目标多数方向应拒绝直接外层 IK。",
+  "wall_s": 0.009985303000576096
+}
