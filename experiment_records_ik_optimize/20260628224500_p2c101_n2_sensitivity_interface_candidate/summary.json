@@ -1,0 +1,24 @@
+{
+  "decision": {
+    "object_name": "n2 两点磁控",
+    "task_name": "三维末端位置",
+    "status": "分支条件发布候选",
+    "allowed_use": "受信任分支条件局部导数；position-only 诊断",
+    "forbidden_use": "初始化无关结论；完整末端位姿灵敏度；默认生产 IK",
+    "failure_or_risk": "初始化敏感；多平衡分支竞争"
+  },
+  "evidence": {
+    "branch_label": "trusted_seed",
+    "task_name": "三维末端位置",
+    "eps_max": 0.0125,
+    "target_radius_m": 0.0001,
+    "random_current_passed": 20,
+    "random_current_total": 20,
+    "random_current_max_rel_err": 0.0007235981539455234,
+    "target_loop_passed": 3,
+    "target_loop_total": 3,
+    "status": "candidate"
+  },
+  "outer_ik_default_allowed": false,
+  "required_label": "受信任分支条件"
+}

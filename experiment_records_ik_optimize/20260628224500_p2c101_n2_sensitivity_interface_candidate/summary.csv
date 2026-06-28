@@ -1,0 +1,2 @@
+object,outer_ik_default_allowed,random_current_max_rel_err,random_current_passed,random_current_total,status,target_loop_passed,target_loop_total,task
+n2 两点磁控,False,0.0007235981539455234,20,20,分支条件发布候选,3,3,三维末端位置
