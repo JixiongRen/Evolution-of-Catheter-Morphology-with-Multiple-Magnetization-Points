@@ -1,0 +1,38 @@
+{
+  "experiment_id": "20260629083000_p2c120_n1_publishability_boundary_package",
+  "status": "n1_not_publishable_current_model",
+  "publishable_count": 0,
+  "evidence_count": 7,
+  "failure_classes": [
+    "一阶最优性退化",
+    "刚段外力与柔性段内力链不相容",
+    "接口连续残差超限",
+    "载荷传播失配",
+    "载荷传递比例偏离物理闭合"
+  ],
+  "decision_interface": {
+    "case": "n1_tip_z_rand15",
+    "decision": "not_publishable_current_model",
+    "position_sensitivity_allowed": false,
+    "disturbance_scan_allowed": false,
+    "outer_ik_allowed": false,
+    "allowed_use": "模型失配分析、工作空间边界说明、后续模型修复对照",
+    "forbidden_use": "发布灵敏度、接入外层 IK、扰动扫描、完整位姿或位置任务默认求解",
+    "primary_failure": "刚性磁体段载荷传播失配与模型耦合缺失",
+    "secondary_failures": [
+      "一阶最优性退化",
+      "条件数病态",
+      "接口连续残差超限",
+      "载荷传递比例偏离物理闭合"
+    ],
+    "repair_required_before_retest": "显式修复刚性磁体段外力向柔性段内力链的传播模型，或降低任务维度并选择更保守工作点。"
+  },
+  "source_experiments": {
+    "P2c99": "experiment_records_ik_optimize/20260628215500_p2c99_n1_nonpublishable_boundary_synthesis/summary.json",
+    "P2c110": "experiment_records_ik_optimize/20260629030000_p2c110_n1_hard_force_scaled_continuity/summary.json",
+    "P2c111": "experiment_records_ik_optimize/20260629033000_p2c111_n1_beta_load_transfer/summary.json",
+    "P2c112": "experiment_records_ik_optimize/20260629040000_p2c112_n1_nonpublishable_boundary_recommendation/summary.json"
+  },
+  "wall_s": 0.0009207280018017627,
+  "interpretation": "该证据包将 n1 当前工作点固定为不可发布边界案例；除非修复载荷传播模型或更换任务口径，否则不得进入扰动灵敏度扫描。"
+}

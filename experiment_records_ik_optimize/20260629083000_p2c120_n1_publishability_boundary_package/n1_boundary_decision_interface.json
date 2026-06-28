@@ -1,0 +1,17 @@
+{
+  "case": "n1_tip_z_rand15",
+  "decision": "not_publishable_current_model",
+  "position_sensitivity_allowed": false,
+  "disturbance_scan_allowed": false,
+  "outer_ik_allowed": false,
+  "allowed_use": "模型失配分析、工作空间边界说明、后续模型修复对照",
+  "forbidden_use": "发布灵敏度、接入外层 IK、扰动扫描、完整位姿或位置任务默认求解",
+  "primary_failure": "刚性磁体段载荷传播失配与模型耦合缺失",
+  "secondary_failures": [
+    "一阶最优性退化",
+    "条件数病态",
+    "接口连续残差超限",
+    "载荷传递比例偏离物理闭合"
+  ],
+  "repair_required_before_retest": "显式修复刚性磁体段外力向柔性段内力链的传播模型，或降低任务维度并选择更保守工作点。"
+}
