@@ -1,0 +1,29 @@
+{
+  "experiment_id": "20260629130000_p2c125_n2_directional_engineering_policy",
+  "status": "directional_engineering_policy_ready",
+  "policy_snapshot": {
+    "task": "两点磁控可信分支下三维末端位置局部灵敏度",
+    "allowed_scope": "同一工作点、同一可信分支、小电流信赖域内的位置任务诊断",
+    "forbidden_scope": "完整末端位姿、跨分支、跨电流基点、默认生产外层 IK、弱方向快速推进",
+    "default_outer_ik_allowed": false,
+    "strong_direction_rule": "强方向目标不超过 50 nm 可作为闭环候选，且每步真实重求解",
+    "weak_direction_rule": "弱方向不超过 1 nm 仅诊断观察；更大弱方向目标拒绝直接推进",
+    "max_linear_current_step_A": 0.0125,
+    "evidence": {
+      "direction_scan": "20260629100000_p2c122_n2_workspace_direction_scan",
+      "single_step_closure": "20260629110000_p2c123_n2_direction_reopt_closure",
+      "multistep_closure": "20260629120000_p2c124_n2_multistep_direction_closure",
+      "strong_50nm_status": "closed",
+      "weak_5nm_reduction_ratio": 0.14022974432349355
+    }
+  },
+  "validation_cases": 7,
+  "default_outer_ik_allowed_count": 0,
+  "action_counts": {
+    "弱方向诊断观察": 1,
+    "强方向小目标闭环候选": 2,
+    "拒绝直接外层 IK": 2,
+    "证据外谨慎诊断": 2
+  },
+  "wall_s": 0.005374817999836523
+}
