@@ -1,0 +1,22 @@
+{
+  "experiment_id": "20260630153000_p2c158_n2_engineering_boundary_synthesis",
+  "object": "n2 two-magnet catheter",
+  "publishable_scope": "branch-conditioned 2D effective-subspace single-step terminal-position diagnostic sensitivity",
+  "conservative_radius_A": 0.001,
+  "candidate_workpoint_count": 5,
+  "single_step_pass_rate": 1.0,
+  "multistep_allowed": false,
+  "outer_ik_allowed": false,
+  "full_3d_position_publishable": false,
+  "full_pose_publishable": false,
+  "dominant_failures": {
+    "third_direction": "weak signal and linearization failure",
+    "large_radius": {
+      "接口连续残差超限": 15
+    },
+    "fixed_subspace_multistep": {
+      "接口连续残差超限": 20
+    }
+  },
+  "next_recommended_work": "n1 boundary synthesis or rolling local branch-and-sensitivity rebuild"
+}
