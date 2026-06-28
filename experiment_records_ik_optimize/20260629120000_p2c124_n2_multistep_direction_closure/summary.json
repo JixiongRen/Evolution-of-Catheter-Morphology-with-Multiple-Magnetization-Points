@@ -1,0 +1,60 @@
+{
+  "experiment_id": "20260629120000_p2c124_n2_multistep_direction_closure",
+  "status": "multistep_direction_closure_done",
+  "max_linear_current_step_A": 0.0125,
+  "stop_error_nm": 1.0,
+  "max_steps": 12,
+  "total_targets": 4,
+  "closed_count": 3,
+  "improved_count": 4,
+  "failure_count": 0,
+  "target_summaries": [
+    {
+      "target": "强方向_50nm",
+      "initial_error_nm": 50.000000006663825,
+      "final_error_nm": 0.30552397235248036,
+      "reduction_ratio": 0.9938895205537648,
+      "steps_recorded": 3,
+      "cumulative_current_norm_A": 0.03353413816771074,
+      "centerline_drift_m": 3.334594580079937e-05,
+      "total_solve_steady_s": 30.363130826997804,
+      "status": "closed"
+    },
+    {
+      "target": "强方向_10nm",
+      "initial_error_nm": 10.000000001363773,
+      "final_error_nm": 0.02788564808406467,
+      "reduction_ratio": 0.9972114351919739,
+      "steps_recorded": 1,
+      "cumulative_current_norm_A": 0.0065945801770553435,
+      "centerline_drift_m": 6.626776421161519e-06,
+      "total_solve_steady_s": 0.09634691899918835,
+      "status": "closed"
+    },
+    {
+      "target": "弱方向_5nm",
+      "initial_error_nm": 4.999999999972296,
+      "final_error_nm": 4.298851278358714,
+      "reduction_ratio": 0.14022974432349355,
+      "steps_recorded": 12,
+      "cumulative_current_norm_A": 0.14999999997142416,
+      "centerline_drift_m": 7.787894193759714e-06,
+      "total_solve_steady_s": 1.1294263619965932,
+      "status": "improved"
+    },
+    {
+      "target": "弱方向_1nm",
+      "initial_error_nm": 1.0000000003405316,
+      "final_error_nm": 0.9414054184110289,
+      "reduction_ratio": 0.05859458190954936,
+      "steps_recorded": 1,
+      "cumulative_current_norm_A": 0.012500000000000011,
+      "centerline_drift_m": 6.466146007869974e-07,
+      "total_solve_steady_s": 0.0668881749988941,
+      "status": "closed"
+    }
+  ],
+  "total_solve_steady_s": 31.65579228299248,
+  "wall_s": 53.34941891199924,
+  "interpretation": "该实验评估可信局部灵敏度在多步小范围推进中的工程可用性，不声明全局 IK 成功。"
+}
