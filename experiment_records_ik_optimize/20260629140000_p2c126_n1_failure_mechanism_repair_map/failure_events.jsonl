@@ -1,0 +1,11 @@
+{"source": "P2c99/P2c84", "attempt": "原始物理门禁", "failure_class": "载荷传播失配"}
+{"source": "P2c110", "attempt": "硬力连续 force_scale=1.0", "failure_class": "一阶最优性退化"}
+{"source": "P2c110", "attempt": "硬力连续 force_scale=4.0", "failure_class": "接口连续残差超限"}
+{"source": "P2c110", "attempt": "硬力连续 force_scale=16.0", "failure_class": "一阶最优性退化"}
+{"source": "P2c111", "attempt": "beta 载荷传递 beta_reg=0.01", "failure_class": "载荷传递比例偏离物理闭合"}
+{"source": "P2c111", "attempt": "beta 载荷传递 beta_reg=0.1", "failure_class": "一阶最优性退化"}
+{"source": "P2c99", "attempt": "历史证据综合", "failure_class": "刚性磁体段载荷传播失配；模型耦合缺失"}
+{"source": "P2c108", "attempt": "阶段边界", "failure_class": "刚性磁体段载荷传播失配；模型耦合缺失"}
+{"source": "P2c110", "attempt": "硬力连续归一化", "failure_class": "一阶最优性退化"}
+{"source": "P2c111", "attempt": "beta 最小末端误差", "failure_class": "载荷传递比例偏离物理闭合"}
+{"source": "P2c111", "attempt": "beta 最接近物理闭合", "failure_class": "一阶最优性退化"}

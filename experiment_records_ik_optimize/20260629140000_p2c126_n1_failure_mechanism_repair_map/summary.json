@@ -1,0 +1,26 @@
+{
+  "experiment_id": "20260629140000_p2c126_n1_failure_mechanism_repair_map",
+  "status": "n1_failure_mechanism_mapped_not_publishable",
+  "case": "n1_tip_z_rand15",
+  "publishable_count": 0,
+  "evidence_count": 11,
+  "outer_ik_allowed": false,
+  "disturbance_scan_allowed": false,
+  "primary_failure": "刚性磁体段载荷传播失配与模型耦合缺失",
+  "failure_counts": {
+    "载荷传播失配": 1,
+    "一阶最优性退化": 5,
+    "接口连续残差超限": 1,
+    "载荷传递比例偏离物理闭合": 2,
+    "刚性磁体段载荷传播失配；模型耦合缺失": 2
+  },
+  "recommended_next": "显式刚性磁体段载荷传播模型最小原型；只跑基线门禁，不直接扰动扫描",
+  "source_experiments": {
+    "P2c99": "experiment_records_ik_optimize/20260628215500_p2c99_n1_nonpublishable_boundary_synthesis/summary.json",
+    "P2c110": "experiment_records_ik_optimize/20260629030000_p2c110_n1_hard_force_scaled_continuity/summary.json",
+    "P2c111": "experiment_records_ik_optimize/20260629033000_p2c111_n1_beta_load_transfer/summary.json",
+    "P2c112": "experiment_records_ik_optimize/20260629040000_p2c112_n1_nonpublishable_boundary_recommendation/summary.json",
+    "P2c120": "experiment_records_ik_optimize/20260629083000_p2c120_n1_publishability_boundary_package/summary.json"
+  },
+  "wall_s": 0.0009226600013789721
+}
