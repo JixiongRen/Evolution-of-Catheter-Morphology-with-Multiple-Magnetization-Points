@@ -1,0 +1,21 @@
+{
+  "experiment_id": "20260630083000_p2c144_n2_candidate_baseline_gate",
+  "purpose": "prepare_or_run_n2_candidate_baseline_gates",
+  "execution_status": "planned_not_run",
+  "candidate_count": 5,
+  "target_step_m": 0.0001,
+  "max_iter_per_step": 160,
+  "fractions": [
+    0.0,
+    0.5,
+    1.0,
+    0.5,
+    0.0
+  ],
+  "publishable_now": false,
+  "outer_ik_allowed": false,
+  "run_warning": "This command can take roughly 30-45 minutes on the current environment.",
+  "jax_devices": [
+    "cuda:0"
+  ]
+}
