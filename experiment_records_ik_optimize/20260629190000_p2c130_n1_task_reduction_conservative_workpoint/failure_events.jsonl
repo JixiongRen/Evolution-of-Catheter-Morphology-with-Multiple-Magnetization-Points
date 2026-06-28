@@ -1,0 +1,4 @@
+{"task_mode": "effective_1d", "current_scale": 0.5, "failure_class": "条件数病态", "baseline_gate": false}
+{"task_mode": "position_3d", "current_scale": 0.5, "failure_class": "一阶最优性退化", "baseline_gate": false}
+{"task_mode": "effective_1d", "current_scale": 1.0, "failure_class": "一阶最优性退化", "baseline_gate": false}
+{"task_mode": "position_3d", "current_scale": 1.0, "failure_class": "条件数病态", "baseline_gate": false}
