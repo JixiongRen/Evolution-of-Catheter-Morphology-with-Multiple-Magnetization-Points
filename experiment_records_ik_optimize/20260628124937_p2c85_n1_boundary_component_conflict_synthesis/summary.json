@@ -1,0 +1,51 @@
+{
+  "experiment": "P2c85_n1_boundary_component_conflict_synthesis",
+  "case": "n1_tip_z_rand15_alpha_0.10",
+  "current_status": "not_publishable_but_near_gate",
+  "gate_status": {
+    "stationarity": 1.0654487680582387e-06,
+    "condition": 8112684.073053166,
+    "continuity": 0.0013238850595572752,
+    "load_ratio": 2.769007191234582,
+    "position_error_m": 1.815156770174277e-06
+  },
+  "main_conclusion": "n1 当前最小修复不应是继续调边界权重或删除边界分量，而应处理末端位置、自由边界和刚段接口载荷传播之间的相容性。",
+  "next_minimal_experiment": "P2c86_n1_terminal_boundary_relaxation_vs_load_balance",
+  "recommended_actions": [
+    "保留 position-only 成功目标，但把边界闭合从硬指标改为诊断变量进行反事实比较",
+    "分别测试末端边界弱化、接口载荷重标定、边界-接口联合白化三种最小修复",
+    "所有修复仍用原物理门禁评价，不因边界放松直接发布灵敏度"
+  ],
+  "rows": [
+    {
+      "source": "P2c43",
+      "evidence": "边界权重 0.02-1.00 均未产生通过点，n1 最优权重仍为 0.25",
+      "interpretation": "失败不是单纯边界权重误设",
+      "status": "排除简单权重修复"
+    },
+    {
+      "source": "P2c44",
+      "evidence": "无边界、仅力、仅矩、力矩全闭合均未过门；仅矩和全闭合降低内矩残差但载荷比仍约 2.49",
+      "interpretation": "失败不是删除某个边界分量即可解决",
+      "status": "排除边界删减修复"
+    },
+    {
+      "source": "P2c84",
+      "evidence": "n1 一阶最优性 1.065e-06、条件数 8.113e+06 已过门，但载荷比 2.769e+00 失败",
+      "interpretation": "当前 n1 已不是整体数值不可用，而是载荷传播闭合失败",
+      "status": "定位载荷传播门禁"
+    },
+    {
+      "source": "P2c84",
+      "evidence": "最大梯度贡献来自 末端边界，贡献 2.943e-02",
+      "interpretation": "末端自由边界仍是近门分支一阶结构中的主要因素",
+      "status": "定位边界贡献"
+    },
+    {
+      "source": "P2c84",
+      "evidence": "最强梯度冲突为 末端位置 与 末端边界，夹角余弦 -8.259e-01",
+      "interpretation": "任务位置与自由边界存在直接相容性张力",
+      "status": "定位冲突方向"
+    }
+  ]
+}
