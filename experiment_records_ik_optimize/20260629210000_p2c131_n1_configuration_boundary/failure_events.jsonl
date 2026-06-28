@@ -1,0 +1,5 @@
+{"case": "n1_base_z_rand15_a010", "task_mode": "effective_1d", "failure_class": "条件数病态", "baseline_gate": false}
+{"case": "n1_base_z_rand15_a010", "task_mode": "position_3d", "failure_class": "条件数病态", "baseline_gate": false}
+{"case": "n1_mid_z_rand15_a010", "task_mode": "effective_1d", "failure_class": "条件数病态", "baseline_gate": false}
+{"case": "n1_tip_z_rand15_a010", "task_mode": "effective_1d", "failure_class": "一阶最优性退化", "baseline_gate": false}
+{"case": "n1_tip_z_rand15_a010", "task_mode": "position_3d", "failure_class": "任务误差超限", "baseline_gate": false}
