@@ -1,0 +1,13 @@
+alpha,block_a,block_b,case,gradient_cosine,label
+0.1,末端位置,末端边界,n1_tip_z_rand15,-0.8258500329081795,n1_soft_near_gate
+0.1,末端位置,接口连续,n1_tip_z_rand15,0.2522978256440532,n1_soft_near_gate
+0.1,末端位置,正则项,n1_tip_z_rand15,-6.750912032588274e-05,n1_soft_near_gate
+0.1,末端边界,接口连续,n1_tip_z_rand15,-0.7540079368870906,n1_soft_near_gate
+0.1,末端边界,正则项,n1_tip_z_rand15,6.35713044133438e-05,n1_soft_near_gate
+0.1,接口连续,正则项,n1_tip_z_rand15,-8.652269867697102e-05,n1_soft_near_gate
+0.1,末端位置,末端边界,n2_z_pair_rand12,0.9608460241917532,n2_trusted_near_gate
+0.1,末端位置,接口连续,n2_z_pair_rand12,-0.9984100630293441,n2_trusted_near_gate
+0.1,末端位置,正则项,n2_z_pair_rand12,8.06067716848464e-06,n2_trusted_near_gate
+0.1,末端边界,接口连续,n2_z_pair_rand12,-0.9749369335536692,n2_trusted_near_gate
+0.1,末端边界,正则项,n2_z_pair_rand12,2.913502859217807e-05,n2_trusted_near_gate
+0.1,接口连续,正则项,n2_z_pair_rand12,-1.8919609728362607e-05,n2_trusted_near_gate

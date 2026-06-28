@@ -1,0 +1,68 @@
+{
+  "experiment": "P2c84_block_stationarity_load_closure_audit",
+  "gate_rows": [
+    {
+      "label": "n1_soft_near_gate",
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "force_scale": 4.0,
+      "reg_scale": 0.0008,
+      "position_error_m": 1.815156770174277e-06,
+      "stationarity_norm": 1.0654487680582387e-06,
+      "jacobian_condition": 8112684.073053166,
+      "jacobian_rank": 18,
+      "continuity_norm": 0.0013238850595572752,
+      "terminal_force_norm": 0.0007156764094328858,
+      "terminal_torque_norm": 0.00013379097685541593,
+      "max_interface_force_jump_over_rigid_force": 2.769007191234582,
+      "max_force_ratio_to_internal_force": 0.0,
+      "nfev": 29,
+      "steady_s": 26.060197280000466,
+      "publish_gate": false,
+      "failure_class": "载荷传播失配"
+    },
+    {
+      "label": "n2_trusted_near_gate",
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "force_scale": 4.0,
+      "reg_scale": 0.0003,
+      "position_error_m": 1.4019863348500417e-06,
+      "stationarity_norm": 2.234800655073798e-07,
+      "jacobian_condition": 49051439.62417424,
+      "jacobian_rank": 18,
+      "continuity_norm": 0.00043712583810618077,
+      "terminal_force_norm": 0.009714148574213896,
+      "terminal_torque_norm": 0.00014651817335046934,
+      "max_interface_force_jump_over_rigid_force": 0.7409042942042844,
+      "max_force_ratio_to_internal_force": 0.0,
+      "nfev": 148,
+      "steady_s": 26.671353753000403,
+      "publish_gate": false,
+      "failure_class": "条件数病态"
+    }
+  ],
+  "dominant_gradient_blocks": {
+    "n1_soft_near_gate": "末端边界",
+    "n2_trusted_near_gate": "接口连续"
+  },
+  "min_gradient_cosines": {
+    "n1_soft_near_gate": {
+      "label": "n1_soft_near_gate",
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "block_a": "末端位置",
+      "block_b": "末端边界",
+      "gradient_cosine": -0.8258500329081795
+    },
+    "n2_trusted_near_gate": {
+      "label": "n2_trusted_near_gate",
+      "case": "n2_z_pair_rand12",
+      "alpha": 0.1,
+      "block_a": "末端位置",
+      "block_b": "接口连续",
+      "gradient_cosine": -0.9984100630293441
+    }
+  },
+  "wall_s": 494.5624078560004
+}
