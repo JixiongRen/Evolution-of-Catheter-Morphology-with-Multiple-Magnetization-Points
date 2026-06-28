@@ -1,0 +1,89 @@
+{
+  "experiment": "20260628211500_p2c97_n2_publish_candidate_synthesis",
+  "status": "branch_conditioned_publish_candidate",
+  "sources": {
+    "P2c88": "experiment_records_ik_optimize/20260628143800_p2c88_n2_branch_condition_synthesis/summary.json",
+    "P2c92": "experiment_records_ik_optimize/20260628165500_p2c92_n2_target_radius_100um/summary.json",
+    "P2c93": "experiment_records_ik_optimize/20260628175300_p2c93_n2_target_combo_100um/summary.json",
+    "P2c94": "experiment_records_ik_optimize/20260628183000_p2c94_n2_target_random_100um/summary.json",
+    "P2c95": "experiment_records_ik_optimize/20260628192500_p2c95_n2_eps010_trusted_sensitivity/summary.json",
+    "P2c96": "experiment_records_ik_optimize/20260628205000_p2c96_n2_eps0125_trusted_sensitivity/summary.json"
+  },
+  "rows": [
+    {
+      "experiment": "P2c92",
+      "category": "目标闭环",
+      "label": "坐标轴 100 微米目标闭环",
+      "passed": 3,
+      "total": 3,
+      "max_primary_metric": 1.0782777350630474e-05,
+      "primary_metric_name": "最大返回状态漂移",
+      "max_stationarity": 2.0767071732843325e-06,
+      "max_force_ratio": 0.7409056773425101,
+      "wall_s": 1227.6757908480013,
+      "status": "通过"
+    },
+    {
+      "experiment": "P2c93",
+      "category": "目标闭环",
+      "label": "组合方向 100 微米目标闭环",
+      "passed": 4,
+      "total": 4,
+      "max_primary_metric": 1.7824633394959238e-05,
+      "primary_metric_name": "最大返回状态漂移",
+      "max_stationarity": 4.685794124273482e-06,
+      "max_force_ratio": 0.7409062424881709,
+      "wall_s": 1564.8791633340006,
+      "status": "通过"
+    },
+    {
+      "experiment": "P2c94",
+      "category": "目标闭环",
+      "label": "随机方向 100 微米目标闭环",
+      "passed": 6,
+      "total": 6,
+      "max_primary_metric": 1.5630485067013826e-05,
+      "primary_metric_name": "最大返回状态漂移",
+      "max_stationarity": 3.7011436098569637e-06,
+      "max_force_ratio": 0.740905152102639,
+      "wall_s": 2052.6405304090003,
+      "status": "通过"
+    },
+    {
+      "experiment": "P2c95",
+      "category": "扰动重求解",
+      "label": "eps=0.010 电流扰动",
+      "eps": 0.01,
+      "passed": 9,
+      "total": 9,
+      "max_primary_metric": 0.013265183669584126,
+      "primary_metric_name": "最大线性化相对误差",
+      "max_stationarity": 2.2361686877284174e-07,
+      "max_force_ratio": 0.740904294204253,
+      "task_condition": 322.8406015175324,
+      "wall_s": 529.1464389549983,
+      "status": "通过"
+    },
+    {
+      "experiment": "P2c96",
+      "category": "扰动重求解",
+      "label": "eps=0.0125 电流扰动",
+      "eps": 0.0125,
+      "passed": 9,
+      "total": 9,
+      "max_primary_metric": 0.013378336972445082,
+      "primary_metric_name": "最大线性化相对误差",
+      "max_stationarity": 2.236527273668067e-07,
+      "max_force_ratio": 0.740904294204282,
+      "task_condition": 322.84097058256907,
+      "wall_s": 523.6622521879981,
+      "status": "通过"
+    }
+  ],
+  "decision": {
+    "n2_position_only_branch_conditioned": "publish_candidate",
+    "n2_initialization_independent": "not_publishable",
+    "n2_full_pose": "not_publishable",
+    "recommended_next": "random_current_direction_batch_audit"
+  }
+}
