@@ -1,0 +1,7 @@
+direction,nfev,stage,wall_s
+rand_current_10,6,plus_reoptimization,0.10142284099856624
+rand_current_10,6,minus_reoptimization,0.08809754399771919
+rand_current_10,0,output_and_compare,0.014394845002243528
+rand_current_19,7,plus_reoptimization,0.10170464299881132
+rand_current_19,7,minus_reoptimization,0.09138500799963367
+rand_current_19,0,output_and_compare,0.0075927330035483465
