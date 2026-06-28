@@ -1,0 +1,19 @@
+{
+  "experiment_id": "20260629090000_p2c121_ik_sensitivity_milestone_summary",
+  "status": "milestone_summarized_goal_not_complete",
+  "n2_status": "branch_conditioned_position_sensitivity_publishable_diagnostic_only",
+  "n1_status": "not_publishable_current_model",
+  "completion_audit": {
+    "n2_three_dimensional_position": "achieved with strict scope limits",
+    "n1_effective_subspace_or_boundary": "boundary achieved for current model/workpoint",
+    "full_pose_sensitivity": "not achieved and explicitly out of current publishable scope",
+    "global_outer_ik": "not achieved; only diagnostic local stepping is supported",
+    "remaining_required_work": "workspace direction scan for n2; optional n1 physics-model repair before retest"
+  },
+  "source_experiments": {
+    "n2_contract": "experiment_records_ik_optimize/20260629070000_p2c117_n2_trust_radius_interface_contract/summary.json",
+    "n2_policy": "experiment_records_ik_optimize/20260629080000_p2c119_n2_diagnostic_outer_ik_policy/summary.json",
+    "n1_boundary": "experiment_records_ik_optimize/20260629083000_p2c120_n1_publishability_boundary_package/summary.json"
+  },
+  "wall_s": 0.0016134380020957906
+}
