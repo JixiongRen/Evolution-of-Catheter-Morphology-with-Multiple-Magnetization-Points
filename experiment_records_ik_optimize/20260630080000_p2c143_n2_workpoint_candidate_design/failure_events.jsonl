@@ -1,0 +1,5 @@
+{"direction": "rand_05", "failure_class": "条件数处于谨慎诊断区", "jacobian_condition": 47365189.981114335, "action": "下一轮先做基线门禁，不进入大范围扰动扫描"}
+{"direction": "y_plus", "failure_class": "条件数处于谨慎诊断区", "jacobian_condition": 48798584.10142038, "action": "下一轮先做基线门禁，不进入大范围扰动扫描"}
+{"direction": "z_plus", "failure_class": "条件数处于谨慎诊断区", "jacobian_condition": 48703178.948764905, "action": "下一轮先做基线门禁，不进入大范围扰动扫描"}
+{"direction": "yz_plus", "failure_class": "条件数处于谨慎诊断区", "jacobian_condition": 48637396.69147762, "action": "下一轮先做基线门禁，不进入大范围扰动扫描"}
+{"direction": "rand_00", "failure_class": "条件数处于谨慎诊断区", "jacobian_condition": 51719223.719259344, "action": "下一轮先做基线门禁，不进入大范围扰动扫描"}

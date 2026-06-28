@@ -1,0 +1,11 @@
+{
+  "experiment_id": "20260630080000_p2c143_n2_workpoint_candidate_design",
+  "purpose": "design_n2_new_workpoint_candidates_from_existing_target_diagnostics",
+  "source_experiment_count": 3,
+  "eligible_row_count": 13,
+  "candidate_count": 5,
+  "publishable_now": false,
+  "outer_ik_allowed": false,
+  "dominant_limitation": "candidate_conditions_are_in_diagnostic_condition_number_band",
+  "next_step": "rerun_baseline_gate_and_singular_spectrum_on_selected_candidates_before_perturbation_scan"
+}
