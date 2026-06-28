@@ -1,0 +1,18 @@
+{
+  "experiment_id": "20260630110000_p2c149_n2_2d_effective_subspace_release_candidate",
+  "candidate_count": 5,
+  "n2_2d_effective_subspace_candidate_count": 5,
+  "full_3d_position_publishable_count": 0,
+  "full_3d_position_publishable": false,
+  "effective_subspace_dimension": 2,
+  "safe_radius_A": 0.001,
+  "outer_ik_allowed": false,
+  "local_2d_interface_candidate": true,
+  "reason": "五个候选工作点前两主方向通过，第三主方向弱信号且线性化误差超限。",
+  "source_experiments": [
+    "experiment_records_ik_optimize/20260630083000_p2c144_n2_candidate_baseline_gate",
+    "experiment_records_ik_optimize/20260630090000_p2c145_n2_candidate_spectrum_audit",
+    "experiment_records_ik_optimize/20260630100000_p2c147_n2_principal_radius_bracket",
+    "experiment_records_ik_optimize/20260630103000_p2c148_n2_all_principal_safe_radius"
+  ]
+}
