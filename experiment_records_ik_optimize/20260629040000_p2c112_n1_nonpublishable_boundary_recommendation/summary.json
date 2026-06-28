@@ -1,0 +1,92 @@
+{
+  "experiment": "20260629040000_p2c112_n1_nonpublishable_boundary_recommendation",
+  "wall_s": 0.0008921219996409491,
+  "evidence_rows": [
+    {
+      "source": "P2c99",
+      "test": "历史证据综合",
+      "position_error_m": null,
+      "stationarity_norm": 1.065e-06,
+      "condition_number": 8113000.0,
+      "force_ratio": 2.769,
+      "beta_deviation": null,
+      "publishable": false,
+      "failure_class": "刚性磁体段载荷传播失配；模型耦合缺失"
+    },
+    {
+      "source": "P2c108",
+      "test": "阶段边界",
+      "position_error_m": null,
+      "stationarity_norm": 1.065e-06,
+      "condition_number": 8113000.0,
+      "force_ratio": 2.769,
+      "beta_deviation": null,
+      "publishable": false,
+      "failure_class": "刚性磁体段载荷传播失配；模型耦合缺失"
+    },
+    {
+      "source": "P2c110",
+      "test": "硬力连续归一化",
+      "position_error_m": 0.0006144945678586121,
+      "stationarity_norm": 3.315919714754517e-05,
+      "condition_number": 32678587.279088926,
+      "force_ratio": 7.0983290443062975e-06,
+      "beta_deviation": null,
+      "publishable": false,
+      "failure_class": "一阶最优性退化"
+    },
+    {
+      "source": "P2c111",
+      "test": "beta 最小末端误差",
+      "position_error_m": 0.00046337841110969107,
+      "stationarity_norm": 0.017966007959123682,
+      "condition_number": 24112808.436294906,
+      "force_ratio": 0.9673207256170409,
+      "beta_deviation": 0.9672359258145948,
+      "publishable": false,
+      "failure_class": "载荷传递比例偏离物理闭合"
+    },
+    {
+      "source": "P2c111",
+      "test": "beta 最接近物理闭合",
+      "position_error_m": 0.0006097553352495732,
+      "stationarity_norm": 0.0004166512537426912,
+      "condition_number": 15201641.8125999,
+      "force_ratio": 0.033796965138937325,
+      "beta_deviation": 0.03368652091954716,
+      "publishable": false,
+      "failure_class": "一阶最优性退化"
+    }
+  ],
+  "recommendation_rows": [
+    {
+      "topic": "n1 当前工作点",
+      "recommendation": "不可发布，不接入外层 IK",
+      "reason": "物理闭合与目标拟合不能同时满足硬门禁"
+    },
+    {
+      "topic": "n1 扰动灵敏度扫描",
+      "recommendation": "停止",
+      "reason": "基线门禁失败，扰动导数没有物理可信基础"
+    },
+    {
+      "topic": "n1 可继续方向",
+      "recommendation": "只保留为模型失配与工作空间边界案例",
+      "reason": "硬力连续、beta 反事实均未形成可发布分支"
+    },
+    {
+      "topic": "目标选择",
+      "recommendation": "后续应选择更保守目标或减小单点磁控任务维度",
+      "reason": "当前目标在严格力链闭合下末端误差约 0.46-0.61 mm"
+    },
+    {
+      "topic": "优先主线",
+      "recommendation": "转回 n2 分支条件三维位置灵敏度和显式实验接入",
+      "reason": "n2 已有门禁证据和契约保护接口候选"
+    }
+  ],
+  "decision": "n1_nonpublishable_boundary",
+  "outer_ik_allowed": false,
+  "disturbance_scan_allowed": false,
+  "recommended_mainline": "n2_guarded_position_sensitivity_explicit_outer_ik_probe"
+}
