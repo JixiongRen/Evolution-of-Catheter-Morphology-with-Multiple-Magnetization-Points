@@ -1,0 +1,71 @@
+{
+  "experiment": "P2c83_physical_closure_code_audit",
+  "type": "code_and_evidence_synthesis",
+  "main_conclusion": "当前问题不应继续归因为单一权重、初值或磁载作用点；更可能是刚性磁体段外载与相邻柔性段边界响应之间的模型闭合不足。",
+  "do_not_repeat": [
+    "单纯软约束权重扫描",
+    "直接硬连续 KKT",
+    "纯 6 维基端载荷打靶",
+    "自由界面松弛后直接发布灵敏度",
+    "只沿磁力或磁矩主方向加入松弛"
+  ],
+  "next_minimal_experiment": {
+    "name": "P2c84_block_stationarity_and_load_closure_audit",
+    "goal": "对代表性 n1/n2 近门分支做残差分块梯度贡献和接口载荷平衡逐项审计，判断失败来自尺度冲突、边界约束冲突还是刚段载荷方程缺项。",
+    "cases": [
+      "n1_tip_z_rand15_alpha_0.10 soft near-gate",
+      "n2_z_pair_rand12_alpha_0.10 trusted branch"
+    ],
+    "required_outputs": [
+      "各残差块梯度范数",
+      "残差块梯度夹角",
+      "刚段近端/中心/远端外载平衡项",
+      "接口内力内矩跳变分解",
+      "模型修复优先级"
+    ]
+  },
+  "rows": [
+    {
+      "item": "当前刚段传播公式",
+      "source": "forward_kinematics/segments_nondim.py:89; inverse_kinematics/ik_terminal_shooting_jax.py:150",
+      "finding": "刚段姿态保持常值，外载只更新远端内力和内矩",
+      "status": "高风险",
+      "implication": "打靶模型中磁体段外载对姿态和曲率的反馈主要通过后续柔段内力链间接体现"
+    },
+    {
+      "item": "磁载荷作用点",
+      "source": "forward_kinematics/external_wrench_nondim.py:139; P2c10d",
+      "finding": "生产路径以刚段近端状态调用磁载荷；P2c10d 中心作用点原型未改善断裂",
+      "status": "已否定简单修复",
+      "implication": "单纯把磁载荷移到刚段中心并加入力矩臂不足以恢复可信灵敏度"
+    },
+    {
+      "item": "硬连续 KKT",
+      "source": "P2c9d, P2c10r",
+      "finding": "直接将接口连续作为硬约束会导致 KKT 条件数约 1e16-1e17，分支不合并",
+      "status": "已否定直接路线",
+      "implication": "硬约束方向物理合理，但现有变量和尺度不能直接形成可解驻点系统"
+    },
+    {
+      "item": "6维基端载荷连续打靶",
+      "source": "P2c10s, P2c67",
+      "finding": "自由度压缩后任务和边界难以同时满足",
+      "status": "已否定单独路线",
+      "implication": "刚性磁体局部载荷不能只由基端载荷一次性表达"
+    },
+    {
+      "item": "自由界面松弛",
+      "source": "P2c10t",
+      "finding": "几何拟合显著改善，但一阶平稳性、条件数和分支一致性失败",
+      "status": "诊断有效",
+      "implication": "界面处确有缺失自由度，但自由松弛会生成非唯一内部载荷路径"
+    },
+    {
+      "item": "磁力/磁矩主方向松弛",
+      "source": "P2c10u",
+      "finding": "限制到合力或合矩方向后拟合能力下降，门禁仍失败",
+      "status": "已否定简单方向",
+      "implication": "缺失自由度可能位于力臂诱导方向、相邻柔段曲率方向或分块残差冲突方向"
+    }
+  ]
+}
