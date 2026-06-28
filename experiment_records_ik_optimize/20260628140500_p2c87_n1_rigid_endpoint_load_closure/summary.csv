@@ -1,0 +1,2 @@
+alpha,case,continuity_norm,failure_class,force_scale,jacobian_condition,jacobian_rank,label,max_force_ratio_to_internal_force,max_interface_force_jump_over_rigid_force,nfev,position_error_m,publish_gate,reg_scale,stationarity_norm,steady_s,terminal_force_norm,terminal_torque_norm,wall_s
+0.1,n1_tip_z_rand15,0.0013238850595572603,载荷传播失配,4.0,8112684.073000431,18,n1_soft_near_gate,0.0,2.769007191235215,29,1.8151567702012827e-06,False,0.0008,1.0654426592297707e-06,24.593456253000113,0.0007156764094344182,0.00013379097685620905,254.22174682600053

@@ -1,0 +1,128 @@
+{
+  "experiment": "20260628140500_p2c87_n1_rigid_endpoint_load_closure",
+  "status": "diagnostic_only_not_publishable",
+  "wall_s": 254.22174682600053,
+  "force_rows": [
+    {
+      "interface": 0,
+      "rigid_length_m": 0.003,
+      "rigid_force_norm_N": 0.000390053271635779,
+      "pre_force_norm_N": 0.0005586602507908078,
+      "post_force_norm_N": 0.0008295114904187194,
+      "next_force_norm_N": 0.0005673908429576829,
+      "force_jump_norm_N": 0.000895431268953407,
+      "force_jump_over_rigid_force": 2.2956640389098855,
+      "force_jump_over_internal_force": 1.0794681921782816,
+      "force_closure_publishable": false
+    },
+    {
+      "interface": 1,
+      "rigid_length_m": 0.003,
+      "rigid_force_norm_N": 0.000390053271635779,
+      "pre_force_norm_N": 0.0006005784049497388,
+      "post_force_norm_N": 0.0008599862661262339,
+      "next_force_norm_N": 0.0007196125571290817,
+      "force_jump_norm_N": 0.0010800603141242948,
+      "force_jump_over_rigid_force": 2.769007191235215,
+      "force_jump_over_internal_force": 1.2559041425037794,
+      "force_closure_publishable": false
+    }
+  ],
+  "torque_rows": [
+    {
+      "interface": 0,
+      "model": "近端集中载荷",
+      "rigid_torque_norm_Nm": 5.841954909570859e-07,
+      "lever_torque_norm_Nm": 1.1683909819141719e-06,
+      "post_torque_norm_Nm": 6.9290643599552425e-06,
+      "next_torque_norm_Nm": 7.0739082483489534e-06,
+      "torque_jump_norm_Nm": 5.843365631350301e-07,
+      "torque_jump_over_rigid_torque": 1.00024148111399
+    },
+    {
+      "interface": 0,
+      "model": "中点等效载荷",
+      "rigid_torque_norm_Nm": 5.841954909570859e-07,
+      "lever_torque_norm_Nm": 1.1683909819141719e-06,
+      "post_torque_norm_Nm": 7.073872560182641e-06,
+      "next_torque_norm_Nm": 7.0739082483489534e-06,
+      "torque_jump_norm_Nm": 1.4614995149281287e-10,
+      "torque_jump_over_rigid_torque": 0.0002501730221391743
+    },
+    {
+      "interface": 0,
+      "model": "远端集中载荷",
+      "rigid_torque_norm_Nm": 5.841954909570859e-07,
+      "lever_torque_norm_Nm": 1.1683909819141719e-06,
+      "post_torque_norm_Nm": 7.2629182725896795e-06,
+      "next_torque_norm_Nm": 7.0739082483489534e-06,
+      "torque_jump_norm_Nm": 5.840544212762531e-07,
+      "torque_jump_over_rigid_torque": 0.9997585231604549
+    },
+    {
+      "interface": 1,
+      "model": "近端集中载荷",
+      "rigid_torque_norm_Nm": 5.825546861199251e-07,
+      "lever_torque_norm_Nm": 1.1651093722398503e-06,
+      "post_torque_norm_Nm": 7.645705881623297e-06,
+      "next_torque_norm_Nm": 7.825951012775554e-06,
+      "torque_jump_norm_Nm": 5.825188276359031e-07,
+      "torque_jump_over_rigid_torque": 0.999938446149561
+    },
+    {
+      "interface": 1,
+      "model": "中点等效载荷",
+      "rigid_torque_norm_Nm": 5.825546861199251e-07,
+      "lever_torque_norm_Nm": 1.1651093722398503e-06,
+      "post_torque_norm_Nm": 7.825962603900812e-06,
+      "next_torque_norm_Nm": 7.825951012775554e-06,
+      "torque_jump_norm_Nm": 1.6466274740823692e-10,
+      "torque_jump_over_rigid_torque": 0.00028265629190104793
+    },
+    {
+      "interface": 1,
+      "model": "远端集中载荷",
+      "rigid_torque_norm_Nm": 5.825546861199251e-07,
+      "lever_torque_norm_Nm": 1.1651093722398503e-06,
+      "post_torque_norm_Nm": 8.044457896692571e-06,
+      "next_torque_norm_Nm": 7.825951012775554e-06,
+      "torque_jump_norm_Nm": 5.825905889369508e-07,
+      "torque_jump_over_rigid_torque": 1.0000616299514553
+    }
+  ],
+  "summary": {
+    "gate": {
+      "label": "n1_soft_near_gate",
+      "case": "n1_tip_z_rand15",
+      "alpha": 0.1,
+      "force_scale": 4.0,
+      "reg_scale": 0.0008,
+      "position_error_m": 1.8151567702012827e-06,
+      "stationarity_norm": 1.0654426592297707e-06,
+      "jacobian_condition": 8112684.073000431,
+      "jacobian_rank": 18,
+      "continuity_norm": 0.0013238850595572603,
+      "terminal_force_norm": 0.0007156764094344182,
+      "terminal_torque_norm": 0.00013379097685620905,
+      "max_interface_force_jump_over_rigid_force": 2.769007191235215,
+      "max_force_ratio_to_internal_force": 0.0,
+      "nfev": 29,
+      "steady_s": 24.593456253000113,
+      "publish_gate": false,
+      "failure_class": "载荷传播失配"
+    },
+    "max_force_jump_over_rigid_force": 2.769007191235215,
+    "best_torque_model": {
+      "interface": 0,
+      "model": "中点等效载荷",
+      "rigid_torque_norm_Nm": 5.841954909570859e-07,
+      "lever_torque_norm_Nm": 1.1683909819141719e-06,
+      "post_torque_norm_Nm": 7.073872560182641e-06,
+      "next_torque_norm_Nm": 7.0739082483489534e-06,
+      "torque_jump_norm_Nm": 1.4614995149281287e-10,
+      "torque_jump_over_rigid_torque": 0.0002501730221391743
+    },
+    "endpoint_load_can_fix_force_gate": false
+  },
+  "main_conclusion": "端点载荷修正不能改变 n1 主导的力连续性失败；当前单点样本仍不可发布。"
+}
