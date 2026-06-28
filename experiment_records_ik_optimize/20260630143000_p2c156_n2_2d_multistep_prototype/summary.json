@@ -1,0 +1,45 @@
+{
+  "experiment_id": "20260630143000_p2c156_n2_2d_multistep_prototype",
+  "tested_count": 40,
+  "pass_count": 20,
+  "all_passed": false,
+  "single_step_radius_A": 0.001,
+  "path_count": 20,
+  "effective_subspace_dimension": 2,
+  "max_linear_rel_err": 0.03600327284740773,
+  "max_continuity_norm": 0.0018203684820763545,
+  "max_centerline_change_m": 2.038220610001039e-06,
+  "max_force_ratio": 0.8008489263552138,
+  "total_solve_steady_s": 3.217607224942185,
+  "wall_s": 2523.2487036370003,
+  "by_step": {
+    "1": {
+      "tested_count": 20,
+      "pass_count": 20,
+      "all_passed": true,
+      "max_linear_rel_err": 0.03600327284740773,
+      "max_continuity_norm": 0.0009979961714357557,
+      "max_centerline_change_m": 1.018778202481695e-06,
+      "decision": "通过"
+    },
+    "2": {
+      "tested_count": 20,
+      "pass_count": 0,
+      "all_passed": false,
+      "max_linear_rel_err": 0.019339941498420683,
+      "max_continuity_norm": 0.0018203684820763545,
+      "max_centerline_change_m": 2.038220610001039e-06,
+      "decision": "不通过"
+    }
+  },
+  "failure_by_class": {
+    "接口连续残差超限": 20
+  },
+  "failure_by_step": {
+    "2": {
+      "接口连续残差超限": 20
+    }
+  },
+  "decision": "保持单步诊断接口，需多步失败归因",
+  "outer_ik_allowed": false
+}
