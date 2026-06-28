@@ -1,0 +1,2 @@
+all_direction_break_interval,disturbance_scan_allowed,first_tested_all_direction_failure_radius,largest_all_direction_pass_radius,largest_any_direction_pass_radius,strict_all_direction_pass_radius_from_p2c134,wall_s
+"[0.0001, 0.0002]",False,0.0002,,0.0007,0.0001,225.9008500609998

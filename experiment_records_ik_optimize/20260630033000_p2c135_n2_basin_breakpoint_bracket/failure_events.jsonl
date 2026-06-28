@@ -1,0 +1,9 @@
+{"init_mode": "r2e-04_d1", "init_radius": 0.0002, "failure_class": "任务误差超限", "branch_gate": false}
+{"init_mode": "r3e-04_d1", "init_radius": 0.0003, "failure_class": "任务误差超限", "branch_gate": false}
+{"init_mode": "r5e-04_d0", "init_radius": 0.0005, "failure_class": "任务误差超限", "branch_gate": false}
+{"init_mode": "r5e-04_d1", "init_radius": 0.0005, "failure_class": "任务误差超限", "branch_gate": false}
+{"init_mode": "r7e-04_d1", "init_radius": 0.0007, "failure_class": "任务误差超限", "branch_gate": false}
+{"init_mode": "r7e-04_d2", "init_radius": 0.0007, "failure_class": "任务误差超限", "branch_gate": false}
+{"init_mode": "r1e-03_d0", "init_radius": 0.001, "failure_class": "任务误差超限", "branch_gate": false}
+{"init_mode": "r1e-03_d1", "init_radius": 0.001, "failure_class": "任务误差超限", "branch_gate": false}
+{"init_mode": "r1e-03_d2", "init_radius": 0.001, "failure_class": "任务误差超限", "branch_gate": false}

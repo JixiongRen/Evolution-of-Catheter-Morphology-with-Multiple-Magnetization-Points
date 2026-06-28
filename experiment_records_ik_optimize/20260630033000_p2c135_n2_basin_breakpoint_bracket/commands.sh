@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points
+XLA_PYTHON_CLIENT_PREALLOCATE=false \
+  /home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python \
+  experiment_records_ik_optimize/20260630033000_p2c135_n2_basin_breakpoint_bracket/run_p2c135_n2_basin_breakpoint_bracket.py \
+  > experiment_records_ik_optimize/20260630033000_p2c135_n2_basin_breakpoint_bracket/stdout.log \
+  2> experiment_records_ik_optimize/20260630033000_p2c135_n2_basin_breakpoint_bracket/stderr.log
