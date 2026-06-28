@@ -1,0 +1,3 @@
+{"init_mode": "half_oracle", "failure_class": "条件数病态", "baseline_gate": false}
+{"init_mode": "zero_state", "failure_class": "条件数病态", "baseline_gate": false}
+{"init_mode": "zero_current_oracle", "failure_class": "条件数病态", "baseline_gate": false}
