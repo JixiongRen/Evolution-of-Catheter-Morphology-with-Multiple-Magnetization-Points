@@ -1,0 +1,42 @@
+[
+  {
+    "case": "exact_cache",
+    "accepted": true,
+    "reasons": "none"
+  },
+  {
+    "case": "changed_eps",
+    "accepted": false,
+    "reasons": "eps_mismatch"
+  },
+  {
+    "case": "changed_schema",
+    "accepted": false,
+    "reasons": "schema_version_mismatch"
+  },
+  {
+    "case": "changed_task",
+    "accepted": false,
+    "reasons": "task_name_mismatch"
+  },
+  {
+    "case": "changed_target_p",
+    "accepted": false,
+    "reasons": "hash_mismatch:target_p"
+  },
+  {
+    "case": "changed_I0",
+    "accepted": false,
+    "reasons": "hash_mismatch:I0"
+  },
+  {
+    "case": "changed_basis",
+    "accepted": false,
+    "reasons": "hash_mismatch:basis"
+  },
+  {
+    "case": "missing_S",
+    "accepted": false,
+    "reasons": "missing_array:S"
+  }
+]

@@ -1,0 +1,117 @@
+{
+  "experiment": "20260629003000_p2c105_n2_cache_contract_audit",
+  "source_experiment": "20260629000000_p2c104_n2_cached_branch_audit",
+  "wall_s": 0.004068115002155537,
+  "contract": {
+    "schema_version": "n2_trusted_branch_cache_v1",
+    "source_experiment": "20260629000000_p2c104_n2_cached_branch_audit",
+    "task_name": "n2_position_only_branch_conditioned",
+    "eps": 0.0125,
+    "cache_arrays": {
+      "I0": {
+        "shape": [
+          8
+        ],
+        "sha256": "56b195c4db8653792eeffbd981f2d3298654e964d9f2ac2982e32282b27a94a2"
+      },
+      "target_p": {
+        "shape": [
+          3
+        ],
+        "sha256": "95181371cb102d8fecc7767d0bccea26f5a09d860ce981d1009a830625dd8ef8"
+      },
+      "y": {
+        "shape": [
+          18
+        ],
+        "sha256": "34208582d1d84d57e647cbac120eb8389f4a86fbdb81ee65846031098d35dd84"
+      },
+      "y_ref": {
+        "shape": [
+          18
+        ],
+        "sha256": "a8ce6a504a2bb3607077adebb1cfdee8cbe9ee13b9c72f734e8cffabbcfc5cf9"
+      },
+      "basis": {
+        "shape": [
+          18,
+          16
+        ],
+        "sha256": "487b012895fd8d6f54058f0c15421597caeba4aec80f5fd14deb655fe2416d7b"
+      },
+      "S": {
+        "shape": [
+          3,
+          8
+        ],
+        "sha256": "3f368aa88978a7c371f4498f5ac3394345b7e28a746727cafc88a0e7bb4b84a5"
+      },
+      "singular_values": {
+        "shape": [
+          3
+        ],
+        "sha256": "cf75b24b31c17c451c48484e6792391b24fb8e53066b58b65aa6974e7ada2ad5"
+      }
+    },
+    "gate_limits": {
+      "stationarity_norm_max": 1e-05,
+      "force_ratio_max": 1.5,
+      "task_condition_max": 10000000.0,
+      "linearization_rel_err_max": 0.05
+    },
+    "gate_values": {
+      "stationarity_norm": 2.2403099847038915e-07,
+      "force_ratio": 0.7409042942042787,
+      "task_condition": 322.8400991945264,
+      "random_direction_max_rel_err": 0.0007249292540128786,
+      "random_direction_passed": 20,
+      "random_direction_total": 20
+    },
+    "reuse_scope": {
+      "allowed": "same model, same task definition, same target point, same base current, same gate policy",
+      "forbidden": "different model, target point, base current, magnet configuration, task dimension, gate limits, or branch label"
+    }
+  },
+  "validation_rows": [
+    {
+      "case": "exact_cache",
+      "accepted": true,
+      "reasons": "none"
+    },
+    {
+      "case": "changed_eps",
+      "accepted": false,
+      "reasons": "eps_mismatch"
+    },
+    {
+      "case": "changed_schema",
+      "accepted": false,
+      "reasons": "schema_version_mismatch"
+    },
+    {
+      "case": "changed_task",
+      "accepted": false,
+      "reasons": "task_name_mismatch"
+    },
+    {
+      "case": "changed_target_p",
+      "accepted": false,
+      "reasons": "hash_mismatch:target_p"
+    },
+    {
+      "case": "changed_I0",
+      "accepted": false,
+      "reasons": "hash_mismatch:I0"
+    },
+    {
+      "case": "changed_basis",
+      "accepted": false,
+      "reasons": "hash_mismatch:basis"
+    },
+    {
+      "case": "missing_S",
+      "accepted": false,
+      "reasons": "missing_array:S"
+    }
+  ]
+}

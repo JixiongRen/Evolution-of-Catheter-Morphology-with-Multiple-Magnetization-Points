@@ -1,0 +1,9 @@
+accepted,case,reasons
+True,exact_cache,none
+False,changed_eps,eps_mismatch
+False,changed_schema,schema_version_mismatch
+False,changed_task,task_name_mismatch
+False,changed_target_p,hash_mismatch:target_p
+False,changed_I0,hash_mismatch:I0
+False,changed_basis,hash_mismatch:basis
+False,missing_S,missing_array:S
