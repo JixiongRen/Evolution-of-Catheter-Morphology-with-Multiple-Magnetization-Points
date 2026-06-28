@@ -1,0 +1,18 @@
+{
+  "experiment_id": "20260629110000_p2c123_n2_direction_reopt_closure",
+  "status": "direction_reopt_closure_pass",
+  "tested_cases": 12,
+  "pass_count": 12,
+  "failure_count": 0,
+  "radii_A": [
+    0.0025,
+    0.0125
+  ],
+  "linear_rel_gate": 0.05,
+  "centerline_gate_m": 0.001,
+  "direction_cos_gate": 0.98,
+  "max_linear_current_step_A": 0.0125,
+  "total_solve_steady_s": 31.000831911991554,
+  "wall_s": 52.85078864499883,
+  "interpretation": "该实验把 P2c122 的方向矩阵推断转化为真实重求解闭环，用于确认方向可控性边界是否物理可信。"
+}
