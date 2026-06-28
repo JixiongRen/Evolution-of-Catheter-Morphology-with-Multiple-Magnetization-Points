@@ -1,0 +1,10 @@
+stage,claim,gate,value,status,failure_class,evidence
+P2c72,16维有效状态子空间可稳定重求解,扰动重求解,"3/3 diagnostic, 0/3 publish",诊断通过,局部线性化未达发布门禁,relative error 0.106-0.196 > 0.05
+P2c73,误差不是扰动尺度过大导致,扰动尺度平台,eps=0.0025/0.005/0.010,诊断通过,隐式灵敏度公式不一致,relative error nearly flat across eps
+P2c74,基础自动微分分量基本正确,导数分量有限差分,residual dI <=1.6e-11; tip dq pass,通过,非分量错误,residual-current and tip-state derivatives pass
+P2c75,误差来自状态增量方程,实际状态增量对照,state error 0.0275-0.0988,诊断通过,状态灵敏度方程缺项,"actual dq explains tip FD, old implicit dq does not"
+P2c76,完整一阶最优性灵敏度修复线性化,扰动重求解一致性,tip error 5e-5-5.8e-4; condition 2.432e13,不可发布,条件数病态,linearity passes but condition exceeds 1e9
+P2c77,简单截断或阻尼不能稳定化,稳定化审计,0/54 pass,不可发布,病态方向承载真实任务灵敏度,regularization lowers condition but destroys tip derivative
+P2c78,末端三维位置任务空间可线性化,任务空间模态扰动,3/3 modes pass; task condition 322.8,候选通过,第三方向弱可控,"singular values 1.516e-06, 8.595e-08, 4.697e-09"
+P2c79,受信任分支内随机方向稳定,分支与随机方向,trusted 9/9 pass; zero/half fail,分支条件通过,初始化敏感与多平衡竞争,zero/half branch sensitivity differs by 56.98 and 928.5
+P2c80,电流分段加载不能恢复可信分支,continuation 分支复核,zero/half continuation both fail,不可发布为初始化无关结果,初始化敏感与物理分支不可达,half terminal close but sensitivity differs by 15.57

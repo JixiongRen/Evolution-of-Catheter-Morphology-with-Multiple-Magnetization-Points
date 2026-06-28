@@ -1,0 +1,118 @@
+{
+  "experiment": "P2c81_n2_engineering_boundary_synthesis",
+  "source_range": "P2c72-P2c80",
+  "case": "n2_z_pair_rand12_alpha_0.10_force_4_reg_3e-4",
+  "current_publish_status": "branch_conditional_local_terminal_position_sensitivity_only",
+  "publishable_scope": [
+    "受信任分支内的局部三维末端位置灵敏度",
+    "第三任务方向应标注为弱可控方向"
+  ],
+  "not_publishable_scope": [
+    "初始化无关灵敏度",
+    "零初值或半初值可达的稳健灵敏度",
+    "完整末端位姿灵敏度",
+    "外层 IK 生产接入"
+  ],
+  "hard_gate_status": {
+    "stationarity": "trusted branch pass; alternative branches fail",
+    "condition": "task-space pass; internal optimality system fail",
+    "branch_consistency": "fail outside trusted branch",
+    "local_linearity": "pass inside trusted task-space modes",
+    "load_propagation": "trusted branch pass; zero/half fail",
+    "perturb_reoptimization": "pass inside trusted branch"
+  },
+  "main_failure_mechanism": [
+    "初始化敏感",
+    "多平衡分支竞争",
+    "内部最优性线性系统病态",
+    "弱可控第三任务方向"
+  ],
+  "recommended_next_work": [
+    "先形成受信任分支工程边界和使用条件",
+    "若要扩大适用范围，优先做目标点延拓或更细分段加载，而不是继续无约束扫初值",
+    "单点磁控应独立做有效子空间末端位置灵敏度，不应套用 n2 结论"
+  ],
+  "rows": [
+    {
+      "stage": "P2c72",
+      "claim": "16维有效状态子空间可稳定重求解",
+      "gate": "扰动重求解",
+      "value": "3/3 diagnostic, 0/3 publish",
+      "status": "诊断通过",
+      "failure_class": "局部线性化未达发布门禁",
+      "evidence": "relative error 0.106-0.196 > 0.05"
+    },
+    {
+      "stage": "P2c73",
+      "claim": "误差不是扰动尺度过大导致",
+      "gate": "扰动尺度平台",
+      "value": "eps=0.0025/0.005/0.010",
+      "status": "诊断通过",
+      "failure_class": "隐式灵敏度公式不一致",
+      "evidence": "relative error nearly flat across eps"
+    },
+    {
+      "stage": "P2c74",
+      "claim": "基础自动微分分量基本正确",
+      "gate": "导数分量有限差分",
+      "value": "residual dI <=1.6e-11; tip dq pass",
+      "status": "通过",
+      "failure_class": "非分量错误",
+      "evidence": "residual-current and tip-state derivatives pass"
+    },
+    {
+      "stage": "P2c75",
+      "claim": "误差来自状态增量方程",
+      "gate": "实际状态增量对照",
+      "value": "state error 0.0275-0.0988",
+      "status": "诊断通过",
+      "failure_class": "状态灵敏度方程缺项",
+      "evidence": "actual dq explains tip FD, old implicit dq does not"
+    },
+    {
+      "stage": "P2c76",
+      "claim": "完整一阶最优性灵敏度修复线性化",
+      "gate": "扰动重求解一致性",
+      "value": "tip error 5e-5-5.8e-4; condition 2.432e13",
+      "status": "不可发布",
+      "failure_class": "条件数病态",
+      "evidence": "linearity passes but condition exceeds 1e9"
+    },
+    {
+      "stage": "P2c77",
+      "claim": "简单截断或阻尼不能稳定化",
+      "gate": "稳定化审计",
+      "value": "0/54 pass",
+      "status": "不可发布",
+      "failure_class": "病态方向承载真实任务灵敏度",
+      "evidence": "regularization lowers condition but destroys tip derivative"
+    },
+    {
+      "stage": "P2c78",
+      "claim": "末端三维位置任务空间可线性化",
+      "gate": "任务空间模态扰动",
+      "value": "3/3 modes pass; task condition 322.8",
+      "status": "候选通过",
+      "failure_class": "第三方向弱可控",
+      "evidence": "singular values 1.516e-06, 8.595e-08, 4.697e-09"
+    },
+    {
+      "stage": "P2c79",
+      "claim": "受信任分支内随机方向稳定",
+      "gate": "分支与随机方向",
+      "value": "trusted 9/9 pass; zero/half fail",
+      "status": "分支条件通过",
+      "failure_class": "初始化敏感与多平衡竞争",
+      "evidence": "zero/half branch sensitivity differs by 56.98 and 928.5"
+    },
+    {
+      "stage": "P2c80",
+      "claim": "电流分段加载不能恢复可信分支",
+      "gate": "continuation 分支复核",
+      "value": "zero/half continuation both fail",
+      "status": "不可发布为初始化无关结果",
+      "failure_class": "初始化敏感与物理分支不可达",
+      "evidence": "half terminal close but sensitivity differs by 15.57"
+    }
+  ]
+}

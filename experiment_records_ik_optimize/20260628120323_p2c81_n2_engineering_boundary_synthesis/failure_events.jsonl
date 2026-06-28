@@ -1,0 +1,6 @@
+{"stage": "P2c72", "failure_class": "局部线性化未达发布门禁", "evidence": "relative error 0.106-0.196 > 0.05"}
+{"stage": "P2c73", "failure_class": "隐式灵敏度公式不一致", "evidence": "relative error nearly flat across eps"}
+{"stage": "P2c75", "failure_class": "状态灵敏度方程缺项", "evidence": "actual dq explains tip FD, old implicit dq does not"}
+{"stage": "P2c76", "failure_class": "条件数病态", "evidence": "linearity passes but condition exceeds 1e9"}
+{"stage": "P2c77", "failure_class": "病态方向承载真实任务灵敏度", "evidence": "regularization lowers condition but destroys tip derivative"}
+{"stage": "P2c80", "failure_class": "初始化敏感与物理分支不可达", "evidence": "half terminal close but sensitivity differs by 15.57"}
