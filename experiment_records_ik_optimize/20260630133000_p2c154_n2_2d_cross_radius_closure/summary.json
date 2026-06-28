@@ -1,0 +1,75 @@
+{
+  "experiment_id": "20260630133000_p2c154_n2_2d_cross_radius_closure",
+  "tested_count": 60,
+  "pass_count": 37,
+  "all_passed": false,
+  "tested_radii_A": [
+    0.0003,
+    0.0005,
+    0.001,
+    0.0015
+  ],
+  "conservative_passed_radius_A": 0.001,
+  "effective_subspace_dimension": 2,
+  "max_linear_rel_err": 0.10983343208386441,
+  "max_centerline_change_m": 1.5283365512774352e-06,
+  "max_force_ratio": 0.8005403383648922,
+  "max_continuity_norm": 0.001400854088340957,
+  "total_solve_steady_s": 4.71071853399917,
+  "wall_s": 2733.382407615005,
+  "by_radius": {
+    "0.0003": {
+      "tested_count": 15,
+      "pass_count": 9,
+      "all_passed": false,
+      "max_linear_rel_err": 0.10983343208386441,
+      "max_centerline_change_m": 3.0584448865751257e-07,
+      "max_force_ratio": 0.7997981747023889,
+      "decision": "不通过"
+    },
+    "0.0005": {
+      "tested_count": 15,
+      "pass_count": 13,
+      "all_passed": false,
+      "max_linear_rel_err": 0.06529506346669764,
+      "max_centerline_change_m": 5.097561285765647e-07,
+      "max_force_ratio": 0.7999213765887316,
+      "decision": "不通过"
+    },
+    "0.0010": {
+      "tested_count": 15,
+      "pass_count": 15,
+      "all_passed": true,
+      "max_linear_rel_err": 0.03599111604247951,
+      "max_centerline_change_m": 1.0187781989133658e-06,
+      "max_force_ratio": 0.8002312980523877,
+      "decision": "通过"
+    },
+    "0.0015": {
+      "tested_count": 15,
+      "pass_count": 0,
+      "all_passed": false,
+      "max_linear_rel_err": 0.023207292069256424,
+      "max_centerline_change_m": 1.5283365512774352e-06,
+      "max_force_ratio": 0.8005403383648922,
+      "decision": "不通过"
+    }
+  },
+  "failure_by_class": {
+    "局部线性化误差超限": 8,
+    "接口连续残差超限": 15
+  },
+  "failure_by_radius": {
+    "0.0003": {
+      "局部线性化误差超限": 6
+    },
+    "0.0005": {
+      "局部线性化误差超限": 2
+    },
+    "0.0015": {
+      "接口连续残差超限": 15
+    }
+  },
+  "decision": "使用最大全通过半径作为保守半径",
+  "outer_ik_allowed": false
+}
