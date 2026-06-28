@@ -1,0 +1,11 @@
+baseline_ok,branch,branch_ok,continuity_norm,direction,eps,failure_class,fd_norm,force_ratio,minus_nfev,minus_success,plus_nfev,plus_success,position_error_m,pred_norm,sensitivity_cosine,sensitivity_rel_err,sigma_1,sigma_2,sigma_3,state_diff_norm,stationarity_norm,status,task_condition,tip_diff_m,vector_cosine,vector_rel_err
+True,trusted_seed,True,0.00043712583810566995,,,,,0.740904294204282,,,,,1.401986334849141e-06,,1.0000000000000002,0.0,1.5163945108780638e-06,8.594701369813018e-08,4.6970324371832916e-09,0.0,2.236527273668067e-07,,322.84097058256907,0.0,,
+,trusted_seed,,,task_mode_1,0.0125,PASS,1.5163713500457898e-06,,7,True,7,True,,1.5163945108780638e-06,,,,,,,,publishable,,,0.9999999999978304,1.541525022731305e-05
+,trusted_seed,,,task_mode_2,0.0125,PASS,8.594139692930773e-08,,7,True,7,True,,8.59470136981302e-08,,,,,,,,publishable,,,0.7386404727806667,0.0006798927676094808
+,trusted_seed,,,task_mode_3,0.0125,PASS,4.687020442655985e-09,,5,True,5,True,,4.697032437183301e-09,,,,,,,,publishable,,,0.0022013171243315615,0.013378336972445082
+,trusted_seed,,,random_1,0.0125,PASS,1.4870142839971182e-07,,6,True,6,True,,1.4867148767294127e-07,,,,,,,,publishable,,,0.9999999988477842,0.0002069902455174098
+,trusted_seed,,,random_2,0.0125,PASS,6.769531956827121e-07,,5,True,5,True,,6.769627847214405e-07,,,,,,,,publishable,,,0.9999999998915119,2.043591892307071e-05
+,trusted_seed,,,random_3,0.0125,PASS,4.4317083089799946e-07,,4,True,4,True,,4.42973979666078e-07,,,,,,,,publishable,,,0.9999999996647023,0.00044494203104360826
+,trusted_seed,,,random_4,0.0125,PASS,1.1907690977777845e-07,,5,True,5,True,,1.1911454123502076e-07,,,,,,,,publishable,,,0.9999999972738451,0.0003245408632091622
+,trusted_seed,,,random_5,0.0125,PASS,2.874528135396489e-07,,6,True,6,True,,2.874125191255373e-07,,,,,,,,publishable,,,0.9999999993524331,0.0001447227736339003
+,trusted_seed,,,random_6,0.0125,PASS,3.441060506139452e-07,,6,True,6,True,,3.440823348559516e-07,,,,,,,,publishable,,,0.9999999998355696,7.126564489560029e-05
