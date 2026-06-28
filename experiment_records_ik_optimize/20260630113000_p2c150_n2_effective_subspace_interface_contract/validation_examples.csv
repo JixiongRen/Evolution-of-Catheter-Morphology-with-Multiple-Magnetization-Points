@@ -1,0 +1,6 @@
+example,accepted,reasons
+合法只读诊断请求,True,无
+错误请求完整三维位置,False,task_dimension_exceeds_effective_rank;full_3d_position_not_publishable
+错误接入默认外层逆运动学,False,default_outer_ik_forbidden
+错误请求生成电流步,False,numeric_basis_missing_for_step_generation
+错误超过安全半径,False,current_step_radius_exceeded

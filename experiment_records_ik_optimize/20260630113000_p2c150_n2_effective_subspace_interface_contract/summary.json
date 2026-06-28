@@ -1,0 +1,12 @@
+{
+  "experiment_id": "20260630113000_p2c150_n2_effective_subspace_interface_contract",
+  "source_experiment": "20260630110000_p2c149_n2_2d_effective_subspace_release_candidate",
+  "contract_schema_version": "p2c150_n2_effective_subspace_v1",
+  "allowed_scope": "两点磁控、末端位置、同一物理解分支、小扰动半径内的二维有效子空间诊断",
+  "forbidden_scope": "完整三维位置灵敏度、完整末端位姿灵敏度、跨分支复用、跨工作点复用、默认外层 IK、无基向量时生成电流步",
+  "local_2d_interface_candidate": true,
+  "numeric_basis_available": false,
+  "can_generate_current_step": false,
+  "outer_ik_allowed": false,
+  "next_required_artifact": "per-workpoint numeric effective-subspace basis"
+}
