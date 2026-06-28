@@ -1,0 +1,2 @@
+baseline_ok,branch,branch_ok,continuity_norm,force_ratio,position_error_m,sensitivity_cosine,sensitivity_rel_err,sigma_1,sigma_2,sigma_3,state_diff_norm,stationarity_norm,task_condition,tip_diff_m
+True,trusted_seed,True,0.0004371258381070953,0.740904294204278,1.4019863348370124e-06,1.0000000000000002,0.0,1.5163987005010807e-06,8.594693649311658e-08,4.697088929414411e-09,0.0,2.231549397950725e-07,322.8379797122834,0.0
