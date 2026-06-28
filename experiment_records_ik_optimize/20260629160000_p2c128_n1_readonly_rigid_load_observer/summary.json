@@ -1,0 +1,23 @@
+{
+  "experiment_id": "20260629160000_p2c128_n1_readonly_rigid_load_observer",
+  "status": "readonly_observer_ran_n1_still_not_publishable",
+  "case": "n1_tip_z_rand15",
+  "alpha": 0.1,
+  "force_scale": 4.0,
+  "publishable_claim": false,
+  "outer_ik_allowed": false,
+  "disturbance_scan_allowed": false,
+  "final_gate": {
+    "stationarity_norm": 7.580654208975012e-06,
+    "jacobian_condition": 7449401.412772538,
+    "continuity_norm": 0.006187509996857361,
+    "force_ratio": 4.915602106790119e-05,
+    "torque_ratio": 0.05141259418879721
+  },
+  "interface_count": 2,
+  "max_observed_force_jump_over_rigid_force": 4.915602106790119e-05,
+  "max_observed_torque_jump_over_rigid_torque": 0.05141259418879721,
+  "max_lever_torque_over_rigid_torque": 1.0000000000000016,
+  "total_solve_steady_s": 123.88312410800063,
+  "wall_s": 251.4102102570032
+}
