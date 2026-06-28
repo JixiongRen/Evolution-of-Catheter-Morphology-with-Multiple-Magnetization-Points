@@ -1,0 +1,16 @@
+{
+  "experiment_id": "20260630123000_p2c152_n2_2d_subspace_closure",
+  "tested_count": 15,
+  "pass_count": 15,
+  "all_passed": true,
+  "safe_radius_A": 0.001,
+  "effective_subspace_dimension": 2,
+  "max_linear_rel_err": 0.0359889433099013,
+  "max_centerline_change_m": 1.0187780707620103e-06,
+  "max_force_ratio": 0.8002312982418066,
+  "max_continuity_norm": 0.000997996181789563,
+  "total_solve_steady_s": 1.2847202139382716,
+  "wall_s": 2302.4368335919935,
+  "decision": "二维小步诊断步可生成候选",
+  "outer_ik_allowed": false
+}
