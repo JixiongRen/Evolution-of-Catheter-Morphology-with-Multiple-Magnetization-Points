@@ -1,0 +1,62 @@
+{
+  "experiment": "20260629020000_p2c108_sensitivity_boundary_milestone",
+  "rows": [
+    {
+      "object_task": "n1 有效子空间位置",
+      "magnet_count": 1,
+      "task_dimension": "有效子空间",
+      "decision_level": "不可发布",
+      "stationarity_norm": 1.065e-06,
+      "condition_number": 8113000.0,
+      "force_ratio": 2.769,
+      "linearization_rel_err": null,
+      "branch_evidence": "诊断可用，发布不足",
+      "failure_class": "刚性磁体段载荷传播失配；模型耦合缺失",
+      "allowed_use": "诊断与模型修复",
+      "forbidden_use": "发布灵敏度；外层 IK 默认灵敏度",
+      "source": "P2c99"
+    },
+    {
+      "object_task": "n2 三维末端位置",
+      "magnet_count": 2,
+      "task_dimension": 3,
+      "decision_level": "可作为分支条件候选",
+      "stationarity_norm": 2.2403099847038915e-07,
+      "condition_number": 322.8400991945264,
+      "force_ratio": 0.7409042942042787,
+      "linearization_rel_err": 0.0007505523734167382,
+      "branch_evidence": "受信任分支；契约保护复核 40/40",
+      "failure_class": "初始化敏感；多平衡分支竞争；非全局灵敏度",
+      "allowed_use": "同一工况下三维末端位置局部导数复核",
+      "forbidden_use": "完整末端位姿；跨目标点复用；默认外层 IK",
+      "source": "P2c107"
+    },
+    {
+      "object_task": "n2 完整末端位姿",
+      "magnet_count": 2,
+      "task_dimension": 6,
+      "decision_level": "暂缓发布",
+      "stationarity_norm": null,
+      "condition_number": null,
+      "force_ratio": null,
+      "linearization_rel_err": null,
+      "branch_evidence": "尚无完整证据链",
+      "failure_class": "证据不足；任务维度与分支稳定性未闭合",
+      "allowed_use": "诊断记录",
+      "forbidden_use": "发布；外层 IK 默认灵敏度",
+      "source": "P2c100/P2c107"
+    }
+  ],
+  "source_files": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260628215500_p2c99_n1_nonpublishable_boundary_synthesis/summary.json",
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260628222500_p2c100_ik_sensitivity_milestone_synthesis/summary.json",
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629013000_p2c107_n2_guarded_interface_candidate/summary.json"
+  ],
+  "wall_s": 0.0020154789999651257,
+  "goal_progress": {
+    "n2_position": "branch_conditioned_candidate",
+    "n1_effective_position": "nonpublishable_until_model_repair",
+    "full_pose": "diagnostic_only",
+    "overall_goal_complete": false
+  }
+}

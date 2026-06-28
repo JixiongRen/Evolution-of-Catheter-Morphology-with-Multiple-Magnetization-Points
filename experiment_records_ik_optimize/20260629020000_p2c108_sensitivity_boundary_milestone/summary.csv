@@ -1,0 +1,4 @@
+allowed_use,branch_evidence,condition_number,decision_level,failure_class,forbidden_use,force_ratio,linearization_rel_err,magnet_count,object_task,source,stationarity_norm,task_dimension
+诊断与模型修复,诊断可用，发布不足,8113000.0,不可发布,刚性磁体段载荷传播失配；模型耦合缺失,发布灵敏度；外层 IK 默认灵敏度,2.769,,1,n1 有效子空间位置,P2c99,1.065e-06,有效子空间
+同一工况下三维末端位置局部导数复核,受信任分支；契约保护复核 40/40,322.8400991945264,可作为分支条件候选,初始化敏感；多平衡分支竞争；非全局灵敏度,完整末端位姿；跨目标点复用；默认外层 IK,0.7409042942042787,0.0007505523734167382,2,n2 三维末端位置,P2c107,2.2403099847038915e-07,3
+诊断记录,尚无完整证据链,,暂缓发布,证据不足；任务维度与分支稳定性未闭合,发布；外层 IK 默认灵敏度,,,2,n2 完整末端位姿,P2c100/P2c107,,6
