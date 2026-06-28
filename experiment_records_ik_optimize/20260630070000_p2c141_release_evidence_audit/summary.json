@@ -1,0 +1,22 @@
+{
+  "experiment_id": "20260630070000_p2c141_release_evidence_audit",
+  "purpose": "audit_release_readiness_from_existing_ik_sensitivity_evidence",
+  "n2_status": "effective_subspace_candidate",
+  "n2_release_direction_count": 1,
+  "n2_full_3d_position_publishable": false,
+  "n1_status": "not_publishable",
+  "n1_release_direction_count": 0,
+  "n1_low_signal_direction_count": 4,
+  "outer_ik_allowed": false,
+  "next_priority": [
+    "repeat_n2_first_principal_direction_on_more_workpoints",
+    "search_n1_workpoints_or_magnetization_with_observable_tip_response",
+    "do_not_connect_outer_ik_before_all_gates_pass"
+  ],
+  "source_summaries": {
+    "n2_effective_subspace": "experiment_records_ik_optimize/20260630053000_p2c137_n2_effective_subspace_release_candidate/summary.json",
+    "n1_boundary": "experiment_records_ik_optimize/20260630060000_p2c138_n1_effective_subspace_boundary_package/summary.json",
+    "n1_branch_recovery": "experiment_records_ik_optimize/20260630063000_p2c139_n1_mid_branch_recovery_probe/summary.json",
+    "n1_current_reopt": "experiment_records_ik_optimize/20260629003000_p2c140_n1_continuation_branch_current_reopt/summary.json"
+  }
+}
