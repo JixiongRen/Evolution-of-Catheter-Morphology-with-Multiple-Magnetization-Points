@@ -1,0 +1,39 @@
+{
+  "experiment": "20260629010000_p2c106_n2_contract_guarded_reaudit",
+  "contract_source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629003000_p2c105_n2_cache_contract_audit/cache_contract.json",
+  "cache_source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629000000_p2c104_n2_cached_branch_audit/trusted_branch_cache.npz",
+  "contract_accepted": true,
+  "contract_reasons": [],
+  "repeat_rows": [
+    {
+      "repeat": 1,
+      "wall_s": 53.09224177700162,
+      "passed": 20,
+      "total": 20,
+      "max_vector_rel_err": 0.0007505523734167382,
+      "max_plus_nfev": 6,
+      "max_minus_nfev": 6
+    },
+    {
+      "repeat": 2,
+      "wall_s": 44.011019296001905,
+      "passed": 20,
+      "total": 20,
+      "max_vector_rel_err": 0.0007505523734167382,
+      "max_plus_nfev": 6,
+      "max_minus_nfev": 6
+    }
+  ],
+  "repeat_comparison": {
+    "n_compared": 20,
+    "max_vector_rel_err_abs_diff": 0.0,
+    "max_vector_cosine_abs_diff": 0.0,
+    "max_fd_norm_abs_diff": 0.0,
+    "max_pred_norm_abs_diff": 0.0,
+    "same_status_all": true
+  },
+  "total_wall_s": 101.31981009499941,
+  "jax_devices": [
+    "cuda:0"
+  ]
+}
