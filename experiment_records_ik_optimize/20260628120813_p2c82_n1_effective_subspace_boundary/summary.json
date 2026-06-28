@@ -1,0 +1,89 @@
+{
+  "experiment": "P2c82_n1_effective_subspace_boundary",
+  "source_range": "P2c56,P2c64-P2c68",
+  "case": "n1_tip_z_rand15_alpha_0.10_position_only",
+  "current_publish_status": "not_publishable_under_current_model",
+  "diagnostic_scope": [
+    "二维有效子空间是诊断线索",
+    "软约束近门样本可用于载荷传播失败归因"
+  ],
+  "not_publishable_scope": [
+    "单点有效子空间末端位置灵敏度",
+    "单点完整三维末端位置灵敏度",
+    "外层 IK 默认灵敏度"
+  ],
+  "hard_gate_status": {
+    "stationarity": "soft near-gate pass; hard-closure fail",
+    "condition": "soft near-gate pass; hard-closure fail",
+    "load_propagation": "fail under soft near-gate",
+    "task_reachability": "fail or degrade under hard load propagation",
+    "local_linearity": "not audited because baseline gates fail"
+  },
+  "main_failure_mechanism": [
+    "载荷传播失配",
+    "硬物理闭合后任务不可达",
+    "独立分段内力自由度可能替代真实载荷链",
+    "有效物理自由度不足或模型耦合缺失"
+  ],
+  "recommended_next_work": [
+    "停止 n1 扰动灵敏度扫描，先修复物理闭合模型",
+    "优先审查刚性磁体段载荷传播公式、边界残差尺度和接口约束定义",
+    "若模型修复后仍失败，可形成当前单点配置不可发布结论"
+  ],
+  "rows": [
+    {
+      "stage": "P2c56",
+      "claim": "单点近似响应呈二维有效子空间",
+      "gate": "原始基线门禁",
+      "value": "rank=2; stationarity=2.447; condition=4.495e9; force_ratio=17.71",
+      "status": "不可发布",
+      "failure_class": "一阶最优性退化、条件数病态、载荷传播失配",
+      "evidence": "二维结构存在，但物理基线严重失败"
+    },
+    {
+      "stage": "P2c64",
+      "claim": "力连续与正则可显著缓解数值病态",
+      "gate": "软约束局部扫描",
+      "value": "best stationarity=7.955e-7; condition=7.070e6; force_ratio=2.777",
+      "status": "近门诊断",
+      "failure_class": "接口力连续性失配",
+      "evidence": "一阶最优性和条件数过门，但载荷传播仍失败"
+    },
+    {
+      "stage": "P2c65",
+      "claim": "局部调参不能突破载荷传播瓶颈",
+      "gate": "近门局部细化",
+      "value": "best stationarity=1.065e-6; condition=8.113e6; force_ratio=2.769",
+      "status": "近门诊断",
+      "failure_class": "接口力连续性失配",
+      "evidence": "多组样本停留在 force_ratio 2.73-2.78"
+    },
+    {
+      "stage": "P2c66",
+      "claim": "载荷门禁定义一致，失败不是统计口径错误",
+      "gate": "门禁一致性审计",
+      "value": "publish 0/18; diagnostic 4/18; best force_ratio=2.734",
+      "status": "诊断通过",
+      "failure_class": "载荷传播失配",
+      "evidence": "发布门禁无样本通过，宽松诊断门禁仅供归因"
+    },
+    {
+      "stage": "P2c67",
+      "claim": "硬载荷传播闭合后任务和边界难以相容",
+      "gate": "硬物理闭合参数化",
+      "value": "best tip_error=5.93e-3; stationarity=1.32e-3; condition=1.212e9",
+      "status": "不可发布",
+      "failure_class": "硬闭合下任务不可达、一阶最优性退化",
+      "evidence": "消除自由载荷跳变后末端误差和边界残差明显退化"
+    },
+    {
+      "stage": "P2c68",
+      "claim": "单点当前模型不应进入扰动灵敏度审计",
+      "gate": "阶段综合",
+      "value": "current_model_not_publishable",
+      "status": "不可发布",
+      "failure_class": "模型耦合缺失或有效物理自由度不足",
+      "evidence": "软约束近门依赖独立分段内力，硬闭合后任务不可兼容"
+    }
+  ]
+}

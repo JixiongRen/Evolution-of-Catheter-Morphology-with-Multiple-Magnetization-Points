@@ -1,0 +1,5 @@
+{"stage": "P2c56", "failure_class": "一阶最优性退化、条件数病态、载荷传播失配", "evidence": "二维结构存在，但物理基线严重失败"}
+{"stage": "P2c64", "failure_class": "接口力连续性失配", "evidence": "一阶最优性和条件数过门，但载荷传播仍失败"}
+{"stage": "P2c65", "failure_class": "接口力连续性失配", "evidence": "多组样本停留在 force_ratio 2.73-2.78"}
+{"stage": "P2c67", "failure_class": "硬闭合下任务不可达、一阶最优性退化", "evidence": "消除自由载荷跳变后末端误差和边界残差明显退化"}
+{"stage": "P2c68", "failure_class": "模型耦合缺失或有效物理自由度不足", "evidence": "软约束近门依赖独立分段内力，硬闭合后任务不可兼容"}

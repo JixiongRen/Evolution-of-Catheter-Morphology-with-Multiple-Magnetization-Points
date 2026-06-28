@@ -1,0 +1,7 @@
+stage,claim,gate,value,status,failure_class,evidence
+P2c56,单点近似响应呈二维有效子空间,原始基线门禁,rank=2; stationarity=2.447; condition=4.495e9; force_ratio=17.71,不可发布,一阶最优性退化、条件数病态、载荷传播失配,二维结构存在，但物理基线严重失败
+P2c64,力连续与正则可显著缓解数值病态,软约束局部扫描,best stationarity=7.955e-7; condition=7.070e6; force_ratio=2.777,近门诊断,接口力连续性失配,一阶最优性和条件数过门，但载荷传播仍失败
+P2c65,局部调参不能突破载荷传播瓶颈,近门局部细化,best stationarity=1.065e-6; condition=8.113e6; force_ratio=2.769,近门诊断,接口力连续性失配,多组样本停留在 force_ratio 2.73-2.78
+P2c66,载荷门禁定义一致，失败不是统计口径错误,门禁一致性审计,publish 0/18; diagnostic 4/18; best force_ratio=2.734,诊断通过,载荷传播失配,发布门禁无样本通过，宽松诊断门禁仅供归因
+P2c67,硬载荷传播闭合后任务和边界难以相容,硬物理闭合参数化,best tip_error=5.93e-3; stationarity=1.32e-3; condition=1.212e9,不可发布,硬闭合下任务不可达、一阶最优性退化,消除自由载荷跳变后末端误差和边界残差明显退化
+P2c68,单点当前模型不应进入扰动灵敏度审计,阶段综合,current_model_not_publishable,不可发布,模型耦合缺失或有效物理自由度不足,软约束近门依赖独立分段内力，硬闭合后任务不可兼容
