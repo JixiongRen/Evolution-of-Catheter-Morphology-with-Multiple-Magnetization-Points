@@ -1,0 +1,17 @@
+{
+  "experiment_id": "20260630120000_p2c151_n2_numeric_subspace_basis",
+  "candidate_count": 5,
+  "basis_available_count": 5,
+  "safe_radius_A": 0.001,
+  "effective_subspace_dimension": 2,
+  "numeric_basis_available": true,
+  "control_step_allowed": false,
+  "outer_ik_allowed": false,
+  "condition_2d_min": 17.46079229888277,
+  "condition_2d_max": 17.999323892318987,
+  "condition_full_min": 201.16335203116307,
+  "condition_full_max": 404.5193569457912,
+  "wall_s": 2131.3565520159973,
+  "source_experiment": "20260630103000_p2c148_n2_all_principal_safe_radius",
+  "next_required_artifact": "2D effective-subspace reoptimized closure audit"
+}
