@@ -1,0 +1,2 @@
+experiment_id,interpretation,max_actual_rel_err,max_centerline_change_m,pass_count,source_experiment,status,tested_cases,total_solve_steady_s,wall_s
+20260629054000_p2c115_n2_trust_region_reopt_closure,该实验对 P2c114 中可执行或可缩放的建议步长进行真实分支重求解。若通过，说明该步长在当前可信分支内具有局部闭环一致性；仍不代表全局 IK 可用。,1.0107323506014032,0.006091608256387245,0,20260629050000_p2c114_n2_trust_region_step_filter,reopt_closure_partial,9,33.485063537002134,54.01915660400118

@@ -1,0 +1,12 @@
+{
+  "experiment_id": "20260629054000_p2c115_n2_trust_region_reopt_closure",
+  "status": "reopt_closure_partial",
+  "source_experiment": "20260629050000_p2c114_n2_trust_region_step_filter",
+  "tested_cases": 9,
+  "pass_count": 0,
+  "max_actual_rel_err": 1.0107323506014032,
+  "max_centerline_change_m": 0.006091608256387245,
+  "total_solve_steady_s": 33.485063537002134,
+  "wall_s": 54.01915660400118,
+  "interpretation": "该实验对 P2c114 中可执行或可缩放的建议步长进行真实分支重求解。若通过，说明该步长在当前可信分支内具有局部闭环一致性；仍不代表全局 IK 可用。"
+}

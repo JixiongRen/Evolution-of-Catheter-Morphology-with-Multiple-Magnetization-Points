@@ -1,0 +1,9 @@
+{"case": "mode_1_5um", "failure_class": "closure_failed", "reasons": ["状态重求解失败", "实际位移与线性预测不一致", "中心线变化超过局部分支参考门限"]}
+{"case": "mode_2_0.25um", "failure_class": "closure_failed", "reasons": ["实际位移与线性预测不一致", "中心线变化超过局部分支参考门限"]}
+{"case": "mode_3_0.02um", "failure_class": "closure_failed", "reasons": ["实际位移与线性预测不一致"]}
+{"case": "mode_1_25um", "failure_class": "closure_failed", "reasons": ["状态重求解失败", "实际位移与线性预测不一致", "中心线变化超过局部分支参考门限"]}
+{"case": "mode_2_2um", "failure_class": "closure_failed", "reasons": ["实际位移与线性预测不一致", "中心线变化超过局部分支参考门限"]}
+{"case": "mode_3_0.2um", "failure_class": "closure_failed", "reasons": ["实际位移与线性预测不一致"]}
+{"case": "cart_x_1um", "failure_class": "closure_failed", "reasons": ["实际位移与线性预测不一致"]}
+{"case": "cart_z_1um", "failure_class": "closure_failed", "reasons": ["实际位移与线性预测不一致", "中心线变化超过局部分支参考门限"]}
+{"case": "random_00_1um", "failure_class": "closure_failed", "reasons": ["实际位移与线性预测不一致", "中心线变化超过局部分支参考门限"]}
