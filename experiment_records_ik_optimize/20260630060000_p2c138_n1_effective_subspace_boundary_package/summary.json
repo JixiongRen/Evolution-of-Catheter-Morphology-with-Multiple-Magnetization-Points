@@ -1,0 +1,148 @@
+{
+  "experiment_id": "20260630060000_p2c138_n1_effective_subspace_boundary_package",
+  "release_status": "not_publishable",
+  "release_direction_count": 0,
+  "full_3d_position_publishable": false,
+  "full_pose_publishable": false,
+  "outer_ik_allowed": false,
+  "disturbance_scan_allowed": false,
+  "dominant_failure_classes": [
+    "刚性磁体段载荷传播失配",
+    "条件数病态",
+    "初始化敏感",
+    "多平衡竞争风险"
+  ],
+  "boundary_rows": [
+    {
+      "source": "P2c131",
+      "case": "n1_base_z_rand15_a010",
+      "task": "effective_1d",
+      "baseline_gate": false,
+      "failure_class": "条件数病态",
+      "position_error_m": 0.0033113127593468713,
+      "stationarity_norm": 3.798451738548948e-07,
+      "effective_condition": 68296662.19084969,
+      "force_ratio": 1.8587292970793091e-07,
+      "release_class": "不可发布"
+    },
+    {
+      "source": "P2c131",
+      "case": "n1_base_z_rand15_a010",
+      "task": "position_3d",
+      "baseline_gate": false,
+      "failure_class": "条件数病态",
+      "position_error_m": 4.64948421024036e-06,
+      "stationarity_norm": 2.9698355888112116e-08,
+      "effective_condition": 26710398.603265658,
+      "force_ratio": 5.27600476970572e-06,
+      "release_class": "不可发布"
+    },
+    {
+      "source": "P2c131",
+      "case": "n1_mid_z_rand15_a010",
+      "task": "effective_1d",
+      "baseline_gate": false,
+      "failure_class": "条件数病态",
+      "position_error_m": 0.005400137091314241,
+      "stationarity_norm": 2.5651580657938097e-07,
+      "effective_condition": 43581794.373552285,
+      "force_ratio": 2.4062423757796876e-07,
+      "release_class": "不可发布"
+    },
+    {
+      "source": "P2c131",
+      "case": "n1_mid_z_rand15_a010",
+      "task": "position_3d",
+      "baseline_gate": true,
+      "failure_class": "通过",
+      "position_error_m": 3.295763530882664e-07,
+      "stationarity_norm": 3.144783648826985e-11,
+      "effective_condition": 824344.237639196,
+      "force_ratio": 1.1221189396491813e-06,
+      "release_class": "候选需复核"
+    },
+    {
+      "source": "P2c131",
+      "case": "n1_tip_z_rand15_a010",
+      "task": "effective_1d",
+      "baseline_gate": false,
+      "failure_class": "一阶最优性退化",
+      "position_error_m": 0.0038490280861586943,
+      "stationarity_norm": 1.3503904309870275e-05,
+      "effective_condition": 101750820.15348001,
+      "force_ratio": 3.9289444132775393e-07,
+      "release_class": "不可发布"
+    },
+    {
+      "source": "P2c131",
+      "case": "n1_tip_z_rand15_a010",
+      "task": "position_3d",
+      "baseline_gate": false,
+      "failure_class": "任务误差超限",
+      "position_error_m": 0.001286299888329224,
+      "stationarity_norm": 225.16670542651005,
+      "effective_condition": 220103430.14322487,
+      "force_ratio": 0.0003206408584176528,
+      "release_class": "不可发布"
+    },
+    {
+      "source": "P2c132",
+      "case": "n1_mid_z_rand15_a010",
+      "task": "position_3d",
+      "init_mode": "oracle",
+      "baseline_gate": true,
+      "failure_class": "通过",
+      "position_error_m": 3.2957635311507633e-07,
+      "stationarity_norm": 1.9555904764655737e-10,
+      "effective_condition": 824344.2376391898,
+      "force_ratio": 1.1221189401999863e-06,
+      "release_class": "孤立基线通过"
+    },
+    {
+      "source": "P2c132",
+      "case": "n1_mid_z_rand15_a010",
+      "task": "position_3d",
+      "init_mode": "half_oracle",
+      "baseline_gate": false,
+      "failure_class": "条件数病态",
+      "position_error_m": 2.635704928947173e-06,
+      "stationarity_norm": 5.287349011778996e-08,
+      "effective_condition": 15346425.488739252,
+      "force_ratio": 2.9328315754281417e-06,
+      "release_class": "不可发布"
+    },
+    {
+      "source": "P2c132",
+      "case": "n1_mid_z_rand15_a010",
+      "task": "position_3d",
+      "init_mode": "zero_state",
+      "baseline_gate": false,
+      "failure_class": "条件数病态",
+      "position_error_m": 2.635704928960198e-06,
+      "stationarity_norm": 5.093743347112182e-08,
+      "effective_condition": 15346425.488736005,
+      "force_ratio": 2.9328315756742776e-06,
+      "release_class": "不可发布"
+    },
+    {
+      "source": "P2c132",
+      "case": "n1_mid_z_rand15_a010",
+      "task": "position_3d",
+      "init_mode": "zero_current_oracle",
+      "baseline_gate": false,
+      "failure_class": "条件数病态",
+      "position_error_m": 8.95327770747642e-06,
+      "stationarity_norm": 2.1829493130013836e-06,
+      "effective_condition": 32120915.05135823,
+      "force_ratio": 6.213354487197612e-05,
+      "release_class": "不可发布"
+    }
+  ],
+  "evidence": {
+    "p2c126_summary": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629140000_p2c126_n1_failure_mechanism_repair_map/summary.json",
+    "p2c131_summary": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629210000_p2c131_n1_configuration_boundary/summary.json",
+    "p2c132_summary": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629230000_p2c132_n1_mid_branch_consistency/summary.json",
+    "p2c126_release_status": null,
+    "p2c132_branch_status": "未通过"
+  }
+}
