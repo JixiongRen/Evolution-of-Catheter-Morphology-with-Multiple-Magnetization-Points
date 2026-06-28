@@ -1,0 +1,5 @@
+candidate,equation,expected_benefit,implementation_target,main_risk,physical_meaning,priority
+A 硬力连续,n_{i+1}^{0} = n_i^{L_i} + F_i,直接压低力跳变，物理解释最强,interface_wrench_residual / forward_interface_slack,可能使当前目标点不可达，导致末端误差或条件数恶化,刚段外力必须由相邻柔性段内力链传递,1
+B 低维物理载荷传递参数,"n_{i+1}^{0} = n_i^{L_i} + beta_i F_i, beta_i in [0, 1]",比任意松弛更可解释，能定位缺失载荷比例,physical_direction_slack / load_scaled_slack,若 beta 只为拟合服务，仍可能退化成松弛变量,只允许沿刚段实际外力方向的可解释载荷传递比例,2
+C 接口残差分块重标定,"r_force = (n_{i+1}^{0} - n_i^{L_i} - F_i) / max(||F_i||, F_floor)",改善尺度病态，适合与 A 或 B 组合,load_scaled_slack_residual,单独使用只改变权重，不修复物理链,使用刚段外力尺度归一化力连续残差,3
+D 仅改变刚段力矩作用点,m_{i+1}^{0} = m_i^{L_i} + tau_i + r x F_i,P2c87 已显示可修复力矩跳变,_advance_rigid_with_wrench / rigid_state_along_dim,不能修复力连续性，不应作为 n1 主修复,修正力矩传播臂,4
