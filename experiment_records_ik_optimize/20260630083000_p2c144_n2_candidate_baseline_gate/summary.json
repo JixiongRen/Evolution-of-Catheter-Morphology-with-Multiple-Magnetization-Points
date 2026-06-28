@@ -1,7 +1,7 @@
 {
   "experiment_id": "20260630083000_p2c144_n2_candidate_baseline_gate",
   "purpose": "prepare_or_run_n2_candidate_baseline_gates",
-  "execution_status": "planned_not_run",
+  "execution_status": "executed",
   "candidate_count": 5,
   "target_step_m": 0.0001,
   "max_iter_per_step": 160,
@@ -17,5 +17,54 @@
   "run_warning": "This command can take roughly 30-45 minutes on the current environment.",
   "jax_devices": [
     "cuda:0"
+  ],
+  "wall_s": 1474.983078835001,
+  "return_pass_count": 5,
+  "candidate_summaries": [
+    {
+      "direction": "rand_05",
+      "all_steps_gate_ok": true,
+      "return_state_drift": 1.563048515826969e-05,
+      "return_position_error_m": 1.4019834381551029e-06,
+      "return_stationarity_norm": 3.2471655705449897e-06,
+      "return_force_ratio": 0.7409027400703521,
+      "return_ok": true
+    },
+    {
+      "direction": "y_plus",
+      "all_steps_gate_ok": true,
+      "return_state_drift": 6.799020338036616e-06,
+      "return_position_error_m": 1.4019852975806184e-06,
+      "return_stationarity_norm": 2.076815658804466e-06,
+      "return_force_ratio": 0.7409047902116691,
+      "return_ok": true
+    },
+    {
+      "direction": "z_plus",
+      "all_steps_gate_ok": true,
+      "return_state_drift": 1.0782777432551815e-05,
+      "return_position_error_m": 1.4019879834504756e-06,
+      "return_stationarity_norm": 1.3185232325051454e-06,
+      "return_force_ratio": 0.7409056773424302,
+      "return_ok": true
+    },
+    {
+      "direction": "yz_plus",
+      "all_steps_gate_ok": true,
+      "return_state_drift": 1.7824633424912136e-05,
+      "return_position_error_m": 1.4019885670779863e-06,
+      "return_stationarity_norm": 4.686703180839013e-06,
+      "return_force_ratio": 0.740906242488214,
+      "return_ok": true
+    },
+    {
+      "direction": "rand_00",
+      "all_steps_gate_ok": true,
+      "return_state_drift": 2.1167197929217453e-06,
+      "return_position_error_m": 1.401986088202078e-06,
+      "return_stationarity_norm": 1.274774127382786e-07,
+      "return_force_ratio": 0.7409042495592189,
+      "return_ok": true
+    }
   ]
 }

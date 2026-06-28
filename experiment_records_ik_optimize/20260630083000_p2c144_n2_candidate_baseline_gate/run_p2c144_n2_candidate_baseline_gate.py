@@ -21,11 +21,14 @@ for path in (ROOT, P2C89_DIR):
         sys.path.insert(0, str(path))
 
 import jax
+import matplotlib.pyplot as plt
 import numpy as np
 
+from experiment_records_ik_optimize.plotting_fonts import configure_matplotlib_cjk
 import run_p2c89_n2_target_point_continuation as p2c89
 
 
+configure_matplotlib_cjk()
 P2C94_SUMMARY = ROOT / "experiment_records_ik_optimize/20260628183000_p2c94_n2_target_random_100um/summary.json"
 P2C143_CANDIDATES = ROOT / "experiment_records_ik_optimize/20260630080000_p2c143_n2_workpoint_candidate_design/n2_workpoint_candidate_rows.csv"
 TARGET_STEP_M = 1.0e-4
@@ -83,6 +86,39 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
             writer.writerow({field: row.get(field) for field in fields})
 
 
+def read_csv(path: Path) -> list[dict[str, str]]:
+    """Read rows from CSV."""
+    with path.open("r", encoding="utf-8-sig", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def plot_executed_summary(rows: list[dict[str, Any]]) -> None:
+    """Plot executed baseline-gate results."""
+    labels = [str(row["direction"]) for row in rows]
+    stationarity = [float(row["return_stationarity_norm"]) for row in rows]
+    drift = [float(row["return_state_drift"]) for row in rows]
+    force = [float(row["return_force_ratio"]) for row in rows]
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4.6))
+    axes[0].bar(labels, stationarity, color="#f4a261")
+    axes[0].axhline(1.0e-5, color="black", linestyle="--", linewidth=1.0)
+    axes[0].set_yscale("log")
+    axes[0].set_title("一阶最优性")
+    axes[1].bar(labels, drift, color="#457b9d")
+    axes[1].axhline(1.0e-3, color="black", linestyle="--", linewidth=1.0)
+    axes[1].set_yscale("log")
+    axes[1].set_title("返回状态漂移")
+    axes[2].bar(labels, force, color="#2a9d8f")
+    axes[2].axhline(1.5, color="black", linestyle="--", linewidth=1.0)
+    axes[2].set_title("载荷传播比例")
+    for ax in axes:
+        ax.grid(axis="y", alpha=0.25)
+        ax.tick_params(axis="x", rotation=25)
+    fig.suptitle("P2c144 n2 候选工作点真实基线门禁")
+    fig.tight_layout()
+    fig.savefig(OUT_DIR / "n2_candidate_baseline_gate_cn.png", dpi=200)
+    plt.close(fig)
+
+
 def run_candidates() -> tuple[list[dict[str, Any]], list[dict[str, Any]], float]:
     """Run out-and-back target continuation for selected candidates."""
     p2c89.OUT_DIR = OUT_DIR
@@ -121,10 +157,27 @@ def write_record(summary: dict[str, Any]) -> None:
     """Write the Chinese experiment record."""
     if summary["execution_status"] == "planned_not_run":
         result = "本轮只生成可复现实验包，未执行长耗时求解。"
+        result_table = "- 尚无运行结果。"
     else:
         result = (
             f"本轮已运行 {summary['candidate_count']} 个候选，闭环通过 "
             f"{summary['return_pass_count']}/{summary['candidate_count']}。"
+        )
+        result_table = "\n".join(
+            [
+                "| 方向 | 一阶最优性 | 返回状态漂移/m | 返回位置误差/m | 载荷传播比例 | 结论 |",
+                "|---|---:|---:|---:|---:|---|",
+                *[
+                    (
+                        f"| {row['direction']} | {float(row['return_stationarity_norm']):.3e} | "
+                        f"{float(row['return_state_drift']):.3e} | "
+                        f"{float(row['return_position_error_m']):.3e} | "
+                        f"{float(row['return_force_ratio']):.3f} | "
+                        f"{'通过' if row['return_ok'] else '未通过'} |"
+                    )
+                    for row in summary.get("candidate_summaries", [])
+                ],
+            ]
         )
     text = f"""# P2c144 两点磁控候选工作点真实基线门禁包
 
@@ -135,6 +188,10 @@ P2c143 从既有目标闭环诊断中筛出 5 个 n2 新工作点候选。本轮
 ## 执行状态
 
 {result}
+
+## 运行结果
+
+{result_table}
 
 ## 候选与门禁
 
@@ -157,9 +214,9 @@ XLA_PYTHON_CLIENT_PREALLOCATE=false /home/ub22/miniconda3/envs/evolution_of_mcrs
 
 ## 下一步计划
 
-1. 在无人值守窗口执行 `--run`。
-2. 对通过候选计算末端位置灵敏度矩阵奇异值谱。
-3. 只对条件数和有效秩可接受的候选做第一主方向扰动重求解。
+1. 对通过候选计算末端位置灵敏度矩阵奇异值谱。
+2. 只对条件数和有效秩可接受的候选做第一主方向扰动重求解。
+3. 若候选条件数仍处于谨慎诊断区，应形成工作空间分区建议，而不是直接发布三维灵敏度。
 """
     (OUT_DIR / "record.md").write_text(text, encoding="utf-8")
 
@@ -168,6 +225,7 @@ def main() -> None:
     """Prepare or run the candidate baseline gate package."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", action="store_true", help="Run the expensive candidate gates.")
+    parser.add_argument("--postprocess", action="store_true", help="Rebuild plots and record from existing results.")
     args = parser.parse_args()
     plan_rows = build_plan_rows()
     write_csv(OUT_DIR / "planned_candidate_rows.csv", plan_rows)
@@ -187,10 +245,28 @@ def main() -> None:
         "jax_devices": [str(device) for device in jax.devices()],
     }
 
+    if args.postprocess:
+        summary = json.loads((OUT_DIR / "summary.json").read_text(encoding="utf-8"))
+        if summary.get("execution_status") == "executed":
+            candidate_summaries = read_csv(OUT_DIR / "candidate_summary.csv")
+            summary["candidate_summaries"] = [
+                {
+                    **row,
+                    "return_ok": row["return_ok"] == "True",
+                    "all_steps_gate_ok": row["all_steps_gate_ok"] == "True",
+                }
+                for row in candidate_summaries
+            ]
+            plot_executed_summary(summary["candidate_summaries"])
+        write_record(summary)
+        print(json.dumps(jsonable(summary), ensure_ascii=False, indent=2))
+        return
+
     if args.run:
         rows, candidate_summaries, wall_s = run_candidates()
         write_csv(OUT_DIR / "continuation_rows.csv", rows)
         write_csv(OUT_DIR / "candidate_summary.csv", candidate_summaries)
+        plot_executed_summary(candidate_summaries)
         failure_events = [
             {"failure_class": "候选真实基线门禁未通过", "evidence": row}
             for row in candidate_summaries
