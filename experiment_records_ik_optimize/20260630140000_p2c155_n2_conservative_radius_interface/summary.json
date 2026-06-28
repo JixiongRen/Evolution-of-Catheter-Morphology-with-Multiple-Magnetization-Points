@@ -1,0 +1,18 @@
+{
+  "experiment_id": "20260630140000_p2c155_n2_conservative_radius_interface",
+  "schema_version": "p2c155_n2_conservative_radius_step_v1",
+  "allowed_workpoint_count": 5,
+  "conservative_radius_A": 0.001,
+  "failed_radius_A": 0.0015,
+  "failed_radius_reason": {
+    "接口连续残差超限": 15
+  },
+  "can_generate_2d_diagnostic_step": true,
+  "outer_ik_allowed": false,
+  "full_3d_position_publishable": false,
+  "full_pose_publishable": false,
+  "source_basis_experiment": "20260630120000_p2c151_n2_numeric_subspace_basis",
+  "source_single_radius_closure_experiment": "20260630123000_p2c152_n2_2d_subspace_closure",
+  "source_cross_radius_experiment": "20260630133000_p2c154_n2_2d_cross_radius_closure",
+  "next_required_artifact": "2D conservative-radius multistep prototype"
+}

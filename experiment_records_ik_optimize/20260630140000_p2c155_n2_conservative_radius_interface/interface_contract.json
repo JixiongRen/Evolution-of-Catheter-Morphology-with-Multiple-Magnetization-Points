@@ -1,0 +1,183 @@
+{
+  "schema_version": "p2c155_n2_conservative_radius_step_v1",
+  "allowed_scope": "两点磁控、末端位置、指定工作点、同一物理解分支、0.0010 A 内二维有效子空间小步诊断",
+  "forbidden_scope": "完整三维位置灵敏度、完整末端位姿灵敏度、跨工作点复用、跨分支复用、默认外层逆运动学、超过0.0010 A的线性外推、使用0.0015 A半径",
+  "allowed_workpoints": [
+    "rand_00",
+    "rand_05",
+    "y_plus",
+    "yz_plus",
+    "z_plus"
+  ],
+  "safe_radius_A": 0.001,
+  "failed_radius_A": 0.0015,
+  "failed_radius_reason": {
+    "接口连续残差超限": 15
+  },
+  "can_generate_2d_diagnostic_step": true,
+  "outer_ik_default_allowed": false,
+  "single_radius_closure_summary": {
+    "experiment_id": "20260630123000_p2c152_n2_2d_subspace_closure",
+    "tested_count": 15,
+    "pass_count": 15,
+    "all_passed": true,
+    "safe_radius_A": 0.001,
+    "effective_subspace_dimension": 2,
+    "max_linear_rel_err": 0.0359889433099013,
+    "max_centerline_change_m": 1.0187780707620103e-06,
+    "max_force_ratio": 0.8002312982418066,
+    "max_continuity_norm": 0.000997996181789563,
+    "total_solve_steady_s": 1.2847202139382716,
+    "wall_s": 2302.4368335919935,
+    "decision": "二维小步诊断步可生成候选",
+    "outer_ik_allowed": false
+  },
+  "cross_radius_summary": {
+    "experiment_id": "20260630133000_p2c154_n2_2d_cross_radius_closure",
+    "tested_count": 60,
+    "pass_count": 37,
+    "all_passed": false,
+    "tested_radii_A": [
+      0.0003,
+      0.0005,
+      0.001,
+      0.0015
+    ],
+    "conservative_passed_radius_A": 0.001,
+    "effective_subspace_dimension": 2,
+    "max_linear_rel_err": 0.10983343208386441,
+    "max_centerline_change_m": 1.5283365512774352e-06,
+    "max_force_ratio": 0.8005403383648922,
+    "max_continuity_norm": 0.001400854088340957,
+    "total_solve_steady_s": 4.71071853399917,
+    "wall_s": 2733.382407615005,
+    "by_radius": {
+      "0.0003": {
+        "tested_count": 15,
+        "pass_count": 9,
+        "all_passed": false,
+        "max_linear_rel_err": 0.10983343208386441,
+        "max_centerline_change_m": 3.0584448865751257e-07,
+        "max_force_ratio": 0.7997981747023889,
+        "decision": "不通过"
+      },
+      "0.0005": {
+        "tested_count": 15,
+        "pass_count": 13,
+        "all_passed": false,
+        "max_linear_rel_err": 0.06529506346669764,
+        "max_centerline_change_m": 5.097561285765647e-07,
+        "max_force_ratio": 0.7999213765887316,
+        "decision": "不通过"
+      },
+      "0.0010": {
+        "tested_count": 15,
+        "pass_count": 15,
+        "all_passed": true,
+        "max_linear_rel_err": 0.03599111604247951,
+        "max_centerline_change_m": 1.0187781989133658e-06,
+        "max_force_ratio": 0.8002312980523877,
+        "decision": "通过"
+      },
+      "0.0015": {
+        "tested_count": 15,
+        "pass_count": 0,
+        "all_passed": false,
+        "max_linear_rel_err": 0.023207292069256424,
+        "max_centerline_change_m": 1.5283365512774352e-06,
+        "max_force_ratio": 0.8005403383648922,
+        "decision": "不通过"
+      }
+    },
+    "failure_by_class": {
+      "局部线性化误差超限": 8,
+      "接口连续残差超限": 15
+    },
+    "failure_by_radius": {
+      "0.0003": {
+        "局部线性化误差超限": 6
+      },
+      "0.0005": {
+        "局部线性化误差超限": 2
+      },
+      "0.0015": {
+        "接口连续残差超限": 15
+      }
+    },
+    "decision": "使用最大全通过半径作为保守半径",
+    "outer_ik_allowed": false
+  },
+  "basis_summary": {
+    "experiment_id": "20260630120000_p2c151_n2_numeric_subspace_basis",
+    "candidate_count": 5,
+    "basis_available_count": 5,
+    "safe_radius_A": 0.001,
+    "effective_subspace_dimension": 2,
+    "numeric_basis_available": true,
+    "control_step_allowed": false,
+    "outer_ik_allowed": false,
+    "condition_2d_min": 17.46079229888277,
+    "condition_2d_max": 17.999323892318987,
+    "condition_full_min": 201.16335203116307,
+    "condition_full_max": 404.5193569457912,
+    "wall_s": 2131.3565520159973,
+    "source_experiment": "20260630103000_p2c148_n2_all_principal_safe_radius",
+    "next_required_artifact": "2D effective-subspace reoptimized closure audit"
+  },
+  "required_request": {
+    "schema_version": "p2c155_n2_conservative_radius_step_v1",
+    "magnet_count": 2,
+    "terminal_quantity": "position",
+    "task_representation": "effective_subspace",
+    "branch_conditioned": true,
+    "workpoint": "one of allowed_workpoints",
+    "desired_tip_delta_m": "3-vector; only its audited 2D projection is used",
+    "use_for_default_outer_ik": false,
+    "request_full_3d_position": false,
+    "request_full_pose": false
+  },
+  "validation_examples": [
+    {
+      "example": "合法二维小步请求",
+      "accepted": true,
+      "current_step_norm_A": 0.00011355654171378756,
+      "projected_task_norm_m": 9.964080819301517e-11,
+      "reasons": "无"
+    },
+    {
+      "example": "错误请求完整三维位置",
+      "accepted": false,
+      "current_step_norm_A": 0.00011355654171378756,
+      "projected_task_norm_m": 9.964080819301517e-11,
+      "reasons": "full_3d_position_not_publishable"
+    },
+    {
+      "example": "错误请求完整末端位姿",
+      "accepted": false,
+      "current_step_norm_A": 0.00011355654171378756,
+      "projected_task_norm_m": 9.964080819301517e-11,
+      "reasons": "full_pose_not_publishable"
+    },
+    {
+      "example": "错误跨工作点",
+      "accepted": false,
+      "current_step_norm_A": 0.0,
+      "projected_task_norm_m": 0.0,
+      "reasons": "workpoint_not_audited"
+    },
+    {
+      "example": "错误接入默认外层逆运动学",
+      "accepted": false,
+      "current_step_norm_A": 0.00011355654171378756,
+      "projected_task_norm_m": 9.964080819301517e-11,
+      "reasons": "default_outer_ik_forbidden"
+    },
+    {
+      "example": "错误超过半径",
+      "accepted": false,
+      "current_step_norm_A": 1135.5654171378758,
+      "projected_task_norm_m": 0.0009964080819301517,
+      "reasons": "current_step_radius_exceeded"
+    }
+  ]
+}
