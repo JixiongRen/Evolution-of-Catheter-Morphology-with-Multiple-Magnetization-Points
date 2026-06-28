@@ -1,0 +1,37 @@
+{
+  "experiment_id": "20260630170000_p2c160_n2_3d_position_boundary_synthesis",
+  "status": "n2_full_3d_position_not_publishable_2d_single_step_diagnostic_only",
+  "n2_full_3d_position_publishable": false,
+  "n2_effective_2d_single_step_publishable_as_diagnostic": true,
+  "outer_ik_allowed": false,
+  "multistep_allowed": false,
+  "full_pose_publishable": false,
+  "candidate_workpoint_count": 5,
+  "effective_subspace_dimension": 2,
+  "conservative_radius_A": 0.001,
+  "mode12_pass_count": 10,
+  "mode12_test_count": 10,
+  "mode3_pass_count": 0,
+  "mode3_test_count": 5,
+  "sigma3_over_sigma1_min": 0.00247205672592044,
+  "sigma3_over_sigma1_max": 0.00497111553321607,
+  "mode12_linear_error_max": 0.035954003392686465,
+  "mode3_linear_error_min": 0.11285597822375183,
+  "mode3_linear_error_max": 0.711183799733406,
+  "failure_boundary": {
+    "full_3d": "第三主方向信号幅值过弱，扰动重求解线性化误差超限，不能发布完整三维末端位置灵敏度。",
+    "two_dimensional": "前两主方向在 0.001 A 半径内通过重求解闭合，可作为分支条件下二维单步诊断灵敏度。",
+    "large_radius": "0.0015 A 出现接口连续残差超限。",
+    "multistep": "固定局部二维子空间第二步出现接口连续残差超限。"
+  },
+  "source_summaries": {
+    "P2c145": "experiment_records_ik_optimize/20260630090000_p2c145_n2_candidate_spectrum_audit/summary.json",
+    "P2c148": "experiment_records_ik_optimize/20260630103000_p2c148_n2_all_principal_safe_radius/summary.json",
+    "P2c149": "experiment_records_ik_optimize/20260630110000_p2c149_n2_2d_effective_subspace_release_candidate/summary.json",
+    "P2c151": "experiment_records_ik_optimize/20260630120000_p2c151_n2_numeric_subspace_basis/summary.json",
+    "P2c152": "experiment_records_ik_optimize/20260630123000_p2c152_n2_2d_subspace_closure/summary.json",
+    "P2c154": "experiment_records_ik_optimize/20260630133000_p2c154_n2_2d_cross_radius_closure/summary.json",
+    "P2c156": "experiment_records_ik_optimize/20260630143000_p2c156_n2_2d_multistep_prototype/summary.json",
+    "P2c158": "experiment_records_ik_optimize/20260630153000_p2c158_n2_engineering_boundary_synthesis/summary.json"
+  }
+}

@@ -1,0 +1,3 @@
+{"failure_class": "有效秩不足", "evidence": "P2c145/P2c148/P2c149", "interpretation": "第三主方向相对第一主方向仅约 0.25% 至 0.50%，有效可控空间应降为二维。", "severity": "hard_stop_for_3d"}
+{"failure_class": "局部线性化误差超限", "evidence": "P2c148", "interpretation": "第三主方向在扰动重求解中误差超过 0.05 门限，不能用于发布三维导数。", "severity": "hard_stop_for_3d"}
+{"failure_class": "接口连续残差超限", "evidence": "P2c154/P2c156", "interpretation": "较大半径和固定子空间第二步破坏接口连续性，说明当前结果只支持局部单步诊断。", "severity": "hard_stop_for_outer_ik"}
