@@ -1,0 +1,2 @@
+{"failure_class": "接口矩连续残差主导", "evidence": "P2c163", "min_radius_A": 0.00025, "min_radius_continuity_norm": 0.0011615155180859675, "min_radius_force_block_norm": 0.0002264332468280785, "min_radius_torque_block_norm": 0.0007967010601635578, "interpretation": "第二步缩半径后仍失败，且主导分量为矩残差；应优先修复矩连续模型。"}
+{"failure_class": "扫参边际收益不足", "evidence": "P2c163", "max_radius_A": 0.001, "max_radius_continuity_norm": 0.0017948926358685822, "interpretation": "从 0.00025 A 到 0.001 A 均不通过，继续扩大路径扫描不符合最小归因闭环。"}
