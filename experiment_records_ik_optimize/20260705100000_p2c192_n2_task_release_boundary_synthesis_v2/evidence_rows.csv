@@ -1,0 +1,9 @@
+﻿decision,evidence_type,key_metric,source,status,task_layer,value
+原始最优性方程严重病态，不能支撑完整三维灵敏度。,线性模型断点,raw_optimality_condition,P2c168,ill_conditioned_optimality_and_output_break,三维末端位置,22657955671247.1
+缩小扰动半径后输出线性化仍未恢复，完整三维方向不可直接发布。,半径夹逼,decision,P2c169,output_linearization_not_recovered,三维末端位置,缩小到 1e-4 A 后，末端输出线性化仍未恢复；需更换局部参数化或审计输出映射。
+弱奇异方向主导，需降维或重构局部坐标。,病态方向审计,decision,P2c170,weak_singular_directions_dominate,三维末端位置,约化最优性系统含极弱奇异方向，应先重建局部坐标或截断病态方向。
+仅 1/12 通过，不能发布完整三维末端位置灵敏度。,精确雅可比重求解,pass_count/tested_count,P2c173,exact_jacobian_gate_partial_pass,三维末端位置,1/12
+第 1 主方向可进入严格复核，第 2 主方向待复核，第 3 主方向不可发布。,跨工作点边界综合,mode_summary,P2c175,n2_cross_workpoint_boundary_synthesized,主方向分层,"{""1"": {""tested_workpoints"": 5, ""linear_gate_pass_count"": 5, ""strict_branch_loop_pass_count"": 1, ""max_linear_error"": 0.001853453161506885, ""release_level"": ""一维候选""}, ""2"": {""tested_workpoints"": 5, ""linear_gate_pass_count"": 5, ""strict_branch_loop_pass_count"": 0, ""max_linear_error"": 0.035954003392686465, ""release_level"": ""待复核候选""}, ""3"": {""tested_workpoints"": 5, ""linear_gate_pass_count"": 0, ""strict_branch_loop_pass_count"": 0, ""max_linear_error"": 0.711183799733406, ""release_level"": ""不可发布""}}"
+第 2 主方向严格回环全失败，不能作为二维或三维发布基础。,严格回环,pass_count/tested_count,P2c176,mode2_branch_loop_failed,第 2 主方向,0/32
+第 1 主方向在五工作点、正负扰动、多初值、回环下全部通过。,跨工作点严格回环,pass_count/tested_count,P2c179,n2_mode1_cross_workpoint_candidate,第 1 主方向,40/40
+第 1 主方向工程复用路径保持全部门禁通过。,系统缓存稳态回放,steady_pass_count/steady_tested_count,P2c191,batch_system_cache_steady_passed,第 1 主方向工程化,40/40

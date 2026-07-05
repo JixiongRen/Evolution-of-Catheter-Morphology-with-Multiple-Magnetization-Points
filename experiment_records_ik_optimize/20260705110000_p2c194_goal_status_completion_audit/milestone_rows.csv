@@ -1,0 +1,5 @@
+﻿claim,evidence_dir,milestone,result
+无可发布末端位置或位姿灵敏度；二维有效秩仅作诊断。,20260705103000_p2c193_n1_effective_subspace_release_boundary_v2,n1 发布边界,不可发布
+第 1 主方向可作为分支条件下局部导数候选；二维/三维不可发布。,20260705100000_p2c192_n2_task_release_boundary_synthesis_v2,n2 发布边界,一维候选，三维不可发布
+五工作点稳态回放 40/40，通过，约 54.92s。,20260705093000_p2c191_n2_batch_system_cache_steady_replay,n2 效率工程化,可复用审计路径
+所有后续实验已落盘，但无法 git add。,各轮 record.md,版本管理,环境阻断

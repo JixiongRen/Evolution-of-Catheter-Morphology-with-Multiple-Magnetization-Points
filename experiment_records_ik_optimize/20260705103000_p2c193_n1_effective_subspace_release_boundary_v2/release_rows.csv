@@ -1,0 +1,5 @@
+﻿decision_level,gate_evidence,outer_ik_allowed,publishable,reason,task_dimension,task_layer
+不可发布,rank=2 仅为响应线索；force_ratio=2.769 仍超限,False,False,载荷传播失配，软约束近门解不等于物理闭合解。,2,二维有效子空间末端位置灵敏度
+不可发布,任务降维 P2c130 pass_count=0；P2c140 位移低于可靠判读阈值,False,False,任务降维后仍未形成可测、可线性化、可复现的物理响应。,1,一维保守末端位置灵敏度
+不可发布,原始基线 stationarity=2.447; condition=4.495e9; force_ratio=17.71,False,False,有效驱动秩不足且物理基线失败。,3,完整三维末端位置灵敏度
+不可发布,位置灵敏度尚不可发布，姿态层不进入,False,False,末端位置层未闭合，不能扩展到完整位姿。,6,完整末端位姿灵敏度

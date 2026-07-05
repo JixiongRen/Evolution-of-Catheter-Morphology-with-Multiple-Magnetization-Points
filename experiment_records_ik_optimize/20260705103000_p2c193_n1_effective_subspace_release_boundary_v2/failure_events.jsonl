@@ -1,0 +1,5 @@
+{"failure_class": "刚性磁体段载荷传播失配", "evidence": "软约束近门 force_ratio 稳定约 2.7；硬闭合后任务和边界退化。", "engineering_action": "先重推刚性磁体段外力、外矩到相邻柔顺段的传递方程。"}
+{"failure_class": "条件数病态", "evidence": "原始条件数 4.495e9；硬闭合条件数 1.212e9。", "engineering_action": "禁止大规模扰动扫描；先改局部参数化或物理闭合。"}
+{"failure_class": "任务降维仍未闭合", "evidence": "P2c130 降维保守工作点 pass_count=0。", "engineering_action": "不要把二维有效秩线索发布为一维/二维灵敏度。"}
+{"failure_class": "可测响应不足", "evidence": "P2c140 continuation 分支末端位移约 1e-13 至 1e-11 m。", "engineering_action": "该分支只用于模型诊断，不用于灵敏度发布。"}
+{"failure_class": "初始化敏感与多平衡竞争", "evidence": "P2c177 将分支条件下证据不足列为严格失败机制。", "engineering_action": "若继续 n1，需先建立可信分支库，再做扰动审计。"}

@@ -1,0 +1,140 @@
+{
+  "experiment_id": "20260705100000_p2c192_n2_task_release_boundary_synthesis_v2",
+  "status": "n2_task_release_boundary_synthesized_v2",
+  "decision": "当前 n2 只支持分支条件下第 1 主方向一维有效子空间候选；二维和完整三维末端位置灵敏度不可发布。",
+  "outer_ik_allowed": false,
+  "full_3d_position_publishable": false,
+  "two_dimensional_position_publishable": false,
+  "mode1_effective_subspace_candidate": true,
+  "raw_optimality_condition": 22657955671247.1,
+  "mode3_max_linear_error": 0.711183799733406,
+  "evidence_rows": [
+    {
+      "source": "P2c168",
+      "task_layer": "三维末端位置",
+      "evidence_type": "线性模型断点",
+      "status": "ill_conditioned_optimality_and_output_break",
+      "key_metric": "raw_optimality_condition",
+      "value": 22657955671247.1,
+      "decision": "原始最优性方程严重病态，不能支撑完整三维灵敏度。"
+    },
+    {
+      "source": "P2c169",
+      "task_layer": "三维末端位置",
+      "evidence_type": "半径夹逼",
+      "status": "output_linearization_not_recovered",
+      "key_metric": "decision",
+      "value": "缩小到 1e-4 A 后，末端输出线性化仍未恢复；需更换局部参数化或审计输出映射。",
+      "decision": "缩小扰动半径后输出线性化仍未恢复，完整三维方向不可直接发布。"
+    },
+    {
+      "source": "P2c170",
+      "task_layer": "三维末端位置",
+      "evidence_type": "病态方向审计",
+      "status": "weak_singular_directions_dominate",
+      "key_metric": "decision",
+      "value": "约化最优性系统含极弱奇异方向，应先重建局部坐标或截断病态方向。",
+      "decision": "弱奇异方向主导，需降维或重构局部坐标。"
+    },
+    {
+      "source": "P2c173",
+      "task_layer": "三维末端位置",
+      "evidence_type": "精确雅可比重求解",
+      "status": "exact_jacobian_gate_partial_pass",
+      "key_metric": "pass_count/tested_count",
+      "value": "1/12",
+      "decision": "仅 1/12 通过，不能发布完整三维末端位置灵敏度。"
+    },
+    {
+      "source": "P2c175",
+      "task_layer": "主方向分层",
+      "evidence_type": "跨工作点边界综合",
+      "status": "n2_cross_workpoint_boundary_synthesized",
+      "key_metric": "mode_summary",
+      "value": "{\"1\": {\"tested_workpoints\": 5, \"linear_gate_pass_count\": 5, \"strict_branch_loop_pass_count\": 1, \"max_linear_error\": 0.001853453161506885, \"release_level\": \"一维候选\"}, \"2\": {\"tested_workpoints\": 5, \"linear_gate_pass_count\": 5, \"strict_branch_loop_pass_count\": 0, \"max_linear_error\": 0.035954003392686465, \"release_level\": \"待复核候选\"}, \"3\": {\"tested_workpoints\": 5, \"linear_gate_pass_count\": 0, \"strict_branch_loop_pass_count\": 0, \"max_linear_error\": 0.711183799733406, \"release_level\": \"不可发布\"}}",
+      "decision": "第 1 主方向可进入严格复核，第 2 主方向待复核，第 3 主方向不可发布。"
+    },
+    {
+      "source": "P2c176",
+      "task_layer": "第 2 主方向",
+      "evidence_type": "严格回环",
+      "status": "mode2_branch_loop_failed",
+      "key_metric": "pass_count/tested_count",
+      "value": "0/32",
+      "decision": "第 2 主方向严格回环全失败，不能作为二维或三维发布基础。"
+    },
+    {
+      "source": "P2c179",
+      "task_layer": "第 1 主方向",
+      "evidence_type": "跨工作点严格回环",
+      "status": "n2_mode1_cross_workpoint_candidate",
+      "key_metric": "pass_count/tested_count",
+      "value": "40/40",
+      "decision": "第 1 主方向在五工作点、正负扰动、多初值、回环下全部通过。"
+    },
+    {
+      "source": "P2c191",
+      "task_layer": "第 1 主方向工程化",
+      "evidence_type": "系统缓存稳态回放",
+      "status": "batch_system_cache_steady_passed",
+      "key_metric": "steady_pass_count/steady_tested_count",
+      "value": "40/40",
+      "decision": "第 1 主方向工程复用路径保持全部门禁通过。"
+    }
+  ],
+  "release_rows": [
+    {
+      "task_layer": "第 1 主方向末端位置灵敏度",
+      "task_dimension": 1,
+      "effective_rank_requirement": "满足一维有效子空间",
+      "strict_gate": "40/40",
+      "engineering_gate": "40/40",
+      "max_linear_error": 0.021066317994160085,
+      "decision_level": "分支条件下可用候选",
+      "outer_ik_allowed": false,
+      "publish_statement": "可作为两点磁控第 1 主方向局部导数候选；需声明分支条件和任务降维。"
+    },
+    {
+      "task_layer": "前两主方向末端位置灵敏度",
+      "task_dimension": 2,
+      "effective_rank_requirement": "第 2 主方向需严格回环",
+      "strict_gate": "0/32",
+      "engineering_gate": "未进入",
+      "max_linear_error": 0.37371759791563863,
+      "decision_level": "不可发布",
+      "outer_ik_allowed": false,
+      "publish_statement": "第 2 主方向严格回环失败，不能扩展为二维任务灵敏度。"
+    },
+    {
+      "task_layer": "完整三维末端位置灵敏度",
+      "task_dimension": 3,
+      "effective_rank_requirement": "三个方向均需线性化和回环通过",
+      "strict_gate": "第 3 主方向 0/5 线性化通过",
+      "engineering_gate": "未进入",
+      "max_linear_error": 0.711183799733406,
+      "decision_level": "不可发布",
+      "outer_ik_allowed": false,
+      "publish_statement": "第 3 主方向跨工作点线性化失败，且原始最优性系统存在病态；不得发布完整三维末端位置灵敏度。"
+    }
+  ],
+  "failure_rows": [
+    {
+      "failure_class": "有效秩不足",
+      "task_layer": "完整三维末端位置",
+      "evidence": "三维任务中仅第 1 主方向通过严格跨工作点回环；第 2 主方向 0/32，第 3 主方向跨工作点线性化 0/5。",
+      "action": "只发布有效一维子空间；不得接入完整三维外层 IK。"
+    },
+    {
+      "failure_class": "条件数病态",
+      "task_layer": "完整三维末端位置",
+      "evidence": "P2c173 原始最优性条件数约 2.27e13，高于 1e9 硬边界。",
+      "action": "禁止做大规模三维扰动扫描；先做任务降维或局部坐标重构。"
+    },
+    {
+      "failure_class": "局部线性化失败",
+      "task_layer": "第 2/第 3 主方向",
+      "evidence": "第 2 主方向严格回环任务误差超 0.05；第 3 主方向跨工作点最大线性误差约 0.711。",
+      "action": "若继续研究，先缩小任务到单方向，再做分支夹逼；不要直接扩展到三维。"
+    }
+  ]
+}

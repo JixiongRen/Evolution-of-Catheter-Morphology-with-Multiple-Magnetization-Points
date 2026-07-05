@@ -1,0 +1,15 @@
+﻿decision,evidence_type,key_metric,source,status
+单点存在二维响应线索，但原始物理基线严重失败。,有效子空间初判,rank=2; stationarity=2.447; condition=4.495e9; force_ratio=17.71,P2c82,不可发布
+一阶最优性和条件数可被调到近门或过门，但载荷传播比例仍大于 2。,近门诊断,best stationarity=1.065e-6; condition=8.113e6; force_ratio=2.769,P2c82/P2c64-P2c65,诊断，不发布
+失败不是门禁统计口径错误。,载荷门禁一致性,publish 0/18; diagnostic 4/18; best force_ratio=2.734,P2c66,不可发布
+硬物理闭合后末端任务和边界相容性退化。,硬载荷闭合,tip_error=5.93e-3; stationarity=1.32e-3; condition=1.212e9,P2c67,不可发布
+主失败为刚性磁体段载荷传播失配。,非发布边界综合,rigid_magnet_force_propagation_mismatch,P2c99,n1_current_model_not_publishable
+失败类别集中在载荷传播、接口连续、一阶最优性和刚段载荷链。,发布边界包,"一阶最优性退化, 刚段外力与柔性段内力链不相容, 接口连续残差超限, 载荷传播失配, 载荷传递比例偏离物理闭合",P2c120,n1_not_publishable_current_model
+应先做显式刚性磁体段载荷传播原型，不应直接扰动扫描。,修复图谱,显式刚性磁体段载荷传播模型最小原型；只跑基线门禁，不直接扰动扫描,P2c126,n1_failure_mechanism_mapped_not_publishable
+只读观测未改变不可发布结论。,只读刚段载荷观测,still_not_publishable,P2c128,readonly_observer_ran_n1_still_not_publishable
+显式残差最小原型未通过基线。,显式刚段载荷残差,pass_count=0,P2c129,explicit_residual_baseline_failed
+任务降维后仍未闭合。,任务降维保守点,pass_count=0,P2c130,n1_reduced_task_baseline_failed
+仅找到基线候选，不能构成发布灵敏度。,配置边界扫描,pass_count=1,P2c131,n1_configuration_candidate_found
+物理门禁可过，但末端位移低于可靠判读阈值，不能发布灵敏度。,continuation 分支电流重求解,tip_delta_norm_m=1e-13 to 1e-11,P2c140,not_publishable
+单点磁控当前模型不发布末端位置灵敏度，也不接入外层 IK；可作为模型失配分析和载荷传播修复对照。,严格边界综合,"刚性磁体段载荷传播失配, 条件数病态, 初始化敏感与多平衡竞争, 任务降维仍未闭合, 分支条件下证据不足",P2c177,n1_current_model_not_publishable_strict_boundary
+历史证据链覆盖软约束、硬闭合、门禁一致性和边界综合。,原始证据计数,P2c82 rows=6; P2c99 rows=5,P2c82/P2c99,evidence_table

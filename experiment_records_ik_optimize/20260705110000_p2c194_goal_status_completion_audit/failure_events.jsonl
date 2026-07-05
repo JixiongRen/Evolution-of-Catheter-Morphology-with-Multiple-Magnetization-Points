@@ -1,0 +1,2 @@
+{"failure_class": "版本管理环境阻断", "evidence": ".git/index.lock 无法创建；文件系统只读。", "impact": "无法满足每轮本地提交要求。", "next_action": "解除 .git 写权限后分批提交所有实验目录。"}
+{"failure_class": "GPU 后端不可用", "evidence": "JAX CUDA 初始化失败，设备回退到 TFRT_CPU_0。", "impact": "不能声明 GPU 效率。", "next_action": "修复 CUDA/JAX 运行环境后重跑 P2c191 稳态回放。"}
