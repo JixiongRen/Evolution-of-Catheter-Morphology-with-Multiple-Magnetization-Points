@@ -1,0 +1,60 @@
+{
+  "experiment_id": "20260705035000_p2c177_n1_release_boundary_synthesis",
+  "status": "n1_current_model_not_publishable_strict_boundary",
+  "decision": "单点磁控当前模型不发布末端位置灵敏度，也不接入外层 IK；可作为模型失配分析和载荷传播修复对照。",
+  "source_experiments": {
+    "P2c120": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629083000_p2c120_n1_publishability_boundary_package/summary.json",
+    "P2c126": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629140000_p2c126_n1_failure_mechanism_repair_map/summary.json",
+    "P2c128": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629160000_p2c128_n1_readonly_rigid_load_observer/summary.json",
+    "P2c129": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629170000_p2c129_n1_explicit_rigid_load_residual/summary.json",
+    "P2c130": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629190000_p2c130_n1_task_reduction_conservative_workpoint/summary.json",
+    "P2c131": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629210000_p2c131_n1_configuration_boundary/summary.json",
+    "P2c132": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629230000_p2c132_n1_mid_branch_consistency/summary.json",
+    "P2c138": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260630060000_p2c138_n1_effective_subspace_boundary_package/summary.json",
+    "P2c139": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260630063000_p2c139_n1_mid_branch_recovery_probe/summary.json",
+    "P2c140": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260629003000_p2c140_n1_continuation_branch_current_reopt/summary.json",
+    "P2c159": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260630160000_p2c159_n1_engineering_boundary_synthesis/summary.json"
+  },
+  "hard_evidence": {
+    "p2c120_publishable_count": 0,
+    "p2c126_primary_failure": "刚性磁体段载荷传播失配与模型耦合缺失",
+    "p2c128_continuity_norm": 0.006187509996857361,
+    "p2c129_pass_count": 0,
+    "p2c130_pass_count": 0,
+    "p2c131_pass_count": 1,
+    "p2c132_branch_status": "未通过",
+    "p2c138_release_status": "not_publishable",
+    "p2c139_branch_conditioned_only": true,
+    "p2c140_release_status": "not_publishable",
+    "p2c159_status": "n1_current_model_not_publishable"
+  },
+  "failure_classes": [
+    "刚性磁体段载荷传播失配",
+    "条件数病态",
+    "初始化敏感与多平衡竞争",
+    "任务降维仍未闭合",
+    "分支条件下证据不足"
+  ],
+  "allowed_use": [
+    "模型失配分析",
+    "分支恢复方法验证",
+    "刚性磁体段载荷传播模型修复对照",
+    "工作空间不可发布边界说明"
+  ],
+  "forbidden_use": [
+    "发布单点磁控末端位置灵敏度",
+    "发布单点磁控完整位姿灵敏度",
+    "接入外层 IK",
+    "批量扰动扫描作为控制律依据"
+  ],
+  "next_required_work": [
+    "显式修复刚性磁体段载荷传播模型",
+    "修复后先做基线门禁，不直接扰动扫描",
+    "若仍失败，转为导管配置或磁化点设计不可发布建议"
+  ],
+  "publishable_effective_subspace": false,
+  "publishable_full_3d_position": false,
+  "publishable_full_pose": false,
+  "outer_ik_allowed": false,
+  "wall_s": 0.0
+}

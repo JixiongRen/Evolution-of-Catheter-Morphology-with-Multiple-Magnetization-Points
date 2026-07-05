@@ -1,0 +1,25 @@
+{
+  "status": "moment_reference_audit_protocol_ready",
+  "experiment_id": "20260704220000_p2c166_n2_moment_reference_audit_protocol",
+  "source_evidence": [
+    "20260630180000_p2c162_n2_rolling_two_step_prototype",
+    "20260630183000_p2c163_n2_second_step_radius_block_audit",
+    "20260630190000_p2c164_n2_torque_continuity_repair_map",
+    "20260630193000_p2c165_n2_torque_weight_continuation"
+  ],
+  "main_observation": "P2c165 lowered current-aware continuity residual below the gate, but local linearization error remained far above the publishable threshold.",
+  "decision": "Stop torque-weight scanning. Run a read-only moment-reference and rigid-lever-arm audit next.",
+  "next_experiment": "P2c167_n2_moment_reference_and_rigid_lever_audit",
+  "candidate_reference_points": [
+    "interface_point",
+    "magnet_center",
+    "rigid_distal_end"
+  ],
+  "success_rule_for_next_audit": {
+    "reference_mismatch": "moment residual drops by more than 10x and local linearization error drops together",
+    "partial_moment_fix": "moment residual drops but local linearization error remains high",
+    "deeper_model_gap": "neither moment residual nor local linearization error improves",
+    "branch_dependence": "different initial branches imply different reference-point conclusions"
+  },
+  "commit_status": "pending_git_writable"
+}

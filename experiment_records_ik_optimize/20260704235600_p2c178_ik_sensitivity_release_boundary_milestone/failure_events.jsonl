@@ -1,0 +1,4 @@
+{"case": "n1_current_model", "classification": "rigid_magnet_load_propagation_mismatch", "evidence": "P2c126/P2c128/P2c129/P2c159/P2c177", "decision": "not_publishable"}
+{"case": "n2_full_3d_position", "classification": "effective_rank_and_branch_linearity_limit", "evidence": "P2c173/P2c175/P2c176", "decision": "not_publishable"}
+{"case": "n2_mode2", "classification": "strict_branch_loop_failure", "evidence": "P2c176 pass_count=0/32", "decision": "not_publishable"}
+{"case": "git_checkpoint", "classification": "repository_metadata_read_only", "evidence": ".git not writable; index.lock cannot be created", "decision": "commit_pending"}

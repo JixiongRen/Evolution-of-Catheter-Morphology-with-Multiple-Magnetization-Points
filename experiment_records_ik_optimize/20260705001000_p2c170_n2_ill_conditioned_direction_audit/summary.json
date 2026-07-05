@@ -1,0 +1,57 @@
+{
+  "experiment_id": "20260705001000_p2c170_n2_ill_conditioned_direction_audit",
+  "status": "weak_singular_directions_dominate",
+  "decision": "约化最优性系统含极弱奇异方向，应先重建局部坐标或截断病态方向。",
+  "condition": 22657955671247.1,
+  "singular_count": 16,
+  "weak_direction_count": 7,
+  "task_weak_direction_count": 0,
+  "low_task_gain_weak_direction_count": 2,
+  "smallest_singular_value": 2.6579455539417603e-05,
+  "largest_singular_value": 602236125.3780073,
+  "dominant_pred_direction": {
+    "singular_index": 13,
+    "singular_value": 0.0019135497087173752,
+    "relative_singular_value": 3.1774077111636103e-12,
+    "inverse_gain": 522.588984986591,
+    "task_gain": 0.00029355158375763036,
+    "rhs_left_r1em03": 8.074636282523473e-07,
+    "q_pred_component_r1em03": -0.0004219715979019843,
+    "q_actual_component_r1em03": -0.00042062827468527896,
+    "abs_pred_over_actual_r1em03": 1.0031936113132442,
+    "rhs_left_r1em04": 8.074636282480105e-08,
+    "q_pred_component_r1em04": -4.2197159789971784e-05,
+    "q_actual_component_r1em04": -5.376633300903766e-05,
+    "abs_pred_over_actual_r1em04": 0.7848249532449758
+  },
+  "tested_radii_A": [
+    0.001,
+    0.0001
+  ],
+  "solve_info": [
+    {
+      "success": true,
+      "nfev": 24,
+      "steady_s": 0.47913294099998893,
+      "cost": 4.269981513709961e-06,
+      "optimality": 3.545061212950656e-08,
+      "message": "`ftol` termination condition is satisfied."
+    },
+    {
+      "success": true,
+      "nfev": 21,
+      "steady_s": 0.4166355580000527,
+      "cost": 4.270428873256453e-06,
+      "optimality": 4.6438699640112046e-08,
+      "message": "`ftol` termination condition is satisfied."
+    }
+  ],
+  "wall_s": 280.8967562849998,
+  "jax_devices": [
+    "TFRT_CPU_0"
+  ],
+  "outer_ik_allowed": false,
+  "publishable_sensitivity": false,
+  "case": "rand_05",
+  "path": "first_principal_then_singular_direction_audit"
+}

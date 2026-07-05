@@ -1,0 +1,26 @@
+{
+  "experiment_id": "20260704235600_p2c178_ik_sensitivity_release_boundary_milestone",
+  "status": "release_boundary_milestone_partial_success",
+  "n1_status": "current_model_not_publishable",
+  "n2_status": "one_dimensional_effective_subspace_candidate_only",
+  "n1_publishable_terminal_position": false,
+  "n1_publishable_full_pose": false,
+  "n1_outer_ik_allowed": false,
+  "n2_publishable_full_3d_position": false,
+  "n2_publishable_full_pose": false,
+  "n2_publishable_mode1_candidate": true,
+  "n2_publishable_mode2": false,
+  "n2_publishable_mode3": false,
+  "n2_outer_ik_allowed": false,
+  "mode1_strict_branch_loop_pass": "8/8 at rand_05, radius=1e-4 A",
+  "mode2_strict_branch_loop_pass": "0/32 at rand_05",
+  "mode3_linearization_status": "failed in cross-workpoint audit",
+  "primary_blockers": [
+    "single-point rigid magnetic segment load propagation mismatch",
+    "two-point full-position task dimension exceeds stable effective subspace",
+    "ill-conditioned reduced optimality equations",
+    "branch stability depends on direction and workpoint"
+  ],
+  "next_recommended_step": "Run cross-workpoint strict branch-loop validation for the n2 first principal direction; do not connect n1 or full n2 sensitivity to outer IK yet.",
+  "git_commit_status": "blocked_by_read_only_git_directory"
+}

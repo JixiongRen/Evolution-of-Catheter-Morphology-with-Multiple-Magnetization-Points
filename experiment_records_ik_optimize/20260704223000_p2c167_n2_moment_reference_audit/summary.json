@@ -1,0 +1,94 @@
+{
+  "status": "moment_reference_not_primary",
+  "baseline_variant": "proximal_native",
+  "best_variant": "proximal_native",
+  "baseline_normalized_torque_jump_total": 0.00024799367573170584,
+  "best_normalized_torque_jump_total": 0.00024799367573170584,
+  "torque_jump_reduction": 1.0,
+  "decision": "参考点切换不能显著降低矩残差；应转向刚段载荷传播方程或磁外载模型审计。",
+  "variant_summary": [
+    {
+      "variant": "proximal_native",
+      "variant_label": "近端原口径",
+      "normalized_force_jump_total": 0.000274489638690419,
+      "normalized_torque_jump_total": 0.00024799367573170584,
+      "normalized_block_jump_total": 0.00036992624258265223,
+      "max_lever_moment_norm_dim": 0.0
+    },
+    {
+      "variant": "center_native",
+      "variant_label": "磁体中心口径",
+      "normalized_force_jump_total": 0.000274489638690419,
+      "normalized_torque_jump_total": 0.10706787483292292,
+      "normalized_block_jump_total": 0.10706822668653944,
+      "max_lever_moment_norm_dim": 6.111039528495946e-07
+    },
+    {
+      "variant": "distal_native",
+      "variant_label": "远端口径",
+      "normalized_force_jump_total": 0.000274489638690419,
+      "normalized_torque_jump_total": 0.21412164033988,
+      "normalized_block_jump_total": 0.21412181627849758,
+      "max_lever_moment_norm_dim": 1.2222079056991892e-06
+    },
+    {
+      "variant": "center_inverse",
+      "variant_label": "中心反向力臂",
+      "normalized_force_jump_total": 0.000274489638690419,
+      "normalized_torque_jump_total": 0.10704051523005283,
+      "normalized_block_jump_total": 0.10704086717360299,
+      "max_lever_moment_norm_dim": 6.111039528495946e-07
+    },
+    {
+      "variant": "distal_inverse",
+      "variant_label": "远端反向力臂",
+      "normalized_force_jump_total": 0.000274489638690419,
+      "normalized_torque_jump_total": 0.21409428068211997,
+      "normalized_block_jump_total": 0.2140944566432212,
+      "max_lever_moment_norm_dim": 1.2222079056991892e-06
+    }
+  ],
+  "experiment_id": "20260704223000_p2c167_n2_moment_reference_audit",
+  "case": "rand_05",
+  "path": "first_principal_then_zero_torque_weight_second_step",
+  "outer_ik_allowed": false,
+  "publishable_sensitivity": false,
+  "first_step": {
+    "step_index": 1,
+    "mode_index": 1,
+    "step_radius_A": 0.001,
+    "singular_value_1": 1.1914877945646838e-06,
+    "singular_value_2": 6.725210040538849e-08,
+    "singular_value_3": 5.923164582574778e-09,
+    "condition_full": 201.15729994569026,
+    "condition_2d": 17.716737282293376,
+    "predicted_norm_um": 0.0011914877945646838,
+    "actual_norm_um": 0.0011929543274861814,
+    "linear_rel_err": 0.001231425489756937,
+    "pred_actual_cosine": 0.00014213905170013249,
+    "centerline_max_change_m": 9.579936861366196e-07,
+    "continuity_norm": 0.0009569796911055622,
+    "force_ratio": 0.589131816993648,
+    "torque_ratio": 0.001502676298859957,
+    "state_radius": 0.000645108889827322,
+    "solve_success": true,
+    "solve_nfev": 4,
+    "solve_steady_s": 0.02668019899999763,
+    "current_norm_A": 0.0009999999999999861,
+    "release_class": "通过",
+    "reason": "滚动局部扰动重求解通过"
+  },
+  "second_step_solve": {
+    "success": true,
+    "nfev": 24,
+    "steady_s": 0.46740731299996696,
+    "cost": 4.269981513709961e-06,
+    "optimality": 3.545061212950656e-08,
+    "message": "`ftol` termination condition is satisfied."
+  },
+  "wall_s": 304.08554915599996,
+  "jax_devices": [
+    "TFRT_CPU_0"
+  ],
+  "device_note": "CUDA initialization failed in this run, so the audit used CPU."
+}

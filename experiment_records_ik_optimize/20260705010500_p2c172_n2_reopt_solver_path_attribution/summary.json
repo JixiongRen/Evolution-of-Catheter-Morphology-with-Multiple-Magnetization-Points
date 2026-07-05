@@ -1,0 +1,33 @@
+{
+  "experiment_id": "20260705010500_p2c172_n2_reopt_solver_path_attribution",
+  "status": "reopt_solver_path_primary_suspect",
+  "decision": "同一半径、同一任务方向下，精确雅可比约化重求解通过线性化门禁，而二点差分重求解失败；前序 P2c168-P2c170 的病态结论需降级为求解路径相关风险，而非物理灵敏度必然失败。",
+  "radius_A": 0.0001,
+  "comparison": {
+    "two_point_reopt_path": {
+      "source": "20260704234500_p2c169_n2_radius_bracket_linearization_audit",
+      "q_pred_vs_actual_rel_err": 1.0264996838234575,
+      "task_pred_vs_actual_rel_err": 0.8591979129239613,
+      "output_linear_at_actual_q_rel_err": 0.7543396148102166,
+      "continuity_norm": 0.0003705338420558869,
+      "solve_nfev": 21,
+      "solve_steady_s": 0.4472312800000964,
+      "passes_linear_gates": false
+    },
+    "exact_jacobian_reopt_path": {
+      "source": "20260705004000_p2c171_n2_truncated_sensitivity_probe",
+      "q_pred_vs_actual_rel_err": 0.014693694088466462,
+      "task_pred_vs_actual_rel_err": 0.0021894829014051315,
+      "output_linear_at_actual_q_rel_err": 0.042300856639506494,
+      "continuity_norm": 0.00037012884352045515,
+      "solve_nfev": 3,
+      "solve_steady_s": 0.014476763999937248,
+      "passes_linear_gates": true
+    }
+  },
+  "release_implication": "不能直接发布。必须在更多半径、方向和工作点上复核精确雅可比重求解路径，并重新检查分支一致性、载荷传播和扰动回环。",
+  "next_experiment": "P2c173_n2_exact_jacobian_reopt_gate",
+  "outer_ik_allowed": false,
+  "publishable_sensitivity": false,
+  "wall_s": 0.0
+}

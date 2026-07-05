@@ -1,0 +1,1 @@
+{"failure_class": "模型耦合缺口", "evidence": {"status": "moment_reference_not_primary", "best_variant": "proximal_native", "torque_jump_reduction": 1.0, "decision": "参考点切换不能显著降低矩残差；应转向刚段载荷传播方程或磁外载模型审计。"}}
