@@ -1,0 +1,46 @@
+{
+  "experiment_id": "20260705120000_p2c196_final_goal_completion_audit",
+  "status": "goal_complete_current_model_boundary",
+  "decision": "长期目标已在当前模型边界下完成：n1 给出不可发布证据，n2 给出一维候选和三维失败边界，效率与版本管理证据已补齐。",
+  "formal_goal_complete": true,
+  "research_boundary_complete": true,
+  "git_head_before_commit": "fbd87a8",
+  "audit_rows": [
+    {
+      "requirement": "单点磁控有效子空间或不可发布证据",
+      "status": "完成",
+      "evidence": "P2c193",
+      "result": "单点磁控 n1 当前模型不发布任何末端位置或末端位姿灵敏度；只保留二维有效秩作为诊断线索。"
+    },
+    {
+      "requirement": "两点磁控三维末端位置可发布或失败边界",
+      "status": "完成",
+      "evidence": "P2c192",
+      "result": "当前 n2 只支持分支条件下第 1 主方向一维有效子空间候选；二维和完整三维末端位置灵敏度不可发布。"
+    },
+    {
+      "requirement": "严格门禁与失败归因",
+      "status": "完成",
+      "evidence": "P2c192/P2c193/P2c179/P2c176",
+      "result": "可发布层级、不可发布层级和失败类别均已形成机器可读证据。"
+    },
+    {
+      "requirement": "工程建议",
+      "status": "完成",
+      "evidence": "P2c192/P2c193",
+      "result": "n1 不接入外层 IK；n2 仅第 1 主方向可作分支条件下一维候选。"
+    },
+    {
+      "requirement": "效率产品化",
+      "status": "完成",
+      "evidence": "P2c191/P2c195",
+      "result": "CPU 稳态 54.92s，GPU 稳态 233.51s；GPU 可用但当前流程较慢。"
+    },
+    {
+      "requirement": "本地提交",
+      "status": "完成",
+      "evidence": "git commits",
+      "result": "P2c165-P2c195 已分批提交；本轮 P2c196 生成后单独提交。"
+    }
+  ]
+}
