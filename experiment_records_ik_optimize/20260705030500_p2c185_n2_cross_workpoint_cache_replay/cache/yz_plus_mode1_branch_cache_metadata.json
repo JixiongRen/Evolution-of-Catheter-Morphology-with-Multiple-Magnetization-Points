@@ -1,0 +1,8 @@
+{
+  "workpoint": "yz_plus",
+  "mode_index": 1,
+  "radius_A": 0.0001,
+  "first_step_release_class": "通过",
+  "first_step_linear_rel_err": 0.00184986028121503,
+  "source": "P2c185 runtime-built branch; funcs are intentionally not serialized."
+}

@@ -1,0 +1,30 @@
+{
+  "array_cache_npz": [
+    "workpoint_name",
+    "target_direction",
+    "current_i0",
+    "state_y",
+    "reduced_basis",
+    "terminal_sensitivity_S",
+    "left_task_modes_U",
+    "current_modes_Vt",
+    "singular_values",
+    "base_tip_position",
+    "base_centerline"
+  ],
+  "json_metadata": [
+    "source_experiment_id",
+    "task_definition",
+    "terminal_point_convention",
+    "mode_index",
+    "radius_A",
+    "gate_thresholds",
+    "workpoint_hash"
+  ],
+  "runtime_rebuild_required": [
+    "JAX residual function",
+    "JAX Jacobian function",
+    "JAX output function",
+    "compiled device executable"
+  ]
+}

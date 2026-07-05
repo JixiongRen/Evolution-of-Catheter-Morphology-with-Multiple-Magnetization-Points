@@ -1,0 +1,3 @@
+{"case": "n2_full_3d_position", "failure_class": "task_dimension_exceeds_stable_effective_subspace", "evidence": "mode1 passed; mode2 strict branch loop failed; mode3 linearization failed", "decision": "not_publishable"}
+{"case": "n2_full_pose", "failure_class": "insufficient_physical_and_linearization_evidence", "evidence": "full pose was not part of a passed gate", "decision": "not_publishable"}
+{"case": "outer_ik_connection", "failure_class": "insufficient_task_dimension_and_global_branch_evidence", "evidence": "only branch-conditioned one-dimensional position sensitivity passed", "decision": "forbidden"}

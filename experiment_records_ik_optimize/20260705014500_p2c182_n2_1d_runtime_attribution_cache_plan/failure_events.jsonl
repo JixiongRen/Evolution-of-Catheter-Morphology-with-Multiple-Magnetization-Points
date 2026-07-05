@@ -1,0 +1,2 @@
+{"case": "runtime_efficiency", "failure_class": "compile_and_recovery_overhead_dominates", "evidence": "overhead_ratio=0.999027", "decision": "must_cache_branch_and_reuse_compiled_paths"}
+{"case": "gpu_efficiency", "failure_class": "cuda_backend_unavailable", "evidence": "TFRT_CPU_0", "decision": "cannot_claim_gpu_efficiency"}

@@ -1,0 +1,60 @@
+{
+  "experiment_id": "20260705012000_p2c181_sensitivity_goal_completion_audit",
+  "status": "goal_completion_audit_not_complete",
+  "decision": "研究证据已形成单点不可发布边界和两点一维候选边界，但完整目标未完成；主要剩余缺口是三维可发布灵敏度不存在、GPU效率未恢复、Git提交受阻。",
+  "n1_status": "n1_current_model_not_publishable_strict_boundary",
+  "n2_mode1_status": "n2_mode1_cross_workpoint_candidate",
+  "n2_boundary_status": "n2_1d_interface_candidate_with_outer_ik_forbidden",
+  "milestone_status": "release_boundary_milestone_partial_success",
+  "requirements": [
+    {
+      "item": "单点磁控有效子空间或不可发布证据",
+      "status": "已满足",
+      "evidence": "P2c177：当前模型不可发布边界"
+    },
+    {
+      "item": "两点磁控三维末端位置或失败边界",
+      "status": "已满足",
+      "evidence": "P2c175/P2c176/P2c180：完整三维不可发布；第1主方向一维候选"
+    },
+    {
+      "item": "可发布结果通过分支一致性和线性化",
+      "status": "部分满足",
+      "evidence": "P2c179：一维候选 40/40 通过；不覆盖三维或位姿"
+    },
+    {
+      "item": "不可发布样本失败归因",
+      "status": "已满足",
+      "evidence": "P2c177/P2c180：载荷传播失配、有效子空间不足、弱方向线性化失败"
+    },
+    {
+      "item": "工程建议",
+      "status": "已满足",
+      "evidence": "P2c180：允许一维小扰动，禁用三维位置、完整位姿和外层IK直接调用"
+    },
+    {
+      "item": "效率基线和优化对比",
+      "status": "部分满足",
+      "evidence": "P2c179 记录墙钟与重求解净耗时；GPU 失效导致效率结论不完整"
+    },
+    {
+      "item": "本地 Git 提交",
+      "status": "未满足",
+      "evidence": ".git 只读，无法创建 index.lock"
+    }
+  ],
+  "completion_score": 0.7142857142857143,
+  "publishable_results": [
+    "n2 branch-conditioned one-dimensional terminal-position local sensitivity candidate"
+  ],
+  "non_publishable_results": [
+    "n1 current model terminal-position sensitivity",
+    "n2 full three-dimensional terminal-position sensitivity",
+    "n2 full terminal-pose sensitivity"
+  ],
+  "blocking_items": [
+    "repository metadata is read-only, so local commit cannot be created",
+    "JAX CUDA initialization failed in latest runs, so GPU efficiency cannot be claimed",
+    "n2 result is one-dimensional only and cannot satisfy full three-dimensional IK control"
+  ]
+}

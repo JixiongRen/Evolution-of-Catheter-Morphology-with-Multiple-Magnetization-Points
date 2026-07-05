@@ -1,0 +1,35 @@
+{
+  "experiment_id": "20260705005000_p2c180_n2_1d_engineering_interface_boundary",
+  "status": "n2_1d_interface_candidate_with_outer_ik_forbidden",
+  "decision": "两点磁控第1主方向具备跨工作点一维局部灵敏度候选资格；完整三维位置和完整位姿仍不可发布。",
+  "n2_mode1_cross_workpoint_pass": "5/5 workpoints, 40/40 samples",
+  "n2_mode2_strict_pass": "0/32 samples",
+  "n2_mode3_status": "cross-workpoint linearization failed in prior audit",
+  "publishable_1d_branch_conditioned_position": true,
+  "publishable_full_3d_position": false,
+  "publishable_full_pose": false,
+  "outer_ik_allowed": false,
+  "engineering_interface": {
+    "allowed_task": "terminal position displacement only along the first local principal direction",
+    "allowed_radius_A": 0.0001,
+    "required_runtime_checks": [
+      "stationarity <= 1e-5",
+      "centerline branch drift <= 1e-3 m",
+      "local linearization error < 0.05",
+      "current-aware continuity residual <= 1e-3",
+      "positive and negative perturbations return to the same branch"
+    ],
+    "forbidden_tasks": [
+      "full three-dimensional terminal position sensitivity",
+      "full terminal pose sensitivity",
+      "direct outer-IK coupling without rebuilding local branch checks"
+    ]
+  },
+  "single_point_boundary": "n1_current_model_not_publishable_strict_boundary",
+  "evidence_sources": {
+    "n2_mode1": "P2c174 and P2c179",
+    "n2_mode2": "P2c176",
+    "n2_mode3": "P2c148 and P2c175",
+    "n1": "P2c177"
+  }
+}

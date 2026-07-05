@@ -1,0 +1,8 @@
+{
+  "workpoint": "rand_05",
+  "mode_index": 1,
+  "radius_A": 0.0001,
+  "first_step_release_class": "通过",
+  "first_step_linear_rel_err": 0.001231425489756937,
+  "source": "P2c184 runtime-built branch; funcs are intentionally not serialized."
+}

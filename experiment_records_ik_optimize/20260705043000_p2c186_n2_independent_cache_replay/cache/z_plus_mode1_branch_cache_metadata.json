@@ -1,0 +1,9 @@
+{
+  "workpoint": "z_plus",
+  "mode_index": 1,
+  "radius_A": 0.0001,
+  "first_step_release_class": "通过",
+  "first_step_linear_rel_err": 0.0011317501788741498,
+  "context_pickle": "z_plus_mode1_branch_cache_context.pkl",
+  "note": "Arrays and physical rebuild context only; no JAX function is serialized."
+}

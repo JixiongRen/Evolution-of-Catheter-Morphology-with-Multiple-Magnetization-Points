@@ -1,0 +1,74 @@
+{
+  "experiment_id": "20260705073000_p2c188_steady_replay_hidden_overhead_audit",
+  "status": "steady_replay_hidden_overhead_dominates",
+  "decision": "稳态门禁已经可靠，但门禁耗时主要不在优化器计入的净重求解时间内；下一步应优化 solve_reduced 外部的残差预评估、输出评估和 Python 循环。",
+  "source_experiment": "20260705060000_p2c187_n2_independent_cache_steady_replay",
+  "steady_pass": "40/40",
+  "steady_total_s": 53.53322171700347,
+  "steady_gate_s": 53.28435301000172,
+  "steady_solve_s": 0.9053104349968635,
+  "hidden_gate_overhead_s": 52.37904257500486,
+  "hidden_gate_overhead_ratio": 0.9830098258896578,
+  "jax_devices": [
+    "TFRT_CPU_0"
+  ],
+  "rows": [
+    {
+      "workpoint": "rand_00",
+      "steady_system_s": 0.05033365599956596,
+      "steady_gate_s": 9.977969974999723,
+      "steady_solve_s": 0.18210012900090078,
+      "hidden_gate_overhead_s": 9.795869845998823,
+      "hidden_gate_overhead_ratio": 0.9817497818236414,
+      "steady_pass": "8/8",
+      "max_task_error": 0.004037828652659224
+    },
+    {
+      "workpoint": "rand_05",
+      "steady_system_s": 0.05004928500056849,
+      "steady_gate_s": 10.193001954001375,
+      "steady_solve_s": 0.1769632189989352,
+      "hidden_gate_overhead_s": 10.01603873500244,
+      "hidden_gate_overhead_ratio": 0.9826387535490008,
+      "steady_pass": "8/8",
+      "max_task_error": 0.021066317994160085
+    },
+    {
+      "workpoint": "y_plus",
+      "steady_system_s": 0.04972824800097442,
+      "steady_gate_s": 10.393853925999792,
+      "steady_solve_s": 0.1842315400008374,
+      "hidden_gate_overhead_s": 10.209622385998955,
+      "hidden_gate_overhead_ratio": 0.9822749538994395,
+      "steady_pass": "8/8",
+      "max_task_error": 0.011416864986857069
+    },
+    {
+      "workpoint": "yz_plus",
+      "steady_system_s": 0.04864606800038018,
+      "steady_gate_s": 12.163942495999436,
+      "steady_solve_s": 0.1813585210002202,
+      "hidden_gate_overhead_s": 11.982583974999216,
+      "hidden_gate_overhead_ratio": 0.9850904818844822,
+      "steady_pass": "8/8",
+      "max_task_error": 0.011145646933224554
+    },
+    {
+      "workpoint": "z_plus",
+      "steady_system_s": 0.05011145000025863,
+      "steady_gate_s": 10.555584659001397,
+      "steady_solve_s": 0.1806570259959699,
+      "hidden_gate_overhead_s": 10.374927633005427,
+      "hidden_gate_overhead_ratio": 0.9828851710414815,
+      "steady_pass": "8/8",
+      "max_task_error": 0.010870596254147442
+    }
+  ],
+  "recommended_next_steps": [
+    "Move residual warm-up timing inside solve_reduced accounting to expose true per-solve cost.",
+    "Pre-evaluate and cache perturbation currents and predicted states before the gate loop.",
+    "Batch or vectorize output evaluations for the four initial states after each perturbation.",
+    "Avoid repeated return-loop solves when multi-start states are numerically identical within gate tolerance, but only after proving equivalence.",
+    "Restore GPU backend before final production timing."
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "phase": "build",
+  "status": "cache_build_complete",
+  "workpoint_count": 5,
+  "wall_s": 893.9820683870003,
+  "rows": [
+    {
+      "workpoint": "rand_05",
+      "build_s": 152.1314809689993,
+      "first_step_release_class": "通过",
+      "first_step_linear_rel_err": 0.001231425489756937
+    },
+    {
+      "workpoint": "y_plus",
+      "build_s": 149.7513581330004,
+      "first_step_release_class": "通过",
+      "first_step_linear_rel_err": 0.0016647050434651796
+    },
+    {
+      "workpoint": "z_plus",
+      "build_s": 163.58861806300047,
+      "first_step_release_class": "通过",
+      "first_step_linear_rel_err": 0.0011317501788741498
+    },
+    {
+      "workpoint": "yz_plus",
+      "build_s": 163.20478708100018,
+      "first_step_release_class": "通过",
+      "first_step_linear_rel_err": 0.00184986028121503
+    },
+    {
+      "workpoint": "rand_00",
+      "build_s": 171.36954839600003,
+      "first_step_release_class": "通过",
+      "first_step_linear_rel_err": 0.0007045534555238871
+    }
+  ],
+  "jax_devices": [
+    "TFRT_CPU_0"
+  ]
+}

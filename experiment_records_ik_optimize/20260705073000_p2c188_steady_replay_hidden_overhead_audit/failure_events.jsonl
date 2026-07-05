@@ -1,0 +1,2 @@
+{"case": "steady_gate_runtime", "failure_class": "hidden_gate_overhead_dominates", "evidence": "hidden_gate_overhead_ratio=0.983010", "decision": "optimize_gate_loop_before_claiming_final_efficiency"}
+{"case": "gpu_backend", "failure_class": "cuda_backend_unavailable", "evidence": "TFRT_CPU_0", "decision": "gpu_efficiency_not_claimed"}

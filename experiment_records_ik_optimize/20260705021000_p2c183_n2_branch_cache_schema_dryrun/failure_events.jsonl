@@ -1,0 +1,2 @@
+{"case": "production_cache", "failure_class": "cache_not_built_yet", "evidence": "This run only defines schema and replay gates.", "decision": "needs_next_experiment"}
+{"case": "compiled_jax_functions", "failure_class": "not_serializable", "evidence": "JAX functions must be rebuilt from physical parameters and target convention.", "decision": "cache_arrays_not_executables"}

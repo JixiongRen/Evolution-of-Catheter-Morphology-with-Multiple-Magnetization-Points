@@ -1,0 +1,9 @@
+{
+  "workpoint": "rand_05",
+  "mode_index": 1,
+  "radius_A": 0.0001,
+  "first_step_release_class": "通过",
+  "first_step_linear_rel_err": 0.001231425489756937,
+  "context_pickle": "rand_05_mode1_branch_cache_context.pkl",
+  "note": "Arrays and physical rebuild context only; no JAX function is serialized."
+}
