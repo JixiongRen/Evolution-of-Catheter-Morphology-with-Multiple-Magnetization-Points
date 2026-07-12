@@ -1,0 +1,2 @@
+catheter_type,target_index,trial_type,status,terminal_mismatch_mm,max_iter_terminal_mismatch_mm,conclusion_zh
+A1,12,history_replay,ok,5.435360663433514e-07,7.094250669376244e-07,可以重放原 IK 平衡分支。

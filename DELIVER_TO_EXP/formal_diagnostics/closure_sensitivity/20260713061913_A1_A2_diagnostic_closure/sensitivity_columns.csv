@@ -1,0 +1,11 @@
+catheter_type,target_index,audit_scope,control,status,fd_eps,relative_error,implicit_norm,fd_norm,ok_plus,ok_minus,sensitivity_status
+A1,12,branch_preserving_terminal_sensitivity,I0,failed,0.001,0.25698523826190134,0.0014273001604402998,0.0011469426462840395,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,I1,failed,0.001,615.0731563283075,0.0005316606839601533,8.639012430443238e-07,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,I2,failed,0.001,0.16960322485824408,0.0024076587717694526,0.0020590372827796358,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,I3,ok,0.001,0.015976553129020944,0.004921399233219513,0.005001062288440895,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,I4,ok,0.001,0.06540159556607343,0.005271836085246761,0.004959168614317178,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,I5,failed,0.001,0.12740021084856049,0.0029309093125949506,0.002605428150937547,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,I6,failed,0.001,1.0263298288345553,0.000653307187254056,0.00033835908689481355,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,I7,failed,0.001,1.290116463840774,0.0006106207454674057,0.00027022132976284785,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,x,ok,0.0001,0.03748602973737857,1.0242085575917095,1.036499488104725,True,True,ill_conditioned
+A1,12,branch_preserving_terminal_sensitivity,global,ok,,0.037496801081002465,1.0242424949381759,1.0365294610833382,,,ill_conditioned

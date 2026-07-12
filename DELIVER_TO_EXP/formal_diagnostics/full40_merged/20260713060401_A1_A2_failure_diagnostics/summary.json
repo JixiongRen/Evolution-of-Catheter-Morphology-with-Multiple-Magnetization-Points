@@ -242,5 +242,54 @@
       "branch_mismatch_mm": 12.519382734057817,
       "conclusion_zh": "D1 必须采用分支保持差分；普通冷启动 FK 差分会跨平衡分支，不能代表当前 IK 状态的灵敏度。"
     }
+  },
+  "closure_evidence": {
+    "history_reachability": {
+      "source": "DELIVER_TO_EXP/formal_diagnostics/closure_sensitivity/20260713062448_A1_A2_diagnostic_closure/reachability_history_summary.csv",
+      "counts": {
+        "历史经验边界可达": 14,
+        "目标自身已经达标": 11,
+        "历史经验近可达": 4,
+        "历史经验未覆盖": 11
+      },
+      "A1_uncovered_failures": [
+        "pt14",
+        "pt15",
+        "pt16",
+        "pt19"
+      ],
+      "A2_uncovered_failures": [
+        "pt01",
+        "pt02",
+        "pt08",
+        "pt14",
+        "pt15",
+        "pt16",
+        "pt17"
+      ],
+      "interpretation_zh": "历史经验未覆盖不等于物理不可达，只说明当前搜索轨迹没有提供覆盖证据。"
+    },
+    "branch_preserving_sensitivity": {
+      "sources": [
+        "DELIVER_TO_EXP/formal_diagnostics/closure_sensitivity/20260713061913_A1_A2_diagnostic_closure/sensitivity_columns.csv",
+        "DELIVER_TO_EXP/formal_diagnostics/closure_sensitivity/20260713062448_A1_A2_diagnostic_closure/sensitivity_columns.csv"
+      ],
+      "A1_pt12": {
+        "global_relative_error": 0.037496801081002465,
+        "failed_current_channels": 6,
+        "x_channel_status": "ok"
+      },
+      "A1_pt13": {
+        "global_relative_error": 0.021911394107649328,
+        "failed_current_channels": 5,
+        "x_channel_status": "ok"
+      },
+      "A2_pt17": {
+        "global_relative_error": 0.7506022487728805,
+        "failed_current_channels": 8,
+        "x_channel_status": "failed"
+      },
+      "interpretation_zh": "A1 推进量方向较可靠但电流通道病态；A2 典型失败点整体灵敏度不可靠。"
+    }
   }
 }
