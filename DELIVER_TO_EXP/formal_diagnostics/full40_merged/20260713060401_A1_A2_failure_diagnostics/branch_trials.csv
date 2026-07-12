@@ -1,0 +1,2 @@
+catheter_type,target_index,trial_type,control_source,terminal_m,reference_terminal_m,terminal_mismatch_mm,fk_ok,conclusion_zh,next_action_zh
+A1,12,same_control_cold_fk_resolve,final_I_and_x_from_ik_history,"[0.07427697725338729, -0.08229657590349417, -0.043688897359482226]","[0.06693848592982021, -0.08305320257888675, -0.053803688766616634]",12.519382734057817,True,同一控制量存在至少两个数值可达平衡分支。外层 IK 的失败不能只看末端误差和 FK 残差，还必须管理分支连续性。,后续多初值诊断应比较冷启动、顺向热启动、反向热启动和当前 z_star 回环，失败点优先加入分支连续性门禁。

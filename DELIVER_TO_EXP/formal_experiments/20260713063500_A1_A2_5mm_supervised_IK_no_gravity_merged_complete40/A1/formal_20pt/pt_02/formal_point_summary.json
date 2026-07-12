@@ -1,0 +1,63 @@
+{
+  "catheter_type": "A1",
+  "phase": "formal_20pt",
+  "target_index": 2,
+  "theta_rad": 0.6283185307179586,
+  "p_des": [
+    0.06,
+    0.08090169943749476,
+    0.058778525229247314
+  ],
+  "p_tip_flex": [
+    0.06073825343461391,
+    0.07545640906444857,
+    0.05412573741939752
+  ],
+  "p_tip_true": [
+    0.059619923492316935,
+    0.07753299800467105,
+    0.055979683619707565
+  ],
+  "err_flex_mm": 7.200322200012687,
+  "err_true_mm": 4.3961485246169865,
+  "best_err_true_mm": 4.396148524590883,
+  "success_eps": true,
+  "success_threshold_mm": 5.0,
+  "success_3mm": false,
+  "success_5mm": true,
+  "success_10mm": true,
+  "I_A": [
+    0.5164197379395861,
+    8.078925653992764,
+    5.41455599160077,
+    -0.846735175519362,
+    -6.706201421053003,
+    1.4131292551426973,
+    -1.8580705184015214,
+    -8.95484170760792
+  ],
+  "x_m": 0.13499659951238407,
+  "normE": 9.971884226154304e-06,
+  "cls": "GOOD",
+  "physical_status_good": true,
+  "outer_iter_count": 12,
+  "accept_count": 13,
+  "reject_count": 0,
+  "wall_s": 243.72201305699855,
+  "stop_reason": "reached_threshold_true_tip",
+  "warm_start_source": "last_success_pt_01",
+  "timed_out": false,
+  "subprocess_return_code": 0,
+  "run_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712191913_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_02",
+  "log_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712191913_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_02.log",
+  "centerline_npy": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712191913_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_02/poses/accept/centerline_iter_0013.npy",
+  "artifacts": {
+    "diagnostics_png": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712191913_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_02/diagnostics.png",
+    "posture_evolution_png": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712191913_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_02/posture_evolution.png"
+  },
+  "x_bounds": [
+    0.003001,
+    0.203
+  ],
+  "max_abs_current_A": 8.95484170760792
+}

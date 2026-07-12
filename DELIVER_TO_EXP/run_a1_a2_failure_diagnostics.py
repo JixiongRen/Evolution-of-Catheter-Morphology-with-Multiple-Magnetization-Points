@@ -412,6 +412,39 @@ def _classify_root_cause(endpoint: dict[str, Any], trust_point_rows: list[dict[s
     return "待可达性判断", "现有证据不足以区分优化失败和目标疑似不可达。"
 
 
+def _evidence_and_confidence(cause: str, endpoint: dict[str, Any], trust_point_rows: list[dict[str, Any]]) -> tuple[str, str, str]:
+    """Assign evidence strength, confidence, and conclusion type for a point."""
+    if cause in {"环境无效", "运行未完整结束", "目标函数与判据不一致", "末端几何约定不清"}:
+        return "强", "高", "当前阻断项"
+    if cause == "有效成功":
+        return "强", "高", "已排除因素"
+    if cause == "内层平衡质量不足":
+        return "中", "中", "已确认根因"
+    if cause == "阻尼过大导致停滞":
+        last_rows = trust_point_rows[-5:]
+        tiny_or_high_lam = [
+            row
+            for row in last_rows
+            if bool(row.get("tiny_step")) or _to_float(row.get("lambda")) >= 1e5
+        ]
+        if len(tiny_or_high_lam) >= 2:
+            return "强", "高", "已确认根因"
+        return "中", "中", "仅为伴随现象或放大因素"
+    if cause == "局部预测方向错误":
+        sign_wrong = sum(1 for row in trust_point_rows if bool(row.get("prediction_sign_wrong")))
+        if sign_wrong >= 3:
+            return "强", "高", "已确认根因"
+        return "中", "中", "仍未判明但已有下一步证据路径"
+    if cause == "边界收敛":
+        return "中", "中", "仍未判明但已有下一步证据路径"
+    if cause == "外层优化未达目标":
+        cls_good = str(endpoint.get("summary_cls", "")) == "GOOD"
+        if cls_good and float(endpoint.get("err_true_mm", math.inf)) > 20.0:
+            return "中", "中", "仍未判明但已有下一步证据路径"
+        return "弱", "低", "仍未判明但已有下一步证据路径"
+    return "弱", "低", "仍未判明但已有下一步证据路径"
+
+
 def _diagnostic_rows(endpoint_rows: list[dict[str, Any]], trust_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     by_point: dict[tuple[str, int], list[dict[str, Any]]] = defaultdict(list)
     for row in trust_rows:
@@ -420,7 +453,9 @@ def _diagnostic_rows(endpoint_rows: list[dict[str, Any]], trust_rows: list[dict[
     out: list[dict[str, Any]] = []
     for endpoint in endpoint_rows:
         key = (endpoint["catheter_type"], int(endpoint["target_index"]))
-        cause, evidence = _classify_root_cause(endpoint, by_point.get(key, []))
+        point_trust_rows = by_point.get(key, [])
+        cause, evidence = _classify_root_cause(endpoint, point_trust_rows)
+        evidence_level, confidence_level, conclusion_type = _evidence_and_confidence(cause, endpoint, point_trust_rows)
         gate_valid = bool(
             endpoint["gpu_valid_from_log"]
             and endpoint["m_body_ok"]
@@ -433,6 +468,9 @@ def _diagnostic_rows(endpoint_rows: list[dict[str, Any]], trust_rows: list[dict[
                 **endpoint,
                 "d0_gate_valid": gate_valid,
                 "main_root_cause": cause,
+                "evidence_level": evidence_level,
+                "confidence_level": confidence_level,
+                "conclusion_type": conclusion_type,
                 "evidence_summary_zh": evidence,
                 "next_action_zh": _next_action(cause),
             }
@@ -583,7 +621,8 @@ def _write_record(
         rep_lines.append(
             f"| {row['catheter_type']}-pt{int(row['target_index']):02d} | "
             f"{row['err_true_mm']:.3f} | {row['err_flex_mm']:.3f} | "
-            f"{row['terminal_convention_class']} | {row['main_root_cause']} | {row['evidence_summary_zh']} |"
+            f"{row['terminal_convention_class']} | {row['main_root_cause']} | "
+            f"{row['evidence_level']} | {row['confidence_level']} | {row['conclusion_type']} | {row['evidence_summary_zh']} |"
         )
 
     success_count = sum(1 for r in diag_rows if float(r["err_true_mm"]) <= 5.0)
@@ -654,8 +693,8 @@ def _write_record(
         "",
         "## 四、代表点诊断",
         "",
-        "| 点位 | 真实末端误差(mm) | 柔性末端误差(mm) | 末端几何分类 | 主因 | 证据 |",
-        "|---|---:|---:|---|---|---|",
+        "| 点位 | 真实末端误差(mm) | 柔性末端误差(mm) | 末端几何分类 | 主因 | 证据等级 | 可信度 | 结论类型 | 证据 |",
+        "|---|---:|---:|---|---|---|---|---|---|",
         *rep_lines,
         "",
         "## 五、全局主因分布",
@@ -694,6 +733,78 @@ def _write_record(
     (run_dir / "record.md").write_text("\n".join(lines), encoding="utf-8")
 
 
+def _summarize_diagnostics(diag_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Build a machine-readable summary for diagnostic conclusions."""
+    by_catheter: dict[str, Any] = {}
+    for catheter in sorted({str(row["catheter_type"]) for row in diag_rows}):
+        rows = [row for row in diag_rows if str(row["catheter_type"]) == catheter]
+        by_catheter[catheter] = {
+            "count": len(rows),
+            "d0_valid_count": sum(1 for row in rows if bool(row["d0_gate_valid"])),
+            "success_5mm_count": sum(1 for row in rows if float(row["err_true_mm"]) <= 5.0),
+            "root_cause_counts": dict(Counter(str(row["main_root_cause"]) for row in rows)),
+            "conclusion_type_counts": dict(Counter(str(row["conclusion_type"]) for row in rows)),
+            "confidence_counts": dict(Counter(str(row["confidence_level"]) for row in rows)),
+            "high_confidence_failures": [
+                {
+                    "target_index": int(row["target_index"]),
+                    "err_true_mm": float(row["err_true_mm"]),
+                    "main_root_cause": str(row["main_root_cause"]),
+                    "next_action_zh": str(row["next_action_zh"]),
+                }
+                for row in rows
+                if float(row["err_true_mm"]) > 5.0 and str(row["confidence_level"]) == "高"
+            ],
+        }
+    blockers = [
+        row
+        for row in diag_rows
+        if str(row.get("conclusion_type")) == "当前阻断项"
+    ]
+    return {
+        "count": len(diag_rows),
+        "d0_valid_count": sum(1 for row in diag_rows if bool(row["d0_gate_valid"])),
+        "success_5mm_count": sum(1 for row in diag_rows if float(row["err_true_mm"]) <= 5.0),
+        "root_cause_counts": dict(Counter(str(row["main_root_cause"]) for row in diag_rows)),
+        "conclusion_type_counts": dict(Counter(str(row["conclusion_type"]) for row in diag_rows)),
+        "confidence_counts": dict(Counter(str(row["confidence_level"]) for row in diag_rows)),
+        "current_blocker_count": len(blockers),
+        "current_blockers": [
+            {
+                "catheter_type": str(row["catheter_type"]),
+                "target_index": int(row["target_index"]),
+                "main_root_cause": str(row["main_root_cause"]),
+                "evidence_summary_zh": str(row["evidence_summary_zh"]),
+            }
+            for row in blockers
+        ],
+        "by_catheter": by_catheter,
+    }
+
+
+def _write_failure_events(run_dir: Path, diag_rows: list[dict[str, Any]]) -> None:
+    """Write one JSON event per non-successful target."""
+    with (run_dir / "failure_events.jsonl").open("w", encoding="utf-8") as f:
+        for row in diag_rows:
+            if float(row["err_true_mm"]) <= 5.0:
+                continue
+            event = {
+                "catheter_type": str(row["catheter_type"]),
+                "target_index": int(row["target_index"]),
+                "err_true_mm": float(row["err_true_mm"]),
+                "fk_class": str(row.get("summary_cls", "")),
+                "d0_gate_valid": bool(row["d0_gate_valid"]),
+                "main_root_cause": str(row["main_root_cause"]),
+                "evidence_level": str(row["evidence_level"]),
+                "confidence_level": str(row["confidence_level"]),
+                "conclusion_type": str(row["conclusion_type"]),
+                "evidence_summary_zh": str(row["evidence_summary_zh"]),
+                "next_action_zh": str(row["next_action_zh"]),
+                "run_dir": str(row.get("run_dir", "")),
+            }
+            f.write(json.dumps(event, ensure_ascii=False) + "\n")
+
+
 def run_diagnostics(source_run: Path, out_root: Path) -> Path:
     _configure_fonts()
     run_id = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -730,6 +841,13 @@ def run_diagnostics(source_run: Path, out_root: Path) -> Path:
     _write_csv(run_dir / "trust_region_audit.csv", trust)
     _write_csv(run_dir / "implicit_sensitivity_log_summary.csv", sensitivity)
     _write_csv(run_dir / "diagnostic_summary.csv", diagnostics)
+    summary = {
+        "metadata": env,
+        "source_run": str(source_run.resolve()),
+        "diagnostic_summary": _summarize_diagnostics(diagnostics),
+    }
+    (run_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    _write_failure_events(run_dir, diagnostics)
     _write_csv(
         run_dir / "sensitivity_columns.csv",
         [

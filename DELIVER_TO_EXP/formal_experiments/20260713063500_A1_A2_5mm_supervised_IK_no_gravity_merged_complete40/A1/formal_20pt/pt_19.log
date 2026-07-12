@@ -1,0 +1,142 @@
+COMMAND_ARGS:
+[
+  "--flex_lengths",
+  "0.1",
+  "--rigid_lengths",
+  "0.003",
+  "--L_protrude",
+  "0.126436517011",
+  "--x0",
+  "0.126436517011",
+  "--x_min",
+  "0.003001",
+  "--x_max",
+  "0.203",
+  "--x_ref",
+  "0.126436517011",
+  "--L1_min",
+  "1e-06",
+  "--M_list",
+  "5",
+  "--flex_d_outer",
+  "0.0015",
+  "--flex_E",
+  "1800000",
+  "--flex_G",
+  "600000",
+  "--flex_rho",
+  "970",
+  "--rigid_d_outer",
+  "0.0015",
+  "--rigid_rho",
+  "7500",
+  "--p0",
+  "0,0,0",
+  "--Q0",
+  "0.70710678,0,0.70710678,0",
+  "--axis_body",
+  "0,0,1",
+  "--enable_magnetics",
+  "--calib_file",
+  "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "--m_body_list",
+  "0,0,0.0061171875",
+  "--max_iter",
+  "100000",
+  "--tol",
+  "1e-05",
+  "--lm_damping",
+  "1e-1",
+  "--jac_method",
+  "fwd",
+  "--p_des",
+  "0.06,0.0951056516295,-0.0309016994375",
+  "--eps_p",
+  "0.005",
+  "--sigma_p",
+  "0.005",
+  "--I_max",
+  "20",
+  "--I0=0.09758228084,10.1876749109,1.79701961071,-5.33297577946,-4.24568929347,13.6173630231,1.73519054832,-11.0605141748",
+  "--outer_max_iter",
+  "50",
+  "--step_I_max",
+  "5.0",
+  "--step_x_max",
+  "0.02",
+  "--out_dir",
+  "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712191913_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt",
+  "--run_name",
+  "pt_19",
+  "--runtime_profile",
+  "--print_devices",
+  "--seed",
+  "20261724"
+]
+
+STDOUT_STDERR:
+W0712 22:35:44.116836   40245 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0712 22:35:44.134984   40219 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+[IK-LM] JAX devices: [CudaDevice(id=0)]
+[IK-LM] ==============================
+[IK-LM] run_dir = /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712191913_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_19
+[IK-LM] p_des = [0.06, 0.0951056516295, -0.0309016994375] (m), eps_p = 5.000 (mm)
+[IK-LM] sigma_p = 5.000e-03 (m)  (r_p = e_p/sigma_p)
+[IK-LM] I bound: [-20.0, 20.0] A (param via tanh)
+[IK-LM] x0=0.126437 m, x in [0.003001, 0.203000] m, x_ref=0.126437 m
+[IK-LM] weights interpreted as inverse scales (w=1/sigma):
+[IK-LM]   w_I =5.000e-02  -> sigma_I =20 A
+[IK-LM]   w_x =2.000e+01  -> sigma_x =0.05 m
+[IK-LM]   w_dI=2.000e-01  -> sigma_dI=5 A
+[IK-LM]   w_dx=2.000e+02  -> sigma_dx=0.005 m
+[IK-LM]   w_Ix=5.000e-04  -> sigma_Ix=2e+03 (A/m)
+[IK-LM] physical step limits: step_I_max=5 A, step_x_max=0.02 m
+[IK-LM] outer LM: max_iter=50, lam_init=1.000e-02, lam_up=10, lam_down=0.3, rho_bad=0.25, rho_good=0.75
+[IK-LM] ==============================
+[IK-LM] iter=000 cls=GOOD  ok_strict=True ||E||=1.000e-05 x=0.126437 p_terminal=[0.05628686008623529, -0.0955783491977913, -0.03194933816481331] ||e||=190.723mm cost=7.280858e+02
+[IK-LM] iter=001 lam=1.00e-02 rho=1.536 ACCEPT du_eff=7.25e-01 |dI|_max=5.000A ||dI||=9.916A |dx|=20.000mm pred_red=2.207e+02 act_red=3.391e+02 cls=GOOD  ||E||=9.997e-06 x=0.106437 ||e||=137.520mm cost=3.889762e+02
+[IK-LM] iter=002 lam=3.00e-03 rho=1.871 ACCEPT du_eff=5.69e-01 |dI|_max=5.000A ||dI||=8.591A |dx|=11.225mm pred_red=4.091e+01 act_red=7.653e+01 cls=GOOD  ||E||=9.976e-06 x=0.095212 ||e||=123.980mm cost=3.124452e+02
+[IK-LM] iter=003 lam=9.00e-04 rho=1.058 ACCEPT du_eff=7.03e-01 |dI|_max=4.808A ||dI||=10.805A |dx|=7.567mm pred_red=5.194e+01 act_red=5.495e+01 cls=GOOD  ||E||=9.978e-06 x=0.087645 ||e||=112.383mm cost=2.574920e+02
+[IK-LM] iter=004 lam=2.70e-04 rho=1.417 ACCEPT du_eff=7.28e-01 |dI|_max=5.000A ||dI||=10.492A |dx|=13.283mm pred_red=5.508e+01 act_red=7.805e+01 cls=GOOD  ||E||=9.979e-06 x=0.074362 ||e||=92.763mm cost=1.794434e+02
+[IK-LM] iter=005 lam=8.10e-05 rho=1.753 ACCEPT du_eff=6.93e-01 |dI|_max=5.000A ||dI||=10.820A |dx|=5.101mm pred_red=3.661e+01 act_red=6.419e+01 cls=GOOD  ||E||=9.931e-06 x=0.079463 ||e||=74.288mm cost=1.152576e+02
+[IK-LM] iter=006 lam=2.43e-05 rho=1.972 ACCEPT du_eff=6.96e-01 |dI|_max=5.000A ||dI||=9.041A |dx|=3.463mm pred_red=2.252e+01 act_red=4.442e+01 cls=GOOD  ||E||=9.896e-06 x=0.082926 ||e||=57.773mm cost=7.083596e+01
+[IK-LM] iter=007 lam=7.29e-06 rho=2.021 ACCEPT du_eff=6.54e-01 |dI|_max=4.666A ||dI||=7.519A |dx|=11.523mm pred_red=1.526e+01 act_red=3.084e+01 cls=GOOD  ||E||=9.996e-06 x=0.094449 ||e||=41.848mm cost=4.000075e+01
+[IK-LM] iter=008 lam=2.19e-06 rho=-0.235 REJECT du_eff=3.38e-01 |dI|_max=3.184A ||dI||=5.016A |dx|=6.297mm pred_red=7.255e+00 act_red=-1.705e+00 cls=GOOD  ||E||=9.996e-06 x=0.100746 ||e||=44.319mm cost=4.170623e+01
+[IK-LM] iter=009 lam=2.19e-05 rho=-0.235 REJECT du_eff=3.38e-01 |dI|_max=3.184A ||dI||=5.016A |dx|=6.297mm pred_red=7.255e+00 act_red=-1.705e+00 cls=GOOD  ||E||=9.996e-06 x=0.100746 ||e||=44.319mm cost=4.170583e+01
+[IK-LM] iter=010 lam=2.19e-04 rho=-0.235 REJECT du_eff=3.38e-01 |dI|_max=3.184A ||dI||=5.015A |dx|=6.295mm pred_red=7.255e+00 act_red=-1.706e+00 cls=GOOD  ||E||=9.994e-06 x=0.100744 ||e||=44.320mm cost=4.170692e+01
+[IK-LM] iter=011 lam=2.19e-03 rho=-0.235 REJECT du_eff=3.38e-01 |dI|_max=3.179A ||dI||=5.008A |dx|=6.281mm pred_red=7.255e+00 act_red=-1.702e+00 cls=GOOD  ||E||=9.995e-06 x=0.100730 ||e||=44.320mm cost=4.170236e+01
+[IK-LM] iter=012 lam=2.19e-02 rho=-0.229 REJECT du_eff=3.33e-01 |dI|_max=3.128A ||dI||=4.935A |dx|=6.142mm pred_red=7.253e+00 act_red=-1.661e+00 cls=GOOD  ||E||=9.999e-06 x=0.100591 ||e||=44.323mm cost=4.166132e+01
+[IK-LM] iter=013 lam=2.19e-01 rho=-0.172 REJECT du_eff=2.93e-01 |dI|_max=2.702A ||dI||=4.310A |dx|=5.023mm pred_red=7.085e+00 act_red=-1.222e+00 cls=GOOD  ||E||=9.997e-06 x=0.099472 ||e||=44.268mm cost=4.122249e+01
+[IK-LM] iter=014 lam=2.19e+00 rho=0.465 ACCEPT du_eff=1.36e-01 |dI|_max=1.165A ||dI||=1.927A |dx|=1.729mm pred_red=4.333e+00 act_red=2.016e+00 cls=GOOD  ||E||=9.998e-06 x=0.096178 ||e||=42.772mm cost=3.798485e+01
+[IK-LM] iter=015 lam=2.19e+00 rho=1.210 ACCEPT du_eff=1.46e-01 |dI|_max=1.432A ||dI||=2.229A |dx|=3.009mm pred_red=6.375e+00 act_red=7.716e+00 cls=GOOD  ||E||=9.992e-06 x=0.099187 ||e||=37.984mm cost=3.026928e+01
+[IK-LM] iter=016 lam=6.56e-01 rho=0.003 ACCEPT du_eff=1.77e-01 |dI|_max=1.528A ||dI||=2.211A |dx|=5.731mm pred_red=4.738e+00 act_red=1.362e-02 cls=GOOD  ||E||=9.997e-06 x=0.104918 ||e||=37.741mm cost=3.025566e+01
+[IK-LM] iter=017 lam=6.56e+00 rho=1.630 ACCEPT du_eff=2.12e-02 |dI|_max=0.122A ||dI||=0.177A |dx|=0.661mm pred_red=2.931e-01 act_red=4.777e-01 cls=GOOD  ||E||=9.998e-06 x=0.105580 ||e||=37.933mm cost=2.977794e+01
+[IK-LM] iter=018 lam=1.97e+00 rho=-0.848 REJECT du_eff=6.36e-02 |dI|_max=0.322A ||dI||=0.465A |dx|=2.523mm pred_red=1.295e+00 act_red=-1.098e+00 cls=GOOD  ||E||=9.998e-06 x=0.108103 ||e||=38.588mm cost=3.087629e+01
+[IK-LM] iter=019 lam=1.97e+01 rho=-0.414 REJECT du_eff=9.27e-03 |dI|_max=0.048A ||dI||=0.070A |dx|=0.360mm pred_red=2.185e-01 act_red=-9.041e-02 cls=GOOD  ||E||=1.000e-05 x=0.105940 ||e||=38.002mm cost=2.986835e+01
+[IK-LM] iter=020 lam=1.97e+02 rho=0.154 ACCEPT du_eff=9.71e-04 |dI|_max=0.005A ||dI||=0.007A |dx|=0.038mm pred_red=2.337e-02 act_red=3.607e-03 cls=GOOD  ||E||=9.997e-06 x=0.105617 ||e||=37.940mm cost=2.977434e+01
+[IK-LM] iter=021 lam=1.97e+03 rho=0.985 ACCEPT du_eff=1.06e-04 |dI|_max=0.001A ||dI||=0.001A |dx|=0.004mm pred_red=2.602e-03 act_red=2.562e-03 cls=GOOD  ||E||=9.999e-06 x=0.105621 ||e||=37.938mm cost=2.977177e+01
+[IK-LM] iter=022 lam=5.90e+02 rho=-0.223 REJECT du_eff=3.41e-04 |dI|_max=0.002A ||dI||=0.003A |dx|=0.013mm pred_red=8.639e-03 act_red=-1.925e-03 cls=GOOD  ||E||=1.000e-05 x=0.105634 ||e||=37.940mm cost=2.977370e+01
+[IK-LM] iter=023 lam=5.90e+03 rho=0.930 ACCEPT du_eff=3.42e-05 |dI|_max=0.000A ||dI||=0.000A |dx|=0.001mm pred_red=8.659e-04 act_red=8.051e-04 cls=GOOD  ||E||=1.000e-05 x=0.105622 ||e||=37.938mm cost=2.977097e+01
+[IK-LM] iter=024 lam=1.77e+03 rho=-1.975 REJECT du_eff=1.14e-04 |dI|_max=0.001A ||dI||=0.001A |dx|=0.004mm pred_red=2.885e-03 act_red=-5.698e-03 cls=GOOD  ||E||=9.996e-06 x=0.105627 ||e||=37.942mm cost=2.977667e+01
+[IK-LM] iter=025 lam=1.77e+04 rho=0.775 ACCEPT du_eff=1.14e-05 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=2.888e-04 act_red=2.237e-04 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977075e+01
+[IK-LM] iter=026 lam=5.31e+03 rho=-1.672 REJECT du_eff=3.80e-05 |dI|_max=0.000A ||dI||=0.000A |dx|=0.001mm pred_red=9.624e-04 act_red=-1.609e-03 cls=GOOD  ||E||=9.999e-06 x=0.105624 ||e||=37.939mm cost=2.977235e+01
+[IK-LM] iter=027 lam=5.31e+04 rho=0.928 ACCEPT du_eff=3.80e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=9.626e-05 act_red=8.937e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977066e+01
+[IK-LM] iter=028 lam=1.59e+04 rho=-1.417 REJECT du_eff=1.22e-05 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.168e-04 act_red=-4.489e-04 cls=GOOD  ||E||=1.000e-05 x=0.105624 ||e||=37.938mm cost=2.977110e+01
+[IK-LM] iter=029 lam=1.59e+05 rho=0.393 ACCEPT du_eff=1.22e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.168e-05 act_red=1.246e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977064e+01
+[IK-LM] iter=030 lam=1.59e+05 rho=0.375 ACCEPT du_eff=1.25e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.188e-05 act_red=1.194e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977063e+01
+[IK-LM] iter=031 lam=1.59e+05 rho=-1.132 REJECT du_eff=1.25e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.188e-05 act_red=-3.609e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977067e+01
+[IK-LM] iter=032 lam=1.59e+06 rho=0.943 ACCEPT du_eff=1.25e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.188e-06 act_red=3.005e-06 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977063e+01
+[IK-LM] iter=033 lam=4.78e+05 rho=0.924 ACCEPT du_eff=4.71e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=1.469e-05 act_red=1.357e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977062e+01
+[IK-LM] iter=034 lam=1.43e+05 rho=0.378 ACCEPT du_eff=1.31e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.627e-05 act_red=1.371e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977060e+01
+[IK-LM] iter=035 lam=1.43e+05 rho=-0.930 REJECT du_eff=1.38e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.542e-05 act_red=-3.293e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977063e+01
+[IK-LM] iter=036 lam=1.43e+06 rho=0.943 ACCEPT du_eff=1.38e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.542e-06 act_red=3.339e-06 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977060e+01
+[IK-LM] iter=037 lam=4.30e+05 rho=0.924 ACCEPT du_eff=5.23e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=1.632e-05 act_red=1.508e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977058e+01
+[IK-LM] iter=038 lam=1.29e+05 rho=0.428 ACCEPT du_eff=1.46e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=4.030e-05 act_red=1.726e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977057e+01
+[IK-LM] iter=039 lam=1.29e+05 rho=-0.742 REJECT du_eff=1.54e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.936e-05 act_red=-2.921e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977059e+01
+[IK-LM] iter=040 lam=1.29e+06 rho=1.044 ACCEPT du_eff=1.54e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=3.936e-06 act_red=4.111e-06 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977056e+01
+[IK-LM] iter=041 lam=3.87e+05 rho=0.876 ACCEPT du_eff=5.11e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=1.510e-05 act_red=1.323e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977055e+01
+[IK-LM] iter=042 lam=1.16e+05 rho=-0.600 REJECT du_eff=1.61e-06 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=4.282e-05 act_red=-2.569e-05 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977057e+01
+[IK-LM] iter=043 lam=1.16e+06 rho=0.532 ACCEPT du_eff=1.61e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=4.282e-06 act_red=2.276e-06 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.937mm cost=2.977055e+01
+[IK-LM] iter=044 lam=1.16e+06 rho=-0.408 REJECT du_eff=1.65e-07 |dI|_max=0.000A ||dI||=0.000A |dx|=0.000mm pred_red=4.322e-06 act_red=-1.763e-06 cls=GOOD  ||E||=1.000e-05 x=0.105623 ||e||=37.938mm cost=2.977055e+01
+[IK-LM] stop: effective step is zero (|dI|_max=7.121e-08A, |dx|=6.793e-10m). Likely parameter saturation / clipping / numerical floor.
+[IK-LM] Saved result.json

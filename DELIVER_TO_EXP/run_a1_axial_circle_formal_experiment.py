@@ -562,11 +562,13 @@ def _run_catheter(
     enable_gravity: bool,
     force_formal_20: bool,
     eps_p_m: float,
+    initial_I_A_override: list[float] | None = None,
+    initial_x_m_override: float | None = None,
 ) -> dict[str, Any]:
     cfg = _catheter_solver_cfg(config, catheter_key)
     catheter_root = run_root / catheter_key
     catheter_root.mkdir(parents=True, exist_ok=True)
-    initial_x_m = 0.103
+    initial_x_m = 0.103 if initial_x_m_override is None else float(initial_x_m_override)
     rows: list[dict[str, Any]] = []
 
     gate_rows: list[dict[str, Any]] = []
@@ -601,9 +603,9 @@ def _run_catheter(
     decision = "formal_20pt_forced" if force_formal_20 else ("formal_20pt" if gate_success >= 3 else "diagnostic_8pt")
 
     if decision in ("formal_20pt", "formal_20pt_forced"):
-        warm_I: list[float] | None = None
+        warm_I: list[float] | None = initial_I_A_override
         warm_x = initial_x_m
-        warm_source = "cold_start_formal"
+        warm_source = "manual_initial_state" if initial_I_A_override is not None else "cold_start_formal"
         for target in targets:
             row = _run_one_target(
                 catheter_key=catheter_key,
@@ -836,6 +838,8 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--target-indices", type=str, default=None, help="Comma-separated target indices. Defaults to all formal targets when forced.")
     parser.add_argument("--outer-max-iter", type=int, default=50, help="Outer IK iteration limit.")
     parser.add_argument("--per-point-timeout-s", type=float, default=2700.0, help="Per-target timeout in seconds.")
+    parser.add_argument("--initial-I-A", type=str, default=None, help="Comma-separated initial 8-coil currents for the first target.")
+    parser.add_argument("--initial-x-m", type=float, default=None, help="Initial insertion depth for the first target.")
     return parser
 
 
@@ -865,6 +869,12 @@ def main(argv: list[str] | None = None) -> None:
     diag_indices = [0, 2, 5, 7, 10, 12, 15, 17]
     outer_max_iter = int(args.outer_max_iter)
     per_point_timeout_s = float(args.per_point_timeout_s)
+    initial_I_A_override = None
+    if args.initial_I_A:
+        initial_I_A_override = [float(v.strip()) for v in str(args.initial_I_A).split(",") if v.strip()]
+        if len(initial_I_A_override) != 8:
+            raise ValueError("--initial-I-A must contain exactly 8 comma-separated currents.")
+    initial_x_m_override = None if args.initial_x_m is None else float(args.initial_x_m)
     x_search_max_m = 0.203
     calib_path = REPO / config["shared_physical_parameters"]["actuation"]["default_calib_file"]
     metadata = {
@@ -886,6 +896,8 @@ def main(argv: list[str] | None = None) -> None:
         "diagnostic_indices": diag_indices,
         "outer_max_iter": outer_max_iter,
         "per_point_timeout_s": per_point_timeout_s,
+        "initial_I_A_override": initial_I_A_override,
+        "initial_x_m_override": initial_x_m_override,
         "x_search_max_m": x_search_max_m,
         "x_search_note_zh": "本次 x=60 mm 圆周实验采用 0.203 m 局部推进搜索上限；物理配置文件仍保留 1 m 最大长度。",
         "eps_p_m": eps_p_m,
@@ -910,6 +922,8 @@ def main(argv: list[str] | None = None) -> None:
         f"--target-indices {','.join(str(int(item['index'])) for item in targets)} "
         f"--outer-max-iter {outer_max_iter} "
         f"--per-point-timeout-s {per_point_timeout_s:.12g} "
+        f"{'--initial-I-A ' + ','.join(f'{float(v):.12g}' for v in initial_I_A_override) if initial_I_A_override is not None else ''} "
+        f"{'--initial-x-m ' + f'{initial_x_m_override:.12g}' if initial_x_m_override is not None else ''} "
         f"{'--force-formal-20' if args.force_formal_20 else ''}\n",
         encoding="utf-8",
     )
@@ -930,6 +944,8 @@ def main(argv: list[str] | None = None) -> None:
             enable_gravity=enable_gravity,
             force_formal_20=bool(args.force_formal_20),
             eps_p_m=eps_p_m,
+            initial_I_A_override=initial_I_A_override,
+            initial_x_m_override=initial_x_m_override,
         )
     metadata["total_wall_s"] = float(time.perf_counter() - t0)
 
