@@ -483,8 +483,10 @@ class ForwardKinematicsEngine:
         modify the engine state.
 
         Conventions (dimensional outputs):
-          - tip pose: distal node of the last flexible segment (same as ``_extract_tip_pose_dim``)
-          - magnet sites: *midpoints of each rigid segment* (one state per rigid segment)
+          - tip pose: distal node of the last flexible segment.
+          - rigid distal poses: distal end state of each rigid segment.
+          - terminal pose: distal end of the last rigid segment, or the flexible
+            tip when no rigid segment exists.
 
         Args:
             z_bar: packed decision vector returned by :meth:`solve` / :meth:`solve_with_stats`.
@@ -494,14 +496,18 @@ class ForwardKinematicsEngine:
             dict with keys:
               - tip_p_dim: (3,)
               - tip_Q_wxyz: (4,)
-              - rigid_mid_p_dim: (N,3) where N=len(rigid_lengths)
-              - rigid_mid_Q_wxyz: (N,4)
+              - terminal_p_dim: (3,)
+              - terminal_Q_wxyz: (4,)
+              - rigid_distal_p_dim: (N,3) where N=len(rigid_lengths)
+              - rigid_distal_Q_wxyz: (N,4)
+              - rigid_mid_p_dim: legacy alias for ``rigid_distal_p_dim``
+              - rigid_mid_Q_wxyz: legacy alias for ``rigid_distal_Q_wxyz``
 
         Notes:
-            In this codebase, each rigid segment is represented by a single state
-            ``x_rigid`` whose pose corresponds to the rigid segment midpoint.
-            Returning these poses therefore matches the “magnet sites at rigid
-            midpoints” convention requested by IK.
+            In this optimized FK stack, each rigid segment is represented by a
+            single distal-end state ``x_rigid``. Older IK diagnostics used
+            ``rigid_mid_*`` names; those keys are kept only as compatibility
+            aliases and should not be used as physical midpoint definitions.
         """
         z_bar = jnp.asarray(z_bar, dtype=jnp.float64)
 
@@ -530,9 +536,20 @@ class ForwardKinematicsEngine:
             rigid_p = jnp.stack(p_list, axis=0)
             rigid_Q = jnp.stack(q_list, axis=0)
 
+        if rigid_p.shape[0] > 0:
+            terminal_p = rigid_p[-1]
+            terminal_Q = rigid_Q[-1]
+        else:
+            terminal_p = tip_p_dim
+            terminal_Q = tip_Q_wxyz
+
         return {
             'tip_p_dim': tip_p_dim,
             'tip_Q_wxyz': tip_Q_wxyz,
+            'terminal_p_dim': terminal_p,
+            'terminal_Q_wxyz': terminal_Q,
+            'rigid_distal_p_dim': rigid_p,
+            'rigid_distal_Q_wxyz': rigid_Q,
             'rigid_mid_p_dim': rigid_p,
             'rigid_mid_Q_wxyz': rigid_Q,
         }

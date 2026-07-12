@@ -1,0 +1,102 @@
+COMMAND_ARGS:
+[
+  "--flex_lengths",
+  "0.1",
+  "--rigid_lengths",
+  "0.003",
+  "--L_protrude",
+  "0.130714510079",
+  "--x0",
+  "0.130714510079",
+  "--x_min",
+  "0.003001",
+  "--x_max",
+  "0.203",
+  "--x_ref",
+  "0.130714510079",
+  "--L1_min",
+  "1e-06",
+  "--M_list",
+  "5",
+  "--flex_d_outer",
+  "0.0015",
+  "--flex_E",
+  "1800000",
+  "--flex_G",
+  "600000",
+  "--flex_rho",
+  "970",
+  "--rigid_d_outer",
+  "0.0015",
+  "--rigid_rho",
+  "7500",
+  "--p0",
+  "0,0,0",
+  "--Q0",
+  "0.70710678,0,0.70710678,0",
+  "--axis_body",
+  "0,0,1",
+  "--enable_magnetics",
+  "--calib_file",
+  "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "--m_body_list",
+  "0,0,0.0061171875",
+  "--max_iter",
+  "100000",
+  "--tol",
+  "1e-05",
+  "--lm_damping",
+  "1e-1",
+  "--jac_method",
+  "fwd",
+  "--p_des",
+  "0.06,-0.0809016994375,0.0587785252292",
+  "--eps_p",
+  "0.005",
+  "--sigma_p",
+  "0.005",
+  "--I_max",
+  "20",
+  "--I0=0.197023347862,-2.82134854097,-0.779752691035,2.56127136575,1.4006158873,-2.80737578892,-0.615493339082,2.43225221265",
+  "--outer_max_iter",
+  "50",
+  "--step_I_max",
+  "5.0",
+  "--step_x_max",
+  "0.02",
+  "--out_dir",
+  "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712173900_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt",
+  "--run_name",
+  "pt_08",
+  "--runtime_profile",
+  "--print_devices",
+  "--seed",
+  "20261713"
+]
+
+STDOUT_STDERR:
+W0712 17:41:58.715267   22931 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0712 17:41:58.722130   22905 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+[IK-LM] JAX devices: [CudaDevice(id=0)]
+[IK-LM] ==============================
+[IK-LM] run_dir = /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712173900_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_08
+[IK-LM] p_des = [0.06, -0.0809016994375, 0.0587785252292] (m), eps_p = 5.000 (mm)
+[IK-LM] sigma_p = 5.000e-03 (m)  (r_p = e_p/sigma_p)
+[IK-LM] I bound: [-20.0, 20.0] A (param via tanh)
+[IK-LM] x0=0.130715 m, x in [0.003001, 0.203000] m, x_ref=0.130715 m
+[IK-LM] weights interpreted as inverse scales (w=1/sigma):
+[IK-LM]   w_I =5.000e-02  -> sigma_I =20 A
+[IK-LM]   w_x =2.000e+01  -> sigma_x =0.05 m
+[IK-LM]   w_dI=2.000e-01  -> sigma_dI=5 A
+[IK-LM]   w_dx=2.000e+02  -> sigma_dx=0.005 m
+[IK-LM]   w_Ix=5.000e-04  -> sigma_Ix=2e+03 (A/m)
+[IK-LM] physical step limits: step_I_max=5 A, step_x_max=0.02 m
+[IK-LM] outer LM: max_iter=50, lam_init=1.000e-02, lam_up=10, lam_down=0.3, rho_bad=0.25, rho_good=0.75
+[IK-LM] ==============================
+[IK-LM] iter=000 cls=GOOD  ok_strict=True ||E||=9.977e-06 x=0.130715 p_terminal=[0.09315487773064168, -0.07720472926211366, -0.01361566688565534] ||e||=79.711mm cost=1.271158e+02
+[IK-LM] iter=001 lam=1.00e-02 rho=0.978 ACCEPT du_eff=4.57e-01 |dI|_max=3.751A ||dI||=7.178A |dx|=12.939mm pred_red=1.106e+02 act_red=1.081e+02 cls=GOOD  ||E||=9.995e-06 x=0.117775 ||e||=26.852mm cost=1.898545e+01
+[IK-LM] iter=002 lam=3.00e-03 rho=0.912 ACCEPT du_eff=3.32e-01 |dI|_max=1.854A ||dI||=3.764A |dx|=12.943mm pred_red=1.515e+01 act_red=1.383e+01 cls=GOOD  ||E||=9.999e-06 x=0.130718 ||e||=8.405mm cost=5.157425e+00
+[IK-LM] iter=003 lam=9.00e-04 rho=1.940 ACCEPT du_eff=1.09e-01 |dI|_max=0.308A ||dI||=0.408A |dx|=5.000mm pred_red=1.179e+00 act_red=2.287e+00 cls=GOOD  ||E||=9.618e-06 x=0.125718 ||e||=10.640mm cost=2.870198e+00
+[IK-LM] iter=004 lam=2.70e-04 rho=0.513 ACCEPT du_eff=1.72e-01 |dI|_max=0.295A ||dI||=0.492A |dx|=7.886mm pred_red=2.169e+00 act_red=1.113e+00 cls=GOOD  ||E||=9.992e-06 x=0.133604 ||e||=4.530mm cost=1.757171e+00
+[IK-LM] Converged: iter=4, ||e||=4.530mm, x=0.133604
+[IK-LM] Saved result.json

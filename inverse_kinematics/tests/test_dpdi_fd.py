@@ -25,7 +25,7 @@ import jax.numpy as jnp
 
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
-from ..ik_diff import compute_dp_dI_via_lm_adjoint, extract_tip_p_dim
+from ..ik_diff import compute_dp_dI_via_lm_adjoint, extract_terminal_p_dim
 
 jax.config.update("jax_enable_x64", True)
 
@@ -76,7 +76,7 @@ def main() -> None:
         return_stats=True,
     )
 
-    p0 = extract_tip_p_dim(z_star, M_list=params.M_list, scales=params.scales)
+    p0 = extract_terminal_p_dim(z_star, M_list=params.M_list, scales=params.scales)
     jac = compute_dp_dI_via_lm_adjoint(
         z_star_bar=z_star,
         params=params,
@@ -97,8 +97,8 @@ def main() -> None:
         zp, pp, _mp, okp = engine.solve(coil_currents=Ip, L_protrude=float(args.L_protrude), warm_start=True)
         zm, pm, _mm, okm = engine.solve(coil_currents=Im, L_protrude=float(args.L_protrude), warm_start=True)
 
-        p_tip_p = extract_tip_p_dim(zp, M_list=pp.M_list, scales=pp.scales)
-        p_tip_m = extract_tip_p_dim(zm, M_list=pm.M_list, scales=pm.scales)
+        p_tip_p = extract_terminal_p_dim(zp, M_list=pp.M_list, scales=pp.scales)
+        p_tip_m = extract_terminal_p_dim(zm, M_list=pm.M_list, scales=pm.scales)
 
         col = (p_tip_p - p_tip_m) / (2.0 * eps)
         Jp_fd_cols.append(col)

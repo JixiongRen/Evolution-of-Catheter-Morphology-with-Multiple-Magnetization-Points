@@ -1,0 +1,209 @@
+{
+  "argv": {
+    "config": null,
+    "flex_lengths": "0.1",
+    "rigid_lengths": "0.003",
+    "L_protrude": 0.136323651079,
+    "L1_min": 1e-06,
+    "M_list": "5",
+    "flex_d_outer": "0.0015",
+    "flex_E": "1800000",
+    "flex_G": "600000",
+    "flex_rho": "970",
+    "rigid_d_outer": "0.0015",
+    "rigid_rho": "7500",
+    "p0": "0,0,0",
+    "Q0": "0.70710678,0,0.70710678,0",
+    "axis_body": "0,0,1",
+    "enable_gravity": false,
+    "g_world": "0,0,-9.81",
+    "enable_magnetics": true,
+    "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+    "actuation_table_pkl": null,
+    "coil_currents": null,
+    "m_body_list": "0.0061171875,0,0",
+    "max_iter": 100000,
+    "tol": 1e-05,
+    "lm_damping": 0.1,
+    "jac_method": "fwd",
+    "scale_mode": "optimized",
+    "plot": false,
+    "p_des": "0.06,-0.1,1.22464679915e-17",
+    "eps_p": 0.005,
+    "sigma_p": 0.005,
+    "I_min": null,
+    "I_max": 20.0,
+    "I0": "-5.25801965186,-1.55441781549,0.826088032717,-1.55275400221,-0.611465105015,2.29812661014,4.04658344468,2.30063603958",
+    "x0": 0.136323651079,
+    "x_min": 0.003001,
+    "x_max": 0.203,
+    "x_ref": 0.136323651079,
+    "outer_max_iter": 50,
+    "lam_init": 0.01,
+    "lam_up": 10.0,
+    "lam_down": 0.3,
+    "rho_good": 0.75,
+    "rho_bad": 0.25,
+    "step_I_max": 5.0,
+    "step_x_max": 0.02,
+    "pred_red_tol": 1e-10,
+    "step_I_tol": 1e-06,
+    "step_x_tol": 1e-09,
+    "act_red_tol": 1e-10,
+    "w_I": 0.05,
+    "w_x": 20.0,
+    "w_dI": 0.2,
+    "w_dx": 200.0,
+    "w_Ix": 0.0005,
+    "dx_floor": 0.001,
+    "ridge_adjoint": 0.0,
+    "fd_x_eps": 0.001,
+    "x_sensitivity_method": "implicit",
+    "store_accepted_jacobian": false,
+    "sensitivity_conditioning": false,
+    "tol_E_good": null,
+    "tol_E_weak": 0.01,
+    "tol_E_bad": 0.1,
+    "penalty_bad": 1000.0,
+    "out_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712183547_A1_A2_5mm_supervised_IK_no_gravity/A2/formal_20pt",
+    "run_name": "pt_10",
+    "print_devices": true,
+    "runtime_profile": true,
+    "warmup_fk_compile": false,
+    "warmup_ik_adjoint": false,
+    "seed": 20262715
+  },
+  "fk_cfg": {},
+  "p_des": [
+    0.06,
+    -0.1,
+    1.22464679915e-17
+  ],
+  "seed": 20262715,
+  "I_min": -20.0,
+  "I_max": 20.0,
+  "x0": 0.136323651079,
+  "x_bounds": [
+    0.003001,
+    0.203
+  ],
+  "x_ref": 0.136323651079,
+  "sigma_p": 0.005,
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "init": {
+    "x_m": 0.13632365107899996,
+    "I_A": [
+      -5.25801965186,
+      -1.55441781549,
+      0.826088032717,
+      -1.55275400221,
+      -0.6114651050150001,
+      2.29812661014,
+      4.04658344468,
+      2.30063603958
+    ],
+    "p_tip_m": [
+      0.11693295796423767,
+      -6.198704755542076e-05,
+      -0.0625938230768615
+    ],
+    "p_tip_flex_m": [
+      0.11480722777751688,
+      -5.983642499656827e-05,
+      -0.06047692284608047
+    ],
+    "p_tip_true_m": [
+      0.11693295796423767,
+      -6.198704755542076e-05,
+      -0.0625938230768615
+    ],
+    "err_m": 0.13094638148042914,
+    "err_mm": 130.94638148042915,
+    "err_flex_m": 0.12903227002957762,
+    "err_flex_mm": 129.03227002957763,
+    "err_true_m": 0.13094638148042914,
+    "err_true_mm": 130.94638148042915,
+    "centerline_npy": "poses/accept/centerline_iter_0000.npy"
+  },
+  "last_accept": {
+    "iter": 32,
+    "x_m": 0.12176053072808848,
+    "I_A": [
+      -4.935411980432287,
+      -2.7694590546627653,
+      0.36136165654648617,
+      -0.25042514104200586,
+      -0.3984332064910667,
+      0.48962522359106814,
+      3.4398548634811767,
+      4.025635047623559
+    ],
+    "p_tip_m": [
+      0.09808874980745998,
+      -0.06097950719765084,
+      -0.0193258944890457
+    ],
+    "p_tip_flex_m": [
+      0.09626759209042915,
+      -0.058618588839979356,
+      -0.018995062304726442
+    ],
+    "p_tip_true_m": [
+      0.09808874980745998,
+      -0.06097950719765084,
+      -0.0193258944890457
+    ],
+    "err_m": 0.05785189641001575,
+    "err_mm": 57.85189641001575,
+    "err_flex_m": 0.05821144060743456,
+    "err_flex_mm": 58.211440607434554,
+    "err_true_m": 0.05785189641001575,
+    "err_true_mm": 57.85189641001575,
+    "centerline_npy": "poses/accept/centerline_iter_0032.npy"
+  },
+  "final": {
+    "x_m": 0.12176053072808848,
+    "I_A": [
+      -4.935411980432287,
+      -2.7694590546627653,
+      0.36136165654648617,
+      -0.25042514104200586,
+      -0.3984332064910667,
+      0.48962522359106814,
+      3.4398548634811767,
+      4.025635047623559
+    ],
+    "p_tip_m": [
+      0.09808874980745998,
+      -0.06097950719765084,
+      -0.0193258944890457
+    ],
+    "p_tip_flex_m": [
+      0.09626759209042915,
+      -0.058618588839979356,
+      -0.018995062304726442
+    ],
+    "p_tip_true_m": [
+      0.09808874980745998,
+      -0.06097950719765084,
+      -0.0193258944890457
+    ],
+    "err_m": 0.05785189641001575,
+    "err_mm": 57.85189641001575,
+    "err_flex_m": 0.05821144060743456,
+    "err_flex_mm": 58.211440607434554,
+    "err_true_m": 0.05785189641001575,
+    "err_true_mm": 57.85189641001575,
+    "centerline_npy": "poses/accept/centerline_iter_0033.npy"
+  }
+}

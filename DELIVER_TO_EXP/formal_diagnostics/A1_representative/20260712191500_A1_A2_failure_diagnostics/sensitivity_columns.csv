@@ -1,0 +1,2 @@
+status,blocked_by,reason_zh
+not_run,not_blocked,本轮已完成 D0 门禁和历史轨迹审计，尚未执行中心差分灵敏度审计；可作为下一阶段任务。

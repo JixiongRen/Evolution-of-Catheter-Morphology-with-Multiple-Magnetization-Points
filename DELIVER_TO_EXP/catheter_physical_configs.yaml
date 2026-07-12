@@ -1,0 +1,258 @@
+# 导管物理配置库
+# 用途：为后续实验交付算法提供 A1/A2/B1/B2/B3 五类导管的统一物理真值配置。
+# 重要约定：
+# 1. 本文件描述真实导管拓扑，不使用“零磁矩占位段”模拟单点磁化。
+# 2. 代码中的 m_body_list 表示磁偶极矩，单位为 A*m^2，不是材料磁化强度。
+# 3. 用户描述顺序为远端到近端；求解器输入顺序为近端到远端。
+# 4. 求解器每个段按“柔性段 + 刚性磁体段”建模，插入深度只改变最近端柔性段长度。
+
+schema_version: 1
+config_name_zh: "实验交付导管物理配置库"
+created_for: "DELIVER_TO_EXP"
+
+references:
+  n52_data_source:
+    name_zh: "Arnold Magnetic Technologies N52 数据表"
+    url: "https://www.arnoldmagnetics.com/wp-content/uploads/2017/11/N52-151021.pdf"
+    note_zh: "采用标称剩磁 Br=1.45 T；数据表给出的 N52 Br 范围约为 1.42-1.48 T。"
+
+global_conventions:
+  coordinate_frame_zh: "磁偶极矩向量均写在导管局部坐标系中。"
+  local_axis_definition_zh: "局部 z 轴为导管轴向，局部 x 轴为径向方向。"
+  user_order_zh: "用户定义拓扑时采用远端到近端顺序。"
+  solver_order_zh: "FK/IK 求解器数组采用近端到远端顺序。"
+  solver_segment_model_zh: "第 i 个求解器段由柔性段 i 后接刚性磁体段 i 组成。"
+  controlled_length_zh: "插入深度 L_protrude 控制最近端柔性段长度，固定柔性段和所有磁体段长度不随 L_protrude 改变。"
+  no_zero_magnet_placeholder: true
+  no_zero_magnet_placeholder_zh: "禁止通过把某个磁体段磁偶极矩置零来模拟不存在的磁化点。"
+
+shared_physical_parameters:
+  magnet:
+    material_zh: "N52 钕铁硼永磁体"
+    shape_zh: "圆柱磁体"
+    diameter_m: 0.0015
+    length_m: 0.003
+    density_kg_m3: 7500.0
+    mu0_N_A2: 0.0000012566370614359173
+    Br_nominal_T: 1.45
+    Br_range_T: [1.42, 1.48]
+    magnetization_nominal_A_m: 1153873.3374162412
+    volume_m3: 0.000000005301437602932776
+    magnetic_moment_nominal_A_m2: 0.0061171875
+    magnetic_moment_range_A_m2: [0.005990625, 0.00624375]
+    project_legacy_effective_moment_A_m2: 0.005301
+    project_legacy_note_zh: "历史实验常用 0.005301 A*m^2；该值偏向有效磁偶极矩标定，不等同于本文件默认的 N52 标称几何推导值。"
+  flexible_body:
+    material_zh: "固化 PDMS 软体段"
+    diameter_m: 0.0015
+    max_controlled_length_m: 1.0
+    E_Pa: 1800000.0
+    G_Pa: 600000.0
+    density_kg_m3: 970.0
+    note_zh: "E 和 G 沿用当前工程默认 PDMS 参数；若后续完成样条拉伸或弯曲标定，应替换为实测值。"
+  gravity:
+    enable_gravity_default: true
+    g_world_m_s2: [0.0, 0.0, -9.81]
+  actuation:
+    enable_magnetics_default: true
+    coil_count: 8
+    current_limit_A_recommended: 20.0
+    default_calib_file: "calib/mpem_calibration_file_sp=40_order=1.yaml"
+    actuation_table_pkl: null
+
+solver_defaults:
+  # M_list 为每个柔性段的离散单元数，属于数值求解参数，不是导管物理参数。
+  M_per_flexible_segment_default: 5
+  M_per_flexible_segment_max_recommended: 10
+  L1_min_m: 0.000001
+  tol_default: 0.00001
+  max_iter_default: 100000
+  linear_solver_default: "dense_fused_cholesky"
+  p0_dim_default_m: [0.0, 0.0, 0.0]
+  Q0_wxyz_default: [0.70710678, 0.0, 0.70710678, 0.0]
+  axis_body_default: [0.0, 0.0, 1.0]
+
+catheter_types:
+  A1:
+    label_zh: "A1 单点磁化，末端 z 轴轴向磁化"
+    family_id: "A"
+    magnetization_topology: "single_point"
+    description_zh: "一个近端可控柔性段加一个远端 N52 圆柱磁体，磁体沿局部 z 轴磁化。"
+    true_segments_distal_to_proximal:
+      - segment_id: "distal_magnet_1"
+        type: "magnet"
+        label_zh: "远端磁体段 1"
+        length_m: 0.003
+        diameter_m: 0.0015
+        magnetization_axis_body: [0.0, 0.0, 1.0]
+        magnetic_moment_body_A_m2: [0.0, 0.0, 0.0061171875]
+      - segment_id: "proximal_flex_controlled_1"
+        type: "flexible"
+        label_zh: "近端可控柔性段 1"
+        max_length_m: 1.0
+        length_controlled_by: "L_protrude"
+    solver_input:
+      segment_count_N: 1
+      solver_order_zh: "近端可控柔性段 1 -> 远端磁体段 1"
+      flex_lengths_tail_m: []
+      rigid_lengths_m: [0.003]
+      M_list_default: [5]
+      m_body_list_A_m2: [[0.0, 0.0, 0.0061171875]]
+      cli_flex_lengths_placeholder_m: [0.1]
+      L_protrude_min_m: 0.003001
+      L_protrude_max_m: 1.003
+
+  A2:
+    label_zh: "A2 单点磁化，末端 x 轴径向磁化"
+    family_id: "A"
+    magnetization_topology: "single_point"
+    description_zh: "一个近端可控柔性段加一个远端 N52 圆柱磁体，磁体沿局部 x 轴径向磁化。"
+    true_segments_distal_to_proximal:
+      - segment_id: "distal_magnet_1"
+        type: "magnet"
+        label_zh: "远端磁体段 1"
+        length_m: 0.003
+        diameter_m: 0.0015
+        magnetization_axis_body: [1.0, 0.0, 0.0]
+        magnetic_moment_body_A_m2: [0.0061171875, 0.0, 0.0]
+      - segment_id: "proximal_flex_controlled_1"
+        type: "flexible"
+        label_zh: "近端可控柔性段 1"
+        max_length_m: 1.0
+        length_controlled_by: "L_protrude"
+    solver_input:
+      segment_count_N: 1
+      solver_order_zh: "近端可控柔性段 1 -> 远端磁体段 1"
+      flex_lengths_tail_m: []
+      rigid_lengths_m: [0.003]
+      M_list_default: [5]
+      m_body_list_A_m2: [[0.0061171875, 0.0, 0.0]]
+      cli_flex_lengths_placeholder_m: [0.1]
+      L_protrude_min_m: 0.003001
+      L_protrude_max_m: 1.003
+
+  B1:
+    label_zh: "B1 两点磁化，远端和近端磁体均为 z 轴轴向磁化"
+    family_id: "B"
+    magnetization_topology: "two_point"
+    description_zh: "远端到近端依次为：远端磁体段 1、固定柔性段 1、近端磁体段 2、近端可控柔性段 2。"
+    true_segments_distal_to_proximal:
+      - segment_id: "distal_magnet_1"
+        type: "magnet"
+        label_zh: "远端磁体段 1"
+        length_m: 0.003
+        diameter_m: 0.0015
+        magnetization_axis_body: [0.0, 0.0, 1.0]
+        magnetic_moment_body_A_m2: [0.0, 0.0, 0.0061171875]
+      - segment_id: "inter_magnet_flex_1"
+        type: "flexible"
+        label_zh: "两磁体之间的固定柔性段 1"
+        fixed_length_m: 0.05
+      - segment_id: "proximal_magnet_2"
+        type: "magnet"
+        label_zh: "近端磁体段 2"
+        length_m: 0.003
+        diameter_m: 0.0015
+        magnetization_axis_body: [0.0, 0.0, 1.0]
+        magnetic_moment_body_A_m2: [0.0, 0.0, 0.0061171875]
+      - segment_id: "proximal_flex_controlled_2"
+        type: "flexible"
+        label_zh: "近端可控柔性段 2"
+        max_length_m: 1.0
+        length_controlled_by: "L_protrude"
+    solver_input:
+      segment_count_N: 2
+      solver_order_zh: "近端可控柔性段 2 -> 近端磁体段 2 -> 固定柔性段 1 -> 远端磁体段 1"
+      flex_lengths_tail_m: [0.05]
+      rigid_lengths_m: [0.003, 0.003]
+      M_list_default: [5, 5]
+      m_body_list_A_m2:
+        - [0.0, 0.0, 0.0061171875]
+        - [0.0, 0.0, 0.0061171875]
+      cli_flex_lengths_placeholder_m: [0.1, 0.05]
+      L_protrude_min_m: 0.056001
+      L_protrude_max_m: 1.056
+
+  B2:
+    label_zh: "B2 两点磁化，远端 z 轴轴向磁化，近端 x 轴径向磁化"
+    family_id: "B"
+    magnetization_topology: "two_point"
+    description_zh: "远端磁体段 1 沿局部 z 轴磁化，近端磁体段 2 沿局部 x 轴磁化。"
+    true_segments_distal_to_proximal:
+      - segment_id: "distal_magnet_1"
+        type: "magnet"
+        label_zh: "远端磁体段 1"
+        length_m: 0.003
+        diameter_m: 0.0015
+        magnetization_axis_body: [0.0, 0.0, 1.0]
+        magnetic_moment_body_A_m2: [0.0, 0.0, 0.0061171875]
+      - segment_id: "inter_magnet_flex_1"
+        type: "flexible"
+        label_zh: "两磁体之间的固定柔性段 1"
+        fixed_length_m: 0.05
+      - segment_id: "proximal_magnet_2"
+        type: "magnet"
+        label_zh: "近端磁体段 2"
+        length_m: 0.003
+        diameter_m: 0.0015
+        magnetization_axis_body: [1.0, 0.0, 0.0]
+        magnetic_moment_body_A_m2: [0.0061171875, 0.0, 0.0]
+      - segment_id: "proximal_flex_controlled_2"
+        type: "flexible"
+        label_zh: "近端可控柔性段 2"
+        max_length_m: 1.0
+        length_controlled_by: "L_protrude"
+    solver_input:
+      segment_count_N: 2
+      solver_order_zh: "近端可控柔性段 2 -> 近端磁体段 2 -> 固定柔性段 1 -> 远端磁体段 1"
+      flex_lengths_tail_m: [0.05]
+      rigid_lengths_m: [0.003, 0.003]
+      M_list_default: [5, 5]
+      m_body_list_A_m2:
+        - [0.0061171875, 0.0, 0.0]
+        - [0.0, 0.0, 0.0061171875]
+      cli_flex_lengths_placeholder_m: [0.1, 0.05]
+      L_protrude_min_m: 0.056001
+      L_protrude_max_m: 1.056
+
+  B3:
+    label_zh: "B3 两点磁化，远端 x 轴径向磁化，近端 z 轴轴向磁化"
+    family_id: "B"
+    magnetization_topology: "two_point"
+    description_zh: "远端磁体段 1 沿局部 x 轴磁化，近端磁体段 2 沿局部 z 轴磁化。"
+    true_segments_distal_to_proximal:
+      - segment_id: "distal_magnet_1"
+        type: "magnet"
+        label_zh: "远端磁体段 1"
+        length_m: 0.003
+        diameter_m: 0.0015
+        magnetization_axis_body: [1.0, 0.0, 0.0]
+        magnetic_moment_body_A_m2: [0.0061171875, 0.0, 0.0]
+      - segment_id: "inter_magnet_flex_1"
+        type: "flexible"
+        label_zh: "两磁体之间的固定柔性段 1"
+        fixed_length_m: 0.05
+      - segment_id: "proximal_magnet_2"
+        type: "magnet"
+        label_zh: "近端磁体段 2"
+        length_m: 0.003
+        diameter_m: 0.0015
+        magnetization_axis_body: [0.0, 0.0, 1.0]
+        magnetic_moment_body_A_m2: [0.0, 0.0, 0.0061171875]
+      - segment_id: "proximal_flex_controlled_2"
+        type: "flexible"
+        label_zh: "近端可控柔性段 2"
+        max_length_m: 1.0
+        length_controlled_by: "L_protrude"
+    solver_input:
+      segment_count_N: 2
+      solver_order_zh: "近端可控柔性段 2 -> 近端磁体段 2 -> 固定柔性段 1 -> 远端磁体段 1"
+      flex_lengths_tail_m: [0.05]
+      rigid_lengths_m: [0.003, 0.003]
+      M_list_default: [5, 5]
+      m_body_list_A_m2:
+        - [0.0, 0.0, 0.0061171875]
+        - [0.0061171875, 0.0, 0.0]
+      cli_flex_lengths_placeholder_m: [0.1, 0.05]
+      L_protrude_min_m: 0.056001
+      L_protrude_max_m: 1.056

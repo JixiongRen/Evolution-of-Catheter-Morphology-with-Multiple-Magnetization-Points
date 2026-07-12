@@ -152,6 +152,7 @@ def build_argparser() -> argparse.ArgumentParser:
     # Optimization variables: currents and insertion depth
     p.add_argument("--I_min", type=float, default=None, help="Lower current bound. If not set, uses -I_max.")
     p.add_argument("--I_max", type=float, default=50.0, help="Symmetric current bound: I in [-I_max, I_max]")
+    p.add_argument("--I0", type=str, default=None, help="Initial 8-coil currents [A], comma-separated. Defaults to random initialization.")
     p.add_argument("--x0", type=float, default=None, help="Initial insertion depth x [m]. If not set, uses --L_protrude.")
     p.add_argument("--x_min", type=float, default=None, help="Lower bound for insertion depth x [m]")
     p.add_argument("--x_max", type=float, default=None, help="Upper bound for insertion depth x [m]")
@@ -333,6 +334,7 @@ class EvalPack:
     I: Array
     x: float
     p_tip: Array
+    p_tip_true: Array
     e_p: Array  # (m)
     err: float  # (m)
     r: Array
@@ -344,6 +346,36 @@ class EvalPack:
     z_star_bar: Array
     params: Any
     lm_stats: Any
+
+
+def _true_rigid_distal_tip(engine: ForwardKinematicsEngine, obs: dict[str, Array]) -> Array:
+    """Return the physical distal end of the last rigid segment."""
+    if "terminal_p_dim" in obs:
+        return jnp.asarray(obs["terminal_p_dim"], dtype=jnp.float64).reshape(3,)
+    rigid_distal_p = jnp.asarray(obs.get("rigid_distal_p_dim", obs.get("rigid_mid_p_dim")), dtype=jnp.float64)
+    if rigid_distal_p.shape[0] == 0:
+        return jnp.asarray(obs["tip_p_dim"], dtype=jnp.float64).reshape(3,)
+    return rigid_distal_p[-1].reshape(3,)
+
+
+def _tip_report_fields(pack: EvalPack, p_des: Array) -> dict[str, Any]:
+    """Return canonical terminal and flexible-tip metrics for JSON artifacts."""
+    p_flex = np.asarray(jax.device_get(pack.p_tip), dtype=float).reshape(3)
+    p_true = np.asarray(jax.device_get(pack.p_tip_true), dtype=float).reshape(3)
+    p_target = np.asarray(jax.device_get(p_des), dtype=float).reshape(3)
+    err_flex = float(np.linalg.norm(p_flex - p_target))
+    err_true = float(np.linalg.norm(p_true - p_target))
+    return {
+        "p_tip_m": [float(v) for v in p_true.tolist()],
+        "p_tip_flex_m": [float(v) for v in p_flex.tolist()],
+        "p_tip_true_m": [float(v) for v in p_true.tolist()],
+        "err_m": err_true,
+        "err_mm": float(err_true * 1e3),
+        "err_flex_m": err_flex,
+        "err_flex_mm": float(err_flex * 1e3),
+        "err_true_m": err_true,
+        "err_true_mm": float(err_true * 1e3),
+    }
 
 
 def _compute_residual_vector(
@@ -455,14 +487,15 @@ def _fk_eval(
     t0 = time.perf_counter()
     obs = engine.query_sites(z_bar=z_star_bar, scales=params.scales)
     p_tip = jnp.asarray(obs["tip_p_dim"], dtype=jnp.float64)
+    p_tip_true = jnp.asarray(_true_rigid_distal_tip(engine, obs), dtype=jnp.float64)
     _profile_add(runtime_profile, "fk_observe", profile_label, time.perf_counter() - t0)
 
     penalty = 0.0
-    if (not jnp.all(jnp.isfinite(p_tip))) or (cls in ("BAD", "REJECT")):
+    if (not jnp.all(jnp.isfinite(p_tip_true))) or (cls in ("BAD", "REJECT")):
         penalty = float(penalty_bad)
 
     r, cost, e_p, err = _compute_residual_vector(
-        p_tip=p_tip,
+        p_tip=p_tip_true,
         p_des=p_des,
         sigma_p=float(sigma_p),
         I=I,
@@ -483,6 +516,7 @@ def _fk_eval(
         I=jnp.asarray(I, dtype=jnp.float64),
         x=float(x),
         p_tip=jnp.asarray(p_tip, dtype=jnp.float64),
+        p_tip_true=jnp.asarray(p_tip_true, dtype=jnp.float64),
         e_p=jnp.asarray(e_p, dtype=jnp.float64),
         err=float(err),
         r=r,
@@ -573,8 +607,10 @@ def _compute_dp_dx_fd(
         )
         _profile_add(runtime_profile, "fd_x_fk", "minus", time.perf_counter() - t0)
 
-        pp = jnp.asarray(engine.query_sites(z_bar=zp, scales=params_p.scales)["tip_p_dim"], dtype=jnp.float64)
-        pm = jnp.asarray(engine.query_sites(z_bar=zm, scales=params_m.scales)["tip_p_dim"], dtype=jnp.float64)
+        obs_p = engine.query_sites(z_bar=zp, scales=params_p.scales)
+        obs_m = engine.query_sites(z_bar=zm, scales=params_m.scales)
+        pp = jnp.asarray(_true_rigid_distal_tip(engine, obs_p), dtype=jnp.float64)
+        pm = jnp.asarray(_true_rigid_distal_tip(engine, obs_m), dtype=jnp.float64)
         dpdx = (pp - pm) / float(xp - xm)
         return jnp.asarray(dpdx, dtype=jnp.float64)
     else:
@@ -741,16 +777,23 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     x_sensitivity_method = str(args.x_sensitivity_method)
     sensitivity_conditioning = bool(args.sensitivity_conditioning)
 
-    # Initialize u from randomized I0, x=x0
+    # Initialize u from user-specified or randomized I0, x=x0
     n_coils = 8
-    key = jax.random.PRNGKey(seed)
-    I0 = jax.random.uniform(
-        key,
-        shape=(n_coils,),
-        minval=float(I_min),
-        maxval=float(I_max),
-        dtype=jnp.float64,
-    )
+    if args.I0 is not None:
+        I0_values = [float(v) for v in str(args.I0).split(",")]
+        if len(I0_values) != n_coils:
+            raise ValueError("--I0 must contain exactly 8 comma-separated currents.")
+        I0 = jnp.asarray(I0_values, dtype=jnp.float64)
+        I0 = jnp.clip(I0, float(I_min), float(I_max))
+    else:
+        key = jax.random.PRNGKey(seed)
+        I0 = jax.random.uniform(
+            key,
+            shape=(n_coils,),
+            minval=float(I_min),
+            maxval=float(I_max),
+            dtype=jnp.float64,
+        )
     u = _Ix_to_u(I0, x0, I_max=I_max, x_min=x_min, x_max=x_max)
 
     # Save run config
@@ -881,6 +924,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     z_warm = cur.z_star_bar
 
     init_pose_path = _save_pose(which="accept", iter_idx=0, pack=cur)
+    init_tip_fields = _tip_report_fields(cur, p_des)
     _update_run_config(
         run_config_path,
         updates={
@@ -888,8 +932,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             "init": {
                 "x_m": float(cur.x),
                 "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
-                "p_tip_m": [float(v) for v in np.asarray(jax.device_get(cur.p_tip)).reshape(3,).tolist()],
-                "err_m": float(cur.err),
+                **init_tip_fields,
                 "centerline_npy": str(init_pose_path.relative_to(run_dir)),
             },
         },
@@ -912,9 +955,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             "x_m": float(cur.x),
             "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
             "dI_A": [0.0 for _ in range(int(n_coils))],
-            "p_tip_m": [float(v) for v in np.asarray(jax.device_get(cur.p_tip)).reshape(3,).tolist()],
-            "err_m": float(cur.err),
-            "err_mm": float(cur.err * 1e3),
+            **init_tip_fields,
             "cost": float(cur.cost),
             "cls": str(cur.cls),
             "normE": float(cur.normE),
@@ -927,7 +968,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     print(
         f"[IK-LM] iter=000 cls={cur.cls:<5s} ok_strict={cur.ok_strict} ||E||={cur.normE:.3e} "
-        f"x={cur.x:.6f} p_tip={cur.p_tip.tolist()} ||e||={cur.err*1e3:.3f}mm cost={cur.cost:.6e}"
+        f"x={cur.x:.6f} p_terminal={cur.p_tip_true.tolist()} ||e||={cur.err*1e3:.3f}mm cost={cur.cost:.6e}"
     )
 
     if cur.err <= eps_p and cur.cls != "REJECT":
@@ -1155,6 +1196,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         status = "ACCEPT" if accept else "REJECT"
 
         trial_pose_path = _save_pose(which="trial", iter_idx=k, pack=trial)
+        trial_tip_fields = _tip_report_fields(trial, p_des)
 
         _append_history(
             d={
@@ -1173,9 +1215,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "x_m": float(trial.x),
                 "I_A": [float(v) for v in np.asarray(jax.device_get(I_trial)).reshape(-1,).tolist()],
                 "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
-                "p_tip_m": [float(v) for v in np.asarray(jax.device_get(trial.p_tip)).reshape(3,).tolist()],
-                "err_m": float(trial.err),
-                "err_mm": float(trial.err * 1e3),
+                **trial_tip_fields,
                 "cost": float(trial.cost),
                 "cls": str(trial.cls),
                 "normE": float(trial.normE),
@@ -1203,6 +1243,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             z_warm = cur.z_star_bar
 
             acc_pose_path = _save_pose(which="accept", iter_idx=k, pack=cur)
+            cur_tip_fields = _tip_report_fields(cur, p_des)
             _update_run_config(
                 run_config_path,
                 updates={
@@ -1210,8 +1251,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                         "iter": int(k),
                         "x_m": float(cur.x),
                         "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
-                        "p_tip_m": [float(v) for v in np.asarray(jax.device_get(cur.p_tip)).reshape(3,).tolist()],
-                        "err_m": float(cur.err),
+                        **cur_tip_fields,
                         "centerline_npy": str(acc_pose_path.relative_to(run_dir)),
                     }
                 },
@@ -1261,14 +1301,14 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             profile_label="final",
         )
         fin_pose_path = _save_pose(which="accept", iter_idx=int(len(history.get("outer", []))), pack=fin_pack)
+        fin_tip_fields = _tip_report_fields(fin_pack, p_des)
         _update_run_config(
             run_config_path,
             updates={
                 "final": {
                     "x_m": float(fin_pack.x),
                     "I_A": [float(v) for v in np.asarray(jax.device_get(fin_pack.I)).reshape(-1,).tolist()],
-                    "p_tip_m": [float(v) for v in np.asarray(jax.device_get(fin_pack.p_tip)).reshape(3,).tolist()],
-                    "err_m": float(fin_pack.err),
+                    **fin_tip_fields,
                     "centerline_npy": str(fin_pose_path.relative_to(run_dir)),
                 }
             },
@@ -1276,14 +1316,18 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     except Exception as e:
         print(f"[IK-LM] WARNING: failed to save final snapshot: {repr(e)}")
     t0 = time.perf_counter()
+    result_tip_fields = _tip_report_fields(cur, p_des)
     (run_dir / "result.json").write_text(
         json.dumps(
             {
                 "success": bool(cur.err <= eps_p and cur.cls != "REJECT"),
+                "success_flex_eps": bool(result_tip_fields["err_flex_m"] <= eps_p and cur.cls != "REJECT"),
+                "success_true_eps": bool(result_tip_fields["err_true_m"] <= eps_p and cur.cls != "REJECT"),
                 "p_des": [float(v) for v in p_des.tolist()],
-                "p_tip": [float(v) for v in cur.p_tip.tolist()],
-                "err_m": float(cur.err),
-                "err_mm": float(cur.err * 1e3),
+                "p_tip": result_tip_fields["p_tip_m"],
+                "p_tip_flex": result_tip_fields["p_tip_flex_m"],
+                "p_tip_true": result_tip_fields["p_tip_true_m"],
+                **result_tip_fields,
                 "I": [float(v) for v in I_fin.tolist()],
                 "x": float(x_fin),
                 "normE": float(cur.normE),

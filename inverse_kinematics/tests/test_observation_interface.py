@@ -15,7 +15,7 @@ if str(_REPO_ROOT) not in sys.path:
 
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
-from inverse_kinematics.ik_diff import extract_tip_p_dim
+from inverse_kinematics.ik_diff import extract_terminal_p_dim, extract_tip_p_dim
 from inverse_kinematics.ik_observations import (
     ObservationSpec,
     axis_residual,
@@ -88,9 +88,14 @@ def test_query_sites_contract_matches_tip_extractor() -> None:
 
     sites = engine.query_sites(z_bar=z_star, scales=params.scales)
     tip_old = extract_tip_p_dim(z_star, M_list=params.M_list, scales=params.scales)
+    terminal = extract_terminal_p_dim(z_star, M_list=params.M_list, scales=params.scales)
     assert jnp.linalg.norm(sites["tip_p_dim"] - tip_old) < 1e-12
+    assert jnp.linalg.norm(sites["terminal_p_dim"] - terminal) < 1e-12
+    assert jnp.linalg.norm(sites["terminal_p_dim"] - sites["rigid_distal_p_dim"][-1]) < 1e-12
     assert sites["rigid_mid_p_dim"].shape == (3, 3)
     assert sites["rigid_mid_Q_wxyz"].shape == (3, 4)
+    assert sites["rigid_distal_p_dim"].shape == (3, 3)
+    assert sites["rigid_distal_Q_wxyz"].shape == (3, 4)
 
     specs = [
         ObservationSpec(

@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-07-12 19:15:17",
+  "source_run": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260712183547_A1_A2_5mm_supervised_IK_no_gravity",
+  "git_commit": "385d1ba5b3f8bb73cd16be5b921a95b9b7ce4efe",
+  "python": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+  "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+  "jax": {
+    "available": true,
+    "devices": [
+      "cuda:0"
+    ],
+    "platforms": [
+      "gpu"
+    ],
+    "has_gpu": true
+  }
+}

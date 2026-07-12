@@ -54,25 +54,35 @@ _JAC_E_WRT_IX_FWD = jax.jit(jax.jacfwd(residual_bar_zIx, argnums=(1, 2)))
 
 
 def _p_of_z_params(z_bar: Array, params: SolverParams) -> Array:
-    """Helper for differentiating tip position wrt z (params carries scales/M_list)."""
-    return extract_tip_p_dim(z_bar, M_list=params.M_list, scales=params.scales)
+    """Helper for differentiating the canonical IK terminal point wrt z."""
+    return extract_terminal_p_dim(z_bar, M_list=params.M_list, scales=params.scales)
 
 
 _DP_DZ_REV = jax.jit(jax.jacrev(_p_of_z_params, argnums=0))
 
 
 def extract_tip_p_dim(z_bar: Array, *, M_list: Sequence[int], scales) -> Array:
-    """Extract the current FK task point in SI units from packed ``z_bar``.
+    """Extract the flexible distal node in SI units from packed ``z_bar``.
 
-    The canonical task point for the current FK/IK stack is the distal node of
-    the last flexible segment. This matches ``ForwardKinematicsEngine`` and the
-    single-layer joint residual, so adjoint sensitivities and residuals refer to
-    the same point.
+    This is a compatibility observation. The supervised delivery IK now uses
+    ``extract_terminal_p_dim`` as the canonical task point because the physical
+    catheter end is the distal end of the last rigid segment.
     """
     x_nodes_list_bar, _k_list_bar, _x_rigid_list_bar = unpack_z_bar_jax(z_bar, M_list=M_list)
     x_tip_bar = x_nodes_list_bar[-1][-1]
     x_tip_dim = x_bar_to_dim(x_tip_bar, scales)
     return x_tip_dim[0:3]
+
+
+def extract_terminal_p_dim(z_bar: Array, *, M_list: Sequence[int], scales) -> Array:
+    """Extract the physical distal catheter end in SI units from packed ``z_bar``."""
+    x_nodes_list_bar, _k_list_bar, x_rigid_list_bar = unpack_z_bar_jax(z_bar, M_list=M_list)
+    if x_rigid_list_bar:
+        x_terminal_bar = x_rigid_list_bar[-1]
+    else:
+        x_terminal_bar = x_nodes_list_bar[-1][-1]
+    x_terminal_dim = x_bar_to_dim(x_terminal_bar, scales)
+    return x_terminal_dim[0:3]
 
 
 @dataclass
@@ -316,9 +326,20 @@ def _sites_from_z_params(z_bar: Array, params: SolverParams) -> dict:
         rigid_mid_p = jnp.zeros((0, 3), dtype=jnp.float64)
         rigid_mid_q = jnp.zeros((0, 4), dtype=jnp.float64)
 
+    if rigid_mid_p.shape[0] > 0:
+        terminal_p = rigid_mid_p[-1]
+        terminal_q = rigid_mid_q[-1]
+    else:
+        terminal_p = x_tip_dim[0:3]
+        terminal_q = x_tip_dim[3:7]
+
     return {
         "tip_p_dim": x_tip_dim[0:3],
         "tip_Q_wxyz": x_tip_dim[3:7],
+        "terminal_p_dim": terminal_p,
+        "terminal_Q_wxyz": terminal_q,
+        "rigid_distal_p_dim": rigid_mid_p,
+        "rigid_distal_Q_wxyz": rigid_mid_q,
         "rigid_mid_p_dim": rigid_mid_p,
         "rigid_mid_Q_wxyz": rigid_mid_q,
     }
