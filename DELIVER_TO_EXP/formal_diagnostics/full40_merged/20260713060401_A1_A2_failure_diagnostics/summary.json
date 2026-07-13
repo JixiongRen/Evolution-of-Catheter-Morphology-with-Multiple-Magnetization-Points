@@ -290,6 +290,35 @@
         "x_channel_status": "failed"
       },
       "interpretation_zh": "A1 推进量方向较可靠但电流通道病态；A2 典型失败点整体灵敏度不可靠。"
+    },
+    "branch_replay_full40": {
+      "source": "DELIVER_TO_EXP/formal_diagnostics/closure_branch_full/20260713070419_A1_A2_diagnostic_closure/branch_trials.csv",
+      "scope_zh": "只使用接受状态和冷启动快速通道进行全 40 点分支重放筛查。",
+      "counts": {
+        "ok": 19,
+        "replay_mismatch": 21
+      },
+      "by_catheter": {
+        "A1": {
+          "ok": 12,
+          "replay_mismatch": 8
+        },
+        "A2": {
+          "ok": 7,
+          "replay_mismatch": 13
+        }
+      },
+      "interpretation_zh": "历史记录存在明显分支路径依赖；未保存完整平衡状态 z_star 时，不能对全部历史点低成本开展严格分支保持灵敏度审计。"
+    },
+    "d1_full40_status": {
+      "source": "DELIVER_TO_EXP/formal_diagnostics/full40_merged/20260713060401_A1_A2_failure_diagnostics/sensitivity_columns.csv",
+      "counts": {
+        "可审计但未直接差分": 18,
+        "无物理意义": 19,
+        "部分可信": 2,
+        "不可信": 1
+      },
+      "interpretation_zh": "全 40 点均已给出 D1 状态标签；其中直接中心差分只覆盖代表点，其余点根据分支重放可解释性分类。"
     }
   }
 }

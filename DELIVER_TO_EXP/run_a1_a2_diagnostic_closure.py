@@ -261,12 +261,50 @@ def _solve_terminal(
     return z, params, stats if include_stats else None, p, bool(ok)
 
 
-def _replay_point(source_run: Path, catheter: str, index: int) -> dict[str, Any]:
+def _replay_point(
+    source_run: Path,
+    catheter: str,
+    index: int,
+    *,
+    accepted_only: bool = True,
+    cold_first_tol_mm: float | None = None,
+) -> dict[str, Any]:
     point = _point_dir(source_run, catheter, index)
     result = _read_json(point / "result.json", {})
     history = _read_json(point / "history.json", {"outer": []})
     run_config = _read_json(point / "run_config.json", {})
     engine = _build_engine_from_run_config(run_config)
+    final_recorded = _vec(result.get("p_tip_true", result.get("p_tip", [math.nan, math.nan, math.nan])))
+
+    I_final = np.asarray(result.get("I", []), dtype=float)
+    x_final = _float(result.get("x"))
+    if cold_first_tol_mm is not None and I_final.size == 8 and math.isfinite(x_final):
+        try:
+            z, params, stats, p, ok = _solve_terminal(engine, I_A=I_final, x_m=x_final, z0_bar=None)
+            mismatch_mm = float(np.linalg.norm(p - final_recorded) * 1000.0)
+            if bool(ok) and mismatch_mm <= float(cold_first_tol_mm):
+                return {
+                    "engine": engine,
+                    "z": z,
+                    "params": params,
+                    "stats": stats,
+                    "terminal_m": p,
+                    "final_recorded_m": final_recorded,
+                    "final_mismatch_mm": mismatch_mm,
+                    "replay_rows": [
+                        {
+                            "iter": "final",
+                            "accept": True,
+                            "recorded_err_true_mm": "",
+                            "replay_to_recorded_terminal_mm": mismatch_mm,
+                            "ok": bool(ok),
+                        }
+                    ],
+                    "result": result,
+                    "replay_method": "cold_final",
+                }
+        except Exception:
+            pass
 
     accepted_z = None
     accepted_params = None
@@ -274,6 +312,8 @@ def _replay_point(source_run: Path, catheter: str, index: int) -> dict[str, Any]
     accepted_p = None
     replay_rows = []
     for item in history.get("outer", []):
+        if accepted_only and not bool(item.get("accept", False)):
+            continue
         I = np.asarray(item.get("I_A", []), dtype=float)
         x = _float(item.get("x_m"))
         if I.size != 8 or not math.isfinite(x):
@@ -296,7 +336,6 @@ def _replay_point(source_run: Path, catheter: str, index: int) -> dict[str, Any]
             accepted_stats = stats
             accepted_p = p
 
-    final_recorded = _vec(result.get("p_tip_true", result.get("p_tip", [math.nan, math.nan, math.nan])))
     final_mismatch_mm = float(np.linalg.norm(np.asarray(accepted_p) - final_recorded) * 1000.0) if accepted_p is not None else math.nan
     return {
         "engine": engine,
@@ -308,6 +347,7 @@ def _replay_point(source_run: Path, catheter: str, index: int) -> dict[str, Any]
         "final_mismatch_mm": final_mismatch_mm,
         "replay_rows": replay_rows,
         "result": result,
+        "replay_method": "accepted_history" if accepted_only else "full_history",
     }
 
 
@@ -319,13 +359,21 @@ def _sensitivity_audit_for_point(
     fd_eps_A: float,
     fd_eps_x_m: float,
     replay_tol_mm: float,
+    current_indices: list[int],
+    accepted_only: bool,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    replay = _replay_point(source_run, catheter, index)
+    replay = _replay_point(
+        source_run,
+        catheter,
+        index,
+        accepted_only=accepted_only,
+        cold_first_tol_mm=float(replay_tol_mm),
+    )
     branch_rows = [
         {
             "catheter_type": catheter,
             "target_index": index,
-            "trial_type": "history_replay",
+            "trial_type": replay.get("replay_method", "accepted_history" if accepted_only else "history_replay"),
             "status": "ok" if replay["final_mismatch_mm"] <= replay_tol_mm else "replay_mismatch",
             "terminal_mismatch_mm": replay["final_mismatch_mm"],
             "max_iter_terminal_mismatch_mm": max(
@@ -374,14 +422,16 @@ def _sensitivity_audit_for_point(
     Jx_imp = np.asarray(jax.device_get(sens.J_p_x), dtype=float).reshape(3)
 
     fd_cols = []
+    imp_cols = []
     rows = []
-    for j in range(8):
+    for j in current_indices:
         ej = np.zeros_like(I0)
         ej[j] = 1.0
         zp, pp, _sp, p_plus, okp = _solve_terminal(engine, I_A=I0 + fd_eps_A * ej, x_m=x0, z0_bar=z0)
         zm, pm, _sm, p_minus, okm = _solve_terminal(engine, I_A=I0 - fd_eps_A * ej, x_m=x0, z0_bar=z0)
         col = (p_plus - p_minus) / (2.0 * fd_eps_A)
         fd_cols.append(col)
+        imp_cols.append(J_imp[:, j])
         denom = max(float(np.linalg.norm(col)), 1e-12)
         rel = float(np.linalg.norm(J_imp[:, j] - col) / denom)
         rows.append(
@@ -424,7 +474,7 @@ def _sensitivity_audit_for_point(
         }
     )
     global_fd = np.column_stack(fd_cols + [col_x])
-    global_imp = np.column_stack([J_imp, Jx_imp.reshape(3, 1)])
+    global_imp = np.column_stack(imp_cols + [Jx_imp.reshape(3)])
     rows.append(
         {
             "catheter_type": catheter,
@@ -442,6 +492,41 @@ def _sensitivity_audit_for_point(
         }
     )
     return rows, branch_rows
+
+
+def _branch_audit_for_point(
+    source_run: Path,
+    catheter: str,
+    index: int,
+    *,
+    replay_tol_mm: float,
+    accepted_only: bool,
+) -> list[dict[str, Any]]:
+    replay = _replay_point(
+        source_run,
+        catheter,
+        index,
+        accepted_only=accepted_only,
+        cold_first_tol_mm=float(replay_tol_mm),
+    )
+    ok = bool(replay["final_mismatch_mm"] <= replay_tol_mm)
+    return [
+        {
+            "catheter_type": catheter,
+            "target_index": index,
+            "trial_type": replay.get("replay_method", "accepted_history" if accepted_only else "history_replay"),
+            "status": "ok" if ok else "replay_mismatch",
+            "terminal_mismatch_mm": replay["final_mismatch_mm"],
+            "max_iter_terminal_mismatch_mm": max(
+                [row["replay_to_recorded_terminal_mm"] for row in replay["replay_rows"]] or [math.nan]
+            ),
+            "conclusion_zh": (
+                "可以重放原 IK 平衡分支。"
+                if ok
+                else "无法用历史控制量稳定重放原 IK 分支，旧结果不适合做严格分支保持差分。"
+            ),
+        }
+    ]
 
 
 def _plot_reachability(run_dir: Path, targets: list[dict[str, Any]], states: list[dict[str, Any]]) -> None:
@@ -493,6 +578,26 @@ def run_closure(args: argparse.Namespace) -> Path:
 
     sens_rows: list[dict[str, Any]] = []
     branch_rows: list[dict[str, Any]] = []
+    seen_branch_points: set[tuple[str, int]] = set()
+    for spec in args.branch_points:
+        catheter, idx_s = spec.split(":")
+        idx = int(idx_s)
+        branch_rows.extend(
+            _branch_audit_for_point(
+                source_run,
+                catheter,
+                idx,
+                replay_tol_mm=float(args.replay_tol_mm),
+                accepted_only=not bool(args.replay_all_history),
+            )
+        )
+        seen_branch_points.add((catheter, idx))
+        _write_csv(run_dir / "branch_trials.csv", branch_rows)
+
+    current_indices = [int(x) for x in str(args.current_indices).split(",") if str(x).strip()]
+    for idx in current_indices:
+        if idx < 0 or idx >= 8:
+            raise ValueError("--current-indices must contain coil indices in [0, 7]")
     for spec in args.sensitivity_points:
         catheter, idx_s = spec.split(":")
         rows, branches = _sensitivity_audit_for_point(
@@ -502,9 +607,13 @@ def run_closure(args: argparse.Namespace) -> Path:
             fd_eps_A=float(args.fd_eps_A),
             fd_eps_x_m=float(args.fd_eps_x_m),
             replay_tol_mm=float(args.replay_tol_mm),
+            current_indices=current_indices,
+            accepted_only=not bool(args.replay_all_history),
         )
         sens_rows.extend(rows)
-        branch_rows.extend(branches)
+        if (catheter, int(idx_s)) not in seen_branch_points:
+            branch_rows.extend(branches)
+            seen_branch_points.add((catheter, int(idx_s)))
         _write_csv(run_dir / "sensitivity_columns.csv", sens_rows)
         _write_csv(run_dir / "branch_trials.csv", branch_rows)
 
@@ -527,13 +636,21 @@ def run_closure(args: argparse.Namespace) -> Path:
         "branch_counts": dict(Counter(row.get("status", "") for row in branch_rows)),
     }
     (run_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    cmd_parts = [
+        f"XLA_PYTHON_CLIENT_PREALLOCATE=false {sys.executable}",
+        str(Path(__file__).resolve()),
+        f"--source-run {source_run}",
+        f"--out-root {Path(args.out_root).resolve()}",
+        *(f"--branch-point {p}" for p in args.branch_points),
+        *(f"--sensitivity-point {p}" for p in args.sensitivity_points),
+        f"--fd-eps-A {args.fd_eps_A}",
+        f"--fd-eps-x-m {args.fd_eps_x_m}",
+        f"--current-indices {args.current_indices}",
+    ]
+    if args.replay_all_history:
+        cmd_parts.append("--replay-all-history")
     (run_dir / "commands.sh").write_text(
-        "#!/usr/bin/env bash\n"
-        "set -euo pipefail\n"
-        f"XLA_PYTHON_CLIENT_PREALLOCATE=false {sys.executable} {Path(__file__).resolve()} "
-        f"--source-run {source_run} --out-root {Path(args.out_root).resolve()} "
-        + " ".join(f"--sensitivity-point {p}" for p in args.sensitivity_points)
-        + f" --fd-eps-A {args.fd_eps_A} --fd-eps-x-m {args.fd_eps_x_m}\n",
+        "#!/usr/bin/env bash\n" "set -euo pipefail\n" + " ".join(cmd_parts) + "\n",
         encoding="utf-8",
     )
     _write_record(run_dir, source_run, summary, reach_rows, sens_rows, branch_rows)
@@ -616,7 +733,8 @@ def _write_record(
             lines.append(
                 f"- {row['catheter_type']}-pt{int(row['target_index']):02d}："
                 f"全局灵敏度相对误差 {float(row['relative_error']):.3f}，状态 `{row['status']}`；"
-                f"8 个电流通道中 {current_failed} 个未通过 10% 阈值，推进量通道状态为 `{x_status}`。"
+                f"{len(current_rows)} 个已审计电流通道中 {current_failed} 个未通过 10% 阈值，"
+                f"推进量通道状态为 `{x_status}`。"
             )
     else:
         lines.append("- 本轮未执行灵敏度差分。")
@@ -653,9 +771,26 @@ def build_argparser() -> argparse.ArgumentParser:
         default=[],
         help="Point spec such as A1:12. Can be repeated.",
     )
+    parser.add_argument(
+        "--branch-point",
+        action="append",
+        dest="branch_points",
+        default=[],
+        help="Point spec such as A1:12 for branch replay only. Can be repeated.",
+    )
     parser.add_argument("--fd-eps-A", type=float, default=1e-3)
     parser.add_argument("--fd-eps-x-m", type=float, default=1e-4)
     parser.add_argument("--replay-tol-mm", type=float, default=2.0)
+    parser.add_argument(
+        "--current-indices",
+        default="0,1,2,3,4,5,6,7",
+        help="Comma-separated coil indices for finite-difference screening.",
+    )
+    parser.add_argument(
+        "--replay-all-history",
+        action="store_true",
+        help="Replay rejected states too. The default replays only accepted states.",
+    )
     return parser
 
 
