@@ -175,12 +175,17 @@ def _current_channels_from_text(text: str | None) -> list[int] | None:
     return [int(x.strip()) for x in str(text).split(",") if x.strip()]
 
 
-def _choose_channels(sens: Any, requested: list[int] | None, auto_n: int) -> list[int]:
+def _choose_channels(sensitivities: Sequence[Any], requested: list[int] | None, auto_n: int) -> list[int]:
     if requested is not None:
         return requested
-    norms = np.linalg.norm(np.asarray(sens.J_p_I, dtype=float), axis=0)
-    order = list(np.argsort(-norms))
-    return [int(i) for i in order[: max(0, int(auto_n))]]
+    selected: list[int] = []
+    for sens in sensitivities:
+        norms = np.linalg.norm(np.asarray(sens.J_p_I, dtype=float), axis=0)
+        for idx in list(np.argsort(-norms))[: max(0, int(auto_n))]:
+            idx = int(idx)
+            if idx not in selected:
+                selected.append(idx)
+    return selected
 
 
 def _audit_one_point(
@@ -276,7 +281,7 @@ def _audit_one_point(
     if not sens_by_mode:
         return sens_rows, fd_rows
 
-    channels = _choose_channels(next(iter(sens_by_mode.values())), current_channels, auto_current_channels)
+    channels = _choose_channels(list(sens_by_mode.values()), current_channels, auto_current_channels)
     x_min = float(run_config["argv"].get("x_min") or -float("inf"))
     x_max = float(run_config["argv"].get("x_max") or float("inf"))
     I_max = float(run_config.get("I_max", run_config["argv"].get("I_max", 20.0)))
@@ -334,9 +339,12 @@ def _audit_one_point(
             and back_minus_centerline_mm <= centerline_gate_mm
         )
 
+        fd_strict_ok = bool(roundtrip_ok and plus.ok and minus.ok and back_plus.ok and back_minus.ok)
         for mode, sens in sens_by_mode.items():
             jac_col = np.asarray(sens.J_p_I[:, channel] if kind == "I" else sens.J_p_x, dtype=float).reshape(3)
             abs_err_mm_per_unit = float(np.linalg.norm(jac_col - fd_col) * 1000.0)
+            fd_norm = float(np.linalg.norm(fd_col))
+            jac_norm = float(np.linalg.norm(jac_col))
             rel_err = float(np.linalg.norm(jac_col - fd_col) / max(np.linalg.norm(fd_col), 1e-12))
             fd_rows.append(
                 {
@@ -347,9 +355,13 @@ def _audit_one_point(
                     "step": step,
                     "mode": mode,
                     "fd_ok": True,
+                    "fd_valid": fd_strict_ok,
                     "roundtrip_ok": roundtrip_ok,
                     "weak_channel": weak,
                     "fd_displacement_mm": displacement_mm,
+                    "fd_norm_per_unit": fd_norm,
+                    "jac_norm_per_unit": jac_norm,
+                    "norm_ratio": float(jac_norm / max(fd_norm, 1e-12)),
                     "relative_error": rel_err,
                     "abs_error_mm_per_unit": abs_err_mm_per_unit,
                     "angle_deg": _angle_deg(jac_col, fd_col),

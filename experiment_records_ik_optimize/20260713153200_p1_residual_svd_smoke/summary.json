@@ -1,0 +1,29 @@
+{
+  "started": "2026-07-13 15:33:38",
+  "finished": "2026-07-13 15:35:05",
+  "point_count": 1,
+  "sensitivity_rows": 1,
+  "fd_rows": 3,
+  "settings": {
+    "paths": [
+      "DELIVER_TO_EXP/formal_experiments/20260713135237_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_01"
+    ],
+    "out_dir": "experiment_records_ik_optimize/20260713153200_p1_residual_svd_smoke",
+    "selector": "best_accept",
+    "current_steps_a": "0.25",
+    "x_steps_mm": "0.5",
+    "current_channels": "4,2",
+    "auto_current_channels": 2,
+    "sensitivity_modes": "residual_svd",
+    "solve_mode": "svd",
+    "ridge": 1e-10,
+    "svd_rcond": 1e-08,
+    "terminal_gate_mm": 0.25,
+    "centerline_gate_mm": 0.5,
+    "weak_displacement_mm": 0.25,
+    "max_points": 1
+  },
+  "paths": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713135237_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_01"
+  ]
+}

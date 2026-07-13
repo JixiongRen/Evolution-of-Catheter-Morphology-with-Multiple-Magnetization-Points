@@ -275,6 +275,79 @@ def _tip_sensitivity_from_linearized_stationarity(
     )
 
 
+def _tip_sensitivity_from_residual_svd(
+    *,
+    z_star_bar: Array,
+    params: SolverParams,
+    lm_stats: LMStats,
+    coil_currents: Array,
+    Jz: Array,
+    JI: Array,
+    Jx: Array,
+    B: Array,
+    svd_rcond: float,
+    compute_conditioning: bool = False,
+    weak_normE: float = 1e-1,
+    cond_warning: float = 1e8,
+    cond_bad: float = 1e10,
+    ridge_used: float = 0.0,
+) -> TipSensitivityResult:
+    """Compute terminal sensitivity by solving the residual Jacobian directly."""
+    z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
+    dp_dz = _DP_DZ_REV(z0, params)
+    U, S, Vh = jnp.linalg.svd(Jz, full_matrices=False)
+    sv_max = jnp.max(S)
+    cutoff = float(svd_rcond) * sv_max
+    keep = S > cutoff
+    inv_S = jnp.where(keep, 1.0 / S, 0.0)
+    dz_dc = -(Vh.T @ (inv_S[:, None] * (U.T @ B)))
+    Jp_all = dp_dz @ dz_dc
+
+    sv_min = float(jnp.min(S))
+    sv_max_val = float(sv_max)
+    effective_rank = int(jnp.sum(keep))
+    condition_number = None
+    if bool(compute_conditioning):
+        condition_number = float(sv_max / jnp.maximum(jnp.min(S), jnp.finfo(S.dtype).tiny))
+
+    E = jnp.asarray(lm_stats.E_star, dtype=jnp.float64)
+    Jt = jnp.transpose(Jz)
+    stationarity_norm = float(jnp.linalg.norm(Jt @ E))
+    normE = float(getattr(lm_stats, "normE", jnp.linalg.norm(E)))
+    status = _classify_conditioning(
+        normE=normE,
+        stationarity_norm=stationarity_norm,
+        condition_number=condition_number,
+        weak_normE=float(weak_normE),
+        cond_warning=float(cond_warning),
+        cond_bad=float(cond_bad),
+    )
+    if effective_rank < int(Jz.shape[1]):
+        status = "truncated_svd" if status == "ok" else f"{status}|truncated_svd"
+
+    I0 = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,)
+    nI = int(I0.shape[0])
+    return TipSensitivityResult(
+        p_tip_dim=_p_of_z_params(z0, params),
+        J_p_I=Jp_all[:, :nI],
+        J_p_x=Jp_all[:, nI],
+        J_E_z=Jz,
+        J_E_I=JI,
+        J_E_x=Jx[:, 0],
+        lam=0.0,
+        stationarity_norm=float(stationarity_norm),
+        condition_number=condition_number,
+        status=str(status),
+        method="dense_implicit_residual_svd",
+        sv_min=sv_min,
+        sv_max=sv_max_val,
+        effective_rank=effective_rank,
+        lm_lam=float(lm_stats.lam),
+        ridge_used=float(ridge_used),
+        solve_mode="residual_svd",
+    )
+
+
 def compute_tip_sensitivities_via_lm_adjoint(
     *,
     z_star_bar: Array,
@@ -319,6 +392,8 @@ def compute_tip_sensitivities_via_lm_adjoint(
             the historical damped LM response, ``"gn_svd"`` removes the solver
             damping and solves the Gauss-Newton stationarity approximation, and
             ``"stationarity_exact"`` differentiates ``Jz.T @ E = 0`` directly.
+            ``"residual_svd"`` solves the rectangular residual Jacobian system
+            directly and avoids squaring the condition number.
         solve_mode: Linear solver for the stationarity system, either
             ``"solve"`` or ``"svd"``.
         svd_rcond: Relative singular-value cutoff used when ``solve_mode`` is
@@ -353,8 +428,11 @@ def compute_tip_sensitivities_via_lm_adjoint(
     nZ = H.shape[0]
     extra_ridge = 0.0 if ridge is None else float(ridge)
     sensitivity_mode = str(sensitivity_mode)
-    if sensitivity_mode not in ("solver_response", "gn_svd", "stationarity_exact"):
-        raise ValueError("sensitivity_mode must be 'solver_response', 'gn_svd', or 'stationarity_exact'")
+    if sensitivity_mode not in ("solver_response", "gn_svd", "stationarity_exact", "residual_svd"):
+        raise ValueError(
+            "sensitivity_mode must be 'solver_response', 'gn_svd', "
+            "'stationarity_exact', or 'residual_svd'"
+        )
 
     if sensitivity_mode == "solver_response":
         lam_used = float(lm_stats.lam) + extra_ridge
@@ -368,6 +446,23 @@ def compute_tip_sensitivities_via_lm_adjoint(
         B_used = Jt @ B
         method = "dense_implicit_gn_without_solver_damping"
         ridge_used = extra_ridge
+    elif sensitivity_mode == "residual_svd":
+        return _tip_sensitivity_from_residual_svd(
+            z_star_bar=z0,
+            params=params,
+            lm_stats=lm_stats,
+            coil_currents=I0,
+            Jz=Jz,
+            JI=JI,
+            Jx=Jx,
+            B=B,
+            svd_rcond=float(svd_rcond),
+            compute_conditioning=compute_conditioning,
+            weak_normE=float(weak_normE),
+            cond_warning=float(cond_warning),
+            cond_bad=float(cond_bad),
+            ridge_used=extra_ridge,
+        )
     else:
         Gz, GI, Gx = _JAC_G_WRT_ZIX_FWD(z0, I0, L1, params)
         GI = jnp.asarray(GI, dtype=jnp.float64)
