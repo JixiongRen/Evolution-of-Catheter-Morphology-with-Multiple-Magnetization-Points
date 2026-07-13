@@ -154,6 +154,39 @@ def _replay(
     )
 
 
+def _replay_segmented(
+    engine: ForwardKinematicsEngine,
+    *,
+    I_start_A: np.ndarray,
+    x_start_m: float,
+    I_end_A: np.ndarray,
+    x_end_m: float,
+    z0_bar: np.ndarray,
+    segments: int,
+    include_jacobian: bool,
+) -> ReplayResult:
+    """Replay a control change through several warm-started substeps."""
+
+    n_segments = max(1, int(segments))
+    z_current = np.asarray(z0_bar, dtype=float)
+    result: ReplayResult | None = None
+    for idx in range(1, n_segments + 1):
+        alpha = float(idx) / float(n_segments)
+        I_step = np.asarray(I_start_A, dtype=float) + alpha * (np.asarray(I_end_A, dtype=float) - np.asarray(I_start_A, dtype=float))
+        x_step = float(x_start_m) + alpha * (float(x_end_m) - float(x_start_m))
+        result = _replay(
+            engine,
+            I_A=I_step,
+            x_m=x_step,
+            z0_bar=z_current,
+            include_jacobian=bool(include_jacobian and idx == n_segments),
+        )
+        z_current = np.asarray(result.z_bar)
+    if result is None:
+        raise RuntimeError("segmented replay did not execute")
+    return result
+
+
 def _centerline_error_mm(a: np.ndarray, b: np.ndarray) -> float:
     if a.shape != b.shape:
         return float("inf")
@@ -203,6 +236,7 @@ def _audit_one_point(
     svd_rcond: float,
     spectral_filter: str,
     spectral_damping: float,
+    roundtrip_segments: int,
     terminal_gate_mm: float,
     centerline_gate_mm: float,
     weak_displacement_mm: float,
@@ -345,10 +379,46 @@ def _audit_one_point(
             )
             continue
 
-        plus = _replay(engine, I_A=I_plus, x_m=x_plus, z0_bar=np.asarray(base.z_bar), include_jacobian=False)
-        minus = _replay(engine, I_A=I_minus, x_m=x_minus, z0_bar=np.asarray(base.z_bar), include_jacobian=False)
-        back_plus = _replay(engine, I_A=I_base, x_m=x_base, z0_bar=np.asarray(plus.z_bar), include_jacobian=False)
-        back_minus = _replay(engine, I_A=I_base, x_m=x_base, z0_bar=np.asarray(minus.z_bar), include_jacobian=False)
+        plus = _replay_segmented(
+            engine,
+            I_start_A=I_base,
+            x_start_m=x_base,
+            I_end_A=I_plus,
+            x_end_m=x_plus,
+            z0_bar=np.asarray(base.z_bar),
+            segments=roundtrip_segments,
+            include_jacobian=False,
+        )
+        minus = _replay_segmented(
+            engine,
+            I_start_A=I_base,
+            x_start_m=x_base,
+            I_end_A=I_minus,
+            x_end_m=x_minus,
+            z0_bar=np.asarray(base.z_bar),
+            segments=roundtrip_segments,
+            include_jacobian=False,
+        )
+        back_plus = _replay_segmented(
+            engine,
+            I_start_A=I_plus,
+            x_start_m=x_plus,
+            I_end_A=I_base,
+            x_end_m=x_base,
+            z0_bar=np.asarray(plus.z_bar),
+            segments=roundtrip_segments,
+            include_jacobian=False,
+        )
+        back_minus = _replay_segmented(
+            engine,
+            I_start_A=I_minus,
+            x_start_m=x_minus,
+            I_end_A=I_base,
+            x_end_m=x_base,
+            z0_bar=np.asarray(minus.z_bar),
+            segments=roundtrip_segments,
+            include_jacobian=False,
+        )
         fd_col = (plus.terminal_m - minus.terminal_m) / (2.0 * step)
         displacement_mm = float(np.linalg.norm(fd_col * step) * 1000.0)
         weak = bool(displacement_mm < weak_displacement_mm)
@@ -383,6 +453,7 @@ def _audit_one_point(
                     "svd_rcond": float(svd_rcond),
                     "spectral_filter": getattr(sens, "spectral_filter", "none"),
                     "spectral_damping": float(spectral_damping),
+                    "roundtrip_segments": int(roundtrip_segments),
                     "spectral_lambda": getattr(sens, "spectral_lambda", ""),
                     "spectral_cutoff": getattr(sens, "spectral_cutoff", ""),
                     "retained_spectral_energy": getattr(sens, "retained_spectral_energy", ""),
@@ -443,6 +514,7 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--svd-rcond", type=float, default=1e-10)
     parser.add_argument("--spectral-filter", choices=("hard", "tikhonov", "hybrid"), default="hard")
     parser.add_argument("--spectral-damping", type=float, default=0.0)
+    parser.add_argument("--roundtrip-segments", type=int, default=1, help="Number of warm-started substeps used for perturbation and roundtrip replay.")
     parser.add_argument("--terminal-gate-mm", type=float, default=0.25)
     parser.add_argument("--centerline-gate-mm", type=float, default=0.5)
     parser.add_argument("--weak-displacement-mm", type=float, default=0.25)
@@ -481,6 +553,7 @@ def main(argv: list[str] | None = None) -> None:
             svd_rcond=float(args.svd_rcond),
             spectral_filter=str(args.spectral_filter),
             spectral_damping=float(args.spectral_damping),
+            roundtrip_segments=int(args.roundtrip_segments),
             terminal_gate_mm=float(args.terminal_gate_mm),
             centerline_gate_mm=float(args.centerline_gate_mm),
             weak_displacement_mm=float(args.weak_displacement_mm),

@@ -1,0 +1,10 @@
+{
+  "row_count": 39,
+  "classification_counts": {
+    "回环失败": 4,
+    "灵敏度偏差": 9,
+    "弱响应": 22,
+    "通过": 4
+  },
+  "figure": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260713170518_p1_failed_channel_smallstep_roundtrip/failed_channel_audit_summary.png"
+}
