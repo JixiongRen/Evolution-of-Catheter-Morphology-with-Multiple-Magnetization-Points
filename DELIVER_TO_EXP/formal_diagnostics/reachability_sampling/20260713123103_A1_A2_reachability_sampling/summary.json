@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-13 12:44:42",
+    "source_run": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713063500_A1_A2_5mm_supervised_IK_no_gravity_merged_complete40",
+    "git_commit": "3ee47b16157a26273572f1c14f74bc06ba401b3f",
+    "python": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+    "jax": {
+      "devices": [
+        "cuda:0"
+      ],
+      "platforms": [
+        "gpu"
+      ],
+      "has_gpu": true
+    }
+  },
+  "sample_count": 15,
+  "sample_type_counts": {
+    "global_halton": 4,
+    "local_uncovered": 11
+  },
+  "target_conclusion_counts": {
+    "边界可达或优化不足": 14,
+    "采样或历史证据可达": 11,
+    "采样或历史证据近可达": 4,
+    "采样仍未覆盖": 11
+  },
+  "by_catheter": {
+    "A1": {
+      "边界可达或优化不足": 6,
+      "采样或历史证据可达": 7,
+      "采样或历史证据近可达": 3,
+      "采样仍未覆盖": 4
+    },
+    "A2": {
+      "边界可达或优化不足": 8,
+      "采样仍未覆盖": 7,
+      "采样或历史证据可达": 4,
+      "采样或历史证据近可达": 1
+    }
+  }
+}

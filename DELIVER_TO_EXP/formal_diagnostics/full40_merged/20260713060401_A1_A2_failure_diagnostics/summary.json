@@ -319,6 +319,38 @@
         "不可信": 1
       },
       "interpretation_zh": "全 40 点均已给出 D1 状态标签；其中直接中心差分只覆盖代表点，其余点根据分支重放可解释性分类。"
+    },
+    "d4_independent_sampling": {
+      "source": "DELIVER_TO_EXP/formal_diagnostics/reachability_sampling/20260713123103_A1_A2_reachability_sampling",
+      "sample_count": 15,
+      "sample_type_counts": {
+        "全局低差异采样": 4,
+        "历史未覆盖点局部加密采样": 11
+      },
+      "fk_quality_counts": {
+        "GOOD": 15
+      },
+      "target_conclusion_counts": {
+        "边界可达或优化不足": 14,
+        "采样或历史证据可达": 11,
+        "采样或历史证据近可达": 4,
+        "采样仍未覆盖": 11
+      },
+      "by_catheter": {
+        "A1": {
+          "边界可达或优化不足": 6,
+          "采样或历史证据可达": 7,
+          "采样或历史证据近可达": 3,
+          "采样仍未覆盖": 4
+        },
+        "A2": {
+          "边界可达或优化不足": 8,
+          "采样仍未覆盖": 7,
+          "采样或历史证据可达": 4,
+          "采样或历史证据近可达": 1
+        }
+      },
+      "interpretation_zh": "新增小规模独立采样支持经验可达性分层，但不能证明严格物理不可达；采样仍未覆盖的点需要更密集采样、多初值和反向遍历。"
     }
   }
 }

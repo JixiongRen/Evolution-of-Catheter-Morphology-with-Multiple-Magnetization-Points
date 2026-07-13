@@ -56,21 +56,22 @@
 
 ## 七、已生成文件
 
-- `diagnostic_summary.csv`：每个点的主因、证据和下一步任务。
+- `diagnostic_summary.csv`：40 个点的主因、证据等级、可信度和下一步任务。
 - `endpoint_convention_audit.csv`：末端几何约定和目标函数错配审计。
 - `trust_region_audit.csv`：历史预测下降、真实下降、阻尼和步长记录。
 - `implicit_sensitivity_log_summary.csv`：历史记录中的隐式灵敏度状态摘要。
-- `sensitivity_columns.csv`：D1 中心差分灵敏度审计占位文件；本轮已完成 D0 门禁和历史轨迹审计，D1/D3/D4 尚未执行，但已不再受 D0 阻断。
-- `branch_trials.csv`：D3 多初值与分支诊断占位文件；本轮已完成 D0 门禁和历史轨迹审计，D1/D3/D4 尚未执行，但已不再受 D0 阻断。
-- `reachability_samples.npz`：D4 经验可达图占位文件；本轮已完成 D0 门禁和历史轨迹审计，D1/D3/D4 尚未执行，但已不再受 D0 阻断。
-- `runtime_environment.json`：当前运行环境和设备信息。
+- `sensitivity_columns.csv`：40 个点的 D1 灵敏度状态标签。代表点完成分支保持中心差分，其余点按分支可复现性标注可审计性。
+- `branch_trials.csv`：D3 分支重放筛查索引。完整重放结果位于 `DELIVER_TO_EXP/formal_diagnostics/closure_branch_full/20260713070419_A1_A2_diagnostic_closure`。
+- `reachability_samples.npz`：历史轨迹经验可达集。
+- `runtime_environment.json`：运行环境和设备信息。
 - `*_error_by_angle.png`：误差随圆周角度变化。
 - `endpoint_convention_representative.png`：代表点末端约定冲突图。
 - `root_cause_distribution.png`：主因分布图。
+- `final_diagnostic_conclusion.md`：最终诊断结论。
 
 ## 八、下一步建议
 
-建议下一步只针对本轮代表点进入 D1/D2/D3：先做真实末端中心差分灵敏度审计，再做局部预测审计和多初值分支诊断；暂不扩大到全 40 点，避免在根因未定位前消耗大量算力。
+建议下一轮以“保存完整平衡状态的 IK 重跑”为主线。每个接受状态必须保存平衡状态、控制量、求解器尺度、参数哈希、真实末端和柔性末端。A1 优先修复外层信赖域、回溯和电流弱通道正则化；A2 优先修复隐式灵敏度链和病态正则化。对采样仍未覆盖点，不应直接判定物理不可达，应先做更密集的控制空间采样、多初值和反向遍历。
 
 ## 九、闭环补充证据
 
@@ -97,3 +98,15 @@
 3. 该结果说明旧实验记录存在明显分支路径依赖，且没有保存完整平衡状态 `z_star`；因此不能对所有历史点都做低成本严格分支保持灵敏度审计。
 4. 下一轮实验必须在每个接受状态保存平衡状态、尺度和参数哈希，否则灵敏度诊断会被“分支无法复现”污染。
 5. `sensitivity_columns.csv` 已更新为全 40 点 D1 状态表：18 点可审计但未直接差分，19 点当前历史记录下无物理意义，2 点部分可信，1 点不可信。
+
+已补充 D4 独立可达性采样，输出位于：
+
+- `DELIVER_TO_EXP/formal_diagnostics/reachability_sampling/20260713123103_A1_A2_reachability_sampling`
+
+补充结论：
+
+1. 新增 15 个控制样本，其中 4 个为全局低差异采样，11 个为历史未覆盖点局部加密采样。
+2. 所有新增样本均使用 GPU 运行，FK 平衡分类均为 `GOOD`。
+3. A1 的 D4 分类为：7 点有 5 mm 内可达证据、3 点近可达、6 点边界可达或优化不足、4 点采样仍未覆盖。
+4. A2 的 D4 分类为：4 点有 5 mm 内可达证据、1 点近可达、8 点边界可达或优化不足、7 点采样仍未覆盖。
+5. 该结果不能证明严格物理不可达，但能说明：大量失败点仍应优先归因于外层优化、灵敏度和分支管理问题，而不是导管天然无法到达。
