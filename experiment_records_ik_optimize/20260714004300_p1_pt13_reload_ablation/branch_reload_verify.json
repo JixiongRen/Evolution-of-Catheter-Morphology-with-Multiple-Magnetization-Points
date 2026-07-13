@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "rows": [
+    {
+      "eval_id": "eval_000000",
+      "phase": "init",
+      "iter": 0,
+      "npz_path": "states/eval_000000_init_iter_0000.npz",
+      "terminal_reload_error_mm": 0.0,
+      "centerline_reload_max_error_mm": 0.0,
+      "centerline_shape_match": true,
+      "point_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714004204_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13",
+      "ok": true
+    },
+    {
+      "eval_id": "eval_000001",
+      "phase": "final",
+      "iter": 1,
+      "npz_path": "states/eval_000001_final_iter_0001.npz",
+      "terminal_reload_error_mm": 0.0,
+      "centerline_reload_max_error_mm": 0.0,
+      "centerline_shape_match": true,
+      "point_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714004204_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13",
+      "ok": true
+    },
+    {
+      "eval_id": "eval_000000",
+      "phase": "init",
+      "iter": 0,
+      "npz_path": "states/eval_000000_init_iter_0000.npz",
+      "terminal_reload_error_mm": 0.0,
+      "centerline_reload_max_error_mm": 0.0,
+      "centerline_shape_match": true,
+      "point_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714004301_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13",
+      "ok": true
+    },
+    {
+      "eval_id": "eval_000001",
+      "phase": "final",
+      "iter": 1,
+      "npz_path": "states/eval_000001_final_iter_0001.npz",
+      "terminal_reload_error_mm": 0.0,
+      "centerline_reload_max_error_mm": 0.0,
+      "centerline_shape_match": true,
+      "point_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714004301_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13",
+      "ok": true
+    },
+    {
+      "eval_id": "eval_000000",
+      "phase": "init",
+      "iter": 0,
+      "npz_path": "states/eval_000000_init_iter_0000.npz",
+      "terminal_reload_error_mm": 0.0,
+      "centerline_reload_max_error_mm": 0.0,
+      "centerline_shape_match": true,
+      "point_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714004432_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13",
+      "ok": true
+    },
+    {
+      "eval_id": "eval_000001",
+      "phase": "final",
+      "iter": 1,
+      "npz_path": "states/eval_000001_final_iter_0001.npz",
+      "terminal_reload_error_mm": 0.0,
+      "centerline_reload_max_error_mm": 0.0,
+      "centerline_shape_match": true,
+      "point_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714004432_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13",
+      "ok": true
+    },
+    {
+      "eval_id": "eval_000000",
+      "phase": "init",
+      "iter": 0,
+      "npz_path": "states/eval_000000_init_iter_0000.npz",
+      "terminal_reload_error_mm": 0.0,
+      "centerline_reload_max_error_mm": 0.0,
+      "centerline_shape_match": true,
+      "point_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714004749_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13",
+      "ok": true
+    },
+    {
+      "eval_id": "eval_000001",
+      "phase": "final",
+      "iter": 1,
+      "npz_path": "states/eval_000001_final_iter_0001.npz",
+      "terminal_reload_error_mm": 0.0,
+      "centerline_reload_max_error_mm": 0.0,
+      "centerline_shape_match": true,
+      "point_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714004749_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13",
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "rows": [
+    {
+      "case": "cold_start",
+      "run_dir": "DELIVER_TO_EXP/formal_experiments/20260714004204_A1_A2_5mm_supervised_IK_no_gravity",
+      "err_true_mm": 108.85236765606943,
+      "cls": "GOOD",
+      "stop_reason": "max_outer_iter",
+      "runtime_platform": "gpu",
+      "initial_branch_state_enabled": false,
+      "initial_branch_state_hash": null,
+      "warm_start_hash": "1bb69dd0896038634b16b100b9dc7ac02a3e5bc0dd45e4bab06cdb3acc768c6a",
+      "initial_branch_I_delta_inf_A": null,
+      "initial_branch_x_delta_abs_m": null
+    },
+    {
+      "case": "control_only",
+      "run_dir": "DELIVER_TO_EXP/formal_experiments/20260714004301_A1_A2_5mm_supervised_IK_no_gravity",
+      "err_true_mm": 176.5645610252632,
+      "cls": "GOOD",
+      "stop_reason": "max_outer_iter",
+      "runtime_platform": "gpu",
+      "initial_branch_state_enabled": false,
+      "initial_branch_state_hash": null,
+      "warm_start_hash": "ea0d8cc287ca2f41a140888908ee08242bb8eba25f83280a02ae771bfd7bef20",
+      "initial_branch_I_delta_inf_A": null,
+      "initial_branch_x_delta_abs_m": null
+    },
+    {
+      "case": "state_only",
+      "run_dir": "DELIVER_TO_EXP/formal_experiments/20260714004432_A1_A2_5mm_supervised_IK_no_gravity",
+      "err_true_mm": 99.02317597492137,
+      "cls": "GOOD",
+      "stop_reason": "max_outer_iter",
+      "runtime_platform": "gpu",
+      "initial_branch_state_enabled": true,
+      "initial_branch_state_hash": "a53053354c540a304ae01cfd45658ca0acfbcba192f19b92b06d68391d1a32fa",
+      "warm_start_hash": "f782fc7c782db26c39f6ff27b23b2a958530fd9a39f8c155ba32e510f0319a84",
+      "initial_branch_I_delta_inf_A": 9.82618724371671,
+      "initial_branch_x_delta_abs_m": 0.028798013439901557
+    },
+    {
+      "case": "control_and_state",
+      "run_dir": "DELIVER_TO_EXP/formal_experiments/20260714004749_A1_A2_5mm_supervised_IK_no_gravity",
+      "err_true_mm": 5.778239956613025,
+      "cls": "GOOD",
+      "stop_reason": "reached_10mm_only",
+      "runtime_platform": "gpu",
+      "initial_branch_state_enabled": true,
+      "initial_branch_state_hash": "a53053354c540a304ae01cfd45658ca0acfbcba192f19b92b06d68391d1a32fa",
+      "warm_start_hash": "a53053354c540a304ae01cfd45658ca0acfbcba192f19b92b06d68391d1a32fa",
+      "initial_branch_I_delta_inf_A": 3.3884006711559778e-12,
+      "initial_branch_x_delta_abs_m": 9.844902670863576e-14
+    }
+  ]
+}
