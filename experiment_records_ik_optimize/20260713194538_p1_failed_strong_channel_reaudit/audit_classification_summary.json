@@ -1,0 +1,9 @@
+{
+  "audit_dir": "experiment_records_ik_optimize/20260713194538_p1_failed_strong_channel_reaudit",
+  "valid_scope": "仅 last_accept 强通道复审；best_accept 未完整产出，不能作为有效证据。",
+  "classification_counts": {
+    "分支不稳或审计窗口跨分支": 4,
+    "弱响应但方向基本可用": 11,
+    "弱响应且相对误差偏大": 5
+  }
+}
