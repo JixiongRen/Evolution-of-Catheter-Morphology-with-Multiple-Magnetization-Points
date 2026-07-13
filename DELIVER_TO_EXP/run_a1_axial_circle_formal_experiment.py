@@ -668,6 +668,38 @@ def _plot_phase_overview(run_root: Path, rows: list[dict[str, Any]], targets: li
     return str(out.resolve())
 
 
+def _experiment_type(force_formal_20: bool, target_count: int) -> str:
+    """Classify the evidence level from the actual target coverage."""
+    if force_formal_20 and target_count == 20:
+        return "formal_20pt"
+    if force_formal_20 and target_count == 1:
+        return "smoke"
+    if force_formal_20 and 1 < target_count <= 10:
+        return "small_regression"
+    if force_formal_20 and 10 < target_count < 20:
+        return "partial_regression"
+    return "gate_or_diagnostic"
+
+
+def _forced_phase_name(experiment_type: str) -> str:
+    """Return the per-target phase name for forced runs."""
+    if experiment_type == "formal_20pt":
+        return "formal_20pt"
+    return experiment_type
+
+
+def _experiment_type_zh(experiment_type: str) -> str:
+    """Return a Chinese label for the experiment type."""
+    labels = {
+        "smoke": "烟测",
+        "small_regression": "小回归",
+        "partial_regression": "部分点回归",
+        "formal_20pt": "正式20点回归",
+        "gate_or_diagnostic": "门控或诊断实验",
+    }
+    return labels.get(experiment_type, str(experiment_type))
+
+
 def _run_catheter(
     *,
     run_root: Path,
@@ -681,6 +713,7 @@ def _run_catheter(
     x_search_max_m: float,
     enable_gravity: bool,
     force_formal_20: bool,
+    experiment_type: str,
     eps_p_m: float,
     sensitivity_config: dict[str, Any],
     p2_config: dict[str, Any],
@@ -726,19 +759,25 @@ def _run_catheter(
     gate_success = sum(1 for row in gate_rows if row["success_eps"])
     formal_rows: list[dict[str, Any]] = []
     diag_rows: list[dict[str, Any]] = []
-    decision = "formal_20pt_forced" if force_formal_20 else ("formal_20pt" if gate_success >= 3 else "diagnostic_8pt")
+    decision = (
+        f"{experiment_type}_forced"
+        if force_formal_20
+        else ("formal_20pt" if gate_success >= 3 else "diagnostic_8pt")
+    )
 
-    if decision in ("formal_20pt", "formal_20pt_forced"):
+    if decision in ("formal_20pt", "formal_20pt_forced") or force_formal_20:
         warm_I: list[float] | None = initial_I_A_override
         warm_x = initial_x_m
         warm_source = "manual_initial_state" if initial_I_A_override is not None else "cold_start_formal"
+        phase_name = _forced_phase_name(experiment_type)
+        phase_dir = catheter_root / phase_name
         for target in targets:
             row = _run_one_target(
                 catheter_key=catheter_key,
                 cfg=cfg,
                 target=target,
-                phase_dir=catheter_root / "formal_20pt",
-                phase="formal_20pt",
+                phase_dir=phase_dir,
+                phase=phase_name,
                 initial_I_A=warm_I,
                 initial_x_m=warm_x,
                 x_search_max_m=x_search_max_m,
@@ -754,7 +793,7 @@ def _run_catheter(
             formal_rows.append(row)
             rows.append(row)
             print(
-                f"{catheter_key} formal pt_{row['target_index']:02d}: true_err={row['err_true_mm']:.3f} mm "
+                f"{catheter_key} {phase_name} pt_{row['target_index']:02d}: true_err={row['err_true_mm']:.3f} mm "
                 f"eps={row['success_eps']} cls={row['cls']} wall={row['wall_s']:.1f}s",
                 flush=True,
             )
@@ -841,13 +880,19 @@ def _summarize_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
 def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], results: dict[str, Any]) -> None:
     lines: list[str] = []
     threshold_mm = float(metadata["eps_p_m"]) * 1000.0
-    lines.append(f"# A1/A2 单点磁化导管 {threshold_mm:.1f} mm 有监督 IK 正式实验报告")
+    experiment_type = str(metadata.get("experiment_type", "gate_or_diagnostic"))
+    experiment_type_zh = _experiment_type_zh(experiment_type)
+    lines.append(f"# A1/A2 单点磁化导管 {threshold_mm:.1f} mm 有监督 IK {experiment_type_zh}报告")
     lines.append("")
     lines.append(f"- 实验目录：`{run_root}`")
     lines.append(f"- 目标圆：x = {metadata['target_center_m'][0] * 1000:.1f} mm，半径 = {metadata['target_radius_m'] * 1000:.1f} mm，20 点均匀采样。")
     lines.append("- 约束口径：只约束真实刚性远端末端位置，不约束末端姿态。")
     lines.append(f"- 成功阈值：真实末端位置误差不超过 {threshold_mm:.1f} mm；同时保留 3 mm、5 mm、10 mm 参考统计。")
     lines.append(f"- git 版本：`{metadata['git_commit']}`")
+    lines.append(
+        f"- 实验类型：{experiment_type_zh}；本批次实际运行 {metadata['target_count']} 个目标点，"
+        f"请求点号为 {metadata['requested_target_indices']}。"
+    )
     lines.append("")
     lines.append("## 实验设置")
     lines.append("")
@@ -875,13 +920,16 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
     lines.append("- A1：末端单磁体沿局部 z 轴轴向磁化。")
     lines.append("- A2：末端单磁体沿局部 x 轴径向磁化。")
     if metadata.get("force_formal_20"):
-        lines.append("- 运行规则：本轮按用户要求强制执行完整 20 点正式圆周实验，不使用门控结果阻断。")
+        if experiment_type == "formal_20pt":
+            lines.append("- 运行规则：本轮强制执行完整 20 点正式圆周实验，不使用门控结果阻断。")
+        else:
+            lines.append("- 运行规则：本轮强制执行指定目标点子集，不作为正式 20 点实验结论。")
     else:
         lines.append(f"- 门控规则：上、下、左、右 4 个代表点中至少 3 点达到 {threshold_mm:.1f} mm，才进入该导管 20 点正式实验；否则执行 8 点可达性诊断。")
     lines.append("")
     lines.append("## 总览结果")
     lines.append("")
-    lines.append(f"| 导管 | 门控阈值成功数 | 决策 | 正式/诊断点数 | {threshold_mm:.1f}mm 成功数 | 3mm 成功数 | 5mm 成功数 | 10mm 成功数 | 最大真实误差(mm) | 平均真实误差(mm) | 总耗时(s) |")
+    lines.append(f"| 导管 | 门控阈值成功数 | 决策 | 本批次运行点数 | {threshold_mm:.1f}mm 成功数 | 3mm 成功数 | 5mm 成功数 | 10mm 成功数 | 最大真实误差(mm) | 平均真实误差(mm) | 总耗时(s) |")
     lines.append("|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|")
     catheter_keys = list(metadata.get("catheter_keys", ["A1", "A2"]))
     for key in catheter_keys:
@@ -902,11 +950,17 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         lines.append(f"### {key}")
         lines.append("")
         if metadata.get("force_formal_20"):
-            lines.append("- 门控结果：本轮强制完整 20 点，未使用门控阻断。")
+            if experiment_type == "formal_20pt":
+                lines.append("- 门控结果：本轮强制完整 20 点，未使用门控阻断。")
+            else:
+                lines.append("- 门控结果：本轮运行指定目标点子集，未使用门控阻断。")
         else:
             lines.append(f"- 门控结果：{item['gate_success_count_eps']}/{item['gate_total']} 点达到 {threshold_mm:.1f} mm。")
-        if item["decision"] in ("formal_20pt", "formal_20pt_forced", "formal_20pt_forced_resumed"):
-            lines.append("- 决策：已执行 20 点正式圆周实验。")
+        if item["formal_rows"]:
+            if experiment_type == "formal_20pt":
+                lines.append("- 决策：已执行 20 点正式圆周实验。")
+            else:
+                lines.append(f"- 决策：已执行{experiment_type_zh}，不得作为正式 20 点统计。")
             rows = item["formal_rows"]
         else:
             lines.append("- 决策：门控未通过，未执行 20 点正式实验，已执行 8 点可达性诊断。")
@@ -936,10 +990,12 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
 def _write_output_index(run_root: Path, metadata: dict[str, Any], results: dict[str, Any]) -> None:
     """Write a concise artifact index for the delivery folder."""
     threshold_mm = float(metadata["eps_p_m"]) * 1000.0
+    experiment_type_zh = _experiment_type_zh(str(metadata.get("experiment_type", "gate_or_diagnostic")))
     lines = [
         "# 输出索引",
         "",
-        f"本目录为 A1/A2 单点磁化导管 {threshold_mm:.1f} mm 有监督 IK 实验输出。",
+        f"本目录为 A1/A2 单点磁化导管 {threshold_mm:.1f} mm 有监督 IK {experiment_type_zh}输出。",
+        f"本批次实际运行 {metadata.get('target_count')} 个目标点，请求点号为 {metadata.get('requested_target_indices')}。",
         "",
         "## 核心文件",
         "",
@@ -1044,6 +1100,7 @@ def main(argv: list[str] | None = None) -> None:
         requested_indices = [int(v.strip()) for v in str(args.target_indices).split(",") if v.strip()]
         target_by_index = {int(item["index"]): item for item in targets}
         targets = [target_by_index[idx] for idx in requested_indices]
+    experiment_type = _experiment_type(bool(args.force_formal_20), len(targets))
     catheter_keys = [v.strip() for v in str(args.catheters).split(",") if v.strip()]
     for key in catheter_keys:
         if key not in config["catheter_types"]:
@@ -1101,6 +1158,8 @@ def main(argv: list[str] | None = None) -> None:
         "target_center_m": list(center_m),
         "target_radius_m": radius_m,
         "target_count": len(targets),
+        "experiment_type": experiment_type,
+        "experiment_type_zh": _experiment_type_zh(experiment_type),
         "catheter_keys": catheter_keys,
         "requested_target_indices": [int(item["index"]) for item in targets],
         "gate_indices": gate_indices,
@@ -1177,6 +1236,7 @@ def main(argv: list[str] | None = None) -> None:
             x_search_max_m=x_search_max_m,
             enable_gravity=enable_gravity,
             force_formal_20=bool(args.force_formal_20),
+            experiment_type=experiment_type,
             eps_p_m=eps_p_m,
             sensitivity_config=sensitivity_config,
             p2_config=p2_config,
