@@ -53,6 +53,17 @@ _JAC_E_WRT_Z_IX_FWD = jax.jit(jax.jacfwd(residual_bar_zIx, argnums=0))
 _JAC_E_WRT_IX_FWD = jax.jit(jax.jacfwd(residual_bar_zIx, argnums=(1, 2)))
 
 
+def _stationarity_zix(z_bar: Array, coil_currents: Array, L1_dim: Array, params_static: SolverParams) -> Array:
+    """Return the least-squares stationarity vector ``Jz.T @ E``."""
+    residual_fn = lambda zz: residual_bar_zIx(zz, coil_currents, L1_dim, params_static)
+    E = residual_fn(z_bar)
+    Jz = jax.jacfwd(residual_fn)(z_bar)
+    return jnp.transpose(Jz) @ E
+
+
+_JAC_G_WRT_ZIX_FWD = jax.jit(jax.jacfwd(_stationarity_zix, argnums=(0, 1, 2)))
+
+
 def _p_of_z_params(z_bar: Array, params: SolverParams) -> Array:
     """Helper for differentiating the canonical IK terminal point wrt z."""
     return extract_terminal_p_dim(z_bar, M_list=params.M_list, scales=params.scales)
@@ -111,6 +122,12 @@ class TipSensitivityResult:
     condition_number: Optional[float]
     status: str
     method: str
+    sv_min: Optional[float] = None
+    sv_max: Optional[float] = None
+    effective_rank: Optional[int] = None
+    lm_lam: Optional[float] = None
+    ridge_used: float = 0.0
+    solve_mode: str = "solve"
 
 
 @dataclass
@@ -158,6 +175,106 @@ def _classify_conditioning(
     return "ok"
 
 
+def _linear_solve_with_svd_fallback(
+    H: Array,
+    rhs: Array,
+    *,
+    solve_mode: str,
+    svd_rcond: float,
+) -> Tuple[Array, Optional[float], Optional[float], Optional[int], Optional[float], str]:
+    """Solve ``H X = rhs`` and return spectrum diagnostics."""
+    solve_mode = str(solve_mode)
+    if solve_mode not in ("solve", "svd"):
+        raise ValueError("solve_mode must be 'solve' or 'svd'")
+    if solve_mode == "solve":
+        X = jnp.linalg.solve(H, rhs)
+        return X, None, None, None, None, "solve"
+
+    U, S, Vh = jnp.linalg.svd(H, full_matrices=False)
+    sv_max = jnp.max(S)
+    cutoff = float(svd_rcond) * sv_max
+    keep = S > cutoff
+    inv_S = jnp.where(keep, 1.0 / S, 0.0)
+    X = Vh.T @ (inv_S[:, None] * (U.T @ rhs))
+    sv_min_val = float(jnp.min(S))
+    sv_max_val = float(sv_max)
+    effective_rank = int(jnp.sum(keep))
+    condition_number = float(sv_max / jnp.maximum(jnp.min(S), jnp.finfo(S.dtype).tiny))
+    return X, sv_min_val, sv_max_val, effective_rank, condition_number, "svd"
+
+
+def _tip_sensitivity_from_linearized_stationarity(
+    *,
+    z_star_bar: Array,
+    params: SolverParams,
+    lm_stats: LMStats,
+    coil_currents: Array,
+    H: Array,
+    B: Array,
+    Jz: Array,
+    JI: Array,
+    Jx: Array,
+    lam_used: float,
+    method: str,
+    solve_mode: str = "solve",
+    svd_rcond: float = 1e-10,
+    compute_conditioning: bool = False,
+    weak_normE: float = 1e-1,
+    cond_warning: float = 1e8,
+    cond_bad: float = 1e10,
+    ridge_used: float = 0.0,
+) -> TipSensitivityResult:
+    """Map an equilibrium linearization into terminal-position sensitivities."""
+    z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
+    dp_dz = _DP_DZ_REV(z0, params)
+    U, sv_min, sv_max, effective_rank, condition_number, used_solve_mode = _linear_solve_with_svd_fallback(
+        H,
+        jnp.transpose(dp_dz),
+        solve_mode=solve_mode,
+        svd_rcond=float(svd_rcond),
+    )
+    Jp_all = -jnp.transpose(U) @ B
+
+    E = jnp.asarray(lm_stats.E_star, dtype=jnp.float64)
+    Jt = jnp.transpose(Jz)
+    stationarity_norm = float(jnp.linalg.norm(Jt @ E))
+    if bool(compute_conditioning) and condition_number is None:
+        condition_number = float(jnp.linalg.cond(H))
+    normE = float(getattr(lm_stats, "normE", jnp.linalg.norm(E)))
+    status = _classify_conditioning(
+        normE=normE,
+        stationarity_norm=stationarity_norm,
+        condition_number=condition_number,
+        weak_normE=float(weak_normE),
+        cond_warning=float(cond_warning),
+        cond_bad=float(cond_bad),
+    )
+    if used_solve_mode == "svd" and effective_rank is not None and effective_rank < int(H.shape[0]):
+        status = "truncated_svd" if status == "ok" else f"{status}|truncated_svd"
+
+    I0 = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,)
+    nI = int(I0.shape[0])
+    return TipSensitivityResult(
+        p_tip_dim=_p_of_z_params(z0, params),
+        J_p_I=Jp_all[:, :nI],
+        J_p_x=Jp_all[:, nI],
+        J_E_z=Jz,
+        J_E_I=JI,
+        J_E_x=Jx[:, 0],
+        lam=float(lam_used),
+        stationarity_norm=float(stationarity_norm),
+        condition_number=condition_number,
+        status=str(status),
+        method=str(method),
+        sv_min=sv_min,
+        sv_max=sv_max,
+        effective_rank=effective_rank,
+        lm_lam=float(lm_stats.lam),
+        ridge_used=float(ridge_used),
+        solve_mode=str(used_solve_mode),
+    )
+
+
 def compute_tip_sensitivities_via_lm_adjoint(
     *,
     z_star_bar: Array,
@@ -171,6 +288,9 @@ def compute_tip_sensitivities_via_lm_adjoint(
     weak_normE: float = 1e-1,
     cond_warning: float = 1e8,
     cond_bad: float = 1e10,
+    sensitivity_mode: str = "solver_response",
+    solve_mode: str = "solve",
+    svd_rcond: float = 1e-10,
 ) -> TipSensitivityResult:
     """Compute implicit tip sensitivity with respect to currents and protrusion.
 
@@ -195,6 +315,14 @@ def compute_tip_sensitivities_via_lm_adjoint(
         weak_normE: Residual norm threshold above which sensitivity is weak.
         cond_warning: Condition number threshold for weak conditioning.
         cond_bad: Condition number threshold for ill conditioning.
+        sensitivity_mode: Linearization to use. ``"solver_response"`` preserves
+            the historical damped LM response, ``"gn_svd"`` removes the solver
+            damping and solves the Gauss-Newton stationarity approximation, and
+            ``"stationarity_exact"`` differentiates ``Jz.T @ E = 0`` directly.
+        solve_mode: Linear solver for the stationarity system, either
+            ``"solve"`` or ``"svd"``.
+        svd_rcond: Relative singular-value cutoff used when ``solve_mode`` is
+            ``"svd"``.
 
     Returns:
         TipSensitivityResult with ``dp/dI`` and ``dp/dx``.
@@ -220,49 +348,55 @@ def compute_tip_sensitivities_via_lm_adjoint(
     Jx = jnp.asarray(Jx, dtype=jnp.float64).reshape((-1, 1))
     B = jnp.concatenate([JI, Jx], axis=1)
 
-    dp_dz = _DP_DZ_REV(z0, params)
-    lam_used = float(lm_stats.lam)
-    if ridge is not None:
-        lam_used = float(lam_used + ridge)
-
     Jt = jnp.transpose(Jz)
     H = Jt @ Jz
     nZ = H.shape[0]
-    H = H + lam_used * jnp.eye(nZ, dtype=H.dtype)
+    extra_ridge = 0.0 if ridge is None else float(ridge)
+    sensitivity_mode = str(sensitivity_mode)
+    if sensitivity_mode not in ("solver_response", "gn_svd", "stationarity_exact"):
+        raise ValueError("sensitivity_mode must be 'solver_response', 'gn_svd', or 'stationarity_exact'")
 
-    U = jnp.linalg.solve(H, jnp.transpose(dp_dz))
-    JT_B = Jt @ B
-    Jp_all = -jnp.transpose(U) @ JT_B
+    if sensitivity_mode == "solver_response":
+        lam_used = float(lm_stats.lam) + extra_ridge
+        H_used = H + lam_used * jnp.eye(nZ, dtype=H.dtype)
+        B_used = Jt @ B
+        method = "dense_implicit_solver_response"
+        ridge_used = extra_ridge
+    elif sensitivity_mode == "gn_svd":
+        lam_used = extra_ridge
+        H_used = H + extra_ridge * jnp.eye(nZ, dtype=H.dtype)
+        B_used = Jt @ B
+        method = "dense_implicit_gn_without_solver_damping"
+        ridge_used = extra_ridge
+    else:
+        Gz, GI, Gx = _JAC_G_WRT_ZIX_FWD(z0, I0, L1, params)
+        GI = jnp.asarray(GI, dtype=jnp.float64)
+        Gx = jnp.asarray(Gx, dtype=jnp.float64).reshape((-1, 1))
+        lam_used = extra_ridge
+        H_used = jnp.asarray(Gz, dtype=jnp.float64) + extra_ridge * jnp.eye(nZ, dtype=H.dtype)
+        B_used = jnp.concatenate([GI, Gx], axis=1)
+        method = "dense_implicit_exact_stationarity"
+        ridge_used = extra_ridge
 
-    E = jnp.asarray(lm_stats.E_star, dtype=jnp.float64)
-    stationarity_norm = float(jnp.linalg.norm(Jt @ E))
-    condition_number = None
-    if bool(compute_conditioning):
-        condition_number = float(jnp.linalg.cond(H))
-    normE = float(getattr(lm_stats, "normE", jnp.linalg.norm(E)))
-    status = _classify_conditioning(
-        normE=normE,
-        stationarity_norm=stationarity_norm,
-        condition_number=condition_number,
+    return _tip_sensitivity_from_linearized_stationarity(
+        z_star_bar=z0,
+        params=params,
+        lm_stats=lm_stats,
+        coil_currents=I0,
+        H=H_used,
+        B=B_used,
+        Jz=Jz,
+        JI=JI,
+        Jx=Jx,
+        lam_used=float(lam_used),
+        method=method,
+        solve_mode=solve_mode,
+        svd_rcond=float(svd_rcond),
+        compute_conditioning=compute_conditioning,
         weak_normE=float(weak_normE),
         cond_warning=float(cond_warning),
         cond_bad=float(cond_bad),
-    )
-
-    p_tip = _p_of_z_params(z0, params)
-    nI = int(I0.shape[0])
-    return TipSensitivityResult(
-        p_tip_dim=p_tip,
-        J_p_I=Jp_all[:, :nI],
-        J_p_x=Jp_all[:, nI],
-        J_E_z=Jz,
-        J_E_I=JI,
-        J_E_x=Jx[:, 0],
-        lam=float(lam_used),
-        stationarity_norm=float(stationarity_norm),
-        condition_number=condition_number,
-        status=str(status),
-        method="dense_implicit_transitional",
+        ridge_used=float(ridge_used),
     )
 
 

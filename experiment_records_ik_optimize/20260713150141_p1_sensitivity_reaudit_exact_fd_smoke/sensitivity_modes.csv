@@ -1,0 +1,2 @@
+point_dir,eval_id,mode,ok,status,method,elapsed_s,effective_rank,condition_number,stationarity_norm,terminal_reload_error_mm,centerline_reload_max_error_mm,base_err_mm
+/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713135237_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_01,eval_000014,stationarity_exact,True,ill_conditioned|truncated_svd,dense_implicit_exact_stationarity,133.39656571099476,93,1.098727608952486e+17,0.0863093935667331,0.0,0.0,4.939231280779665
