@@ -1,0 +1,7 @@
+{
+  "font_path": "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
+  "figures": [
+    "residual_svd_gate_summary.png",
+    "mode_comparison.png"
+  ]
+}

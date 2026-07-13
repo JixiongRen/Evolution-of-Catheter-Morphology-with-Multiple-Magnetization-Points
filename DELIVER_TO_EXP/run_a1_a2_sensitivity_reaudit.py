@@ -207,6 +207,36 @@ def _angle_deg(a: np.ndarray, b: np.ndarray) -> float:
     return float(math.degrees(math.acos(max(-1.0, min(1.0, cosv)))))
 
 
+def _apply_channel_level_weak_flags(rows: list[dict[str, Any]], weak_displacement_mm: float) -> None:
+    """Set weak-response labels consistently for each audited control channel."""
+
+    max_displacement: dict[tuple[Any, ...], float] = {}
+    for row in rows:
+        if not bool(row.get("fd_ok", False)):
+            continue
+        key = (
+            row.get("point_dir"),
+            row.get("eval_id"),
+            row.get("selector"),
+            row.get("kind"),
+            row.get("channel"),
+        )
+        displacement = float(row.get("fd_displacement_mm", 0.0))
+        max_displacement[key] = max(max_displacement.get(key, 0.0), displacement)
+
+    for row in rows:
+        if not bool(row.get("fd_ok", False)):
+            continue
+        key = (
+            row.get("point_dir"),
+            row.get("eval_id"),
+            row.get("selector"),
+            row.get("kind"),
+            row.get("channel"),
+        )
+        row["weak_channel"] = bool(max_displacement.get(key, 0.0) < float(weak_displacement_mm))
+
+
 def _current_channels_from_text(text: str | None) -> list[int] | None:
     if text is None or str(text).strip().lower() in ("", "auto"):
         return None
@@ -496,6 +526,7 @@ def _audit_one_point(
                 }
             )
 
+    _apply_channel_level_weak_flags(fd_rows, weak_displacement_mm)
     return sens_rows, fd_rows
 
 

@@ -23,7 +23,7 @@ gradient-based IK.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Optional, Sequence, Tuple
 
 import jax
@@ -204,6 +204,7 @@ def _linear_solve_with_svd_fallback(
     *,
     solve_mode: str,
     svd_rcond: float,
+    matrix_svd_rcond: Optional[float] = None,
 ) -> Tuple[Array, Optional[float], Optional[float], Optional[int], Optional[float], str]:
     """Solve ``H X = rhs`` and return spectrum diagnostics."""
     solve_mode = str(solve_mode)
@@ -215,7 +216,8 @@ def _linear_solve_with_svd_fallback(
 
     U, S, Vh = jnp.linalg.svd(H, full_matrices=False)
     sv_max = jnp.max(S)
-    cutoff = float(svd_rcond) * sv_max
+    cutoff_rcond = float(svd_rcond if matrix_svd_rcond is None else matrix_svd_rcond)
+    cutoff = cutoff_rcond * sv_max
     keep = S > cutoff
     inv_S = jnp.where(keep, 1.0 / S, 0.0)
     X = Vh.T @ (inv_S[:, None] * (U.T @ rhs))
@@ -297,6 +299,7 @@ def _tip_sensitivity_from_linearized_stationarity(
     cond_warning: float = 1e8,
     cond_bad: float = 1e10,
     ridge_used: float = 0.0,
+    normal_equation_svd_rcond: Optional[float] = None,
 ) -> TipSensitivityResult:
     """Map an equilibrium linearization into terminal-position sensitivities."""
     z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
@@ -306,6 +309,7 @@ def _tip_sensitivity_from_linearized_stationarity(
         jnp.transpose(dp_dz),
         solve_mode=solve_mode,
         svd_rcond=float(svd_rcond),
+        matrix_svd_rcond=normal_equation_svd_rcond,
     )
     Jp_all = -jnp.transpose(U) @ B
 
@@ -528,11 +532,32 @@ def compute_tip_sensitivities_via_lm_adjoint(
         method = "dense_implicit_solver_response"
         ridge_used = extra_ridge
     elif sensitivity_mode == "gn_svd":
+        if str(solve_mode) == "svd" and abs(extra_ridge) <= 1e-9:
+            result = _tip_sensitivity_from_residual_svd(
+                z_star_bar=z0,
+                params=params,
+                lm_stats=lm_stats,
+                coil_currents=I0,
+                Jz=Jz,
+                JI=JI,
+                Jx=Jx,
+                B=B,
+                svd_rcond=float(svd_rcond),
+                spectral_filter=str(spectral_filter),
+                spectral_damping=float(spectral_damping),
+                compute_conditioning=compute_conditioning,
+                weak_normE=float(weak_normE),
+                cond_warning=float(cond_warning),
+                cond_bad=float(cond_bad),
+                ridge_used=extra_ridge,
+            )
+            return replace(result, method="dense_implicit_gn_residual_spectrum", lam=0.0)
         lam_used = extra_ridge
         H_used = H + extra_ridge * jnp.eye(nZ, dtype=H.dtype)
         B_used = Jt @ B
         method = "dense_implicit_gn_without_solver_damping"
         ridge_used = extra_ridge
+        normal_equation_svd_rcond = float(svd_rcond) ** 2
     elif sensitivity_mode == "residual_svd":
         return _tip_sensitivity_from_residual_svd(
             z_star_bar=z0,
@@ -561,6 +586,10 @@ def compute_tip_sensitivities_via_lm_adjoint(
         B_used = jnp.concatenate([GI, Gx], axis=1)
         method = "dense_implicit_exact_stationarity"
         ridge_used = extra_ridge
+        normal_equation_svd_rcond = None
+
+    if sensitivity_mode == "solver_response":
+        normal_equation_svd_rcond = float(svd_rcond) ** 2
 
     return _tip_sensitivity_from_linearized_stationarity(
         z_star_bar=z0,
@@ -581,6 +610,7 @@ def compute_tip_sensitivities_via_lm_adjoint(
         cond_warning=float(cond_warning),
         cond_bad=float(cond_bad),
         ridge_used=float(ridge_used),
+        normal_equation_svd_rcond=normal_equation_svd_rcond,
     )
 
 
