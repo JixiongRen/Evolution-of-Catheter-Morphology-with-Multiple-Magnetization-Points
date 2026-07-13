@@ -1,0 +1,1 @@
+catheter_type,target_index,err_true_mm,success_5mm,experiment_mode,warm_start_source,stop_reason,cls,root_cause,diagnostic_confidence,d0_gate_valid,reachability_conclusion,history_nearest_mm,sample_nearest_mm,summary_diagnostic_consistent,run_dir

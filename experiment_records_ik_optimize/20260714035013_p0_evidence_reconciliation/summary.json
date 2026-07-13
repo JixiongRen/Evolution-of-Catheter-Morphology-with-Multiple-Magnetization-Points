@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-07-14T03:51:49",
+  "merged_run": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713063500_A1_A2_5mm_supervised_IK_no_gravity_merged_complete40",
+  "diagnostic_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_diagnostics/full40_merged/20260713060401_A1_A2_failure_diagnostics",
+  "reachability_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_diagnostics/reachability_sampling/20260713123103_A1_A2_reachability_sampling",
+  "point_count": 40,
+  "summary_diagnostic_discrepancy_count": 0,
+  "by_catheter": {
+    "A1": {
+      "count": 20,
+      "success_5mm_count": 7,
+      "success_5mm_points": [
+        1,
+        2,
+        6,
+        7,
+        9,
+        10,
+        11
+      ],
+      "mode_counts": {
+        "独立或冷启动": 2,
+        "顺序热启动": 18
+      },
+      "success_by_mode": {
+        "独立或冷启动": 1,
+        "顺序热启动": 6
+      },
+      "root_cause_counts": {
+        "阻尼过大导致停滞": 11,
+        "有效成功": 7,
+        "局部预测方向错误": 2
+      },
+      "stop_reason_counts": {
+        "max_outer_iter": 2,
+        "reached_threshold_true_tip": 7,
+        "reached_10mm_only": 2,
+        "reject_stall": 2,
+        "early_stop_or_plateau": 7
+      }
+    },
+    "A2": {
+      "count": 20,
+      "success_5mm_count": 4,
+      "success_5mm_points": [
+        4,
+        5,
+        6,
+        12
+      ],
+      "mode_counts": {
+        "独立或冷启动": 5,
+        "顺序热启动": 12,
+        "人工分支种子": 1,
+        "补跑合并": 2
+      },
+      "success_by_mode": {
+        "独立或冷启动": 1,
+        "顺序热启动": 2,
+        "人工分支种子": 1
+      },
+      "root_cause_counts": {
+        "阻尼过大导致停滞": 16,
+        "有效成功": 4
+      },
+      "stop_reason_counts": {
+        "early_stop_or_plateau": 6,
+        "reject_stall": 7,
+        "reached_threshold_true_tip": 4,
+        "reached_10mm_only": 1,
+        "max_outer_iter": 2
+      }
+    }
+  },
+  "report_known_conflicts": [
+    "合并目录 report.md 仍写 A2 为 3/20，未吸收 A2-pt06 补跑成功。",
+    "合并目录 report.md 仍保留 A2-pt06/07/08 的原始超时行。"
+  ],
+  "authoritative_statement_zh": "当前 P0 对账以 merged_complete40 的 summary.csv/summary.json 和 full40_merged 诊断表为准；原 report.md 存在口径漂移，不得单独作为 A2 成功率或补跑点位结论来源。"
+}
