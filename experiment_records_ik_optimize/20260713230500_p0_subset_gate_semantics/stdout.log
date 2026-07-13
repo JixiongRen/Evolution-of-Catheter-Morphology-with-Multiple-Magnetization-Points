@@ -1,0 +1,25 @@
+4:                                                [--force-formal-20]
+6:                                                [--target-indices TARGET_INDICES]
+7:                                                [--outer-max-iter OUTER_MAX_ITER]
+9:                                                [--step-I-max STEP_I_MAX]
+10:                                                [--step-x-max STEP_X_MAX]
+26:                                                [--p2-max-backtracks P2_MAX_BACKTRACKS]
+29:                                                [--channel-gate-file CHANNEL_GATE_FILE]
+30:                                                [--channel-gate-missing-policy {block_all,allow_x_only,allow_all}]
+31:                                                [--channel-gate-allow-limited | --no-channel-gate-allow-limited]
+40:  --force-formal-20     Run all 20 formal circle targets without gate
+44:  --target-indices TARGET_INDICES
+47:  --outer-max-iter OUTER_MAX_ITER
+51:  --step-I-max STEP_I_MAX
+53:  --step-x-max STEP_X_MAX
+89:  --p2-max-backtracks P2_MAX_BACKTRACKS
+96:  --channel-gate-file CHANNEL_GATE_FILE
+98:  --channel-gate-missing-policy {block_all,allow_x_only,allow_all}
+100:                        --channel-gate-file is provided.
+101:  --channel-gate-allow-limited, --no-channel-gate-allow-limited
+subset_indices [1, 12, 13]
+gate_positions_subset [0, 1, 2]
+diag_positions_subset [0, 1, 2]
+full_gate_positions [0, 5, 10, 15]
+experiment_type_3_forced small_regression
+phase_3_forced small_regression

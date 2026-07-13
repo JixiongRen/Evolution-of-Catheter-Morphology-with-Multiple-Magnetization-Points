@@ -204,6 +204,8 @@ def _build_ik_args(
     enable_gravity: bool,
     outer_max_iter: int,
     eps_p_m: float,
+    step_I_max: float,
+    step_x_max: float,
     x_sensitivity_method: str,
     sensitivity_mode: str,
     sensitivity_solve_mode: str,
@@ -286,9 +288,9 @@ def _build_ik_args(
         "--outer_max_iter",
         str(int(outer_max_iter)),
         "--step_I_max",
-        "5.0",
+        f"{float(step_I_max):.12g}",
         "--step_x_max",
-        "0.02",
+        f"{float(step_x_max):.12g}",
         "--x_sensitivity_method",
         str(x_sensitivity_method),
         "--sensitivity_mode",
@@ -436,6 +438,9 @@ def _run_one_target(
     target: dict[str, Any],
     phase_dir: Path,
     phase: str,
+    experiment_type: str,
+    experiment_type_zh: str,
+    formal_statistics_included: bool,
     initial_I_A: list[float] | None,
     initial_x_m: float,
     x_search_max_m: float,
@@ -444,6 +449,8 @@ def _run_one_target(
     outer_max_iter: int,
     per_point_timeout_s: float,
     eps_p_m: float,
+    step_I_max: float,
+    step_x_max: float,
     sensitivity_config: dict[str, Any],
     p2_config: dict[str, Any],
     channel_gate_config: dict[str, Any],
@@ -462,6 +469,8 @@ def _run_one_target(
         enable_gravity=enable_gravity,
         outer_max_iter=outer_max_iter,
         eps_p_m=eps_p_m,
+        step_I_max=step_I_max,
+        step_x_max=step_x_max,
         x_sensitivity_method=str(sensitivity_config["x_sensitivity_method"]),
         sensitivity_mode=str(sensitivity_config["sensitivity_mode"]),
         sensitivity_solve_mode=str(sensitivity_config["sensitivity_solve_mode"]),
@@ -507,6 +516,7 @@ def _run_one_target(
     run_sensitivity_config = run_config.get("sensitivity_config", sensitivity_config)
     run_p2_config = run_config.get("p2_outer_solver", p2_config)
     run_channel_gate = run_config.get("control_channel_gate", {})
+    gate_policy_label = _gate_policy_label(run_channel_gate)
     accepted_count, reject_count, outer_iter_count = _history_counts(history)
     p_des = np.asarray(target["p_des_m"], dtype=float)
     p_flex = np.asarray(result.get("p_tip_flex", result.get("p_tip", [math.nan] * 3)), dtype=float)
@@ -526,6 +536,10 @@ def _run_one_target(
     summary = {
         "catheter_type": catheter_key,
         "phase": phase,
+        "experiment_type": experiment_type,
+        "experiment_type_zh": experiment_type_zh,
+        "formal_statistics_included": bool(formal_statistics_included),
+        "point_decision": "纳入正式统计" if formal_statistics_included else f"{experiment_type_zh}，不纳入正式20点统计",
         "target_index": int(target["index"]),
         "theta_rad": float(target["theta_rad"]),
         "p_des": [float(v) for v in p_des.tolist()],
@@ -573,8 +587,14 @@ def _run_one_target(
         "p2_max_backtracks": run_p2_config.get("max_backtracks"),
         "control_channel_gate": run_channel_gate,
         "control_gate_enabled": run_channel_gate.get("enabled"),
+        "control_gate_key": run_channel_gate.get("key"),
+        "control_gate_missing_policy": run_channel_gate.get("missing_policy"),
+        "control_gate_allow_limited": run_channel_gate.get("allow_limited"),
+        "control_gate_matched_rows": run_channel_gate.get("matched_rows"),
+        "control_gate_policy_label": gate_policy_label,
         "control_gate_allowed_channels": run_channel_gate.get("allowed_channels"),
         "control_gate_blocked_channels": run_channel_gate.get("blocked_channels"),
+        "control_gate_channel_reasons": run_channel_gate.get("channel_reasons"),
     }
     if timed_out:
         summary["stop_reason"] = "auto_timeout"
@@ -589,6 +609,10 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     fields = [
         "catheter_type",
         "phase",
+        "experiment_type",
+        "experiment_type_zh",
+        "formal_statistics_included",
+        "point_decision",
         "target_index",
         "theta_rad",
         "err_true_mm",
@@ -619,8 +643,14 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "p2_reliable_subspace",
         "p2_max_backtracks",
         "control_gate_enabled",
+        "control_gate_key",
+        "control_gate_missing_policy",
+        "control_gate_allow_limited",
+        "control_gate_matched_rows",
+        "control_gate_policy_label",
         "control_gate_allowed_channels",
         "control_gate_blocked_channels",
+        "control_gate_channel_reasons",
         "run_dir",
     ]
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -700,6 +730,29 @@ def _experiment_type_zh(experiment_type: str) -> str:
     return labels.get(experiment_type, str(experiment_type))
 
 
+def _select_target_positions(targets: list[dict[str, Any]], requested_indices: list[int]) -> list[int]:
+    """Return safe target-list positions for requested target indices."""
+    positions = [pos for pos, target in enumerate(targets) if int(target["index"]) in set(requested_indices)]
+    if 0 < len(targets) < 20 and len(positions) < len(targets):
+        return list(range(len(targets)))
+    if positions:
+        return positions
+    return list(range(len(targets)))
+
+
+def _gate_policy_label(gate_info: dict[str, Any]) -> str:
+    """Return a compact label for the point-level control gate policy."""
+    if not bool(gate_info.get("enabled", False)):
+        return "未启用门禁"
+    matched = int(gate_info.get("matched_rows") or 0)
+    missing_policy = str(gate_info.get("missing_policy", ""))
+    if matched <= 0:
+        return f"无匹配审计行，按 {missing_policy} 处理"
+    if gate_info.get("allowed_channels"):
+        return "审计通道门禁"
+    return "审计通道全部屏蔽"
+
+
 def _run_catheter(
     *,
     run_root: Path,
@@ -714,7 +767,10 @@ def _run_catheter(
     enable_gravity: bool,
     force_formal_20: bool,
     experiment_type: str,
+    experiment_type_zh: str,
     eps_p_m: float,
+    step_I_max: float,
+    step_x_max: float,
     sensitivity_config: dict[str, Any],
     p2_config: dict[str, Any],
     channel_gate_config: dict[str, Any],
@@ -730,12 +786,16 @@ def _run_catheter(
     gate_rows: list[dict[str, Any]] = []
     if not force_formal_20:
         for idx in gate_indices:
+            target = targets[idx]
             row = _run_one_target(
                 catheter_key=catheter_key,
                 cfg=cfg,
-                target=targets[idx],
+                target=target,
                 phase_dir=catheter_root / "gate_4pt",
                 phase="gate_4pt",
+                experiment_type=experiment_type,
+                experiment_type_zh=experiment_type_zh,
+                formal_statistics_included=False,
                 initial_I_A=None,
                 initial_x_m=initial_x_m,
                 x_search_max_m=x_search_max_m,
@@ -744,6 +804,8 @@ def _run_catheter(
                 outer_max_iter=outer_max_iter,
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
+                step_I_max=step_I_max,
+                step_x_max=step_x_max,
                 sensitivity_config=sensitivity_config,
                 p2_config=p2_config,
                 channel_gate_config=channel_gate_config,
@@ -751,7 +813,7 @@ def _run_catheter(
             gate_rows.append(row)
             rows.append(row)
             print(
-                f"{catheter_key} gate pt_{idx:02d}: true_err={row['err_true_mm']:.3f} mm "
+                f"{catheter_key} gate pt_{int(target['index']):02d}: true_err={row['err_true_mm']:.3f} mm "
                 f"eps={row['success_eps']} cls={row['cls']} wall={row['wall_s']:.1f}s",
                 flush=True,
             )
@@ -778,6 +840,9 @@ def _run_catheter(
                 target=target,
                 phase_dir=phase_dir,
                 phase=phase_name,
+                experiment_type=experiment_type,
+                experiment_type_zh=experiment_type_zh,
+                formal_statistics_included=experiment_type == "formal_20pt" and phase_name == "formal_20pt",
                 initial_I_A=warm_I,
                 initial_x_m=warm_x,
                 x_search_max_m=x_search_max_m,
@@ -786,6 +851,8 @@ def _run_catheter(
                 outer_max_iter=outer_max_iter,
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
+                step_I_max=step_I_max,
+                step_x_max=step_x_max,
                 sensitivity_config=sensitivity_config,
                 p2_config=p2_config,
                 channel_gate_config=channel_gate_config,
@@ -807,12 +874,16 @@ def _run_catheter(
                 warm_source = "last_success_before_failed_point"
     else:
         for idx in diag_indices:
+            target = targets[idx]
             row = _run_one_target(
                 catheter_key=catheter_key,
                 cfg=cfg,
-                target=targets[idx],
+                target=target,
                 phase_dir=catheter_root / "diagnostic_8pt",
                 phase="diagnostic_8pt",
+                experiment_type=experiment_type,
+                experiment_type_zh=experiment_type_zh,
+                formal_statistics_included=False,
                 initial_I_A=None,
                 initial_x_m=initial_x_m,
                 x_search_max_m=x_search_max_m,
@@ -821,6 +892,8 @@ def _run_catheter(
                 outer_max_iter=outer_max_iter,
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
+                step_I_max=step_I_max,
+                step_x_max=step_x_max,
                 sensitivity_config=sensitivity_config,
                 p2_config=p2_config,
                 channel_gate_config=channel_gate_config,
@@ -828,7 +901,7 @@ def _run_catheter(
             diag_rows.append(row)
             rows.append(row)
             print(
-                f"{catheter_key} diagnostic pt_{idx:02d}: true_err={row['err_true_mm']:.3f} mm "
+                f"{catheter_key} diagnostic pt_{int(target['index']):02d}: true_err={row['err_true_mm']:.3f} mm "
                 f"eps={row['success_eps']} cls={row['cls']} wall={row['wall_s']:.1f}s",
                 flush=True,
             )
@@ -898,6 +971,7 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
     lines.append("")
     gravity_text = "开启重力" if metadata["enable_gravity"] else "关闭重力"
     lines.append(f"- 数值设置：M=5，{gravity_text}，FK 容差 1e-5，电流限幅 20 A。")
+    lines.append(f"- 外层步长限制：单步电流不超过 {float(metadata.get('step_I_max', 5.0)):.6g} A，单步推进不超过 {float(metadata.get('step_x_max', 0.02)) * 1000.0:.6g} mm。")
     lines.append(f"- 推进搜索：本批次使用 0.003001 m 到 {metadata['x_search_max_m']:.3f} m 的局部搜索范围；配置文件中的物理长度上限仍保留为 1 m。")
     sens_cfg = metadata.get("sensitivity_config", {})
     lines.append(
@@ -968,11 +1042,13 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         if item.get("overview_plot"):
             lines.append(f"- 总览图：`{item['overview_plot']}`")
         lines.append("")
-        lines.append(f"| 点号 | 阶段 | 真实误差(mm) | 柔性节点误差(mm) | {threshold_mm:.1f}mm | 3mm | 5mm | 10mm | cls | 外层迭代 | 耗时(s) | 停止原因 |")
-        lines.append("|---:|---|---:|---:|---|---|---|---|---|---:|---:|---|")
+        lines.append(f"| 点号 | 阶段 | 决策标签 | 纳入正式统计 | 门禁口径 | 真实误差(mm) | 柔性节点误差(mm) | {threshold_mm:.1f}mm | 3mm | 5mm | 10mm | cls | 外层迭代 | 耗时(s) | 停止原因 |")
+        lines.append("|---:|---|---|---|---|---:|---:|---|---|---|---|---|---:|---:|---|")
         for row in rows:
             lines.append(
-                f"| {row['target_index']} | {row['phase']} | {row['err_true_mm']:.3f} | "
+                f"| {row['target_index']} | {row['phase']} | {row.get('point_decision')} | "
+                f"{row.get('formal_statistics_included')} | {row.get('control_gate_policy_label')} | "
+                f"{row['err_true_mm']:.3f} | "
                 f"{row['err_flex_mm']:.3f} | {row['success_eps']} | {row['success_3mm']} | "
                 f"{row['success_5mm']} | {row['success_10mm']} | "
                 f"{row['cls']} | {row['outer_iter_count']} | {row['wall_s']:.1f} | {row['stop_reason']} |"
@@ -1043,6 +1119,8 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--target-indices", type=str, default=None, help="Comma-separated target indices. Defaults to all formal targets when forced.")
     parser.add_argument("--outer-max-iter", type=int, default=50, help="Outer IK iteration limit.")
     parser.add_argument("--per-point-timeout-s", type=float, default=2700.0, help="Per-target timeout in seconds.")
+    parser.add_argument("--step-I-max", type=float, default=5.0, help="Per-iteration current step limit in amperes.")
+    parser.add_argument("--step-x-max", type=float, default=0.02, help="Per-iteration insertion step limit in meters.")
     parser.add_argument("--initial-I-A", type=str, default=None, help="Comma-separated initial 8-coil currents for the first target.")
     parser.add_argument("--initial-x-m", type=float, default=None, help="Initial insertion depth for the first target.")
     parser.add_argument("--x-sensitivity-method", choices=("implicit", "fd"), default="implicit", help="Method used for insertion-depth sensitivity.")
@@ -1105,10 +1183,16 @@ def main(argv: list[str] | None = None) -> None:
     for key in catheter_keys:
         if key not in config["catheter_types"]:
             raise ValueError(f"Unknown catheter key: {key}")
-    gate_indices = [0, 5, 10, 15]
-    diag_indices = [0, 2, 5, 7, 10, 12, 15, 17]
+    gate_target_indices = [0, 5, 10, 15]
+    diagnostic_target_indices = [0, 2, 5, 7, 10, 12, 15, 17]
+    gate_indices = _select_target_positions(targets, gate_target_indices)
+    diag_indices = _select_target_positions(targets, diagnostic_target_indices)
     outer_max_iter = int(args.outer_max_iter)
     per_point_timeout_s = float(args.per_point_timeout_s)
+    step_I_max = float(args.step_I_max)
+    step_x_max = float(args.step_x_max)
+    if step_I_max <= 0.0 or step_x_max <= 0.0:
+        raise ValueError("--step-I-max and --step-x-max must be positive.")
     initial_I_A_override = None
     if args.initial_I_A:
         initial_I_A_override = [float(v.strip()) for v in str(args.initial_I_A).split(",") if v.strip()]
@@ -1162,10 +1246,14 @@ def main(argv: list[str] | None = None) -> None:
         "experiment_type_zh": _experiment_type_zh(experiment_type),
         "catheter_keys": catheter_keys,
         "requested_target_indices": [int(item["index"]) for item in targets],
-        "gate_indices": gate_indices,
-        "diagnostic_indices": diag_indices,
+        "gate_target_indices": [int(targets[pos]["index"]) for pos in gate_indices],
+        "diagnostic_target_indices": [int(targets[pos]["index"]) for pos in diag_indices],
+        "gate_positions": gate_indices,
+        "diagnostic_positions": diag_indices,
         "outer_max_iter": outer_max_iter,
         "per_point_timeout_s": per_point_timeout_s,
+        "step_I_max": step_I_max,
+        "step_x_max": step_x_max,
         "initial_I_A_override": initial_I_A_override,
         "initial_x_m_override": initial_x_m_override,
         "x_search_max_m": x_search_max_m,
@@ -1196,6 +1284,8 @@ def main(argv: list[str] | None = None) -> None:
         f"--target-indices {','.join(str(int(item['index'])) for item in targets)} "
         f"--outer-max-iter {outer_max_iter} "
         f"--per-point-timeout-s {per_point_timeout_s:.12g} "
+        f"--step-I-max {step_I_max:.12g} "
+        f"--step-x-max {step_x_max:.12g} "
         f"--x-sensitivity-method {sensitivity_config['x_sensitivity_method']} "
         f"--sensitivity-mode {sensitivity_config['sensitivity_mode']} "
         f"--sensitivity-solve-mode {sensitivity_config['sensitivity_solve_mode']} "
@@ -1237,7 +1327,10 @@ def main(argv: list[str] | None = None) -> None:
             enable_gravity=enable_gravity,
             force_formal_20=bool(args.force_formal_20),
             experiment_type=experiment_type,
+            experiment_type_zh=_experiment_type_zh(experiment_type),
             eps_p_m=eps_p_m,
+            step_I_max=step_I_max,
+            step_x_max=step_x_max,
             sensitivity_config=sensitivity_config,
             p2_config=p2_config,
             channel_gate_config=channel_gate_config,
