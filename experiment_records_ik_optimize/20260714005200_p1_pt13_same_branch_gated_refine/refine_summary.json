@@ -1,0 +1,33 @@
+{
+  "run_dir": "DELIVER_TO_EXP/formal_experiments/20260714005016_A1_A2_5mm_supervised_IK_no_gravity",
+  "err_true_mm": 5.6892105792180425,
+  "best_err_true_mm": 5.689210579203151,
+  "success_eps": false,
+  "cls": "GOOD",
+  "stop_reason": "reached_10mm_only",
+  "outer_iter_count": 20,
+  "accept_count": 12,
+  "reject_count": 42,
+  "wall_s": 137.48651466000592,
+  "max_abs_current_A": 9.82618724372,
+  "x_m": 0.13179801344,
+  "initial_branch_state_enabled": true,
+  "initial_branch_state_hash": "a53053354c540a304ae01cfd45658ca0acfbcba192f19b92b06d68391d1a32fa",
+  "warm_start_hash": "864c5a47126bd3b59ef72a45cf22046918ba7b7732b62baa198406c3bae6722a",
+  "initial_branch_I_delta_inf_A": 3.3884006711559778e-12,
+  "initial_branch_x_delta_abs_m": 9.844902670863576e-14,
+  "control_gate_enabled": true,
+  "control_gate_allowed_channels": [
+    "I5"
+  ],
+  "control_gate_blocked_channels": [
+    "I0",
+    "I1",
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "x"
+  ]
+}
