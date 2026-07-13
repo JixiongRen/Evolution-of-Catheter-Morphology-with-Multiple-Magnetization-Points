@@ -78,6 +78,11 @@ def _iter_point_dirs(paths: Iterable[Path]) -> Iterable[Path]:
 
 def _select_manifest_row(rows: Sequence[dict[str, Any]], selector: str) -> dict[str, Any]:
     accepted = [row for row in rows if bool(row.get("accept"))]
+    if selector == "last_accept":
+        if accepted:
+            return accepted[-1]
+        finals = [row for row in rows if row.get("phase") == "final"]
+        return finals[-1] if finals else rows[-1]
     if selector == "best_accept":
         pool = accepted or list(rows)
         return min(pool, key=lambda row: float(row.get("terminal_error_mm", float("inf"))))
@@ -283,6 +288,9 @@ def _audit_one_point(
                 {
                     "point_dir": str(point_dir),
                     "eval_id": base_row["eval_id"],
+                    "selector": str(selector),
+                    "phase": str(base_row.get("phase", "")),
+                    "accept": bool(base_row.get("accept")),
                     "mode": str(mode),
                     "solve_mode": str(solve_mode),
                     "ridge": float(ridge),
@@ -311,6 +319,9 @@ def _audit_one_point(
                 {
                     "point_dir": str(point_dir),
                     "eval_id": base_row["eval_id"],
+                    "selector": str(selector),
+                    "phase": str(base_row.get("phase", "")),
+                    "accept": bool(base_row.get("accept")),
                     "mode": str(mode),
                     "solve_mode": str(solve_mode),
                     "ridge": float(ridge),
@@ -370,6 +381,9 @@ def _audit_one_point(
                 {
                     "point_dir": str(point_dir),
                     "eval_id": base_row["eval_id"],
+                    "selector": str(selector),
+                    "phase": str(base_row.get("phase", "")),
+                    "accept": bool(base_row.get("accept")),
                     "kind": kind,
                     "channel": channel,
                     "step": step,
@@ -444,6 +458,9 @@ def _audit_one_point(
                 {
                     "point_dir": str(point_dir),
                     "eval_id": base_row["eval_id"],
+                    "selector": str(selector),
+                    "phase": str(base_row.get("phase", "")),
+                    "accept": bool(base_row.get("accept")),
                     "kind": kind,
                     "channel": channel,
                     "step": step,
@@ -499,7 +516,7 @@ def build_argparser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("paths", nargs="+", help="Point directories or parent experiment directories.")
     parser.add_argument("--out-dir", type=str, required=True)
-    parser.add_argument("--selector", choices=("best_accept", "final", "init"), default="best_accept")
+    parser.add_argument("--selector", choices=("last_accept", "best_accept", "final", "init"), default="best_accept")
     parser.add_argument("--current-steps-a", type=str, default="0.25")
     parser.add_argument("--x-steps-mm", type=str, default="0.5")
     parser.add_argument("--current-channels", type=str, default="auto")
