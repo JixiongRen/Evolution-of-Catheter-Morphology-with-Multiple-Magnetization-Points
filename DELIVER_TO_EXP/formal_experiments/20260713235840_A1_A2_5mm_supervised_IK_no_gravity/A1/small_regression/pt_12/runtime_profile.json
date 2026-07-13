@@ -1,0 +1,130 @@
+{
+  "enabled": true,
+  "sections": {
+    "setup": {
+      "engine_build": {
+        "count": 1,
+        "total_s": 0.00027019999106414616,
+        "first_s": 0.00027019999106414616,
+        "max_s": 0.00027019999106414616
+      }
+    },
+    "fk_solve": {
+      "init": {
+        "count": 1,
+        "total_s": 56.45031253498746,
+        "first_s": 56.45031253498746,
+        "max_s": 56.45031253498746
+      },
+      "trial": {
+        "count": 47,
+        "total_s": 115.09280236708582,
+        "first_s": 16.558347862010123,
+        "max_s": 28.501869317988167
+      },
+      "final": {
+        "count": 1,
+        "total_s": 0.022408286022255197,
+        "first_s": 0.022408286022255197,
+        "max_s": 0.022408286022255197
+      }
+    },
+    "fk_observe": {
+      "init": {
+        "count": 1,
+        "total_s": 0.7848015080089681,
+        "first_s": 0.7848015080089681,
+        "max_s": 0.7848015080089681
+      },
+      "trial": {
+        "count": 47,
+        "total_s": 1.8923416300094686,
+        "first_s": 0.03656506500556134,
+        "max_s": 0.05505439397529699
+      },
+      "final": {
+        "count": 1,
+        "total_s": 0.03786265701637603,
+        "first_s": 0.03786265701637603,
+        "max_s": 0.03786265701637603
+      }
+    },
+    "io": {
+      "save_pose_accept": {
+        "count": 7,
+        "total_s": 0.5249327669735067,
+        "first_s": 0.31260996000492014,
+        "max_s": 0.31260996000492014
+      },
+      "branch_state_init": {
+        "count": 1,
+        "total_s": 0.056612048007082194,
+        "first_s": 0.056612048007082194,
+        "max_s": 0.056612048007082194
+      },
+      "save_history": {
+        "count": 48,
+        "total_s": 0.4875840869790409,
+        "first_s": 0.003842388017801568,
+        "max_s": 0.017271449003601447
+      },
+      "save_pose_trial": {
+        "count": 47,
+        "total_s": 1.7882519769482315,
+        "first_s": 0.035307629994349554,
+        "max_s": 0.04676391201792285
+      },
+      "branch_state_trial": {
+        "count": 47,
+        "total_s": 2.3602129579812754,
+        "first_s": 0.04326278099324554,
+        "max_s": 0.06512936699436978
+      },
+      "branch_state_final": {
+        "count": 1,
+        "total_s": 0.05047979700611904,
+        "first_s": 0.05047979700611904,
+        "max_s": 0.05047979700611904
+      },
+      "save_result": {
+        "count": 1,
+        "total_s": 0.0005891899927519262,
+        "first_s": 0.0005891899927519262,
+        "max_s": 0.0005891899927519262
+      }
+    },
+    "sensitivity": {
+      "implicit_adjoint_jz": {
+        "count": 17,
+        "total_s": 0.1063181619392708,
+        "first_s": 0.010093057993799448,
+        "max_s": 0.010093057993799448
+      },
+      "implicit_adjoint": {
+        "count": 17,
+        "total_s": 24.32147400008398,
+        "first_s": 20.67121833501733,
+        "max_s": 20.67121833501733
+      }
+    }
+  },
+  "warmup": {},
+  "environment": {
+    "code_commit": "b5d71fcc0144a790b93cb2bb3afb9ca63be8f583",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 7431,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  }
+}
