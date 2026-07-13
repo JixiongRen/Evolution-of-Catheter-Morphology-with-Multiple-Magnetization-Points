@@ -802,6 +802,16 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     sensitivity_spectral_filter = str(args.sensitivity_spectral_filter)
     sensitivity_spectral_damping = float(args.sensitivity_spectral_damping)
     sensitivity_conditioning = bool(args.sensitivity_conditioning)
+    sensitivity_config = {
+        "x_sensitivity_method": x_sensitivity_method,
+        "sensitivity_mode": sensitivity_mode,
+        "sensitivity_solve_mode": sensitivity_solve_mode,
+        "sensitivity_svd_rcond": sensitivity_svd_rcond,
+        "sensitivity_spectral_filter": sensitivity_spectral_filter,
+        "sensitivity_spectral_damping": sensitivity_spectral_damping,
+        "ridge_adjoint": ridge_adj,
+        "sensitivity_conditioning": sensitivity_conditioning,
+    }
 
     # Initialize u from user-specified or randomized I0, x=x0
     n_coils = 8
@@ -836,6 +846,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "x_bounds": [x_min, x_max],
                 "x_ref": x_ref,
                 "sigma_p": sigma_p,
+                "sensitivity_config": sensitivity_config,
                 "sigmas_from_w": {
                     "sigma_I": (1.0 / w_I) if w_I > 0 else None,
                     "sigma_x": (1.0 / w_x) if w_x > 0 else None,
@@ -857,6 +868,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             "p_des": [float(v) for v in p_des.tolist()],
             "eps_p_m": float(eps_p),
             "sigma_p_m": float(sigma_p),
+            "sensitivity_config": sensitivity_config,
         },
         "outer": [],
     }
@@ -909,6 +921,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "sigma_p": sigma_p,
                 }
             ),
+            "sensitivity_hash": json_sha256(sensitivity_config),
             "branch_gate_note": "A saved state is traceable evidence only; same-branch claims require replay and roundtrip gates.",
         },
     )
@@ -1150,6 +1163,13 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         # 1) Sensitivities dp/dI and dp/dx (at current accepted state)
         sensitivity_info = {
             "x_method": str(x_sensitivity_method),
+            "sensitivity_mode": str(sensitivity_mode),
+            "sensitivity_solve_mode": str(sensitivity_solve_mode),
+            "sensitivity_svd_rcond": float(sensitivity_svd_rcond),
+            "sensitivity_spectral_filter": str(sensitivity_spectral_filter),
+            "sensitivity_spectral_damping": float(sensitivity_spectral_damping),
+            "ridge_adjoint": float(ridge_adj),
+            "jz_source": "not_computed",
             "status": "not_computed",
             "method": "none",
             "stationarity_norm": None,
@@ -1168,10 +1188,12 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 t0 = time.perf_counter()
                 jac_res = jac_res_cached
                 jac_res_cached = None
+                sensitivity_jz_source = "warmup_cached"
                 _profile_add(runtime_profile, "sensitivity", "implicit_adjoint_reused", time.perf_counter() - t0)
             else:
                 t0 = time.perf_counter()
                 Jz_local = _compute_local_fk_jacobian(engine, cur, runtime_profile=runtime_profile, label="implicit_adjoint_jz")
+                sensitivity_jz_source = "computed"
                 jac_res = compute_tip_sensitivities_via_lm_adjoint(
                     z_star_bar=cur.z_star_bar,
                     params=cur.params,
@@ -1193,6 +1215,13 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 dp_dx = jnp.asarray(jac_res.J_p_x, dtype=jnp.float64).reshape(3,)
             sensitivity_info = {
                 "x_method": str(x_sensitivity_method),
+                "sensitivity_mode": str(sensitivity_mode),
+                "sensitivity_solve_mode": str(sensitivity_solve_mode),
+                "sensitivity_svd_rcond": float(sensitivity_svd_rcond),
+                "sensitivity_spectral_filter": str(sensitivity_spectral_filter),
+                "sensitivity_spectral_damping": float(sensitivity_spectral_damping),
+                "ridge_adjoint": float(ridge_adj),
+                "jz_source": sensitivity_jz_source,
                 "status": str(jac_res.status),
                 "method": str(jac_res.method),
                 "stationarity_norm": float(jac_res.stationarity_norm),
@@ -1214,6 +1243,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             Jp_I = jnp.zeros((3, n_coils), dtype=jnp.float64)
             sensitivity_info["status"] = "failed"
             sensitivity_info["error"] = repr(e)
+            sensitivity_info["jz_source"] = "failed"
 
         if x_sensitivity_method == "fd" or sensitivity_info.get("status") == "failed":
             dp_dx = _compute_dp_dx_fd(
@@ -1534,6 +1564,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "normE": float(cur.normE),
                 "cls": str(cur.cls),
                 "sigma_p": float(sigma_p),
+                "sensitivity_config": sensitivity_config,
                 "sigmas_from_w": {
                     "sigma_I": (1.0 / w_I) if w_I > 0 else None,
                     "sigma_x": (1.0 / w_x) if w_x > 0 else None,

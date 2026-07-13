@@ -187,6 +187,14 @@ def _build_ik_args(
     enable_gravity: bool,
     outer_max_iter: int,
     eps_p_m: float,
+    x_sensitivity_method: str,
+    sensitivity_mode: str,
+    sensitivity_solve_mode: str,
+    sensitivity_svd_rcond: float,
+    sensitivity_spectral_filter: str,
+    sensitivity_spectral_damping: float,
+    ridge_adjoint: float,
+    sensitivity_conditioning: bool,
 ) -> list[str]:
     shared = cfg["shared"]
     catheter = cfg["catheter"]
@@ -262,6 +270,20 @@ def _build_ik_args(
         "5.0",
         "--step_x_max",
         "0.02",
+        "--x_sensitivity_method",
+        str(x_sensitivity_method),
+        "--sensitivity_mode",
+        str(sensitivity_mode),
+        "--sensitivity_solve_mode",
+        str(sensitivity_solve_mode),
+        "--sensitivity_svd_rcond",
+        f"{float(sensitivity_svd_rcond):.12g}",
+        "--sensitivity_spectral_filter",
+        str(sensitivity_spectral_filter),
+        "--sensitivity_spectral_damping",
+        f"{float(sensitivity_spectral_damping):.12g}",
+        "--ridge_adjoint",
+        f"{float(ridge_adjoint):.12g}",
         "--out_dir",
         str(phase_dir),
         "--run_name",
@@ -272,6 +294,8 @@ def _build_ik_args(
         "--seed",
         str(20260705 + 1000 * (1 if catheter_key == "A1" else 2) + int(target["index"])),
     ]
+    if sensitivity_conditioning:
+        args.append("--sensitivity_conditioning")
     if enable_gravity:
         insert_at = args.index("--enable_magnetics")
         args[insert_at:insert_at] = [
@@ -372,6 +396,7 @@ def _run_one_target(
     outer_max_iter: int,
     per_point_timeout_s: float,
     eps_p_m: float,
+    sensitivity_config: dict[str, Any],
 ) -> dict[str, Any]:
     run_name = f"pt_{int(target['index']):02d}"
     log_path = phase_dir / f"{run_name}.log"
@@ -387,6 +412,14 @@ def _run_one_target(
         enable_gravity=enable_gravity,
         outer_max_iter=outer_max_iter,
         eps_p_m=eps_p_m,
+        x_sensitivity_method=str(sensitivity_config["x_sensitivity_method"]),
+        sensitivity_mode=str(sensitivity_config["sensitivity_mode"]),
+        sensitivity_solve_mode=str(sensitivity_config["sensitivity_solve_mode"]),
+        sensitivity_svd_rcond=float(sensitivity_config["sensitivity_svd_rcond"]),
+        sensitivity_spectral_filter=str(sensitivity_config["sensitivity_spectral_filter"]),
+        sensitivity_spectral_damping=float(sensitivity_config["sensitivity_spectral_damping"]),
+        ridge_adjoint=float(sensitivity_config["ridge_adjoint"]),
+        sensitivity_conditioning=bool(sensitivity_config["sensitivity_conditioning"]),
     )
     phase_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.perf_counter()
@@ -419,6 +452,7 @@ def _run_one_target(
     result = _read_json(point_dir / "result.json", {})
     history = _read_json(point_dir / "history.json", {})
     run_config = _read_json(point_dir / "run_config.json", {})
+    run_sensitivity_config = run_config.get("sensitivity_config", sensitivity_config)
     accepted_count, reject_count, outer_iter_count = _history_counts(history)
     p_des = np.asarray(target["p_des_m"], dtype=float)
     p_flex = np.asarray(result.get("p_tip_flex", result.get("p_tip", [math.nan] * 3)), dtype=float)
@@ -470,6 +504,14 @@ def _run_one_target(
         "artifacts": artifacts,
         "x_bounds": x_bounds,
         "max_abs_current_A": float(np.nanmax(np.abs(np.asarray(I_A, dtype=float)))) if I_A is not None else math.nan,
+        "sensitivity_config": run_sensitivity_config,
+        "sensitivity_mode": run_sensitivity_config.get("sensitivity_mode"),
+        "sensitivity_solve_mode": run_sensitivity_config.get("sensitivity_solve_mode"),
+        "sensitivity_svd_rcond": run_sensitivity_config.get("sensitivity_svd_rcond"),
+        "sensitivity_spectral_filter": run_sensitivity_config.get("sensitivity_spectral_filter"),
+        "sensitivity_spectral_damping": run_sensitivity_config.get("sensitivity_spectral_damping"),
+        "x_sensitivity_method": run_sensitivity_config.get("x_sensitivity_method"),
+        "ridge_adjoint": run_sensitivity_config.get("ridge_adjoint"),
     }
     if timed_out:
         summary["stop_reason"] = "auto_timeout"
@@ -502,6 +544,13 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "warm_start_source",
         "x_m",
         "max_abs_current_A",
+        "sensitivity_mode",
+        "sensitivity_solve_mode",
+        "sensitivity_svd_rcond",
+        "sensitivity_spectral_filter",
+        "sensitivity_spectral_damping",
+        "x_sensitivity_method",
+        "ridge_adjoint",
         "run_dir",
     ]
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -563,6 +612,7 @@ def _run_catheter(
     enable_gravity: bool,
     force_formal_20: bool,
     eps_p_m: float,
+    sensitivity_config: dict[str, Any],
     initial_I_A_override: list[float] | None = None,
     initial_x_m_override: float | None = None,
 ) -> dict[str, Any]:
@@ -589,6 +639,7 @@ def _run_catheter(
                 outer_max_iter=outer_max_iter,
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
+                sensitivity_config=sensitivity_config,
             )
             gate_rows.append(row)
             rows.append(row)
@@ -622,6 +673,7 @@ def _run_catheter(
                 outer_max_iter=outer_max_iter,
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
+                sensitivity_config=sensitivity_config,
             )
             formal_rows.append(row)
             rows.append(row)
@@ -654,6 +706,7 @@ def _run_catheter(
                 outer_max_iter=outer_max_iter,
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
+                sensitivity_config=sensitivity_config,
             )
             diag_rows.append(row)
             rows.append(row)
@@ -723,6 +776,15 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
     gravity_text = "开启重力" if metadata["enable_gravity"] else "关闭重力"
     lines.append(f"- 数值设置：M=5，{gravity_text}，FK 容差 1e-5，电流限幅 20 A。")
     lines.append(f"- 推进搜索：本批次使用 0.003001 m 到 {metadata['x_search_max_m']:.3f} m 的局部搜索范围；配置文件中的物理长度上限仍保留为 1 m。")
+    sens_cfg = metadata.get("sensitivity_config", {})
+    lines.append(
+        "- 灵敏度设置："
+        f"模式 `{sens_cfg.get('sensitivity_mode')}`，"
+        f"线性求解 `{sens_cfg.get('sensitivity_solve_mode')}`，"
+        f"奇异值阈值 `{sens_cfg.get('sensitivity_svd_rcond')}`，"
+        f"谱滤波 `{sens_cfg.get('sensitivity_spectral_filter')}`，"
+        f"推进灵敏度 `{sens_cfg.get('x_sensitivity_method')}`。"
+    )
     lines.append(f"- 自动超时：单个目标点超过 {metadata['per_point_timeout_s'] / 60.0:.1f} 分钟未自然退出时，标记为 auto_timeout，不计入成功。")
     lines.append("- A1：末端单磁体沿局部 z 轴轴向磁化。")
     lines.append("- A2：末端单磁体沿局部 x 轴径向磁化。")
@@ -841,6 +903,19 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--per-point-timeout-s", type=float, default=2700.0, help="Per-target timeout in seconds.")
     parser.add_argument("--initial-I-A", type=str, default=None, help="Comma-separated initial 8-coil currents for the first target.")
     parser.add_argument("--initial-x-m", type=float, default=None, help="Initial insertion depth for the first target.")
+    parser.add_argument("--x-sensitivity-method", choices=("implicit", "fd"), default="implicit", help="Method used for insertion-depth sensitivity.")
+    parser.add_argument(
+        "--sensitivity-mode",
+        choices=("solver_response", "gn_svd", "stationarity_exact", "residual_svd"),
+        default="solver_response",
+        help="Sensitivity linearization used by the outer IK loop.",
+    )
+    parser.add_argument("--sensitivity-solve-mode", choices=("solve", "svd"), default="solve", help="Solve mode for square sensitivity systems.")
+    parser.add_argument("--sensitivity-svd-rcond", type=float, default=1e-10, help="Relative singular-value cutoff for sensitivity solves.")
+    parser.add_argument("--sensitivity-spectral-filter", choices=("hard", "tikhonov", "hybrid"), default="hard", help="Spectral filter used by residual-space sensitivity.")
+    parser.add_argument("--sensitivity-spectral-damping", type=float, default=0.0, help="Absolute damping for residual-space spectral filters.")
+    parser.add_argument("--ridge-adjoint", type=float, default=0.0, help="Extra ridge used by legacy adjoint sensitivity paths.")
+    parser.add_argument("--sensitivity-conditioning", action="store_true", help="Record dense conditioning diagnostics for sensitivity solves.")
     return parser
 
 
@@ -878,6 +953,16 @@ def main(argv: list[str] | None = None) -> None:
     initial_x_m_override = None if args.initial_x_m is None else float(args.initial_x_m)
     x_search_max_m = 0.203
     calib_path = REPO / config["shared_physical_parameters"]["actuation"]["default_calib_file"]
+    sensitivity_config = {
+        "x_sensitivity_method": str(args.x_sensitivity_method),
+        "sensitivity_mode": str(args.sensitivity_mode),
+        "sensitivity_solve_mode": str(args.sensitivity_solve_mode),
+        "sensitivity_svd_rcond": float(args.sensitivity_svd_rcond),
+        "sensitivity_spectral_filter": str(args.sensitivity_spectral_filter),
+        "sensitivity_spectral_damping": float(args.sensitivity_spectral_damping),
+        "ridge_adjoint": float(args.ridge_adjoint),
+        "sensitivity_conditioning": bool(args.sensitivity_conditioning),
+    }
     metadata = {
         "run_id": run_id,
         "experiment_name": f"A1_A2_{threshold_tag}_supervised_IK_{gravity_suffix}",
@@ -907,6 +992,7 @@ def main(argv: list[str] | None = None) -> None:
         "M": 5,
         "tol": 1e-5,
         "enable_gravity": enable_gravity,
+        "sensitivity_config": sensitivity_config,
         "XLA_PYTHON_CLIENT_PREALLOCATE": os.environ.get("XLA_PYTHON_CLIENT_PREALLOCATE"),
     }
     (run_root / "batch_metadata.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -923,6 +1009,14 @@ def main(argv: list[str] | None = None) -> None:
         f"--target-indices {','.join(str(int(item['index'])) for item in targets)} "
         f"--outer-max-iter {outer_max_iter} "
         f"--per-point-timeout-s {per_point_timeout_s:.12g} "
+        f"--x-sensitivity-method {sensitivity_config['x_sensitivity_method']} "
+        f"--sensitivity-mode {sensitivity_config['sensitivity_mode']} "
+        f"--sensitivity-solve-mode {sensitivity_config['sensitivity_solve_mode']} "
+        f"--sensitivity-svd-rcond {float(sensitivity_config['sensitivity_svd_rcond']):.12g} "
+        f"--sensitivity-spectral-filter {sensitivity_config['sensitivity_spectral_filter']} "
+        f"--sensitivity-spectral-damping {float(sensitivity_config['sensitivity_spectral_damping']):.12g} "
+        f"--ridge-adjoint {float(sensitivity_config['ridge_adjoint']):.12g} "
+        f"{'--sensitivity-conditioning' if sensitivity_config['sensitivity_conditioning'] else ''} "
         f"{'--initial-I-A ' + ','.join(f'{float(v):.12g}' for v in initial_I_A_override) if initial_I_A_override is not None else ''} "
         f"{'--initial-x-m ' + f'{initial_x_m_override:.12g}' if initial_x_m_override is not None else ''} "
         f"{'--force-formal-20' if args.force_formal_20 else ''}\n",
@@ -945,6 +1039,7 @@ def main(argv: list[str] | None = None) -> None:
             enable_gravity=enable_gravity,
             force_formal_20=bool(args.force_formal_20),
             eps_p_m=eps_p_m,
+            sensitivity_config=sensitivity_config,
             initial_I_A_override=initial_I_A_override,
             initial_x_m_override=initial_x_m_override,
         )

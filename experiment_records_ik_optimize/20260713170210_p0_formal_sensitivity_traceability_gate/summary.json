@@ -1,0 +1,25 @@
+{
+  "experiment_id": "20260713170210_p0_formal_sensitivity_traceability_gate",
+  "phase": "P0",
+  "purpose": "Ensure formal A1/A2 supervised IK runs can pass through and record the selected sensitivity configuration.",
+  "numerical_regression_run": false,
+  "syntax_check_passed": true,
+  "formal_entry_help_check_passed": true,
+  "ik_main_help_check_passed": true,
+  "reaudit_help_check_passed": true,
+  "constructed_child_args": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "residual_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-9,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 0.0
+  },
+  "changed_files": [
+    "DELIVER_TO_EXP/run_a1_axial_circle_formal_experiment.py",
+    "DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py",
+    "inverse_kinematics/ik_multisite_lm_opt.py"
+  ],
+  "next_step": "Run failed-channel small-step and branch roundtrip audits before A1 small regression."
+}
