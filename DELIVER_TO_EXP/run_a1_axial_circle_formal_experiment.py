@@ -279,6 +279,7 @@ def _build_ik_args(
     sensitivity_conditioning: bool,
     p2_config: dict[str, Any],
     channel_gate_config: dict[str, Any],
+    initial_branch_state_npz: str | None = None,
 ) -> list[str]:
     shared = cfg["shared"]
     catheter = cfg["catheter"]
@@ -401,6 +402,8 @@ def _build_ik_args(
         )
         if not bool(channel_gate_config.get("allow_limited", True)):
             args.append("--no-channel_gate_allow_limited")
+    if initial_branch_state_npz:
+        args.extend(["--initial_branch_state_npz", str(initial_branch_state_npz)])
     if sensitivity_conditioning:
         args.append("--sensitivity_conditioning")
     if bool(p2_config["trust_region"]):
@@ -517,6 +520,7 @@ def _run_one_target(
     sensitivity_config: dict[str, Any],
     p2_config: dict[str, Any],
     channel_gate_config: dict[str, Any],
+    initial_branch_state_npz: str | None = None,
 ) -> dict[str, Any]:
     run_name = f"pt_{int(target['index']):02d}"
     log_path = phase_dir / f"{run_name}.log"
@@ -544,6 +548,7 @@ def _run_one_target(
         sensitivity_conditioning=bool(sensitivity_config["sensitivity_conditioning"]),
         p2_config=p2_config,
         channel_gate_config=channel_gate_config,
+        initial_branch_state_npz=initial_branch_state_npz,
     )
     phase_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.perf_counter()
@@ -579,6 +584,7 @@ def _run_one_target(
     run_sensitivity_config = run_config.get("sensitivity_config", sensitivity_config)
     run_p2_config = run_config.get("p2_outer_solver", p2_config)
     run_channel_gate = run_config.get("control_channel_gate", {})
+    run_initial_branch_state = run_config.get("initial_branch_state", {})
     gate_policy_label = _gate_policy_label(run_channel_gate)
     state_provenance = _state_provenance_summary(point_dir, run_config)
     selected_state = state_provenance["selected_state"]
@@ -633,6 +639,14 @@ def _run_one_target(
         "wall_s": wall_s,
         "stop_reason": _infer_stop_reason(result=result, history=history, outer_max_iter=outer_max_iter, threshold_mm=threshold_mm),
         "warm_start_source": warm_start_source,
+        "initial_branch_state": run_initial_branch_state,
+        "initial_branch_state_enabled": run_initial_branch_state.get("enabled"),
+        "initial_branch_state_path": run_initial_branch_state.get("path"),
+        "initial_branch_state_hash": run_initial_branch_state.get("z_star_hash"),
+        "initial_branch_source_control_hash": run_initial_branch_state.get("source_control_hash"),
+        "initial_branch_requested_control_hash": run_initial_branch_state.get("requested_control_hash"),
+        "initial_branch_I_delta_inf_A": run_initial_branch_state.get("source_vs_requested_I_inf_A"),
+        "initial_branch_x_delta_abs_m": run_initial_branch_state.get("source_vs_requested_x_abs_m"),
         "timed_out": bool(timed_out),
         "subprocess_return_code": return_code,
         "run_dir": str(point_dir.resolve()),
@@ -717,6 +731,13 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "wall_s",
         "stop_reason",
         "warm_start_source",
+        "initial_branch_state_enabled",
+        "initial_branch_state_path",
+        "initial_branch_state_hash",
+        "initial_branch_source_control_hash",
+        "initial_branch_requested_control_hash",
+        "initial_branch_I_delta_inf_A",
+        "initial_branch_x_delta_abs_m",
         "x_m",
         "max_abs_current_A",
         "state_source",
@@ -896,6 +917,7 @@ def _run_catheter(
     channel_gate_config: dict[str, Any],
     initial_I_A_override: list[float] | None = None,
     initial_x_m_override: float | None = None,
+    initial_branch_state_npz_override: str | None = None,
 ) -> dict[str, Any]:
     cfg = _catheter_solver_cfg(config, catheter_key)
     catheter_root = run_root / catheter_key
@@ -951,6 +973,9 @@ def _run_catheter(
         warm_I: list[float] | None = initial_I_A_override
         warm_x = initial_x_m
         warm_source = "manual_initial_state" if initial_I_A_override is not None else "cold_start_formal"
+        if initial_branch_state_npz_override is not None:
+            warm_source = "manual_branch_state"
+        warm_branch_state_npz = initial_branch_state_npz_override
         phase_name = _forced_phase_name(experiment_type)
         phase_dir = catheter_root / phase_name
         for target in targets:
@@ -976,7 +1001,9 @@ def _run_catheter(
                 sensitivity_config=sensitivity_config,
                 p2_config=p2_config,
                 channel_gate_config=channel_gate_config,
+                initial_branch_state_npz=warm_branch_state_npz,
             )
+            warm_branch_state_npz = None
             formal_rows.append(row)
             rows.append(row)
             print(
@@ -1093,6 +1120,10 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
     lines.append(f"- 数值设置：M=5，{gravity_text}，FK 容差 1e-5，电流限幅 20 A。")
     lines.append(f"- 外层步长限制：单步电流不超过 {float(metadata.get('step_I_max', 5.0)):.6g} A，单步推进不超过 {float(metadata.get('step_x_max', 0.02)) * 1000.0:.6g} mm。")
     lines.append(f"- 推进搜索：本批次使用 0.003001 m 到 {metadata['x_search_max_m']:.3f} m 的局部搜索范围；配置文件中的物理长度上限仍保留为 1 m。")
+    if metadata.get("initial_branch_state_npz_override"):
+        lines.append(f"- 初始分支状态：首个运行点从 `{metadata['initial_branch_state_npz_override']}` 读取内部平衡状态作为正运动学初值。")
+    else:
+        lines.append("- 初始分支状态：未使用外部保存的内部平衡状态。")
     lines.append(f"- 控制通道门禁：{_batch_control_gate_label(metadata)}")
     sens_cfg = metadata.get("sensitivity_config", {})
     lines.append(
@@ -1246,6 +1277,7 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--step-x-max", type=float, default=0.02, help="Per-iteration insertion step limit in meters.")
     parser.add_argument("--initial-I-A", type=str, default=None, help="Comma-separated initial 8-coil currents for the first target.")
     parser.add_argument("--initial-x-m", type=float, default=None, help="Initial insertion depth for the first target.")
+    parser.add_argument("--initial-branch-state-npz", type=str, default=None, help="Saved branch-state npz used to seed the first target FK solve.")
     parser.add_argument("--x-sensitivity-method", choices=("implicit", "fd"), default="implicit", help="Method used for insertion-depth sensitivity.")
     parser.add_argument(
         "--sensitivity-mode",
@@ -1322,6 +1354,9 @@ def main(argv: list[str] | None = None) -> None:
         if len(initial_I_A_override) != 8:
             raise ValueError("--initial-I-A must contain exactly 8 comma-separated currents.")
     initial_x_m_override = None if args.initial_x_m is None else float(args.initial_x_m)
+    initial_branch_state_npz_override = None
+    if args.initial_branch_state_npz is not None:
+        initial_branch_state_npz_override = str(Path(args.initial_branch_state_npz).expanduser().resolve())
     x_search_max_m = 0.203
     calib_path = REPO / config["shared_physical_parameters"]["actuation"]["default_calib_file"]
     sensitivity_config = {
@@ -1385,6 +1420,7 @@ def main(argv: list[str] | None = None) -> None:
         "step_x_max": step_x_max,
         "initial_I_A_override": initial_I_A_override,
         "initial_x_m_override": initial_x_m_override,
+        "initial_branch_state_npz_override": initial_branch_state_npz_override,
         "x_search_max_m": x_search_max_m,
         "effective_x_search_min_m": 0.003001,
         "effective_x_search_max_m": x_search_max_m,
@@ -1445,6 +1481,7 @@ def main(argv: list[str] | None = None) -> None:
         f"{'--no-channel-gate-allow-limited' if channel_gate_file and not channel_gate_config['allow_limited'] else ''} "
         f"{'--initial-I-A ' + ','.join(f'{float(v):.12g}' for v in initial_I_A_override) if initial_I_A_override is not None else ''} "
         f"{'--initial-x-m ' + f'{initial_x_m_override:.12g}' if initial_x_m_override is not None else ''} "
+        f"{'--initial-branch-state-npz ' + initial_branch_state_npz_override if initial_branch_state_npz_override is not None else ''} "
         f"{'--force-formal-20' if args.force_formal_20 else ''}\n",
         encoding="utf-8",
     )
@@ -1474,6 +1511,7 @@ def main(argv: list[str] | None = None) -> None:
             channel_gate_config=channel_gate_config,
             initial_I_A_override=initial_I_A_override,
             initial_x_m_override=initial_x_m_override,
+            initial_branch_state_npz_override=initial_branch_state_npz_override,
         )
     metadata["total_wall_s"] = float(time.perf_counter() - t0)
 

@@ -69,7 +69,7 @@ import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from ik_diff import compute_tip_sensitivities_via_lm_adjoint
 from ik_artifacts import extract_centerline_dim, save_centerline, save_history_json
-from ik_branch_state import BranchStateRecorder, current_git_commit, git_tracked_dirty, git_untracked_count, json_sha256
+from ik_branch_state import BranchStateRecorder, array_sha256, current_git_commit, git_tracked_dirty, git_untracked_count, json_sha256
 from ik_control_gate import load_control_gate
 
 jax.config.update("jax_enable_x64", True)
@@ -160,6 +160,49 @@ def _runtime_environment() -> dict[str, Any]:
         "xla_python_client_preallocate": os.environ.get("XLA_PYTHON_CLIENT_PREALLOCATE"),
         "devices": devices,
     }
+
+
+def _load_initial_branch_state_npz(path: Optional[str]) -> tuple[Optional[Array], dict[str, Any]]:
+    """Load a saved branch-state snapshot as an FK initial state."""
+    if path is None or str(path).strip() == "":
+        return None, {"enabled": False}
+    npz_path = Path(path).expanduser().resolve()
+    if not npz_path.exists():
+        raise FileNotFoundError(f"--initial_branch_state_npz does not exist: {npz_path}")
+    with np.load(npz_path, allow_pickle=False) as data:
+        if "z_star_bar" not in data:
+            raise ValueError(f"--initial_branch_state_npz is missing z_star_bar: {npz_path}")
+        z_star = np.asarray(data["z_star_bar"], dtype=np.float64)
+        if z_star.size == 0 or not np.all(np.isfinite(z_star)):
+            raise ValueError(f"--initial_branch_state_npz has an invalid z_star_bar: {npz_path}")
+        info: dict[str, Any] = {
+            "enabled": True,
+            "path": str(npz_path),
+            "z_star_shape": [int(v) for v in z_star.shape],
+            "z_star_hash": array_sha256(z_star),
+            "available_fields": sorted(str(k) for k in data.files),
+        }
+        if "I_A" in data:
+            I_A = np.asarray(data["I_A"], dtype=np.float64).reshape(-1)
+            info["source_I_A"] = [float(v) for v in I_A.tolist()]
+        if "x_m" in data:
+            x_arr = np.asarray(data["x_m"], dtype=np.float64).reshape(-1)
+            if x_arr.size:
+                info["source_x_m"] = float(x_arr[0])
+        if "I_A" in data or "x_m" in data:
+            info["source_control_hash"] = json_sha256(
+                {
+                    "I_A": info.get("source_I_A"),
+                    "x_m": info.get("source_x_m"),
+                }
+            )
+        if "terminal_true_m" in data:
+            info["source_terminal_true_m"] = [float(v) for v in np.asarray(data["terminal_true_m"], dtype=np.float64).reshape(-1).tolist()]
+        if "flex_tip_m" in data:
+            info["source_flex_tip_m"] = [float(v) for v in np.asarray(data["flex_tip_m"], dtype=np.float64).reshape(-1).tolist()]
+        if "target_m" in data:
+            info["source_target_m"] = [float(v) for v in np.asarray(data["target_m"], dtype=np.float64).reshape(-1).tolist()]
+    return jnp.asarray(z_star, dtype=jnp.float64), info
 
 
 def build_argparser() -> argparse.ArgumentParser:
@@ -334,6 +377,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--warmup_fk_compile", action="store_true", help="Precompile fixed-shape FK residual/Jacobian/one-step solve before IK")
     p.add_argument("--warmup_ik_adjoint", action="store_true", help="Precompute and reuse the first dp/dI adjoint sensitivity")
     p.add_argument("--branch_state_capture", action="store_true", help="Save every FK candidate state for branch replay diagnostics")
+    p.add_argument("--initial_branch_state_npz", type=str, default=None, help="Optional saved branch-state npz whose z_star_bar seeds the first FK solve.")
 
     # seed
     p.add_argument("--seed", type=int, default=0, help="Random seed used for initializing currents (I0).")
@@ -895,6 +939,25 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             maxval=float(I_max),
             dtype=jnp.float64,
         )
+    initial_branch_z_bar, initial_branch_state_info = _load_initial_branch_state_npz(args.initial_branch_state_npz)
+    initial_control_hash = json_sha256(
+        {
+            "I_A": [float(v) for v in np.asarray(jax.device_get(I0), dtype=float).reshape(-1).tolist()],
+            "x_m": float(x0),
+        }
+    )
+    initial_branch_state_info["requested_control_hash"] = initial_control_hash
+    if initial_branch_state_info.get("enabled"):
+        source_I = initial_branch_state_info.get("source_I_A")
+        if source_I is not None:
+            source_I_arr = np.asarray(source_I, dtype=float).reshape(-1)
+            I0_arr = np.asarray(jax.device_get(I0), dtype=float).reshape(-1)
+            if source_I_arr.shape == I0_arr.shape:
+                initial_branch_state_info["source_vs_requested_I_inf_A"] = float(np.max(np.abs(source_I_arr - I0_arr)))
+            else:
+                initial_branch_state_info["source_vs_requested_I_shape_match"] = False
+        if initial_branch_state_info.get("source_x_m") is not None:
+            initial_branch_state_info["source_vs_requested_x_abs_m"] = abs(float(initial_branch_state_info["source_x_m"]) - float(x0))
     u = _Ix_to_u(I0, x0, I_max=I_max, x_min=x_min, x_max=x_max)
     control_gate = load_control_gate(
         args.channel_gate_file,
@@ -919,6 +982,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "x_bounds": [x_min, x_max],
                 "x_ref": x_ref,
                 "sigma_p": sigma_p,
+                "initial_control_hash": initial_control_hash,
+                "initial_branch_state": initial_branch_state_info,
                 "sensitivity_config": sensitivity_config,
                 "runtime_environment": runtime_environment,
                 "sigmas_from_w": {
@@ -955,6 +1020,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             "sigma_p_m": float(sigma_p),
             "sensitivity_config": sensitivity_config,
             "control_channel_gate": control_gate_info,
+            "initial_branch_state": initial_branch_state_info,
         },
         "outer": [],
     }
@@ -1010,6 +1076,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 }
             ),
             "sensitivity_hash": json_sha256(sensitivity_config),
+            "initial_control_hash": initial_control_hash,
+            "initial_branch_state": initial_branch_state_info,
             "branch_gate_note": "A saved state is traceable evidence only; same-branch claims require replay and roundtrip gates.",
         },
     )
@@ -1118,8 +1186,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     lam = float(args.lam_init)
 
-    # Warm-start z for FD in x
-    z_warm: Optional[Array] = None
+    # Warm-start z for FD in x and optional same-branch reload.
+    z_warm: Optional[Array] = initial_branch_z_bar
 
     # Initial evaluation: prev accepted = current
     I, x, _, _ = _u_to_Ix(u, I_max=I_max, x_min=x_min, x_max=x_max)
