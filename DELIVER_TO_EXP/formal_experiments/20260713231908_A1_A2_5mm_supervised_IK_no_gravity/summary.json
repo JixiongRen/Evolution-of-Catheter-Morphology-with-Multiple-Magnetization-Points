@@ -1,0 +1,270 @@
+{
+  "metadata": {
+    "run_id": "20260713231908",
+    "experiment_name": "A1_A2_5mm_supervised_IK_no_gravity",
+    "run_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity",
+    "report_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity_report.md",
+    "git_commit": "923a6d1af114c3dd8181f49d1b0c54e873b890fd",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 7650,
+    "config_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/catheter_physical_configs.yaml",
+    "config_sha256": "b558ae5948710e91cf79092323a5ec4f3ce606f4a7ed9970c068cd21a1827317",
+    "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+    "calib_sha256": "0693bc324c74bc37e4e3a3b53054fde58cb34f0725b5c8455f50e5fedb19eff8",
+    "target_center_m": [
+      0.06,
+      0.0,
+      0.0
+    ],
+    "target_radius_m": 0.1,
+    "target_count": 1,
+    "experiment_type": "smoke",
+    "experiment_type_zh": "烟测",
+    "catheter_keys": [
+      "A1"
+    ],
+    "requested_target_indices": [
+      1
+    ],
+    "gate_target_indices": [
+      1
+    ],
+    "diagnostic_target_indices": [
+      1
+    ],
+    "gate_positions": [
+      0
+    ],
+    "diagnostic_positions": [
+      0
+    ],
+    "outer_max_iter": 20,
+    "per_point_timeout_s": 1800.0,
+    "step_I_max": 5.0,
+    "step_x_max": 0.02,
+    "initial_I_A_override": null,
+    "initial_x_m_override": null,
+    "x_search_max_m": 0.203,
+    "x_search_note_zh": "本次 x=60 mm 圆周实验采用 0.203 m 局部推进搜索上限；物理配置文件仍保留 1 m 最大长度。",
+    "eps_p_m": 0.005,
+    "sigma_p_m": 0.005,
+    "force_formal_20": true,
+    "M": 5,
+    "tol": 1e-05,
+    "enable_gravity": false,
+    "sensitivity_config": {
+      "x_sensitivity_method": "implicit",
+      "sensitivity_mode": "residual_svd",
+      "sensitivity_solve_mode": "svd",
+      "sensitivity_svd_rcond": 1e-09,
+      "sensitivity_spectral_filter": "hard",
+      "sensitivity_spectral_damping": 0.0,
+      "ridge_adjoint": 0.0,
+      "sensitivity_conditioning": false
+    },
+    "p2_config": {
+      "trust_region": true,
+      "terminal_error_first": true,
+      "reliable_subspace": true,
+      "reliable_task_rcond": 0.001,
+      "min_full_task_rank": 2,
+      "max_backtracks": 3,
+      "backtrack_shrink": 0.5,
+      "disable_Ix_jacobian_below_dx": 0.001
+    },
+    "channel_gate_config": {
+      "file": null,
+      "missing_policy": "block_all",
+      "allow_limited": true
+    },
+    "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+    "JAX_PLATFORMS": "cuda",
+    "total_wall_s": 141.47079599800054
+  },
+  "results": {
+    "A1": {
+      "catheter_type": "A1",
+      "decision": "smoke_forced",
+      "gate_success_count_eps": 0,
+      "gate_success_count_3mm": 0,
+      "gate_success_count_5mm": 0,
+      "gate_total": 0,
+      "gate_rows": [],
+      "formal_rows": [
+        {
+          "catheter_type": "A1",
+          "phase": "smoke",
+          "experiment_type": "smoke",
+          "experiment_type_zh": "烟测",
+          "formal_statistics_included": false,
+          "point_decision": "烟测，不纳入正式20点统计",
+          "target_index": 1,
+          "theta_rad": 0.3141592653589793,
+          "p_des": [
+            0.06,
+            0.09510565162951536,
+            0.03090169943749474
+          ],
+          "p_tip_flex": [
+            0.05990331459160036,
+            0.08895326833742949,
+            0.029222752901601062
+          ],
+          "p_tip_true": [
+            0.05907813144713689,
+            0.09175241665974271,
+            0.02991834002652243
+          ],
+          "err_flex_mm": 6.37808981681225,
+          "err_true_mm": 3.614003614056286,
+          "best_err_true_mm": 3.614003614043463,
+          "success_eps": true,
+          "success_threshold_mm": 5.0,
+          "success_3mm": false,
+          "success_5mm": true,
+          "success_10mm": true,
+          "I_A": [
+            0.7376872701709714,
+            -4.947495433964284,
+            -1.1431887099933202,
+            4.1258558095441416,
+            1.5868114245211706,
+            -3.9922855991738446,
+            -0.6520868323262559,
+            4.31645655646366
+          ],
+          "x_m": 0.13209663485598064,
+          "normE": 9.993157018960941e-06,
+          "cls": "GOOD",
+          "physical_status_good": true,
+          "outer_iter_count": 11,
+          "accept_count": 12,
+          "reject_count": 0,
+          "wall_s": 139.70351242701872,
+          "stop_reason": "reached_threshold_true_tip",
+          "warm_start_source": "cold_start_formal",
+          "timed_out": false,
+          "subprocess_return_code": 0,
+          "run_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_01",
+          "log_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_01.log",
+          "centerline_npy": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_01/poses/accept/centerline_iter_0012.npy",
+          "artifacts": {
+            "diagnostics_png": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_01/diagnostics.png",
+            "posture_evolution_png": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_01/posture_evolution.png"
+          },
+          "x_bounds": [
+            0.003001,
+            0.203
+          ],
+          "max_abs_current_A": 4.947495433964284,
+          "sensitivity_config": {
+            "x_sensitivity_method": "implicit",
+            "sensitivity_mode": "residual_svd",
+            "sensitivity_solve_mode": "svd",
+            "sensitivity_svd_rcond": 1e-09,
+            "sensitivity_spectral_filter": "hard",
+            "sensitivity_spectral_damping": 0.0,
+            "ridge_adjoint": 0.0,
+            "sensitivity_conditioning": false
+          },
+          "sensitivity_mode": "residual_svd",
+          "sensitivity_solve_mode": "svd",
+          "sensitivity_svd_rcond": 1e-09,
+          "sensitivity_spectral_filter": "hard",
+          "sensitivity_spectral_damping": 0.0,
+          "x_sensitivity_method": "implicit",
+          "ridge_adjoint": 0.0,
+          "p2_config": {
+            "trust_region": true,
+            "terminal_error_first": true,
+            "reliable_subspace": true,
+            "reliable_task_rcond": 0.001,
+            "min_full_task_rank": 2,
+            "max_backtracks": 3,
+            "backtrack_shrink": 0.5,
+            "disable_Ix_jacobian_below_dx": 0.001
+          },
+          "p2_trust_region": true,
+          "p2_terminal_error_first": true,
+          "p2_reliable_subspace": true,
+          "p2_max_backtracks": 3,
+          "control_channel_gate": {
+            "enabled": false,
+            "source": null,
+            "key": null,
+            "missing_policy": "block_all",
+            "allow_limited": true,
+            "allowed_mask": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "allowed_channels": [
+              "I0",
+              "I1",
+              "I2",
+              "I3",
+              "I4",
+              "I5",
+              "I6",
+              "I7",
+              "x"
+            ],
+            "blocked_channels": [],
+            "channel_reasons": [
+              "gate_disabled",
+              "gate_disabled",
+              "gate_disabled",
+              "gate_disabled",
+              "gate_disabled",
+              "gate_disabled",
+              "gate_disabled",
+              "gate_disabled",
+              "gate_disabled"
+            ],
+            "matched_rows": 0
+          },
+          "control_gate_enabled": false,
+          "control_gate_key": null,
+          "control_gate_missing_policy": "block_all",
+          "control_gate_allow_limited": true,
+          "control_gate_matched_rows": 0,
+          "control_gate_policy_label": "未启用门禁",
+          "control_gate_allowed_channels": [
+            "I0",
+            "I1",
+            "I2",
+            "I3",
+            "I4",
+            "I5",
+            "I6",
+            "I7",
+            "x"
+          ],
+          "control_gate_blocked_channels": [],
+          "control_gate_channel_reasons": [
+            "gate_disabled",
+            "gate_disabled",
+            "gate_disabled",
+            "gate_disabled",
+            "gate_disabled",
+            "gate_disabled",
+            "gate_disabled",
+            "gate_disabled",
+            "gate_disabled"
+          ]
+        }
+      ],
+      "diagnostic_rows": [],
+      "all_rows_csv": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity/A1/all_points_summary.csv",
+      "overview_plot": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity/A1_target_circle_true_tip_overview.png"
+    }
+  },
+  "all_rows_csv": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713231908_A1_A2_5mm_supervised_IK_no_gravity/summary.csv"
+}

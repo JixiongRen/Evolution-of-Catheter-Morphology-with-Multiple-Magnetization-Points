@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-07-13 23:13:12",
+  "code_commit": "923a6d1af114c3dd8181f49d1b0c54e873b890fd",
+  "git_tracked_dirty": false,
+  "git_untracked_count": 7477,
+  "argv_hash": "262740277cf02e5517c51eec66377cc26d698c2f97eeaab88b22d24faf314c2b",
+  "fk_cfg_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "geometry_hash": "23dceb2577e66334ce48808c92ded3a72278be81b90159130b90776a75f1510a",
+  "material_hash": "c384103bf12248388d2d03533bf3367def8401326d8f6280d6813aedaf7fca21",
+  "magnet_hash": "54d146631da33cbee204170011211eb5555e214205f0478e835701a07d23660c",
+  "solver_hash": "e8c92b872cd24ab8bffe52fc24d0da75738293ee7f7d312872aede0492c8e7db",
+  "sensitivity_hash": "61433c6eefe3ffebdc277266c76705eca81d30356d360fa3d759411757e47dee",
+  "branch_gate_note": "A saved state is traceable evidence only; same-branch claims require replay and roundtrip gates."
+}

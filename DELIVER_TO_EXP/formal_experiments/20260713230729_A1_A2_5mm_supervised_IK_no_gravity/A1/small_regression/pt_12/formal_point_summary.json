@@ -1,0 +1,171 @@
+{
+  "catheter_type": "A1",
+  "phase": "small_regression",
+  "experiment_type": "small_regression",
+  "experiment_type_zh": "小回归",
+  "formal_statistics_included": false,
+  "point_decision": "小回归，不纳入正式20点统计",
+  "target_index": 12,
+  "theta_rad": 3.7699111843077517,
+  "p_des": [
+    0.06,
+    -0.08090169943749476,
+    -0.05877852522924731
+  ],
+  "p_tip_flex": [
+    0.05985629150382211,
+    2.014355194577573e-06,
+    -0.055705619804345435
+  ],
+  "p_tip_true": [
+    0.05992774103220542,
+    2.1830108293687443e-06,
+    -0.05870476731695637
+  ],
+  "err_flex_mm": 80.9621782397908,
+  "err_true_mm": 80.90394833875725,
+  "best_err_true_mm": 80.90394833876243,
+  "success_eps": false,
+  "success_threshold_mm": 5.0,
+  "success_3mm": false,
+  "success_5mm": false,
+  "success_10mm": false,
+  "I_A": [
+    1.4960242519634774,
+    0.0,
+    0.0,
+    0.0,
+    0.15325742149189,
+    0.0,
+    -1.493525495213803,
+    0.0
+  ],
+  "x_m": 0.09345232328642854,
+  "normE": 9.836660572605158e-06,
+  "cls": "GOOD",
+  "physical_status_good": true,
+  "outer_iter_count": 20,
+  "accept_count": 21,
+  "reject_count": 0,
+  "wall_s": 125.80571250899811,
+  "stop_reason": "max_outer_iter",
+  "warm_start_source": "cold_start_after_failure",
+  "timed_out": false,
+  "subprocess_return_code": 0,
+  "run_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713230729_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_12",
+  "log_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713230729_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_12.log",
+  "centerline_npy": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713230729_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_12/poses/accept/centerline_iter_0021.npy",
+  "artifacts": {
+    "diagnostics_png": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713230729_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_12/diagnostics.png",
+    "posture_evolution_png": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713230729_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_12/posture_evolution.png"
+  },
+  "x_bounds": [
+    0.003001,
+    0.203
+  ],
+  "max_abs_current_A": 1.4960242519634774,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "residual_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 0.0,
+    "sensitivity_conditioning": false
+  },
+  "sensitivity_mode": "residual_svd",
+  "sensitivity_solve_mode": "svd",
+  "sensitivity_svd_rcond": 1e-09,
+  "sensitivity_spectral_filter": "hard",
+  "sensitivity_spectral_damping": 0.0,
+  "x_sensitivity_method": "implicit",
+  "ridge_adjoint": 0.0,
+  "p2_config": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 1,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  },
+  "p2_trust_region": true,
+  "p2_terminal_error_first": true,
+  "p2_reliable_subspace": true,
+  "p2_max_backtracks": 3,
+  "control_channel_gate": {
+    "enabled": true,
+    "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260713225202_a1_three_point_gated_small_regression/channel_gate_a1_three_point.csv",
+    "key": "A1_pt12",
+    "missing_policy": "block_all",
+    "allow_limited": true,
+    "allowed_mask": [
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      true,
+      false,
+      true
+    ],
+    "allowed_channels": [
+      "I0",
+      "I4",
+      "I6",
+      "x"
+    ],
+    "blocked_channels": [
+      "I1",
+      "I2",
+      "I3",
+      "I5",
+      "I7"
+    ],
+    "channel_reasons": [
+      "audited_allowed:可生产使用",
+      "I1:missing_policy:block_all",
+      "I2:missing_policy:block_all",
+      "I3:missing_policy:block_all",
+      "audited_allowed:可生产使用",
+      "I5:missing_policy:block_all",
+      "audited_allowed:可生产使用",
+      "I7:missing_policy:block_all",
+      "audited_allowed:可生产使用"
+    ],
+    "matched_rows": 4
+  },
+  "control_gate_enabled": true,
+  "control_gate_key": "A1_pt12",
+  "control_gate_missing_policy": "block_all",
+  "control_gate_allow_limited": true,
+  "control_gate_matched_rows": 4,
+  "control_gate_policy_label": "审计通道门禁",
+  "control_gate_allowed_channels": [
+    "I0",
+    "I4",
+    "I6",
+    "x"
+  ],
+  "control_gate_blocked_channels": [
+    "I1",
+    "I2",
+    "I3",
+    "I5",
+    "I7"
+  ],
+  "control_gate_channel_reasons": [
+    "audited_allowed:可生产使用",
+    "I1:missing_policy:block_all",
+    "I2:missing_policy:block_all",
+    "I3:missing_policy:block_all",
+    "audited_allowed:可生产使用",
+    "I5:missing_policy:block_all",
+    "audited_allowed:可生产使用",
+    "I7:missing_policy:block_all",
+    "audited_allowed:可生产使用"
+  ]
+}

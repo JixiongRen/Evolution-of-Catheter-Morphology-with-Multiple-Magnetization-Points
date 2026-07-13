@@ -1,0 +1,13 @@
+run,kind,channel,classification,evidence,notes
+A1_pt01,I,1,可生产使用,20260713222259_a1_three_point_pre_audit,A1-pt01 residual_svd same-branch relative error below 1 percent
+A1_pt01,I,3,可生产使用,20260713222259_a1_three_point_pre_audit,A1-pt01 residual_svd same-branch relative error below 1 percent
+A1_pt01,x,-1,可生产使用,20260713222259_a1_three_point_pre_audit,A1-pt01 insertion residual_svd same-branch relative error below 1 percent
+A1_pt12,I,0,可生产使用,20260713222259_a1_three_point_pre_audit,A1-pt12 residual_svd same-branch relative error below 1 percent
+A1_pt12,I,4,可生产使用,20260713222259_a1_three_point_pre_audit,A1-pt12 residual_svd same-branch relative error below 1 percent
+A1_pt12,I,6,可生产使用,20260713222259_a1_three_point_pre_audit,A1-pt12 residual_svd same-branch relative error below 1 percent
+A1_pt12,x,-1,可生产使用,20260713222259_a1_three_point_pre_audit,A1-pt12 insertion residual_svd same-branch relative error below 1 percent
+A1_pt13,I,3,同分支误差超限,20260713223700_a1_pt13_smallstep_segmented_reaudit,A1-pt13 I3 failed roundtrip gates
+A1_pt13,I,4,同分支误差超限,20260713224415_a1_pt13_residual_svd_fine_reaudit,A1-pt13 I4 roundtrip or sensitivity error failed
+A1_pt13,I,5,可有限使用,20260713224415_a1_pt13_residual_svd_fine_reaudit,A1-pt13 I5 reached 6.55 percent relative error at 0.03125 A
+A1_pt13,I,6,同分支误差超限,20260713224415_a1_pt13_residual_svd_fine_reaudit,A1-pt13 I6 residual_svd error remained above 10 percent
+A1_pt13,x,-1,同分支误差超限,20260713224415_a1_pt13_residual_svd_fine_reaudit,A1-pt13 insertion residual_svd error remained above 10 percent
