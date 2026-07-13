@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import csv
 from dataclasses import dataclass
+import math
 from pathlib import Path
 from typing import Any, Iterable
 
 
 PRODUCTION_CLASS = "可生产使用"
 LIMITED_CLASS = "可有限使用"
+LIMITED_DECISION_CLASS = "有限使用候选"
 
 
 @dataclass(frozen=True)
@@ -23,6 +25,7 @@ class ControlGate:
     allow_limited: bool
     allowed_mask: tuple[bool, ...]
     channel_reasons: tuple[str, ...]
+    safe_step_abs_max: tuple[float | None, ...]
     matched_rows: int
 
     def as_dict(self) -> dict[str, Any]:
@@ -37,6 +40,7 @@ class ControlGate:
             "allowed_channels": channel_names_from_mask(self.allowed_mask),
             "blocked_channels": channel_names_from_mask(tuple(not v for v in self.allowed_mask)),
             "channel_reasons": list(self.channel_reasons),
+            "safe_step_abs_max": [None if v is None else float(v) for v in self.safe_step_abs_max],
             "matched_rows": int(self.matched_rows),
         }
 
@@ -71,7 +75,7 @@ def _default_reason(channel_idx: int, n_coils: int, missing_policy: str) -> str:
 
 
 def _row_matches_key(row: dict[str, str], key: str) -> bool:
-    run = str(row.get("run", "")).strip()
+    run = str(row.get("run", row.get("point_key", ""))).strip()
     return bool(run == key or run.startswith(f"{key}_"))
 
 
@@ -93,9 +97,37 @@ def _is_allowed_class(classification: str, *, allow_limited: bool) -> bool:
     classification = str(classification).strip()
     if classification == PRODUCTION_CLASS:
         return True
-    if allow_limited and classification == LIMITED_CLASS:
+    if allow_limited and classification in (LIMITED_CLASS, LIMITED_DECISION_CLASS):
         return True
     return False
+
+
+def _row_classification(row: dict[str, str]) -> str:
+    """Return a channel classification from detailed or summary audit rows."""
+    return str(row.get("classification", row.get("decision", ""))).strip()
+
+
+def _row_safe_step_abs(row: dict[str, str]) -> float | None:
+    """Return the conservative per-channel safe step from an audit row."""
+    values: list[float] = []
+    for key in (
+        "safe_step_abs",
+        "safe_step_abs_max",
+        "limited_safe_step_abs_max",
+        "limited_safe_step_abs_min",
+    ):
+        raw = str(row.get(key, "")).strip()
+        if not raw:
+            continue
+        try:
+            value = float(raw)
+        except ValueError:
+            continue
+        if math.isfinite(value) and value > 0.0:
+            values.append(value)
+    if not values:
+        return None
+    return float(min(values))
 
 
 def load_control_gate(
@@ -122,6 +154,7 @@ def load_control_gate(
             allow_limited=bool(allow_limited),
             allowed_mask=allowed,
             channel_reasons=tuple("gate_disabled" for _ in allowed),
+            safe_step_abs_max=tuple(None for _ in allowed),
             matched_rows=0,
         )
     if key is None or str(key).strip() == "":
@@ -142,6 +175,7 @@ def load_control_gate(
 
     allowed = _default_allowed_mask(n_coils, missing_policy)
     reasons = [_default_reason(idx, n_coils, missing_policy) for idx in range(n_coils + 1)]
+    safe_steps: list[float | None] = [None for _ in range(n_coils + 1)]
     grouped: dict[int, list[dict[str, str]]] = {}
     for row in matched:
         idx = _row_channel_index(row, n_coils)
@@ -150,14 +184,17 @@ def load_control_gate(
         grouped.setdefault(idx, []).append(row)
 
     for idx, rows in grouped.items():
-        classes = [str(row.get("classification", "")).strip() for row in rows]
+        classes = [_row_classification(row) for row in rows]
         allowed_count = sum(1 for cls in classes if _is_allowed_class(cls, allow_limited=allow_limited))
         if rows and allowed_count == len(rows):
             allowed[idx] = True
             reasons[idx] = f"audited_allowed:{'|'.join(sorted(set(classes)))}"
+            row_safe_steps = [value for row in rows if (value := _row_safe_step_abs(row)) is not None]
+            safe_steps[idx] = min(row_safe_steps) if row_safe_steps else None
         else:
             allowed[idx] = False
             reasons[idx] = f"audited_blocked:{'|'.join(sorted(set(classes)))}"
+            safe_steps[idx] = None
 
     return ControlGate(
         enabled=True,
@@ -167,5 +204,6 @@ def load_control_gate(
         allow_limited=bool(allow_limited),
         allowed_mask=tuple(bool(v) for v in allowed),
         channel_reasons=tuple(reasons),
+        safe_step_abs_max=tuple(safe_steps),
         matched_rows=len(matched),
     )

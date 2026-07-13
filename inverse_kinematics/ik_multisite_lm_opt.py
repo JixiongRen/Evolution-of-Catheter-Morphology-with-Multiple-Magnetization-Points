@@ -967,6 +967,21 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         missing_policy=str(args.channel_gate_missing_policy),
     )
     control_gate_info = control_gate.as_dict()
+    safe_steps_np = np.asarray(
+        [
+            np.inf if value is None else float(value)
+            for value in control_gate.safe_step_abs_max
+        ],
+        dtype=float,
+    )
+    if safe_steps_np.shape[0] != n_coils + 1:
+        raise ValueError("Control gate safe-step length does not match control dimension")
+    I_step_limits_np = np.minimum(np.full((n_coils,), float(step_I_max), dtype=float), safe_steps_np[:n_coils])
+    x_step_limit = min(float(step_x_max), float(safe_steps_np[-1]))
+    I_step_limits_np = np.where(np.isfinite(I_step_limits_np), I_step_limits_np, float(step_I_max))
+    if not np.isfinite(x_step_limit):
+        x_step_limit = float(step_x_max)
+    I_step_limits = jnp.asarray(I_step_limits_np, dtype=jnp.float64)
 
     # Save run config
     run_config_path.write_text(
@@ -1477,6 +1492,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             "active_indices": [int(v) for v in active_idx_np.tolist()],
             "blocked_indices": [int(v) for v in blocked_idx_np.tolist()],
             "active_dim": int(active_idx_np.size),
+            "effective_step_I_max_A": [float(v) for v in I_step_limits_np.reshape(-1).tolist()],
+            "effective_step_x_max_m": float(x_step_limit),
         }
         if active_idx_np.size == 0:
             print("[IK-LM] stop: control gate blocks every channel; no admissible outer update.")
@@ -1565,8 +1582,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             dI_prop = jnp.asarray(I_prop - cur.I, dtype=jnp.float64)
             dx_prop = float(x_prop - cur.x)
 
-            dI_clip = jnp.clip(dI_prop, -float(step_I_max), float(step_I_max))
-            dx_clip = float(jnp.clip(dx_prop, -float(step_x_max), float(step_x_max)))
+            dI_clip = jnp.clip(dI_prop, -I_step_limits, I_step_limits)
+            dx_clip = float(jnp.clip(dx_prop, -float(x_step_limit), float(x_step_limit)))
 
             I_trial = jnp.asarray(cur.I + dI_clip, dtype=jnp.float64)
             I_trial = jnp.clip(I_trial, -float(I_max), float(I_max))
