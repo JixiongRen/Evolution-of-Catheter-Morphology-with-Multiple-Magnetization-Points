@@ -1,0 +1,3 @@
+point_key,selector,roundtrip_segments,kind,channel,mode,classification,row_count,used_row_count,branch_consistent_count,weak_count,median_relative_error,p90_relative_error,safe_step_abs,min_step_abs,max_fd_displacement_mm,evidence
+A1_pt13,final,1,I,5,residual_svd,弱响应,1,0,1,1,,,,,0.028920912750879307,20260714010704_a1_pt13_policy_reaudit
+A1_pt13,final,1,x,-1,residual_svd,同分支误差超限,1,1,1,0,0.24555603372191953,0.24555603372191953,6.25e-05,6.25e-05,0.06212628635194126,20260714010704_a1_pt13_policy_reaudit

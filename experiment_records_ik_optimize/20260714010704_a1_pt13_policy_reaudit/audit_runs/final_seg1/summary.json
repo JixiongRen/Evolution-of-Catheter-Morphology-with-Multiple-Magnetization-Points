@@ -1,0 +1,57 @@
+{
+  "started": "2026-07-14 01:09:17",
+  "finished": "2026-07-14 01:10:27",
+  "point_count": 1,
+  "sensitivity_rows": 1,
+  "fd_rows": 2,
+  "fd_gate_summary": {
+    "fd_ok": 2,
+    "replay_converged": 2,
+    "branch_consistent": 2,
+    "weak_gate_triggered": 1,
+    "used_in_stats": 1
+  },
+  "settings": {
+    "paths": [
+      "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13"
+    ],
+    "out_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1",
+    "selector": "final",
+    "current_steps_a": "0.03125",
+    "x_steps_mm": "0.0625",
+    "current_channels": "5",
+    "auto_current_channels": 2,
+    "sensitivity_modes": "residual_svd",
+    "solve_mode": "svd",
+    "ridge": 1e-10,
+    "svd_rcond": 1e-09,
+    "spectral_filter": "hard",
+    "spectral_damping": 0.0,
+    "roundtrip_segments": 1,
+    "terminal_gate_mm": 0.1,
+    "centerline_gate_mm": 0.5,
+    "weak_displacement_mm": 0.05,
+    "max_points": 0
+  },
+  "runtime_environment": {
+    "code_commit": "06f645ac5af2ffc2013fe2f5e53e539061793185",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 7639,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "paths": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13"
+  ]
+}
