@@ -69,7 +69,7 @@ import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from ik_diff import compute_tip_sensitivities_via_lm_adjoint
 from ik_artifacts import extract_centerline_dim, save_centerline, save_history_json
-from ik_branch_state import BranchStateRecorder, current_git_commit, json_sha256
+from ik_branch_state import BranchStateRecorder, current_git_commit, git_tracked_dirty, git_untracked_count, json_sha256
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
@@ -150,6 +150,8 @@ def _runtime_environment() -> dict[str, Any]:
         )
     return {
         "code_commit": current_git_commit(_REPO_ROOT),
+        "git_tracked_dirty": git_tracked_dirty(_REPO_ROOT),
+        "git_untracked_count": git_untracked_count(_REPO_ROOT),
         "python_executable": sys.executable,
         "jax_version": getattr(jax, "__version__", None),
         "jax_enable_x64": bool(jax.config.jax_enable_x64),
@@ -937,6 +939,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         metadata={
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             "code_commit": current_git_commit(_REPO_ROOT),
+            "git_tracked_dirty": git_tracked_dirty(_REPO_ROOT),
+            "git_untracked_count": git_untracked_count(_REPO_ROOT),
             "argv_hash": json_sha256(vars(args)),
             "fk_cfg_hash": json_sha256(cfg),
             "geometry_hash": json_sha256(

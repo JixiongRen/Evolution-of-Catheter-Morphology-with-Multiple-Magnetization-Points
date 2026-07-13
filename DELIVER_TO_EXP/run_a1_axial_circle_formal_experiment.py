@@ -67,6 +67,23 @@ def _git_commit() -> str:
         return "unknown"
 
 
+def _git_tracked_dirty() -> bool:
+    try:
+        unstaged = subprocess.run(["git", "diff", "--quiet", "HEAD", "--"], cwd=REPO)
+        staged = subprocess.run(["git", "diff", "--cached", "--quiet", "HEAD", "--"], cwd=REPO)
+        return bool(unstaged.returncode != 0 or staged.returncode != 0)
+    except Exception:
+        return True
+
+
+def _git_untracked_count() -> int:
+    try:
+        out = subprocess.check_output(["git", "ls-files", "--others", "--exclude-standard"], cwd=REPO, text=True)
+        return sum(1 for line in out.splitlines() if line.strip())
+    except Exception:
+        return -1
+
+
 def _load_config() -> dict[str, Any]:
     return yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
 
@@ -1028,6 +1045,8 @@ def main(argv: list[str] | None = None) -> None:
         "run_root": str(run_root.resolve()),
         "report_path": str(report_path.resolve()),
         "git_commit": _git_commit(),
+        "git_tracked_dirty": _git_tracked_dirty(),
+        "git_untracked_count": _git_untracked_count(),
         "config_path": str(CONFIG_PATH.resolve()),
         "config_sha256": _sha256(CONFIG_PATH),
         "calib_file": str(calib_path.resolve()),

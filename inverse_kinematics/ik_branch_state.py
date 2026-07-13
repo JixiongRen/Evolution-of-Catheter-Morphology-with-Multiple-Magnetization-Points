@@ -41,6 +41,25 @@ def current_git_commit(cwd: Path) -> str:
         return "unknown"
 
 
+def git_tracked_dirty(cwd: Path) -> bool:
+    """Return whether tracked files differ from HEAD."""
+    try:
+        unstaged = subprocess.run(["git", "diff", "--quiet", "HEAD", "--"], cwd=cwd)
+        staged = subprocess.run(["git", "diff", "--cached", "--quiet", "HEAD", "--"], cwd=cwd)
+        return bool(unstaged.returncode != 0 or staged.returncode != 0)
+    except Exception:
+        return True
+
+
+def git_untracked_count(cwd: Path) -> int:
+    """Return the number of untracked, non-ignored files."""
+    try:
+        out = subprocess.check_output(["git", "ls-files", "--others", "--exclude-standard"], cwd=cwd, text=True)
+        return sum(1 for line in out.splitlines() if line.strip())
+    except Exception:
+        return -1
+
+
 def _jsonify(value: Any) -> Any:
     """Convert common numerical objects to JSON-compatible values."""
     if value is None or isinstance(value, (str, bool, int, float)):

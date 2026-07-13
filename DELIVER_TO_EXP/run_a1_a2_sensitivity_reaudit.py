@@ -27,7 +27,7 @@ for _path in (_REPO_ROOT, _FK_DIR):
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from inverse_kinematics.ik_artifacts import extract_centerline_dim
-from inverse_kinematics.ik_branch_state import current_git_commit
+from inverse_kinematics.ik_branch_state import current_git_commit, git_tracked_dirty, git_untracked_count
 from inverse_kinematics.ik_diff import compute_tip_sensitivities_via_lm_adjoint, extract_terminal_p_dim
 
 jax.config.update("jax_enable_x64", True)
@@ -46,6 +46,8 @@ def _runtime_environment() -> dict[str, Any]:
         )
     return {
         "code_commit": current_git_commit(_REPO_ROOT),
+        "git_tracked_dirty": git_tracked_dirty(_REPO_ROOT),
+        "git_untracked_count": git_untracked_count(_REPO_ROOT),
         "python_executable": sys.executable,
         "jax_version": getattr(jax, "__version__", None),
         "jax_enable_x64": bool(jax.config.jax_enable_x64),
@@ -231,8 +233,8 @@ def _angle_deg(a: np.ndarray, b: np.ndarray) -> float:
     return float(math.degrees(math.acos(max(-1.0, min(1.0, cosv)))))
 
 
-def _apply_channel_level_weak_flags(rows: list[dict[str, Any]], weak_displacement_mm: float) -> None:
-    """Set weak-response labels consistently for each audited control channel."""
+def _apply_channel_level_stat_flags(rows: list[dict[str, Any]], weak_displacement_mm: float) -> None:
+    """Set branch, weak-response, and statistics eligibility labels."""
 
     max_displacement: dict[tuple[Any, ...], float] = {}
     for row in rows:
@@ -258,7 +260,24 @@ def _apply_channel_level_weak_flags(rows: list[dict[str, Any]], weak_displacemen
             row.get("kind"),
             row.get("channel"),
         )
-        row["weak_channel"] = bool(max_displacement.get(key, 0.0) < float(weak_displacement_mm))
+        channel_max_displacement_mm = float(max_displacement.get(key, 0.0))
+        weak_gate_triggered = bool(channel_max_displacement_mm < float(weak_displacement_mm))
+        branch_consistent = bool(row.get("roundtrip_ok", False))
+        replay_converged = bool(row.get("replay_converged", False))
+        used_in_stats = bool(branch_consistent and replay_converged and not weak_gate_triggered)
+        if not branch_consistent or not replay_converged:
+            stats_exclusion_reason = "branch_or_replay_failed"
+        elif weak_gate_triggered:
+            stats_exclusion_reason = "weak_response"
+        else:
+            stats_exclusion_reason = "ok"
+
+        row["channel_max_displacement_mm"] = channel_max_displacement_mm
+        row["weak_gate_triggered"] = weak_gate_triggered
+        row["weak_channel"] = weak_gate_triggered
+        row["branch_consistent"] = branch_consistent
+        row["used_in_stats"] = used_in_stats
+        row["stats_exclusion_reason"] = stats_exclusion_reason
 
 
 def _current_channels_from_text(text: str | None) -> list[int] | None:
@@ -441,7 +460,19 @@ def _audit_one_point(
                     "kind": kind,
                     "channel": channel,
                     "step": step,
+                    "step_family": f"{kind}:{channel}",
+                    "displacement_gate_mm": float(weak_displacement_mm),
                     "fd_ok": False,
+                    "fd_valid": False,
+                    "replay_converged": False,
+                    "roundtrip_ok": False,
+                    "branch_consistent": False,
+                    "step_weak_gate_triggered": "",
+                    "weak_gate_triggered": "",
+                    "weak_channel": "",
+                    "channel_max_displacement_mm": "",
+                    "used_in_stats": False,
+                    "stats_exclusion_reason": "bounds",
                     "reason": "bounds",
                 }
             )
@@ -489,11 +520,12 @@ def _audit_one_point(
         )
         fd_col = (plus.terminal_m - minus.terminal_m) / (2.0 * step)
         displacement_mm = float(np.linalg.norm(fd_col * step) * 1000.0)
-        weak = bool(displacement_mm < weak_displacement_mm)
+        step_weak = bool(displacement_mm < weak_displacement_mm)
         back_plus_terminal_mm = float(np.linalg.norm(back_plus.terminal_m - base.terminal_m) * 1000.0)
         back_minus_terminal_mm = float(np.linalg.norm(back_minus.terminal_m - base.terminal_m) * 1000.0)
         back_plus_centerline_mm = _centerline_error_mm(back_plus.centerline_m, base.centerline_m)
         back_minus_centerline_mm = _centerline_error_mm(back_minus.centerline_m, base.centerline_m)
+        replay_converged = bool(plus.ok and minus.ok and back_plus.ok and back_minus.ok)
         roundtrip_ok = bool(
             back_plus_terminal_mm <= terminal_gate_mm
             and back_minus_terminal_mm <= terminal_gate_mm
@@ -501,7 +533,7 @@ def _audit_one_point(
             and back_minus_centerline_mm <= centerline_gate_mm
         )
 
-        fd_strict_ok = bool(roundtrip_ok and plus.ok and minus.ok and back_plus.ok and back_minus.ok)
+        fd_strict_ok = bool(roundtrip_ok and replay_converged)
         for mode, sens in sens_by_mode.items():
             jac_col = np.asarray(sens.J_p_I[:, channel] if kind == "I" else sens.J_p_x, dtype=float).reshape(3)
             abs_err_mm_per_unit = float(np.linalg.norm(jac_col - fd_col) * 1000.0)
@@ -518,6 +550,7 @@ def _audit_one_point(
                     "kind": kind,
                     "channel": channel,
                     "step": step,
+                    "step_family": f"{kind}:{channel}",
                     "mode": mode,
                     "solve_mode": str(solve_mode),
                     "ridge": float(ridge),
@@ -530,8 +563,16 @@ def _audit_one_point(
                     "retained_spectral_energy": getattr(sens, "retained_spectral_energy", ""),
                     "fd_ok": True,
                     "fd_valid": fd_strict_ok,
+                    "replay_converged": replay_converged,
                     "roundtrip_ok": roundtrip_ok,
-                    "weak_channel": weak,
+                    "branch_consistent": roundtrip_ok,
+                    "displacement_gate_mm": float(weak_displacement_mm),
+                    "step_weak_gate_triggered": step_weak,
+                    "weak_gate_triggered": "",
+                    "weak_channel": "",
+                    "channel_max_displacement_mm": "",
+                    "used_in_stats": "",
+                    "stats_exclusion_reason": "",
                     "fd_displacement_mm": displacement_mm,
                     "fd_norm_per_unit": fd_norm,
                     "jac_norm_per_unit": jac_norm,
@@ -550,7 +591,7 @@ def _audit_one_point(
                 }
             )
 
-    _apply_channel_level_weak_flags(fd_rows, weak_displacement_mm)
+    _apply_channel_level_stat_flags(fd_rows, weak_displacement_mm)
     return sens_rows, fd_rows
 
 
@@ -565,6 +606,18 @@ def _write_csv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _fd_gate_summary(rows: Sequence[dict[str, Any]]) -> dict[str, int]:
+    """Summarize finite-difference audit gate counts."""
+
+    return {
+        "fd_ok": sum(bool(row.get("fd_ok")) for row in rows),
+        "replay_converged": sum(bool(row.get("replay_converged")) for row in rows),
+        "branch_consistent": sum(bool(row.get("branch_consistent")) for row in rows),
+        "weak_gate_triggered": sum(bool(row.get("weak_gate_triggered")) for row in rows),
+        "used_in_stats": sum(bool(row.get("used_in_stats")) for row in rows),
+    }
 
 
 def build_argparser() -> argparse.ArgumentParser:
@@ -643,6 +696,7 @@ def main(argv: list[str] | None = None) -> None:
         "point_count": len(point_dirs),
         "sensitivity_rows": len(all_sens_rows),
         "fd_rows": len(all_fd_rows),
+        "fd_gate_summary": _fd_gate_summary(all_fd_rows),
         "settings": vars(args),
         "runtime_environment": runtime_environment,
         "paths": [str(p) for p in point_dirs],

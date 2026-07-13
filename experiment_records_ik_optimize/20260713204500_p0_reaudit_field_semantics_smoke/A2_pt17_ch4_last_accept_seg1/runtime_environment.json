@@ -1,0 +1,16 @@
+{
+  "code_commit": "3e6befddc7bc16bc72a968fae904f6bd96cf8d10",
+  "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+  "jax_version": "0.8.1",
+  "jax_enable_x64": true,
+  "jax_platforms_env": "cuda",
+  "xla_python_client_preallocate": "false",
+  "devices": [
+    {
+      "id": 0,
+      "platform": "gpu",
+      "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "repr": "cuda:0"
+    }
+  ]
+}
