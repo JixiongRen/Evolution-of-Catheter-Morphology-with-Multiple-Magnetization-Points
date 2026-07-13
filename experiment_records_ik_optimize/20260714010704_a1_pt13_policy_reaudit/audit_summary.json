@@ -1,11 +1,11 @@
 {
   "experiment_id": "20260714010704_a1_pt13_policy_reaudit",
-  "mode": "smoke",
+  "mode": "full",
   "git": {
     "branch": "ik_optimize",
-    "commit": "06f645ac5af2ffc2013fe2f5e53e539061793185",
-    "tracked_status_short": "",
-    "untracked_count": "62"
+    "commit": "31eb33bfd74043db82a03ae219f8baef5f29dcaf",
+    "tracked_status_short": "M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_run_status.csv\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1/finite_difference_audit.csv\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1/runtime_environment.json\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1/sensitivity_modes.csv\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1/stderr.log\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1/stdout.log\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1/summary.json\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_summary.json\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/channel_audit_full.csv\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/channel_policy_candidate.csv\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/channel_policy_summary.png\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/channel_policy_summary.svg\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/record.md\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/run_a1_pt13_policy_reaudit.py\n M experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/state_replay_gate.csv",
+    "untracked_count": "70"
   },
   "source_state": {
     "source_point": "DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13",
@@ -21,24 +21,156 @@
     "best_equals_final_hash": true
   },
   "selectors": [
-    "final"
+    "best_accept",
+    "final",
+    "last_accept"
   ],
   "roundtrip_segments": [
-    1
+    1,
+    4,
+    8
   ],
   "current_steps_a": "existing",
   "x_steps_mm": "existing",
   "current_channels": "existing",
   "sensitivity_modes": "existing",
-  "run_count": 1,
-  "successful_run_count": 1,
-  "fd_row_count": 2,
-  "sensitivity_row_count": 1,
-  "policy_row_count": 2,
+  "run_count": 9,
+  "successful_run_count": 9,
+  "fd_row_count": 1260,
+  "sensitivity_row_count": 36,
+  "policy_row_count": 324,
   "classification_counts": {
-    "弱响应": 1,
-    "同分支误差超限": 1
+    "同分支误差超限": 312,
+    "可有限使用": 12
   },
+  "channel_decision_summary": [
+    {
+      "point_key": "A1_pt13",
+      "kind": "I",
+      "channel": "0",
+      "mode": "residual_svd",
+      "decision": "暂不放行",
+      "classification_counts": "{\"同分支误差超限\": 9}",
+      "candidate_count": 9,
+      "limited_count": 0,
+      "production_count": 0,
+      "best_median_relative_error": 0.2272792911185104,
+      "limited_safe_step_abs_max": "",
+      "limited_safe_step_abs_min": ""
+    },
+    {
+      "point_key": "A1_pt13",
+      "kind": "I",
+      "channel": "1",
+      "mode": "residual_svd",
+      "decision": "暂不放行",
+      "classification_counts": "{\"同分支误差超限\": 9}",
+      "candidate_count": 9,
+      "limited_count": 0,
+      "production_count": 0,
+      "best_median_relative_error": 0.8590897098945368,
+      "limited_safe_step_abs_max": "",
+      "limited_safe_step_abs_min": ""
+    },
+    {
+      "point_key": "A1_pt13",
+      "kind": "I",
+      "channel": "2",
+      "mode": "residual_svd",
+      "decision": "暂不放行",
+      "classification_counts": "{\"同分支误差超限\": 9}",
+      "candidate_count": 9,
+      "limited_count": 0,
+      "production_count": 0,
+      "best_median_relative_error": 0.39291528166681267,
+      "limited_safe_step_abs_max": "",
+      "limited_safe_step_abs_min": ""
+    },
+    {
+      "point_key": "A1_pt13",
+      "kind": "I",
+      "channel": "3",
+      "mode": "residual_svd",
+      "decision": "暂不放行",
+      "classification_counts": "{\"同分支误差超限\": 9}",
+      "candidate_count": 9,
+      "limited_count": 0,
+      "production_count": 0,
+      "best_median_relative_error": 1.1522423231617176,
+      "limited_safe_step_abs_max": "",
+      "limited_safe_step_abs_min": ""
+    },
+    {
+      "point_key": "A1_pt13",
+      "kind": "I",
+      "channel": "4",
+      "mode": "residual_svd",
+      "decision": "暂不放行",
+      "classification_counts": "{\"同分支误差超限\": 9}",
+      "candidate_count": 9,
+      "limited_count": 0,
+      "production_count": 0,
+      "best_median_relative_error": 0.2713525772603915,
+      "limited_safe_step_abs_max": "",
+      "limited_safe_step_abs_min": ""
+    },
+    {
+      "point_key": "A1_pt13",
+      "kind": "I",
+      "channel": "5",
+      "mode": "residual_svd",
+      "decision": "有限使用候选",
+      "classification_counts": "{\"可有限使用\": 6, \"同分支误差超限\": 3}",
+      "candidate_count": 9,
+      "limited_count": 6,
+      "production_count": 0,
+      "best_median_relative_error": 0.07209469117536521,
+      "limited_safe_step_abs_max": 0.125,
+      "limited_safe_step_abs_min": 0.125
+    },
+    {
+      "point_key": "A1_pt13",
+      "kind": "I",
+      "channel": "6",
+      "mode": "residual_svd",
+      "decision": "暂不放行",
+      "classification_counts": "{\"同分支误差超限\": 9}",
+      "candidate_count": 9,
+      "limited_count": 0,
+      "production_count": 0,
+      "best_median_relative_error": 0.15764913378079848,
+      "limited_safe_step_abs_max": "",
+      "limited_safe_step_abs_min": ""
+    },
+    {
+      "point_key": "A1_pt13",
+      "kind": "I",
+      "channel": "7",
+      "mode": "residual_svd",
+      "decision": "暂不放行",
+      "classification_counts": "{\"同分支误差超限\": 9}",
+      "candidate_count": 9,
+      "limited_count": 0,
+      "production_count": 0,
+      "best_median_relative_error": 0.8226139618465349,
+      "limited_safe_step_abs_max": "",
+      "limited_safe_step_abs_min": ""
+    },
+    {
+      "point_key": "A1_pt13",
+      "kind": "x",
+      "channel": "-1",
+      "mode": "residual_svd",
+      "decision": "暂不放行",
+      "classification_counts": "{\"同分支误差超限\": 9}",
+      "candidate_count": 9,
+      "limited_count": 0,
+      "production_count": 0,
+      "best_median_relative_error": 0.1980712322279808,
+      "limited_safe_step_abs_max": "",
+      "limited_safe_step_abs_min": ""
+    }
+  ],
   "plot_error": null,
   "runs": [
     {
@@ -47,10 +179,98 @@
       "roundtrip_segments": "1",
       "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1",
       "exit_code": "0",
-      "started": "2026-07-14 01:09:11",
-      "finished": "2026-07-14 01:10:29",
-      "wall_s": "77.6846414040192",
-      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1 --selector final --current-steps-a 0.03125 --x-steps-mm 0.0625 --current-channels 5 --sensitivity-modes residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 1 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+      "started": "2026-07-14 01:14:57",
+      "finished": "2026-07-14 01:19:06",
+      "wall_s": "249.14690278598573",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1 --selector final --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 1 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+    },
+    {
+      "label": "final_seg4",
+      "selector": "final",
+      "roundtrip_segments": "4",
+      "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg4",
+      "exit_code": "0",
+      "started": "2026-07-14 01:19:06",
+      "finished": "2026-07-14 01:25:43",
+      "wall_s": "397.1337780029862",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg4 --selector final --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 4 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+    },
+    {
+      "label": "final_seg8",
+      "selector": "final",
+      "roundtrip_segments": "8",
+      "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg8",
+      "exit_code": "0",
+      "started": "2026-07-14 01:25:43",
+      "finished": "2026-07-14 01:35:25",
+      "wall_s": "582.0451408709923",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg8 --selector final --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 8 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+    },
+    {
+      "label": "best_accept_seg1",
+      "selector": "best_accept",
+      "roundtrip_segments": "1",
+      "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/best_accept_seg1",
+      "exit_code": "0",
+      "started": "2026-07-14 01:35:25",
+      "finished": "2026-07-14 01:39:34",
+      "wall_s": "248.64291635502013",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/best_accept_seg1 --selector best_accept --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 1 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+    },
+    {
+      "label": "best_accept_seg4",
+      "selector": "best_accept",
+      "roundtrip_segments": "4",
+      "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/best_accept_seg4",
+      "exit_code": "0",
+      "started": "2026-07-14 01:39:34",
+      "finished": "2026-07-14 01:46:11",
+      "wall_s": "397.01091979802004",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/best_accept_seg4 --selector best_accept --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 4 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+    },
+    {
+      "label": "best_accept_seg8",
+      "selector": "best_accept",
+      "roundtrip_segments": "8",
+      "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/best_accept_seg8",
+      "exit_code": "0",
+      "started": "2026-07-14 01:46:11",
+      "finished": "2026-07-14 01:55:59",
+      "wall_s": "588.1610740720062",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/best_accept_seg8 --selector best_accept --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 8 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+    },
+    {
+      "label": "last_accept_seg1",
+      "selector": "last_accept",
+      "roundtrip_segments": "1",
+      "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/last_accept_seg1",
+      "exit_code": "0",
+      "started": "2026-07-14 01:55:59",
+      "finished": "2026-07-14 02:00:07",
+      "wall_s": "248.6376325720048",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/last_accept_seg1 --selector last_accept --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 1 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+    },
+    {
+      "label": "last_accept_seg4",
+      "selector": "last_accept",
+      "roundtrip_segments": "4",
+      "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/last_accept_seg4",
+      "exit_code": "0",
+      "started": "2026-07-14 02:00:07",
+      "finished": "2026-07-14 02:06:48",
+      "wall_s": "400.39789313598885",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/last_accept_seg4 --selector last_accept --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 4 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
+    },
+    {
+      "label": "last_accept_seg8",
+      "selector": "last_accept",
+      "roundtrip_segments": "8",
+      "out_dir": "experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/last_accept_seg8",
+      "exit_code": "0",
+      "started": "2026-07-14 02:06:48",
+      "finished": "2026-07-14 02:16:31",
+      "wall_s": "582.8968054100114",
+      "command": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_sensitivity_reaudit.py /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13 --out-dir /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/last_accept_seg8 --selector last_accept --current-steps-a 0.125,0.0625,0.03125,0.015625 --x-steps-mm 0.25,0.125,0.0625 --current-channels 0,1,2,3,4,5,6,7 --sensitivity-modes solver_response,gn_svd,stationarity_exact,residual_svd --solve-mode svd --ridge 1e-10 --svd-rcond 1e-9 --spectral-filter hard --spectral-damping 0.0 --roundtrip-segments 8 --terminal-gate-mm 0.1 --centerline-gate-mm 0.5 --weak-displacement-mm 0.05"
     }
   ]
 }

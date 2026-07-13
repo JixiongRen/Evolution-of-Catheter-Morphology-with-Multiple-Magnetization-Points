@@ -1,0 +1,10 @@
+point_key,kind,channel,mode,decision,classification_counts,candidate_count,limited_count,production_count,best_median_relative_error,limited_safe_step_abs_max,limited_safe_step_abs_min
+A1_pt13,I,0,residual_svd,暂不放行,"{""同分支误差超限"": 9}",9,0,0,0.2272792911185104,,
+A1_pt13,I,1,residual_svd,暂不放行,"{""同分支误差超限"": 9}",9,0,0,0.8590897098945368,,
+A1_pt13,I,2,residual_svd,暂不放行,"{""同分支误差超限"": 9}",9,0,0,0.39291528166681267,,
+A1_pt13,I,3,residual_svd,暂不放行,"{""同分支误差超限"": 9}",9,0,0,1.1522423231617176,,
+A1_pt13,I,4,residual_svd,暂不放行,"{""同分支误差超限"": 9}",9,0,0,0.2713525772603915,,
+A1_pt13,I,5,residual_svd,有限使用候选,"{""可有限使用"": 6, ""同分支误差超限"": 3}",9,6,0,0.07209469117536521,0.125,0.125
+A1_pt13,I,6,residual_svd,暂不放行,"{""同分支误差超限"": 9}",9,0,0,0.15764913378079848,,
+A1_pt13,I,7,residual_svd,暂不放行,"{""同分支误差超限"": 9}",9,0,0,0.8226139618465349,,
+A1_pt13,x,-1,residual_svd,暂不放行,"{""同分支误差超限"": 9}",9,0,0,0.1980712322279808,,

@@ -1,2 +1,4 @@
-W0714 01:09:16.841420  179377 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
-W0714 01:09:16.849581  179351 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0714 01:14:59.244609  180696 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0714 01:14:59.250384  180670 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+warning: LF will be replaced by CRLF in experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/final_seg1/stderr.log.
+The file will have its original line endings in your working directory

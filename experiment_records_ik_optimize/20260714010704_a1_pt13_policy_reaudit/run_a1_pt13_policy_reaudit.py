@@ -281,6 +281,57 @@ def _build_policy(fd_rows: list[dict[str, str]]) -> list[dict[str, Any]]:
     return policy_rows
 
 
+def _build_decision_summary(policy_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Build a conservative per-channel decision table from residual-space sensitivity."""
+
+    rows = [row for row in policy_rows if str(row.get("mode")) == "residual_svd"]
+    grouped: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        grouped[(str(row.get("kind")), str(row.get("channel")))].append(row)
+
+    summary_rows: list[dict[str, Any]] = []
+    for (kind, channel), items in sorted(grouped.items()):
+        class_counts = Counter(str(row.get("classification")) for row in items)
+        finite_rows = [row for row in items if str(row.get("classification")) == "可有限使用"]
+        production_rows = [row for row in items if str(row.get("classification")) == "可生产使用"]
+        if production_rows and not class_counts.get("同分支误差超限"):
+            decision = "生产候选"
+        elif finite_rows:
+            decision = "有限使用候选"
+        elif class_counts.get("跨分支或不可审计"):
+            decision = "不可审计"
+        else:
+            decision = "暂不放行"
+        numeric_errors = [
+            float(row["median_relative_error"])
+            for row in items
+            if str(row.get("median_relative_error", "")).strip() not in ("", "nan")
+        ]
+        finite_steps = [
+            float(row["safe_step_abs"])
+            for row in finite_rows
+            if str(row.get("safe_step_abs", "")).strip() not in ("", "nan")
+        ]
+        summary_rows.append(
+            {
+                "point_key": "A1_pt13",
+                "kind": kind,
+                "channel": channel,
+                "mode": "residual_svd",
+                "decision": decision,
+                "classification_counts": json.dumps(dict(class_counts), ensure_ascii=False, sort_keys=True),
+                "candidate_count": len(items),
+                "limited_count": len(finite_rows),
+                "production_count": len(production_rows),
+                "best_median_relative_error": "" if not numeric_errors else min(numeric_errors),
+                "limited_safe_step_abs_max": "" if not finite_steps else max(finite_steps),
+                "limited_safe_step_abs_min": "" if not finite_steps else min(finite_steps),
+            }
+        )
+    _write_csv(EXP_DIR / "channel_decision_summary.csv", summary_rows)
+    return summary_rows
+
+
 def _plot_policy(policy_rows: list[dict[str, Any]]) -> str | None:
     try:
         import matplotlib.pyplot as plt
@@ -306,6 +357,17 @@ def _plot_policy(policy_rows: list[dict[str, Any]]) -> str | None:
 
 
 def _write_record(summary: dict[str, Any]) -> None:
+    decision_lines = []
+    for row in summary.get("channel_decision_summary", []):
+        name = "推进量" if row["kind"] == "x" else f"I{row['channel']}"
+        best = row.get("best_median_relative_error", "")
+        best_text = "无有效统计" if best == "" else f"{float(best) * 100.0:.2f}%"
+        decision_lines.append(
+            f"| {name} | {row['decision']} | {best_text} | {row['classification_counts']} |"
+        )
+    decision_table = "\n".join(
+        ["| 通道 | 保守决策 | 最小中位相对误差 | 分类计数 |", "|---|---|---:|---|"] + decision_lines
+    )
     text = f"""# A1-pt13 同分支通道策略复审
 
 ## 实验目的
@@ -340,14 +402,21 @@ def _write_record(summary: dict[str, Any]) -> None:
 - 有限差分记录行数：{summary['fd_row_count']}。
 - 灵敏度记录行数：{summary['sensitivity_row_count']}。
 - 策略候选行数：{summary['policy_row_count']}。
+- 分类统计：{summary['classification_counts']}。
+
+## 通道决策摘要
+
+以下表格只使用残差空间灵敏度结果进行保守聚合。它用于指导下一轮消融实验，不等同于最终交付结论。
+
+{decision_table}
 
 ## 当前结论
 
-本记录主要保存本轮实验编排和初步输出结构。若本轮为 `smoke` 模式，只能证明脚本链路可运行，不能替代全量复审结论。全量结论必须基于 `full` 模式下的 `I0-I7+x`、多扰动尺度、多回环分段结果。
+若本轮为 `smoke` 模式，只能证明脚本链路可运行，不能替代全量复审结论。若本轮为 `full` 模式，当前结果显示：A1-pt13 没有任何通道达到生产使用标准；I5 仅达到有限使用候选；推进量和其他电流通道在残差空间灵敏度下仍应暂不放行。
 
 ## 下一步计划
 
-若 `smoke` 通过，应在无人值守阶段运行 `full` 模式；随后根据 `channel_policy_candidate.csv` 选择 I5-only、x-only、I5+x 三臂同分支精修消融，并判断 A1-pt13 的主要失败原因。
+下一步应运行 I5-only、x-only、I5+x 三臂同分支精修消融。由于推进量未通过灵敏度门禁，x-only 和 I5+x 只能作为经验消融，不应直接作为可信局部线性更新策略。
 """
     (EXP_DIR / "record.md").write_text(text, encoding="utf-8")
 
@@ -419,6 +488,7 @@ def main(argv: list[str] | None = None) -> None:
         _write_csv(EXP_DIR / "audit_run_status.csv", run_rows)
     fd_rows, sens_rows = _aggregate_outputs(run_rows)
     policy_rows = _build_policy(fd_rows)
+    decision_rows = _build_decision_summary(policy_rows)
     plot_error = _plot_policy(policy_rows)
     summary = {
         "experiment_id": EXP_DIR.name,
@@ -437,6 +507,7 @@ def main(argv: list[str] | None = None) -> None:
         "sensitivity_row_count": len(sens_rows),
         "policy_row_count": len(policy_rows),
         "classification_counts": dict(Counter(str(row["classification"]) for row in policy_rows)),
+        "channel_decision_summary": decision_rows,
         "plot_error": plot_error,
         "runs": run_rows,
     }

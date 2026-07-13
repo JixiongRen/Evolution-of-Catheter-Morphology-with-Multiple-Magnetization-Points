@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-07-14T01:12:37.758749</dc:date>
+    <dc:date>2026-07-14T02:18:15.637170</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -43,317 +43,31 @@ L 296.407374 317.1125
 L 296.407374 41.429167 
 L 72.706364 41.429167 
 z
-" clip-path="url(#pdf52fb2c0a)" style="fill: #457b9d"/>
+" clip-path="url(#pe63f7872b5)" style="fill: #457b9d"/>
    </g>
    <g id="patch_4">
     <path d="M 352.332626 317.1125 
 L 576.033636 317.1125 
-L 576.033636 41.429167 
-L 352.332626 41.429167 
+L 576.033636 306.509295 
+L 352.332626 306.509295 
 z
-" clip-path="url(#pdf52fb2c0a)" style="fill: #457b9d"/>
+" clip-path="url(#pe63f7872b5)" style="fill: #457b9d"/>
    </g>
    <g id="matplotlib.axis_1">
     <g id="xtick_1">
      <g id="line2d_1">
       <defs>
-       <path id="m47b092fba3" d="M 0 0 
+       <path id="m6e2f765aaf" d="M 0 0 
 L 0 3.5 
 " style="stroke: #000000; stroke-width: 0.8"/>
       </defs>
       <g>
-       <use xlink:href="#m47b092fba3" x="184.556869" y="317.1125" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m6e2f765aaf" x="184.556869" y="317.1125" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_1">
-      <!-- 弱响应 -->
-      <g transform="translate(169.556869 332.8625) scale(0.1 -0.1)">
-       <defs>
-        <path id="UnifontMedium-5f31" d="M 1600 1600 
-L 1600 2000 
-L 1200 2000 
-L 1200 1600 
-L 1600 1600 
-z
-M 4400 1600 
-L 4400 2000 
-L 4000 2000 
-L 4000 1600 
-L 4400 1600 
-z
-M 1600 -400 
-L 1600 -800 
-L 2000 -800 
-L 2000 -400 
-L 1600 -400 
-z
-M 1600 -400 
-L 1600 0 
-L 1200 0 
-L 1200 -400 
-L 1600 -400 
-z
-M 2000 -400 
-L 2400 -400 
-L 2400 0 
-L 2000 0 
-L 2000 -400 
-z
-M 4400 -400 
-L 4400 -800 
-L 4800 -800 
-L 4800 -400 
-L 4400 -400 
-z
-M 4400 -400 
-L 4400 0 
-L 4000 0 
-L 4000 -400 
-L 4400 -400 
-z
-M 4800 -400 
-L 5200 -400 
-L 5200 0 
-L 4800 0 
-L 4800 -400 
-z
-M 2400 0 
-L 2800 0 
-L 2800 2800 
-L 800 2800 
-Q 800 2800 800 3600 
-L 2800 3600 
-Q 2800 3600 2800 5200 
-L 400 5200 
-L 400 4800 
-L 2400 4800 
-Q 2400 4800 2400 4000 
-L 400 4000 
-Q 400 4000 400 2400 
-L 800 2400 
-L 800 2000 
-L 1200 2000 
-L 1200 2400 
-L 2400 2400 
-Q 2400 2400 2400 1600 
-L 2000 1600 
-L 2000 1200 
-L 1200 1200 
-L 1200 800 
-L 400 800 
-L 400 400 
-L 1200 400 
-L 1200 800 
-L 2000 800 
-L 2000 1200 
-L 2400 1200 
-L 2400 0 
-z
-M 5200 0 
-L 5600 0 
-L 5600 2800 
-L 3600 2800 
-Q 3600 2800 3600 3600 
-L 5600 3600 
-Q 5600 3600 5600 5200 
-L 3200 5200 
-L 3200 4800 
-L 5200 4800 
-Q 5200 4800 5200 4000 
-L 3200 4000 
-Q 3200 4000 3200 2400 
-L 3600 2400 
-L 3600 2000 
-L 4000 2000 
-L 4000 2400 
-L 5200 2400 
-Q 5200 2400 5200 1600 
-L 4800 1600 
-L 4800 1200 
-L 4000 1200 
-L 4000 800 
-L 3200 800 
-L 3200 400 
-L 4000 400 
-L 4000 800 
-L 4800 800 
-L 4800 1200 
-L 5200 1200 
-L 5200 0 
-z
-" transform="scale(0.015625)"/>
-        <path id="UnifontMedium-54cd" d="M 2400 4400 
-L 2400 -800 
-L 2800 -800 
-Q 2800 -800 2800 4000 
-L 5200 4000 
-L 5200 -400 
-L 4800 -400 
-L 4800 -800 
-L 5200 -800 
-L 5200 -400 
-L 5600 -400 
-Q 5600 -400 5600 4400 
-L 3600 4400 
-L 3600 4800 
-L 3200 4800 
-L 3200 4400 
-L 2400 4400 
-z
-M 4800 -400 
-L 4800 0 
-L 4400 0 
-L 4400 -400 
-L 4800 -400 
-z
-M 1600 1200 
-L 1600 800 
-L 2000 800 
-Q 2000 800 2000 4800 
-L 400 4800 
-Q 400 4800 400 800 
-L 800 800 
-L 800 1200 
-L 1600 1200 
-z
-M 3200 3200 
-Q 3200 3200 3200 800 
-L 4800 800 
-Q 4800 800 4800 3200 
-L 3200 3200 
-z
-M 3600 1200 
-Q 3600 1200 3600 2800 
-L 4400 2800 
-Q 4400 2800 4400 1200 
-L 3600 1200 
-z
-M 800 1600 
-L 800 4400 
-L 1600 4400 
-L 1600 1600 
-L 800 1600 
-z
-M 3600 4800 
-L 4000 4800 
-Q 4000 4800 4000 5600 
-L 3600 5600 
-Q 3600 5600 3600 4800 
-z
-" transform="scale(0.015625)"/>
-        <path id="UnifontMedium-5e94" d="M 6000 -400 
-L 6000 0 
-L 4000 0 
-L 4000 400 
-L 3600 400 
-L 3600 0 
-L 1200 0 
-L 1200 -400 
-L 6000 -400 
-z
-M 6000 4400 
-L 6000 4800 
-L 3600 4800 
-L 3600 5200 
-L 3200 5200 
-L 3200 4800 
-L 800 4800 
-Q 800 4800 800 800 
-L 400 800 
-Q 400 800 400 0 
-L 0 0 
-L 0 -400 
-L 400 -400 
-L 400 0 
-L 800 0 
-Q 800 0 800 800 
-L 1200 800 
-L 1200 4400 
-L 6000 4400 
-z
-M 4000 400 
-L 4400 400 
-L 4400 800 
-L 4000 800 
-L 4000 400 
-z
-M 4400 800 
-L 4800 800 
-Q 4800 800 4800 1600 
-L 4400 1600 
-Q 4400 1600 4400 800 
-z
-M 2400 2000 
-L 2400 800 
-L 2800 800 
-L 2800 2000 
-L 2400 2000 
-z
-M 4800 1600 
-L 5200 1600 
-Q 5200 1600 5200 2400 
-L 4800 2400 
-Q 4800 2400 4800 1600 
-z
-M 2400 2000 
-Q 2400 2000 2400 2800 
-L 2000 2800 
-Q 2000 2800 2000 2000 
-L 2400 2000 
-z
-M 3600 2400 
-Q 3600 2400 3600 1600 
-L 4000 1600 
-Q 4000 1600 4000 2400 
-L 3600 2400 
-z
-M 3600 2400 
-Q 3600 2400 3600 3200 
-L 3200 3200 
-Q 3200 3200 3200 2400 
-L 3600 2400 
-z
-M 5200 2400 
-L 5600 2400 
-L 5600 3600 
-L 5200 3600 
-L 5200 2400 
-z
-M 2000 2800 
-L 2000 3200 
-L 1600 3200 
-L 1600 2800 
-L 2000 2800 
-z
-M 3200 3200 
-L 3200 3600 
-L 2800 3600 
-L 2800 3200 
-L 3200 3200 
-z
-M 3200 5200 
-L 3200 5600 
-L 2800 5600 
-L 2800 5200 
-L 3200 5200 
-z
-" transform="scale(0.015625)"/>
-       </defs>
-       <use xlink:href="#UnifontMedium-5f31"/>
-       <use xlink:href="#UnifontMedium-54cd" transform="translate(100 0)"/>
-       <use xlink:href="#UnifontMedium-5e94" transform="translate(200 0)"/>
-      </g>
-     </g>
-    </g>
-    <g id="xtick_2">
-     <g id="line2d_2">
-      <g>
-       <use xlink:href="#m47b092fba3" x="464.183131" y="317.1125" style="stroke: #000000; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_2">
       <!-- 同分支误差超限 -->
-      <g transform="translate(429.183131 332.8625) scale(0.1 -0.1)">
+      <g transform="translate(149.556869 332.8625) scale(0.1 -0.1)">
        <defs>
         <path id="UnifontMedium-540c" d="M 4800 3600 
 L 4800 4000 
@@ -971,27 +685,298 @@ z
       </g>
      </g>
     </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m6e2f765aaf" x="464.183131" y="317.1125" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- 可有限使用 -->
+      <g transform="translate(439.183131 332.8625) scale(0.1 -0.1)">
+       <defs>
+        <path id="UnifontMedium-53ef" d="M 6000 4800 
+L 6000 5200 
+L 400 5200 
+L 400 4800 
+L 4400 4800 
+L 4400 -400 
+L 4000 -400 
+L 4000 -800 
+L 4400 -800 
+L 4400 -400 
+L 4800 -400 
+L 4800 4800 
+L 6000 4800 
+z
+M 4000 -400 
+L 4000 0 
+L 3600 0 
+L 3600 -400 
+L 4000 -400 
+z
+M 2800 1200 
+L 2800 800 
+L 3200 800 
+Q 3200 800 3200 4000 
+L 1200 4000 
+Q 1200 4000 1200 800 
+L 1600 800 
+L 1600 1200 
+L 2800 1200 
+z
+M 1600 1600 
+L 1600 3600 
+L 2800 3600 
+L 2800 1600 
+L 1600 1600 
+z
+" transform="scale(0.015625)"/>
+        <path id="UnifontMedium-6709" d="M 6000 4400 
+L 6000 4800 
+L 2800 4800 
+Q 2800 4800 2800 5600 
+L 2400 5600 
+Q 2400 5600 2400 4800 
+L 0 4800 
+L 0 4400 
+L 2000 4400 
+Q 2000 4400 2000 3600 
+L 1600 3600 
+Q 1600 3600 1600 2800 
+L 1200 2800 
+L 1200 2400 
+L 800 2400 
+L 800 2000 
+L 400 2000 
+L 400 1600 
+L 0 1600 
+L 0 1200 
+L 400 1200 
+L 400 1600 
+L 800 1600 
+L 800 2000 
+L 1200 2000 
+L 1200 2400 
+L 1600 2400 
+Q 1600 2400 1600 -800 
+L 2000 -800 
+Q 2000 -800 2000 800 
+L 4400 800 
+L 4400 -400 
+L 4000 -400 
+L 4000 -800 
+L 4400 -800 
+L 4400 -400 
+L 4800 -400 
+Q 4800 -400 4800 3600 
+L 2400 3600 
+Q 2400 3600 2400 4400 
+L 6000 4400 
+z
+M 4000 -400 
+L 4000 0 
+L 3600 0 
+L 3600 -400 
+L 4000 -400 
+z
+M 2000 1200 
+Q 2000 1200 2000 2000 
+L 4400 2000 
+Q 4400 2000 4400 1200 
+L 2000 1200 
+z
+M 2000 2400 
+Q 2000 2400 2000 3200 
+L 4400 3200 
+Q 4400 3200 4400 2400 
+L 2000 2400 
+z
+" transform="scale(0.015625)"/>
+        <path id="UnifontMedium-4f7f" d="M 6000 -800 
+L 6000 -400 
+L 4800 -400 
+L 4800 -800 
+L 6000 -800 
+z
+M 6000 4400 
+L 6000 4800 
+L 4000 4800 
+Q 4000 4800 4000 5600 
+L 3600 5600 
+Q 3600 5600 3600 4800 
+L 1600 4800 
+Q 1600 4800 1600 5600 
+L 1200 5600 
+L 1200 4400 
+L 800 4400 
+Q 800 4400 800 3600 
+L 400 3600 
+Q 400 3600 400 2800 
+L 0 2800 
+L 0 2400 
+L 400 2400 
+L 400 2800 
+L 800 2800 
+L 800 -800 
+L 1200 -800 
+L 1200 4400 
+L 3600 4400 
+Q 3600 4400 3600 3600 
+L 2000 3600 
+Q 2000 3600 2000 2000 
+L 3600 2000 
+L 3600 800 
+L 3200 800 
+L 3200 400 
+L 2800 400 
+L 2800 0 
+L 2400 0 
+L 2400 -400 
+L 1600 -400 
+L 1600 -800 
+L 2400 -800 
+L 2400 -400 
+L 2800 -400 
+L 2800 0 
+L 3200 0 
+L 3200 400 
+L 3600 400 
+L 3600 0 
+L 4000 0 
+L 4000 -400 
+L 4800 -400 
+L 4800 0 
+L 4000 0 
+L 4000 400 
+L 3600 400 
+L 3600 800 
+L 4000 800 
+L 4000 2000 
+L 5600 2000 
+Q 5600 2000 5600 3600 
+L 4000 3600 
+Q 4000 3600 4000 4400 
+L 6000 4400 
+z
+M 3200 800 
+L 3200 1200 
+L 2800 1200 
+L 2800 800 
+L 3200 800 
+z
+M 2800 1200 
+L 2800 1600 
+L 2400 1600 
+L 2400 1200 
+L 2800 1200 
+z
+M 2400 2400 
+Q 2400 2400 2400 3200 
+L 3600 3200 
+Q 3600 3200 3600 2400 
+L 2400 2400 
+z
+M 4000 2400 
+Q 4000 2400 4000 3200 
+L 5200 3200 
+Q 5200 3200 5200 2400 
+L 4000 2400 
+z
+" transform="scale(0.015625)"/>
+        <path id="UnifontMedium-7528" d="M 400 -400 
+L 0 -400 
+L 0 -800 
+L 400 -800 
+L 400 -400 
+z
+M 400 -400 
+L 800 -400 
+Q 800 -400 800 400 
+L 400 400 
+Q 400 400 400 -400 
+z
+M 4400 -400 
+L 4400 -800 
+L 4800 -800 
+L 4800 -400 
+L 4400 -400 
+z
+M 4400 -400 
+L 4400 0 
+L 4000 0 
+L 4000 -400 
+L 4400 -400 
+z
+M 4800 -400 
+L 5200 -400 
+Q 5200 -400 5200 5200 
+L 800 5200 
+Q 800 5200 800 400 
+L 1200 400 
+L 1200 1600 
+L 2800 1600 
+L 2800 -400 
+L 3200 -400 
+L 3200 1600 
+L 4800 1600 
+L 4800 -400 
+z
+M 1200 2000 
+L 1200 3200 
+L 2800 3200 
+L 2800 2000 
+L 1200 2000 
+z
+M 3200 2000 
+L 3200 3200 
+L 4800 3200 
+L 4800 2000 
+L 3200 2000 
+z
+M 1200 3600 
+L 1200 4800 
+L 2800 4800 
+L 2800 3600 
+L 1200 3600 
+z
+M 3200 3600 
+L 3200 4800 
+L 4800 4800 
+L 4800 3600 
+L 3200 3600 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#UnifontMedium-53ef"/>
+       <use xlink:href="#UnifontMedium-6709" transform="translate(100 0)"/>
+       <use xlink:href="#UnifontMedium-9650" transform="translate(200 0)"/>
+       <use xlink:href="#UnifontMedium-4f7f" transform="translate(300 0)"/>
+       <use xlink:href="#UnifontMedium-7528" transform="translate(400 0)"/>
+      </g>
+     </g>
+    </g>
    </g>
    <g id="matplotlib.axis_2">
     <g id="ytick_1">
      <g id="line2d_3">
       <path d="M 47.54 317.1125 
 L 601.2 317.1125 
-" clip-path="url(#pdf52fb2c0a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#pe63f7872b5)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
      <g id="line2d_4">
       <defs>
-       <path id="m091ed2512f" d="M 0 0 
+       <path id="m8d5cd2f8d9" d="M 0 0 
 L -3.5 0 
 " style="stroke: #000000; stroke-width: 0.8"/>
       </defs>
       <g>
-       <use xlink:href="#m091ed2512f" x="47.54" y="317.1125" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m8d5cd2f8d9" x="47.54" y="317.1125" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_3">
-      <!-- 0.0 -->
-      <g transform="translate(25.54 320.55) scale(0.1 -0.1)">
+      <!-- 0 -->
+      <g transform="translate(35.54 320.55) scale(0.1 -0.1)">
        <defs>
         <path id="UnifontMedium-30" d="M 1200 400 
 L 1200 0 
@@ -1058,34 +1043,132 @@ L 1200 4000
 L 1200 3600 
 z
 " transform="scale(0.015625)"/>
-        <path id="UnifontMedium-2e" d="M 1200 800 
-Q 1200 800 1200 0 
-L 2000 0 
-Q 2000 0 2000 800 
-L 1200 800 
-z
-" transform="scale(0.015625)"/>
        </defs>
        <use xlink:href="#UnifontMedium-30"/>
-       <use xlink:href="#UnifontMedium-2e" transform="translate(50 0)"/>
-       <use xlink:href="#UnifontMedium-30" transform="translate(100 0)"/>
       </g>
      </g>
     </g>
     <g id="ytick_2">
      <g id="line2d_5">
-      <path d="M 47.54 261.975833 
-L 601.2 261.975833 
-" clip-path="url(#pdf52fb2c0a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
+      <path d="M 47.54 272.932479 
+L 601.2 272.932479 
+" clip-path="url(#pe63f7872b5)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
      <g id="line2d_6">
       <g>
-       <use xlink:href="#m091ed2512f" x="47.54" y="261.975833" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m8d5cd2f8d9" x="47.54" y="272.932479" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_4">
-      <!-- 0.2 -->
-      <g transform="translate(25.54 265.413333) scale(0.1 -0.1)">
+      <!-- 50 -->
+      <g transform="translate(30.54 276.369979) scale(0.1 -0.1)">
+       <defs>
+        <path id="UnifontMedium-35" d="M 2800 3600 
+L 2800 4000 
+L 400 4000 
+L 400 2000 
+L 2400 2000 
+Q 2400 2000 2400 400 
+L 800 400 
+L 800 0 
+L 2400 0 
+L 2400 400 
+L 2800 400 
+Q 2800 400 2800 2000 
+L 2400 2000 
+L 2400 2400 
+L 800 2400 
+L 800 3600 
+L 2800 3600 
+z
+M 800 400 
+L 800 800 
+L 400 800 
+L 400 400 
+L 800 400 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#UnifontMedium-35"/>
+       <use xlink:href="#UnifontMedium-30" transform="translate(50 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_7">
+      <path d="M 47.54 228.752457 
+L 601.2 228.752457 
+" clip-path="url(#pe63f7872b5)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m8d5cd2f8d9" x="47.54" y="228.752457" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 100 -->
+      <g transform="translate(25.54 232.189957) scale(0.1 -0.1)">
+       <defs>
+        <path id="UnifontMedium-31" d="M 2800 0 
+L 2800 400 
+L 2000 400 
+L 2000 4000 
+L 1600 4000 
+L 1600 3600 
+L 1200 3600 
+L 1200 3200 
+L 800 3200 
+L 800 2800 
+L 1200 2800 
+L 1200 3200 
+L 1600 3200 
+L 1600 400 
+L 800 400 
+L 800 0 
+L 2800 0 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#UnifontMedium-31"/>
+       <use xlink:href="#UnifontMedium-30" transform="translate(50 0)"/>
+       <use xlink:href="#UnifontMedium-30" transform="translate(100 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_9">
+      <path d="M 47.54 184.572436 
+L 601.2 184.572436 
+" clip-path="url(#pe63f7872b5)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m8d5cd2f8d9" x="47.54" y="184.572436" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- 150 -->
+      <g transform="translate(25.54 188.009936) scale(0.1 -0.1)">
+       <use xlink:href="#UnifontMedium-31"/>
+       <use xlink:href="#UnifontMedium-35" transform="translate(50 0)"/>
+       <use xlink:href="#UnifontMedium-30" transform="translate(100 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11">
+      <path d="M 47.54 140.392415 
+L 601.2 140.392415 
+" clip-path="url(#pe63f7872b5)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m8d5cd2f8d9" x="47.54" y="140.392415" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <!-- 200 -->
+      <g transform="translate(25.54 143.829915) scale(0.1 -0.1)">
        <defs>
         <path id="UnifontMedium-32" d="M 2800 0 
 L 2800 400 
@@ -1133,139 +1216,57 @@ L 800 3600
 z
 " transform="scale(0.015625)"/>
        </defs>
-       <use xlink:href="#UnifontMedium-30"/>
-       <use xlink:href="#UnifontMedium-2e" transform="translate(50 0)"/>
-       <use xlink:href="#UnifontMedium-32" transform="translate(100 0)"/>
+       <use xlink:href="#UnifontMedium-32"/>
+       <use xlink:href="#UnifontMedium-30" transform="translate(50 0)"/>
+       <use xlink:href="#UnifontMedium-30" transform="translate(100 0)"/>
       </g>
      </g>
     </g>
-    <g id="ytick_3">
-     <g id="line2d_7">
-      <path d="M 47.54 206.839167 
-L 601.2 206.839167 
-" clip-path="url(#pdf52fb2c0a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
+    <g id="ytick_6">
+     <g id="line2d_13">
+      <path d="M 47.54 96.212393 
+L 601.2 96.212393 
+" clip-path="url(#pe63f7872b5)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
-     <g id="line2d_8">
+     <g id="line2d_14">
       <g>
-       <use xlink:href="#m091ed2512f" x="47.54" y="206.839167" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m8d5cd2f8d9" x="47.54" y="96.212393" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_5">
-      <!-- 0.4 -->
-      <g transform="translate(25.54 210.276667) scale(0.1 -0.1)">
-       <defs>
-        <path id="UnifontMedium-34" d="M 2800 1200 
-L 2800 1600 
-L 2400 1600 
-Q 2400 1600 2400 4000 
-L 2000 4000 
-L 2000 3600 
-L 1600 3600 
-L 1600 3200 
-L 1200 3200 
-L 1200 2800 
-L 800 2800 
-L 800 2400 
-L 400 2400 
-L 400 1200 
-L 2000 1200 
-L 2000 0 
-L 2400 0 
-L 2400 1200 
-L 2800 1200 
-z
-M 800 1600 
-Q 800 1600 800 2400 
-L 1200 2400 
-L 1200 2800 
-L 1600 2800 
-L 1600 3200 
-L 2000 3200 
-Q 2000 3200 2000 1600 
-L 800 1600 
-z
-" transform="scale(0.015625)"/>
-       </defs>
-       <use xlink:href="#UnifontMedium-30"/>
-       <use xlink:href="#UnifontMedium-2e" transform="translate(50 0)"/>
-       <use xlink:href="#UnifontMedium-34" transform="translate(100 0)"/>
+     <g id="text_8">
+      <!-- 250 -->
+      <g transform="translate(25.54 99.649893) scale(0.1 -0.1)">
+       <use xlink:href="#UnifontMedium-32"/>
+       <use xlink:href="#UnifontMedium-35" transform="translate(50 0)"/>
+       <use xlink:href="#UnifontMedium-30" transform="translate(100 0)"/>
       </g>
      </g>
     </g>
-    <g id="ytick_4">
-     <g id="line2d_9">
-      <path d="M 47.54 151.7025 
-L 601.2 151.7025 
-" clip-path="url(#pdf52fb2c0a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
+    <g id="ytick_7">
+     <g id="line2d_15">
+      <path d="M 47.54 52.032372 
+L 601.2 52.032372 
+" clip-path="url(#pe63f7872b5)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
      </g>
-     <g id="line2d_10">
+     <g id="line2d_16">
       <g>
-       <use xlink:href="#m091ed2512f" x="47.54" y="151.7025" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m8d5cd2f8d9" x="47.54" y="52.032372" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_6">
-      <!-- 0.6 -->
-      <g transform="translate(25.54 155.14) scale(0.1 -0.1)">
+     <g id="text_9">
+      <!-- 300 -->
+      <g transform="translate(25.54 55.469872) scale(0.1 -0.1)">
        <defs>
-        <path id="UnifontMedium-36" d="M 2400 3600 
-L 2400 4000 
-L 1200 4000 
-L 1200 3600 
-L 800 3600 
-L 800 3200 
-L 400 3200 
-L 400 400 
-L 800 400 
-L 800 0 
-L 2400 0 
-L 2400 400 
-L 800 400 
-Q 800 400 800 2000 
-L 2400 2000 
-Q 2400 2000 2400 400 
-L 2800 400 
-Q 2800 400 2800 2000 
-L 2400 2000 
-L 2400 2400 
-L 800 2400 
-Q 800 2400 800 3200 
-L 1200 3200 
-L 1200 3600 
-L 2400 3600 
-z
-" transform="scale(0.015625)"/>
-       </defs>
-       <use xlink:href="#UnifontMedium-30"/>
-       <use xlink:href="#UnifontMedium-2e" transform="translate(50 0)"/>
-       <use xlink:href="#UnifontMedium-36" transform="translate(100 0)"/>
-      </g>
-     </g>
-    </g>
-    <g id="ytick_5">
-     <g id="line2d_11">
-      <path d="M 47.54 96.565833 
-L 601.2 96.565833 
-" clip-path="url(#pdf52fb2c0a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_12">
-      <g>
-       <use xlink:href="#m091ed2512f" x="47.54" y="96.565833" style="stroke: #000000; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_7">
-      <!-- 0.8 -->
-      <g transform="translate(25.54 100.003333) scale(0.1 -0.1)">
-       <defs>
-        <path id="UnifontMedium-38" d="M 800 400 
+        <path id="UnifontMedium-33" d="M 800 400 
 L 800 0 
 L 2400 0 
 L 2400 400 
 L 800 400 
 z
 M 800 400 
-Q 800 400 800 2000 
-L 400 2000 
-Q 400 2000 400 400 
+Q 800 400 800 1200 
+L 400 1200 
+Q 400 1200 400 400 
 L 800 400 
 z
 M 2400 400 
@@ -1274,23 +1275,23 @@ Q 2800 400 2800 2000
 L 2400 2000 
 Q 2400 2000 2400 400 
 z
-M 800 2000 
-L 2400 2000 
+M 2400 2000 
 L 2400 2400 
-L 800 2400 
-L 800 2000 
-z
-M 800 2400 
-L 800 3600 
-L 400 3600 
-L 400 2400 
-L 800 2400 
+L 1200 2400 
+L 1200 2000 
+L 2400 2000 
 z
 M 2400 2400 
 L 2800 2400 
 L 2800 3600 
 L 2400 3600 
 L 2400 2400 
+z
+M 400 3600 
+Q 400 3600 400 2800 
+L 800 2800 
+Q 800 2800 800 3600 
+L 400 3600 
 z
 M 800 3600 
 L 2400 3600 
@@ -1300,54 +1301,13 @@ L 800 3600
 z
 " transform="scale(0.015625)"/>
        </defs>
-       <use xlink:href="#UnifontMedium-30"/>
-       <use xlink:href="#UnifontMedium-2e" transform="translate(50 0)"/>
-       <use xlink:href="#UnifontMedium-38" transform="translate(100 0)"/>
-      </g>
-     </g>
-    </g>
-    <g id="ytick_6">
-     <g id="line2d_13">
-      <path d="M 47.54 41.429167 
-L 601.2 41.429167 
-" clip-path="url(#pdf52fb2c0a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.25; stroke-width: 0.8; stroke-linecap: square"/>
-     </g>
-     <g id="line2d_14">
-      <g>
-       <use xlink:href="#m091ed2512f" x="47.54" y="41.429167" style="stroke: #000000; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_8">
-      <!-- 1.0 -->
-      <g transform="translate(25.54 44.866667) scale(0.1 -0.1)">
-       <defs>
-        <path id="UnifontMedium-31" d="M 2800 0 
-L 2800 400 
-L 2000 400 
-L 2000 4000 
-L 1600 4000 
-L 1600 3600 
-L 1200 3600 
-L 1200 3200 
-L 800 3200 
-L 800 2800 
-L 1200 2800 
-L 1200 3200 
-L 1600 3200 
-L 1600 400 
-L 800 400 
-L 800 0 
-L 2800 0 
-z
-" transform="scale(0.015625)"/>
-       </defs>
-       <use xlink:href="#UnifontMedium-31"/>
-       <use xlink:href="#UnifontMedium-2e" transform="translate(50 0)"/>
+       <use xlink:href="#UnifontMedium-33"/>
+       <use xlink:href="#UnifontMedium-30" transform="translate(50 0)"/>
        <use xlink:href="#UnifontMedium-30" transform="translate(100 0)"/>
       </g>
      </g>
     </g>
-    <g id="text_9">
+    <g id="text_10">
      <!-- 通道-模式组合数量 -->
      <g transform="translate(20.29 214.87875) rotate(-90) scale(0.1 -0.1)">
       <defs>
@@ -2201,7 +2161,7 @@ L 601.2 317.1125
 L 601.2 27.645 
 " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_10">
+   <g id="text_11">
     <!-- A1-pt13 同分支通道复审分类 -->
     <g transform="translate(246.37 21.645) scale(0.12 -0.12)">
      <defs>
@@ -2288,49 +2248,6 @@ L 1200 400
 L 1600 400 
 L 1600 2400 
 L 2400 2400 
-z
-" transform="scale(0.015625)"/>
-      <path id="UnifontMedium-33" d="M 800 400 
-L 800 0 
-L 2400 0 
-L 2400 400 
-L 800 400 
-z
-M 800 400 
-Q 800 400 800 1200 
-L 400 1200 
-Q 400 1200 400 400 
-L 800 400 
-z
-M 2400 400 
-L 2800 400 
-Q 2800 400 2800 2000 
-L 2400 2000 
-Q 2400 2000 2400 400 
-z
-M 2400 2000 
-L 2400 2400 
-L 1200 2400 
-L 1200 2000 
-L 2400 2000 
-z
-M 2400 2400 
-L 2800 2400 
-L 2800 3600 
-L 2400 3600 
-L 2400 2400 
-z
-M 400 3600 
-Q 400 3600 400 2800 
-L 800 2800 
-Q 800 2800 800 3600 
-L 400 3600 
-z
-M 800 3600 
-L 2400 3600 
-L 2400 4000 
-L 800 4000 
-L 800 3600 
 z
 " transform="scale(0.015625)"/>
       <path id="UnifontMedium-20" transform="scale(0.015625)"/>
@@ -2638,7 +2555,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pdf52fb2c0a">
+  <clipPath id="pe63f7872b5">
    <rect x="47.54" y="27.645" width="553.66" height="289.4675"/>
   </clipPath>
  </defs>

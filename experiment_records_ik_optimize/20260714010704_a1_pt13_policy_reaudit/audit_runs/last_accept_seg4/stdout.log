@@ -1,0 +1,58 @@
+[reaudit] point=/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13
+{
+  "started": "2026-07-14 02:00:10",
+  "finished": "2026-07-14 02:06:46",
+  "point_count": 1,
+  "sensitivity_rows": 4,
+  "fd_rows": 140,
+  "fd_gate_summary": {
+    "fd_ok": 140,
+    "replay_converged": 140,
+    "branch_consistent": 96,
+    "weak_gate_triggered": 0,
+    "used_in_stats": 96
+  },
+  "settings": {
+    "paths": [
+      "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13"
+    ],
+    "out_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714010704_a1_pt13_policy_reaudit/audit_runs/last_accept_seg4",
+    "selector": "last_accept",
+    "current_steps_a": "0.125,0.0625,0.03125,0.015625",
+    "x_steps_mm": "0.25,0.125,0.0625",
+    "current_channels": "0,1,2,3,4,5,6,7",
+    "auto_current_channels": 2,
+    "sensitivity_modes": "solver_response,gn_svd,stationarity_exact,residual_svd",
+    "solve_mode": "svd",
+    "ridge": 1e-10,
+    "svd_rcond": 1e-09,
+    "spectral_filter": "hard",
+    "spectral_damping": 0.0,
+    "roundtrip_segments": 4,
+    "terminal_gate_mm": 0.1,
+    "centerline_gate_mm": 0.5,
+    "weak_displacement_mm": 0.05,
+    "max_points": 0
+  },
+  "runtime_environment": {
+    "code_commit": "31eb33bfd74043db82a03ae219f8baef5f29dcaf",
+    "git_tracked_dirty": true,
+    "git_untracked_count": 7661,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "paths": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13"
+  ]
+}
