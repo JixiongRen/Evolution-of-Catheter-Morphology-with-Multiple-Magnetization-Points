@@ -1,0 +1,51 @@
+{
+  "arm": "I5_only",
+  "return_code": 0,
+  "wall_s_orchestrator": 140.3975350856781,
+  "formal_run_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714023223_A1_A2_5mm_supervised_IK_no_gravity",
+  "gate_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714023014_a1_pt13_strategy_repair/gates/i5_only.csv",
+  "step_I_max_A": 0.125,
+  "step_x_max_m": 0.000125,
+  "source_state": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713232320_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13/branch_states/states/eval_000043_final_iter_0043.npz",
+  "source_I_A": [
+    -6.04302480959756,
+    -6.889023961332742,
+    -0.796161564456246,
+    1.4017509177195642,
+    2.24072763687089,
+    -1.8950987741518492,
+    5.197310175276612,
+    9.82618724371671
+  ],
+  "source_x_m": 0.13179801343990155,
+  "err_true_mm": 5.689210580200349,
+  "best_err_true_mm": 5.689210580185458,
+  "success_5mm": false,
+  "stop_reason": "reached_10mm_only",
+  "accept_count": 12,
+  "reject_count": 42,
+  "outer_iter_count": 20,
+  "runtime_platform": "gpu",
+  "runtime_device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "control_gate_allowed_channels": [
+    "I5"
+  ],
+  "control_gate_blocked_channels": [
+    "I0",
+    "I1",
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "x"
+  ],
+  "initial_branch_state_hash": "a53053354c540a304ae01cfd45658ca0acfbcba192f19b92b06d68391d1a32fa",
+  "initial_branch_I_delta_inf_A": 3.3884006711559778e-12,
+  "initial_branch_x_delta_abs_m": 9.844902670863576e-14,
+  "z_star_hash": "369f559fe08bcffc57d2ba0e93bbc7a2e4a70f216eb1c9c28bcf4f86463bf6ae",
+  "centerline_hash": "5d8a579a7dd2e515dc6cb819f8428dba9f8a936b12e48183bd54678d39941b18",
+  "branch_npz_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714023223_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13/branch_states/states/eval_000054_final_iter_0054.npz",
+  "centerline_npy": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714023223_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13/poses/accept/centerline_iter_0054.npy",
+  "point_summary": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714023223_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13/formal_point_summary.json"
+}
