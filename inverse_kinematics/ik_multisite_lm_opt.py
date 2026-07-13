@@ -70,6 +70,7 @@ from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from ik_diff import compute_tip_sensitivities_via_lm_adjoint
 from ik_artifacts import extract_centerline_dim, save_centerline, save_history_json
 from ik_branch_state import BranchStateRecorder, current_git_commit, git_tracked_dirty, git_untracked_count, json_sha256
+from ik_control_gate import load_control_gate
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
@@ -241,6 +242,20 @@ def build_argparser() -> argparse.ArgumentParser:
         type=float,
         default=-1.0,
         help="Disable the r_Ix current Jacobian when |x-x_prev| is below this threshold [m]. Negative keeps legacy behavior.",
+    )
+    p.add_argument("--channel_gate_file", type=str, default=None, help="CSV file with audited control-channel classifications.")
+    p.add_argument("--channel_gate_key", type=str, default=None, help="Gate key used to select rows, for example A1_pt13.")
+    p.add_argument(
+        "--channel_gate_missing_policy",
+        choices=("block_all", "allow_x_only", "allow_all"),
+        default="block_all",
+        help="Policy for channels without matching audit rows when --channel_gate_file is provided.",
+    )
+    p.add_argument(
+        "--channel_gate_allow_limited",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Allow channels classified as limited-use by the audit table.",
     )
 
     # Regularization weights (now interpreted as inverse scales)
@@ -881,6 +896,14 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             dtype=jnp.float64,
         )
     u = _Ix_to_u(I0, x0, I_max=I_max, x_min=x_min, x_max=x_max)
+    control_gate = load_control_gate(
+        args.channel_gate_file,
+        key=args.channel_gate_key,
+        n_coils=n_coils,
+        allow_limited=bool(args.channel_gate_allow_limited),
+        missing_policy=str(args.channel_gate_missing_policy),
+    )
+    control_gate_info = control_gate.as_dict()
 
     # Save run config
     run_config_path.write_text(
@@ -916,6 +939,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "backtrack_shrink": p2_backtrack_shrink,
                     "disable_Ix_jacobian_below_dx": p2_disable_Ix_jacobian_below_dx,
                 },
+                "control_channel_gate": control_gate_info,
             },
             indent=2,
         ),
@@ -930,6 +954,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             "eps_p_m": float(eps_p),
             "sigma_p_m": float(sigma_p),
             "sensitivity_config": sensitivity_config,
+            "control_channel_gate": control_gate_info,
         },
         "outer": [],
     }
@@ -1066,6 +1091,12 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     print(f"[IK-LM]   w_dx={w_dx:.3e}  -> sigma_dx={_safe_sigma(w_dx)} m")
     print(f"[IK-LM]   w_Ix={w_Ix:.3e}  -> sigma_Ix={_safe_sigma(w_Ix)} (A/m)")
     print(f"[IK-LM] physical step limits: step_I_max={step_I_max:.3g} A, step_x_max={step_x_max:.3g} m")
+    if control_gate.enabled:
+        print(
+            "[IK-LM] control channel gate enabled: "
+            f"key={control_gate.key}, allowed={control_gate_info['allowed_channels']}, "
+            f"blocked={control_gate_info['blocked_channels']}"
+        )
     print(
         f"[IK-LM] outer LM: max_iter={int(args.outer_max_iter)}, lam_init={float(args.lam_init):.3e}, "
         f"lam_up={float(args.lam_up):.3g}, lam_down={float(args.lam_down):.3g}, "
@@ -1331,11 +1362,6 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         J_p_uI = Jp_I * dI_du.reshape(1, -1)  # (3,n)
         J_p_ux = dp_dx.reshape(3, 1) * float(dx_du)  # (3,1)
         J_top = jnp.concatenate([J_p_uI, J_p_ux], axis=1) / float(sigma_p)  # scale r_p by 1/sigma_p
-        task_svals = jnp.linalg.svd(J_top, compute_uv=False)
-        task_sv_max = float(jnp.max(task_svals)) if task_svals.size else 0.0
-        task_cutoff = task_sv_max * max(float(p2_reliable_task_rcond), 0.0)
-        task_rank = int(jnp.sum(task_svals > max(task_cutoff, 1e-12)))
-        p2_force_reliable = bool(p2_reliable_subspace or task_rank < int(p2_min_full_task_rank) or sensitivity_info.get("status") == "failed")
 
         # r_I = w_I * I
         J_I_uI = float(w_I) * jnp.diag(dI_du)
@@ -1372,7 +1398,46 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         # penalty residual treated constant wrt u
         J_pen = jnp.zeros((1, n_coils + 1), dtype=jnp.float64)
 
-        J = jnp.concatenate([J_top, J_I, J_x, J_dI, J_dx, J_Ix, J_pen], axis=0)
+        J_full = jnp.concatenate([J_top, J_I, J_x, J_dI, J_dx, J_Ix, J_pen], axis=0)
+        control_mask_np = np.asarray(control_gate.allowed_mask, dtype=bool)
+        if control_mask_np.shape[0] != n_coils + 1:
+            raise ValueError("Control gate mask length does not match control dimension")
+        active_idx_np = np.flatnonzero(control_mask_np)
+        blocked_idx_np = np.flatnonzero(~control_mask_np)
+        control_gate_iter = {
+            **control_gate_info,
+            "active_indices": [int(v) for v in active_idx_np.tolist()],
+            "blocked_indices": [int(v) for v in blocked_idx_np.tolist()],
+            "active_dim": int(active_idx_np.size),
+        }
+        if active_idx_np.size == 0:
+            print("[IK-LM] stop: control gate blocks every channel; no admissible outer update.")
+            _append_history(
+                d={
+                    "iter": int(k),
+                    "status": "STOP",
+                    "accept": False,
+                    "stop_reason": "control_gate_blocks_all_channels",
+                    "lam": float(lam),
+                    "x_m": float(cur.x),
+                    "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+                    **_tip_report_fields(cur, p_des),
+                    "cost": float(cur.cost),
+                    "cls": str(cur.cls),
+                    "normE": float(cur.normE),
+                    "control_channel_gate": control_gate_iter,
+                    "sensitivity": sensitivity_info,
+                }
+            )
+            break
+        active_idx = jnp.asarray(active_idx_np, dtype=jnp.int32)
+        J = J_full[:, active_idx]
+        J_top_active = J_top[:, active_idx]
+        task_svals = jnp.linalg.svd(J_top_active, compute_uv=False)
+        task_sv_max = float(jnp.max(task_svals)) if task_svals.size else 0.0
+        task_cutoff = task_sv_max * max(float(p2_reliable_task_rcond), 0.0)
+        task_rank = int(jnp.sum(task_svals > max(task_cutoff, 1e-12)))
+        p2_force_reliable = bool(p2_reliable_subspace or task_rank < int(p2_min_full_task_rank) or sensitivity_info.get("status") == "failed")
         r = cur.r
 
         # 3) LM step in u
@@ -1384,10 +1449,10 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         try:
             if p2_force_reliable:
-                U_task, S_task, Vh_task = jnp.linalg.svd(J_top, full_matrices=False)
+                U_task, S_task, Vh_task = jnp.linalg.svd(J_top_active, full_matrices=False)
                 reliable_dim = int(jnp.sum(S_task > max(task_cutoff, 1e-12)))
                 if reliable_dim <= 0:
-                    du = jnp.zeros((n_coils + 1,), dtype=jnp.float64)
+                    du_active = jnp.zeros((int(active_idx_np.size),), dtype=jnp.float64)
                 else:
                     V_rel = Vh_task[:reliable_dim, :].T
                     J_rel = J @ V_rel
@@ -1395,10 +1460,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     g_rel = J_rel.T @ r
                     diag_rel = jnp.clip(jnp.diag(H_rel), a_min=1e-12)
                     A_rel = H_rel + float(lam) * jnp.diag(diag_rel)
-                    du = V_rel @ (-jnp.linalg.solve(A_rel, g_rel))
+                    du_active = V_rel @ (-jnp.linalg.solve(A_rel, g_rel))
             else:
-                reliable_dim = n_coils + 1
-                du = -jnp.linalg.solve(A, g)
+                reliable_dim = int(active_idx_np.size)
+                du_active = -jnp.linalg.solve(A, g)
+            du = jnp.zeros((n_coils + 1,), dtype=jnp.float64).at[active_idx].set(du_active)
         except Exception as e:
             print(f"[IK-LM] ERROR: linear solve failed at iter={k}: {repr(e)}")
             lam = min(lam * float(args.lam_up), 1e12)
@@ -1447,7 +1513,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             dx_abs = abs(dx_clip)
             du_eff_norm = float(jnp.linalg.norm(du_eff))
 
-            r_lin = r + J @ du_eff
+            r_lin = r + J_full @ du_eff
             pred_red = 0.5 * float(jnp.dot(r, r) - jnp.dot(r_lin, r_lin))
 
             if (dI_max_abs <= float(args.step_I_tol)) and (dx_abs <= float(args.step_x_tol)):
@@ -1526,6 +1592,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "reliable_subspace_dim": int(reliable_dim),
                 "ix_jacobian_enabled": bool(ix_jacobian_enabled),
                 "p2_terminal_error_first": bool(p2_terminal_error_first),
+                "control_channel_gate": control_gate_iter,
                 "sensitivity": sensitivity_info,
             }
             trial_branch_record = _save_branch_state(
@@ -1557,6 +1624,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "reliable_subspace_enabled": bool(p2_force_reliable),
                     "reliable_subspace_dim": int(reliable_dim),
                     "ix_jacobian_enabled": bool(ix_jacobian_enabled),
+                    "control_channel_gate": control_gate_iter,
                     "du_eff_norm": float(du_eff_norm),
                     "dI_max_abs": float(dI_max_abs),
                     "dI_norm": float(dI_norm),
@@ -1728,6 +1796,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "backtrack_shrink": p2_backtrack_shrink,
                     "disable_Ix_jacobian_below_dx": p2_disable_Ix_jacobian_below_dx,
                 },
+                "control_channel_gate": control_gate_info,
             },
             indent=2,
         ),

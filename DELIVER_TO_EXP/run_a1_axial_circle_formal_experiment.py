@@ -213,6 +213,7 @@ def _build_ik_args(
     ridge_adjoint: float,
     sensitivity_conditioning: bool,
     p2_config: dict[str, Any],
+    channel_gate_config: dict[str, Any],
 ) -> list[str]:
     shared = cfg["shared"]
     catheter = cfg["catheter"]
@@ -322,6 +323,19 @@ def _build_ik_args(
         "--seed",
         str(20260705 + 1000 * (1 if catheter_key == "A1" else 2) + int(target["index"])),
     ]
+    if channel_gate_config.get("file"):
+        args.extend(
+            [
+                "--channel_gate_file",
+                str(channel_gate_config["file"]),
+                "--channel_gate_key",
+                f"{catheter_key}_pt{int(target['index']):02d}",
+                "--channel_gate_missing_policy",
+                str(channel_gate_config.get("missing_policy", "block_all")),
+            ]
+        )
+        if not bool(channel_gate_config.get("allow_limited", True)):
+            args.append("--no-channel_gate_allow_limited")
     if sensitivity_conditioning:
         args.append("--sensitivity_conditioning")
     if bool(p2_config["trust_region"]):
@@ -432,6 +446,7 @@ def _run_one_target(
     eps_p_m: float,
     sensitivity_config: dict[str, Any],
     p2_config: dict[str, Any],
+    channel_gate_config: dict[str, Any],
 ) -> dict[str, Any]:
     run_name = f"pt_{int(target['index']):02d}"
     log_path = phase_dir / f"{run_name}.log"
@@ -456,6 +471,7 @@ def _run_one_target(
         ridge_adjoint=float(sensitivity_config["ridge_adjoint"]),
         sensitivity_conditioning=bool(sensitivity_config["sensitivity_conditioning"]),
         p2_config=p2_config,
+        channel_gate_config=channel_gate_config,
     )
     phase_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.perf_counter()
@@ -490,6 +506,7 @@ def _run_one_target(
     run_config = _read_json(point_dir / "run_config.json", {})
     run_sensitivity_config = run_config.get("sensitivity_config", sensitivity_config)
     run_p2_config = run_config.get("p2_outer_solver", p2_config)
+    run_channel_gate = run_config.get("control_channel_gate", {})
     accepted_count, reject_count, outer_iter_count = _history_counts(history)
     p_des = np.asarray(target["p_des_m"], dtype=float)
     p_flex = np.asarray(result.get("p_tip_flex", result.get("p_tip", [math.nan] * 3)), dtype=float)
@@ -554,6 +571,10 @@ def _run_one_target(
         "p2_terminal_error_first": run_p2_config.get("terminal_error_first"),
         "p2_reliable_subspace": run_p2_config.get("reliable_subspace"),
         "p2_max_backtracks": run_p2_config.get("max_backtracks"),
+        "control_channel_gate": run_channel_gate,
+        "control_gate_enabled": run_channel_gate.get("enabled"),
+        "control_gate_allowed_channels": run_channel_gate.get("allowed_channels"),
+        "control_gate_blocked_channels": run_channel_gate.get("blocked_channels"),
     }
     if timed_out:
         summary["stop_reason"] = "auto_timeout"
@@ -597,6 +618,9 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "p2_terminal_error_first",
         "p2_reliable_subspace",
         "p2_max_backtracks",
+        "control_gate_enabled",
+        "control_gate_allowed_channels",
+        "control_gate_blocked_channels",
         "run_dir",
     ]
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -660,6 +684,7 @@ def _run_catheter(
     eps_p_m: float,
     sensitivity_config: dict[str, Any],
     p2_config: dict[str, Any],
+    channel_gate_config: dict[str, Any],
     initial_I_A_override: list[float] | None = None,
     initial_x_m_override: float | None = None,
 ) -> dict[str, Any]:
@@ -688,6 +713,7 @@ def _run_catheter(
                 eps_p_m=eps_p_m,
                 sensitivity_config=sensitivity_config,
                 p2_config=p2_config,
+                channel_gate_config=channel_gate_config,
             )
             gate_rows.append(row)
             rows.append(row)
@@ -723,6 +749,7 @@ def _run_catheter(
                 eps_p_m=eps_p_m,
                 sensitivity_config=sensitivity_config,
                 p2_config=p2_config,
+                channel_gate_config=channel_gate_config,
             )
             formal_rows.append(row)
             rows.append(row)
@@ -757,6 +784,7 @@ def _run_catheter(
                 eps_p_m=eps_p_m,
                 sensitivity_config=sensitivity_config,
                 p2_config=p2_config,
+                channel_gate_config=channel_gate_config,
             )
             diag_rows.append(row)
             rows.append(row)
@@ -982,6 +1010,19 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--p2-max-backtracks", type=int, default=0, help="Maximum IK backtracking retries.")
     parser.add_argument("--p2-backtrack-shrink", type=float, default=0.5, help="IK backtracking shrink ratio.")
     parser.add_argument("--p2-disable-Ix-jacobian-below-dx", type=float, default=-1.0, help="Disable r_Ix current Jacobian below this insertion change [m].")
+    parser.add_argument("--channel-gate-file", type=str, default=None, help="CSV file with audited control-channel classifications.")
+    parser.add_argument(
+        "--channel-gate-missing-policy",
+        choices=("block_all", "allow_x_only", "allow_all"),
+        default="block_all",
+        help="Policy for channels without matching audit rows when --channel-gate-file is provided.",
+    )
+    parser.add_argument(
+        "--channel-gate-allow-limited",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Allow limited-use channels from the audit table.",
+    )
     return parser
 
 
@@ -1039,6 +1080,12 @@ def main(argv: list[str] | None = None) -> None:
         "backtrack_shrink": float(args.p2_backtrack_shrink),
         "disable_Ix_jacobian_below_dx": float(args.p2_disable_Ix_jacobian_below_dx),
     }
+    channel_gate_file = None if args.channel_gate_file is None else str(Path(args.channel_gate_file).resolve())
+    channel_gate_config = {
+        "file": channel_gate_file,
+        "missing_policy": str(args.channel_gate_missing_policy),
+        "allow_limited": bool(args.channel_gate_allow_limited),
+    }
     metadata = {
         "run_id": run_id,
         "experiment_name": f"A1_A2_{threshold_tag}_supervised_IK_{gravity_suffix}",
@@ -1072,6 +1119,7 @@ def main(argv: list[str] | None = None) -> None:
         "enable_gravity": enable_gravity,
         "sensitivity_config": sensitivity_config,
         "p2_config": p2_config,
+        "channel_gate_config": channel_gate_config,
         "XLA_PYTHON_CLIENT_PREALLOCATE": os.environ.get("XLA_PYTHON_CLIENT_PREALLOCATE"),
         "JAX_PLATFORMS": os.environ.get("JAX_PLATFORMS"),
     }
@@ -1105,6 +1153,9 @@ def main(argv: list[str] | None = None) -> None:
         f"--p2-max-backtracks {int(p2_config['max_backtracks'])} "
         f"--p2-backtrack-shrink {float(p2_config['backtrack_shrink']):.12g} "
         f"--p2-disable-Ix-jacobian-below-dx {float(p2_config['disable_Ix_jacobian_below_dx']):.12g} "
+        f"{'--channel-gate-file ' + channel_gate_file if channel_gate_file else ''} "
+        f"{'--channel-gate-missing-policy ' + channel_gate_config['missing_policy'] if channel_gate_file else ''} "
+        f"{'--no-channel-gate-allow-limited' if channel_gate_file and not channel_gate_config['allow_limited'] else ''} "
         f"{'--initial-I-A ' + ','.join(f'{float(v):.12g}' for v in initial_I_A_override) if initial_I_A_override is not None else ''} "
         f"{'--initial-x-m ' + f'{initial_x_m_override:.12g}' if initial_x_m_override is not None else ''} "
         f"{'--force-formal-20' if args.force_formal_20 else ''}\n",
@@ -1129,6 +1180,7 @@ def main(argv: list[str] | None = None) -> None:
             eps_p_m=eps_p_m,
             sensitivity_config=sensitivity_config,
             p2_config=p2_config,
+            channel_gate_config=channel_gate_config,
             initial_I_A_override=initial_I_A_override,
             initial_x_m_override=initial_x_m_override,
         )

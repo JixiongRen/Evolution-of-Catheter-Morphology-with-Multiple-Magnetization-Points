@@ -1,0 +1,171 @@
+"""Control-channel gating for supervised IK outer updates."""
+
+from __future__ import annotations
+
+import csv
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Iterable
+
+
+PRODUCTION_CLASS = "可生产使用"
+LIMITED_CLASS = "可有限使用"
+
+
+@dataclass(frozen=True)
+class ControlGate:
+    """Machine-readable control-channel gate used by the IK outer loop."""
+
+    enabled: bool
+    source: str | None
+    key: str | None
+    missing_policy: str
+    allow_limited: bool
+    allowed_mask: tuple[bool, ...]
+    channel_reasons: tuple[str, ...]
+    matched_rows: int
+
+    def as_dict(self) -> dict[str, Any]:
+        """Return a JSON-serializable representation."""
+        return {
+            "enabled": bool(self.enabled),
+            "source": self.source,
+            "key": self.key,
+            "missing_policy": self.missing_policy,
+            "allow_limited": bool(self.allow_limited),
+            "allowed_mask": [bool(v) for v in self.allowed_mask],
+            "allowed_channels": channel_names_from_mask(self.allowed_mask),
+            "blocked_channels": channel_names_from_mask(tuple(not v for v in self.allowed_mask)),
+            "channel_reasons": list(self.channel_reasons),
+            "matched_rows": int(self.matched_rows),
+        }
+
+
+def channel_names_from_mask(mask: Iterable[bool]) -> list[str]:
+    """Return control channel names from a boolean mask."""
+    values = list(mask)
+    names: list[str] = []
+    for idx, flag in enumerate(values):
+        if not flag:
+            continue
+        if idx == len(values) - 1:
+            names.append("x")
+        else:
+            names.append(f"I{idx}")
+    return names
+
+
+def _default_allowed_mask(n_coils: int, missing_policy: str) -> list[bool]:
+    if missing_policy == "allow_all":
+        return [True] * (int(n_coils) + 1)
+    if missing_policy == "allow_x_only":
+        return [False] * int(n_coils) + [True]
+    if missing_policy == "block_all":
+        return [False] * (int(n_coils) + 1)
+    raise ValueError("missing_policy must be 'block_all', 'allow_x_only', or 'allow_all'")
+
+
+def _default_reason(channel_idx: int, n_coils: int, missing_policy: str) -> str:
+    name = "x" if channel_idx == int(n_coils) else f"I{channel_idx}"
+    return f"{name}:missing_policy:{missing_policy}"
+
+
+def _row_matches_key(row: dict[str, str], key: str) -> bool:
+    run = str(row.get("run", "")).strip()
+    return bool(run == key or run.startswith(f"{key}_"))
+
+
+def _row_channel_index(row: dict[str, str], n_coils: int) -> int | None:
+    kind = str(row.get("kind", "")).strip()
+    if kind == "x":
+        return int(n_coils)
+    if kind == "I":
+        try:
+            idx = int(str(row.get("channel", "")).strip())
+        except ValueError:
+            return None
+        if 0 <= idx < int(n_coils):
+            return idx
+    return None
+
+
+def _is_allowed_class(classification: str, *, allow_limited: bool) -> bool:
+    classification = str(classification).strip()
+    if classification == PRODUCTION_CLASS:
+        return True
+    if allow_limited and classification == LIMITED_CLASS:
+        return True
+    return False
+
+
+def load_control_gate(
+    path: str | Path | None,
+    *,
+    key: str | None,
+    n_coils: int = 8,
+    allow_limited: bool = True,
+    missing_policy: str = "block_all",
+) -> ControlGate:
+    """Load a control-channel gate from a channel-classification CSV file.
+
+    Channel indices in the CSV are zero-based for coil currents. The last
+    control channel is the insertion coordinate ``x``.
+    """
+    n_coils = int(n_coils)
+    if path is None or str(path).strip() == "":
+        allowed = tuple([True] * (n_coils + 1))
+        return ControlGate(
+            enabled=False,
+            source=None,
+            key=key,
+            missing_policy=missing_policy,
+            allow_limited=bool(allow_limited),
+            allowed_mask=allowed,
+            channel_reasons=tuple("gate_disabled" for _ in allowed),
+            matched_rows=0,
+        )
+    if key is None or str(key).strip() == "":
+        raise ValueError("--channel_gate_key is required when --channel_gate_file is provided")
+
+    gate_path = Path(path).resolve()
+    if not gate_path.exists():
+        raise FileNotFoundError(str(gate_path))
+    if gate_path.suffix.lower() != ".csv":
+        raise ValueError("Only CSV channel gate files are currently supported")
+
+    matched: list[dict[str, str]] = []
+    with gate_path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if _row_matches_key(row, str(key)):
+                matched.append(row)
+
+    allowed = _default_allowed_mask(n_coils, missing_policy)
+    reasons = [_default_reason(idx, n_coils, missing_policy) for idx in range(n_coils + 1)]
+    grouped: dict[int, list[dict[str, str]]] = {}
+    for row in matched:
+        idx = _row_channel_index(row, n_coils)
+        if idx is None:
+            continue
+        grouped.setdefault(idx, []).append(row)
+
+    for idx, rows in grouped.items():
+        classes = [str(row.get("classification", "")).strip() for row in rows]
+        allowed_count = sum(1 for cls in classes if _is_allowed_class(cls, allow_limited=allow_limited))
+        if rows and allowed_count == len(rows):
+            allowed[idx] = True
+            reasons[idx] = f"audited_allowed:{'|'.join(sorted(set(classes)))}"
+        else:
+            allowed[idx] = False
+            reasons[idx] = f"audited_blocked:{'|'.join(sorted(set(classes)))}"
+
+    return ControlGate(
+        enabled=True,
+        source=str(gate_path),
+        key=str(key),
+        missing_policy=str(missing_policy),
+        allow_limited=bool(allow_limited),
+        allowed_mask=tuple(bool(v) for v in allowed),
+        channel_reasons=tuple(reasons),
+        matched_rows=len(matched),
+    )
