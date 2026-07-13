@@ -1,0 +1,91 @@
+{
+  "success": false,
+  "success_flex_eps": false,
+  "success_true_eps": false,
+  "p_des": [
+    0.06,
+    -0.0809016994375,
+    -0.0587785252292
+  ],
+  "p_tip": [
+    0.07910632813003513,
+    -0.08168635803657866,
+    -0.011206962883513773
+  ],
+  "p_tip_flex": [
+    0.07857070861523482,
+    -0.07905184311937911,
+    -0.009875631630780986
+  ],
+  "p_tip_true": [
+    0.07910632813003513,
+    -0.08168635803657866,
+    -0.011206962883513773
+  ],
+  "p_tip_m": [
+    0.07910632813003513,
+    -0.08168635803657866,
+    -0.011206962883513773
+  ],
+  "p_tip_flex_m": [
+    0.07857070861523482,
+    -0.07905184311937911,
+    -0.009875631630780986
+  ],
+  "p_tip_true_m": [
+    0.07910632813003513,
+    -0.08168635803657866,
+    -0.011206962883513773
+  ],
+  "err_m": 0.05127105428737731,
+  "err_mm": 51.27105428737731,
+  "err_flex_m": 0.05234296695037396,
+  "err_flex_mm": 52.342966950373956,
+  "err_true_m": 0.05127105428737731,
+  "err_true_mm": 51.27105428737731,
+  "I": [
+    -0.8485831822202877,
+    -5.2901643091365615,
+    -1.254723313235825,
+    3.216031007739205,
+    2.1231264947694033,
+    -3.407733336359373,
+    0.23513536025889736,
+    5.284092160614101
+  ],
+  "x": 0.1269845796316042,
+  "normE": 9.57961097081548e-06,
+  "cls": "GOOD",
+  "sigma_p": 0.005,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "residual_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 0.0,
+    "sensitivity_conditioning": false
+  },
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "p2_outer_solver": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  }
+}

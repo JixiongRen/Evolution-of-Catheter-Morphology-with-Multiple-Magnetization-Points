@@ -1,0 +1,264 @@
+{
+  "argv": {
+    "config": null,
+    "flex_lengths": "0.1",
+    "rigid_lengths": "0.003",
+    "L_protrude": 0.132096634843,
+    "L1_min": 1e-06,
+    "M_list": "5",
+    "flex_d_outer": "0.0015",
+    "flex_E": "1800000",
+    "flex_G": "600000",
+    "flex_rho": "970",
+    "rigid_d_outer": "0.0015",
+    "rigid_rho": "7500",
+    "p0": "0,0,0",
+    "Q0": "0.70710678,0,0.70710678,0",
+    "axis_body": "0,0,1",
+    "enable_gravity": false,
+    "g_world": "0,0,-9.81",
+    "enable_magnetics": true,
+    "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+    "actuation_table_pkl": null,
+    "coil_currents": null,
+    "m_body_list": "0,0,0.0061171875",
+    "max_iter": 100000,
+    "tol": 1e-05,
+    "lm_damping": 0.1,
+    "jac_method": "fwd",
+    "scale_mode": "optimized",
+    "plot": false,
+    "p_des": "0.06,-0.0809016994375,-0.0587785252292",
+    "eps_p": 0.005,
+    "sigma_p": 0.005,
+    "I_min": null,
+    "I_max": 20.0,
+    "I0": "0.737687267527,-4.94749543506,-1.14318870277,4.12585581442,1.58681141608,-3.99228560339,-0.652086828009,4.31645655691",
+    "x0": 0.132096634843,
+    "x_min": 0.003001,
+    "x_max": 0.203,
+    "x_ref": 0.132096634843,
+    "outer_max_iter": 15,
+    "lam_init": 0.01,
+    "lam_up": 10.0,
+    "lam_down": 0.3,
+    "rho_good": 0.75,
+    "rho_bad": 0.25,
+    "step_I_max": 5.0,
+    "step_x_max": 0.02,
+    "pred_red_tol": 1e-10,
+    "step_I_tol": 1e-06,
+    "step_x_tol": 1e-09,
+    "act_red_tol": 1e-10,
+    "p2_trust_region": true,
+    "p2_terminal_error_first": true,
+    "p2_reliable_subspace": true,
+    "p2_reliable_task_rcond": 0.001,
+    "p2_min_full_task_rank": 2,
+    "p2_max_backtracks": 3,
+    "p2_backtrack_shrink": 0.5,
+    "p2_disable_Ix_jacobian_below_dx": 0.001,
+    "w_I": 0.05,
+    "w_x": 20.0,
+    "w_dI": 0.2,
+    "w_dx": 200.0,
+    "w_Ix": 0.0005,
+    "dx_floor": 0.001,
+    "ridge_adjoint": 0.0,
+    "fd_x_eps": 0.001,
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "residual_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "store_accepted_jacobian": false,
+    "sensitivity_conditioning": false,
+    "tol_E_good": null,
+    "tol_E_weak": 0.01,
+    "tol_E_bad": 0.1,
+    "penalty_bad": 1000.0,
+    "out_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713191352_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt",
+    "run_name": "pt_12",
+    "print_devices": true,
+    "runtime_profile": true,
+    "warmup_fk_compile": false,
+    "warmup_ik_adjoint": false,
+    "branch_state_capture": true,
+    "seed": 20261717
+  },
+  "fk_cfg": {},
+  "p_des": [
+    0.06,
+    -0.0809016994375,
+    -0.0587785252292
+  ],
+  "seed": 20261717,
+  "I_min": -20.0,
+  "I_max": 20.0,
+  "x0": 0.132096634843,
+  "x_bounds": [
+    0.003001,
+    0.203
+  ],
+  "x_ref": 0.132096634843,
+  "sigma_p": 0.005,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "residual_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 0.0,
+    "sensitivity_conditioning": false
+  },
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "p2_outer_solver": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  },
+  "init": {
+    "x_m": 0.132096634843,
+    "I_A": [
+      0.7376872675270001,
+      -4.94749543506,
+      -1.14318870277,
+      4.12585581442,
+      1.5868114160800004,
+      -3.99228560339,
+      -0.652086828009,
+      4.316456556910001
+    ],
+    "p_tip_m": [
+      0.08825992131141268,
+      -0.08306117830890157,
+      -0.00901100367988505
+    ],
+    "p_tip_flex_m": [
+      0.08767871594843019,
+      -0.08017973546157409,
+      -0.008411430922229807
+    ],
+    "p_tip_true_m": [
+      0.08825992131141268,
+      -0.08306117830890157,
+      -0.00901100367988505
+    ],
+    "err_m": 0.057272093576931464,
+    "err_mm": 57.27209357693146,
+    "err_flex_m": 0.05747587961452741,
+    "err_flex_mm": 57.47587961452741,
+    "err_true_m": 0.057272093576931464,
+    "err_true_mm": 57.27209357693146,
+    "centerline_npy": "poses/accept/centerline_iter_0000.npy",
+    "branch_state": {
+      "eval_id": "eval_000000",
+      "npz_path": "branch_states/states/eval_000000_init_iter_0000.npz",
+      "z_star_hash": "3d4412b0c9e0252e2e04b15e8d27e8580b13f42f0e5c51907c900688eaab7f70",
+      "warm_start_hash": null,
+      "centerline_hash": "d482b85005eace74cdaa3997976310e56e5345f85ff5ddac08300afe89881099"
+    }
+  },
+  "last_accept": {
+    "iter": 15,
+    "x_m": 0.1269845796316042,
+    "I_A": [
+      -0.8485831822202877,
+      -5.290164309136562,
+      -1.2547233132358249,
+      3.216031007739205,
+      2.1231264947694033,
+      -3.4077333363593727,
+      0.23513536025889736,
+      5.284092160614101
+    ],
+    "p_tip_m": [
+      0.07910632813003513,
+      -0.08168635803657866,
+      -0.011206962883513773
+    ],
+    "p_tip_flex_m": [
+      0.07857070861523482,
+      -0.07905184311937911,
+      -0.009875631630780986
+    ],
+    "p_tip_true_m": [
+      0.07910632813003513,
+      -0.08168635803657866,
+      -0.011206962883513773
+    ],
+    "err_m": 0.05127105428737731,
+    "err_mm": 51.27105428737731,
+    "err_flex_m": 0.05234296695037396,
+    "err_flex_mm": 52.342966950373956,
+    "err_true_m": 0.05127105428737731,
+    "err_true_mm": 51.27105428737731,
+    "centerline_npy": "poses/accept/centerline_iter_0015.npy",
+    "branch_state": {
+      "eval_id": "eval_000036",
+      "npz_path": "branch_states/states/eval_000036_trial_iter_1500.npz",
+      "z_star_hash": "e3ece1fe41cb7bbe395159528a98eeffbbbd64e6fae71ae5b39553394a73da41",
+      "warm_start_hash": "8a32dc7f937f4d8e90dc837e7120664c18bf9afc32ac438b375375a332ec6d1d",
+      "centerline_hash": "8658bf7b0e7e4339c531eac4e1868e8d3ae030a0ed34acc2e5ff38b0de8037a7"
+    }
+  },
+  "final": {
+    "x_m": 0.1269845796316042,
+    "I_A": [
+      -0.8485831822202877,
+      -5.2901643091365615,
+      -1.254723313235825,
+      3.216031007739205,
+      2.1231264947694033,
+      -3.407733336359373,
+      0.23513536025889736,
+      5.284092160614101
+    ],
+    "p_tip_m": [
+      0.07910632813003513,
+      -0.08168635803657866,
+      -0.011206962883513773
+    ],
+    "p_tip_flex_m": [
+      0.07857070861523482,
+      -0.07905184311937911,
+      -0.009875631630780986
+    ],
+    "p_tip_true_m": [
+      0.07910632813003513,
+      -0.08168635803657866,
+      -0.011206962883513773
+    ],
+    "err_m": 0.05127105428737731,
+    "err_mm": 51.27105428737731,
+    "err_flex_m": 0.05234296695037396,
+    "err_flex_mm": 52.342966950373956,
+    "err_true_m": 0.05127105428737731,
+    "err_true_mm": 51.27105428737731,
+    "centerline_npy": "poses/accept/centerline_iter_0037.npy",
+    "branch_state": {
+      "eval_id": "eval_000037",
+      "npz_path": "branch_states/states/eval_000037_final_iter_0037.npz",
+      "z_star_hash": "e3ece1fe41cb7bbe395159528a98eeffbbbd64e6fae71ae5b39553394a73da41",
+      "warm_start_hash": "e3ece1fe41cb7bbe395159528a98eeffbbbd64e6fae71ae5b39553394a73da41",
+      "centerline_hash": "8658bf7b0e7e4339c531eac4e1868e8d3ae030a0ed34acc2e5ff38b0de8037a7"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+point,baseline_error_mm,p2_error_mm,error_delta_mm,baseline_wall_s,p2_wall_s,wall_delta_s,baseline_stop,p2_stop,baseline_accept,baseline_reject,p2_accept,p2_reject,interpretation
+pt_01,3.638917317158451,3.6140036146798593,-0.02491370247859179,154.91431874400587,167.3339646860113,12.419645942005431,reached_threshold_true_tip,reached_threshold_true_tip,12,0,12,0,"both_success_p2_preserves_success"
+pt_12,51.71333602751883,51.271054287421286,-0.4422817400975444,292.528554650009,730.0002773939923,437.4717227439833,max_outer_iter,reject_stall,11,5,14,23,"no_material_accuracy_gain_p2_too_slow"
+pt_13,72.62565868191882,5.777215471977211,-66.8484432099416,385.535713942998,299.90794491700944,-85.62776902598856,max_outer_iter,reached_10mm_only,13,3,3,40,"large_accuracy_gain_but_still_not_5mm"

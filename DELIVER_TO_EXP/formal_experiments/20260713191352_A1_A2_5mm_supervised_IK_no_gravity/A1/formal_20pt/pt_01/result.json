@@ -1,0 +1,91 @@
+{
+  "success": true,
+  "success_flex_eps": false,
+  "success_true_eps": true,
+  "p_des": [
+    0.06,
+    0.0951056516295,
+    0.0309016994375
+  ],
+  "p_tip": [
+    0.05907813145645144,
+    0.09175241665291814,
+    0.02991834003877024
+  ],
+  "p_tip_flex": [
+    0.059903314598722654,
+    0.0889532683294358,
+    0.029222752915952856
+  ],
+  "p_tip_true": [
+    0.05907813145645144,
+    0.09175241665291814,
+    0.02991834003877024
+  ],
+  "p_tip_m": [
+    0.05907813145645144,
+    0.09175241665291814,
+    0.02991834003877024
+  ],
+  "p_tip_flex_m": [
+    0.059903314598722654,
+    0.0889532683294358,
+    0.029222752915952856
+  ],
+  "p_tip_true_m": [
+    0.05907813145645144,
+    0.09175241665291814,
+    0.02991834003877024
+  ],
+  "err_m": 0.0036140036146670366,
+  "err_mm": 3.6140036146670367,
+  "err_flex_m": 0.006378089820623741,
+  "err_flex_mm": 6.378089820623741,
+  "err_true_m": 0.0036140036146670366,
+  "err_true_mm": 3.6140036146670367,
+  "I": [
+    0.7376872675269729,
+    -4.947495435055928,
+    -1.1431887027742906,
+    4.12585581442128,
+    1.586811416080911,
+    -3.992285603385566,
+    -0.6520868280094669,
+    4.316456556907998
+  ],
+  "x": 0.13209663484301287,
+  "normE": 9.993156884985352e-06,
+  "cls": "GOOD",
+  "sigma_p": 0.005,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "residual_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 0.0,
+    "sensitivity_conditioning": false
+  },
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "p2_outer_solver": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  }
+}
