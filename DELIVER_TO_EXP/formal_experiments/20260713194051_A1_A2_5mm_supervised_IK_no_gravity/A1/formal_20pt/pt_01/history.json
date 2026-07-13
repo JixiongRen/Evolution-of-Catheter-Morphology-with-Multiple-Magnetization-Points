@@ -1,0 +1,199 @@
+{
+  "meta": {
+    "run_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713194051_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_01",
+    "timestamp": "2026-07-13 19:40:55",
+    "p_des": [
+      0.06,
+      0.0951056516295,
+      0.0309016994375
+    ],
+    "eps_p_m": 0.005,
+    "sigma_p_m": 0.005,
+    "sensitivity_config": {
+      "x_sensitivity_method": "implicit",
+      "sensitivity_mode": "residual_svd",
+      "sensitivity_solve_mode": "svd",
+      "sensitivity_svd_rcond": 1e-09,
+      "sensitivity_spectral_filter": "hard",
+      "sensitivity_spectral_damping": 0.0,
+      "ridge_adjoint": 0.0,
+      "sensitivity_conditioning": false
+    }
+  },
+  "outer": [
+    {
+      "iter": 0,
+      "status": "INIT",
+      "accept": true,
+      "lam": 0.01,
+      "rho": null,
+      "pred_red": null,
+      "act_red": null,
+      "du_eff_norm": 0.0,
+      "dI_max_abs": 0.0,
+      "dI_norm": 0.0,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.10299999999999998,
+      "I_A": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dI_A": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "p_tip_m": [
+        0.102998115590478,
+        0.0,
+        -3.616037349725393e-27
+      ],
+      "p_tip_flex_m": [
+        0.09999817404052593,
+        0.0,
+        -3.359595344676349e-27
+      ],
+      "p_tip_true_m": [
+        0.102998115590478,
+        0.0,
+        -3.616037349725393e-27
+      ],
+      "err_m": 0.10885236765605749,
+      "err_mm": 108.8523676560575,
+      "err_flex_m": 0.10770261801169739,
+      "err_flex_mm": 107.7026180116974,
+      "err_true_m": 0.10885236765605749,
+      "err_true_mm": 108.8523676560575,
+      "cost": 236.9767588865902,
+      "cls": "GOOD",
+      "normE": 8.307684751434808e-06,
+      "pose": {
+        "centerline_npy": "poses/accept/centerline_iter_0000.npy",
+        "which": "accept"
+      },
+      "branch_state": {
+        "eval_id": "eval_000000",
+        "npz_path": "branch_states/states/eval_000000_init_iter_0000.npz",
+        "z_star_hash": "4550b2e029d14b3afe3a95a63e06b148107bf3c0b7cf1a247c3a94829a1cf0b5",
+        "warm_start_hash": null,
+        "centerline_hash": "ccb7c54456f50a3e7c2a9ec0c9edea664026f7ca9b95e01bddcdeeb050aa27cb"
+      }
+    },
+    {
+      "iter": 1,
+      "backtrack_index": 0,
+      "backtrack_scale": 1.0,
+      "status": "ACCEPT",
+      "accept": true,
+      "lam": 0.01,
+      "rho": 0.9602702479539157,
+      "pred_red": 37.39938370758841,
+      "act_red": 35.91351546620956,
+      "terminal_improved": true,
+      "cost_improved": true,
+      "task_rank": 2,
+      "task_singular_values": [
+        228.89872110176373,
+        9.999896467820022,
+        0.003952472108986056
+      ],
+      "reliable_subspace_enabled": false,
+      "reliable_subspace_dim": 9,
+      "ix_jacobian_enabled": true,
+      "du_eff_norm": 0.40640769047786834,
+      "dI_max_abs": 0.21759461738758254,
+      "dI_norm": 0.552513883079904,
+      "dx_m": -0.02,
+      "dx_abs_m": 0.02,
+      "x_m": 0.08299999999999998,
+      "I_A": [
+        -0.21700375141246117,
+        -0.19568236662665242,
+        -0.15956655551729373,
+        -0.20439333955474243,
+        0.21759461738758254,
+        0.2039625220722861,
+        0.1601101582562543,
+        0.19510986818552306
+      ],
+      "dI_A": [
+        -0.21700375141246117,
+        -0.19568236662665242,
+        -0.15956655551729373,
+        -0.20439333955474243,
+        0.21759461738758254,
+        0.2039625220722861,
+        0.1601101582562543,
+        0.19510986818552306
+      ],
+      "p_tip_m": [
+        0.08035053541266361,
+        -9.868838278785808e-05,
+        0.01783179502592911
+      ],
+      "p_tip_flex_m": [
+        0.07762998753538547,
+        -9.379613000654216e-05,
+        0.016567439210214297
+      ],
+      "p_tip_true_m": [
+        0.08035053541266361,
+        -9.868838278785808e-05,
+        0.01783179502592911
+      ],
+      "err_m": 0.09822847372368661,
+      "err_mm": 98.2284737236866,
+      "err_flex_m": 0.09787350167678893,
+      "err_flex_mm": 97.87350167678893,
+      "err_true_m": 0.09822847372368661,
+      "err_true_mm": 98.2284737236866,
+      "cost": 201.06324342038064,
+      "cls": "GOOD",
+      "normE": 9.976458904484077e-06,
+      "sensitivity": {
+        "x_method": "implicit",
+        "sensitivity_mode": "residual_svd",
+        "sensitivity_solve_mode": "svd",
+        "sensitivity_svd_rcond": 1e-09,
+        "sensitivity_spectral_filter": "hard",
+        "sensitivity_spectral_damping": 0.0,
+        "ridge_adjoint": 0.0,
+        "jz_source": "computed",
+        "status": "truncated_svd",
+        "method": "dense_implicit_residual_svd",
+        "stationarity_norm": 1.6048492077166432e-06,
+        "condition_number": null,
+        "effective_rank": 276,
+        "sv_min": 2.112446518456759e-06,
+        "sv_max": 83522.74424321357,
+        "spectral_filter": "hard",
+        "spectral_lambda": 0.0,
+        "spectral_cutoff": 8.352274424321358e-05,
+        "retained_spectral_energy": 1.0
+      },
+      "pose": {
+        "centerline_npy": "poses/trial/centerline_iter_0100.npy",
+        "which": "trial"
+      },
+      "branch_state": {
+        "eval_id": "eval_000001",
+        "npz_path": "branch_states/states/eval_000001_trial_iter_0100.npz",
+        "z_star_hash": "8f1fad82db98c87b5f13ade96db4624a01491e7656e63dc371d74078560205e9",
+        "warm_start_hash": "4550b2e029d14b3afe3a95a63e06b148107bf3c0b7cf1a247c3a94829a1cf0b5",
+        "centerline_hash": "41b0c70e52b4229e69e2fd418d6c027bae4093304d1b37f07d0562dda4c44a6d"
+      }
+    }
+  ]
+}

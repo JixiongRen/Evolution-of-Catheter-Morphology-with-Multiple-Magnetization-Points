@@ -6,6 +6,7 @@ import argparse
 import csv
 import json
 import math
+import os
 import sys
 import time
 from dataclasses import dataclass
@@ -26,9 +27,32 @@ for _path in (_REPO_ROOT, _FK_DIR):
 import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from inverse_kinematics.ik_artifacts import extract_centerline_dim
+from inverse_kinematics.ik_branch_state import current_git_commit
 from inverse_kinematics.ik_diff import compute_tip_sensitivities_via_lm_adjoint, extract_terminal_p_dim
 
 jax.config.update("jax_enable_x64", True)
+
+
+def _runtime_environment() -> dict[str, Any]:
+    devices = []
+    for dev in jax.devices():
+        devices.append(
+            {
+                "id": getattr(dev, "id", None),
+                "platform": getattr(dev, "platform", None),
+                "device_kind": getattr(dev, "device_kind", None),
+                "repr": str(dev),
+            }
+        )
+    return {
+        "code_commit": current_git_commit(_REPO_ROOT),
+        "python_executable": sys.executable,
+        "jax_version": getattr(jax, "__version__", None),
+        "jax_enable_x64": bool(jax.config.jax_enable_x64),
+        "jax_platforms_env": os.environ.get("JAX_PLATFORMS"),
+        "xla_python_client_preallocate": os.environ.get("XLA_PYTHON_CLIENT_PREALLOCATE"),
+        "devices": devices,
+    }
 
 
 @dataclass
@@ -555,11 +579,11 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--sensitivity-modes",
         type=str,
-        default="solver_response,gn_svd,stationarity_exact",
+        default="solver_response,gn_svd,stationarity_exact,residual_svd",
     )
     parser.add_argument("--solve-mode", choices=("solve", "svd"), default="svd")
     parser.add_argument("--ridge", type=float, default=1e-10)
-    parser.add_argument("--svd-rcond", type=float, default=1e-10)
+    parser.add_argument("--svd-rcond", type=float, default=1e-9)
     parser.add_argument("--spectral-filter", choices=("hard", "tikhonov", "hybrid"), default="hard")
     parser.add_argument("--spectral-damping", type=float, default=0.0)
     parser.add_argument("--roundtrip-segments", type=int, default=1, help="Number of warm-started substeps used for perturbation and roundtrip replay.")
@@ -574,6 +598,8 @@ def main(argv: list[str] | None = None) -> None:
     args = build_argparser().parse_args(argv)
     out_dir = Path(args.out_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
+    runtime_environment = _runtime_environment()
+    _write_json(out_dir / "runtime_environment.json", runtime_environment)
     point_dirs = list(_iter_point_dirs(Path(p) for p in args.paths))
     if args.max_points and args.max_points > 0:
         point_dirs = point_dirs[: int(args.max_points)]
@@ -618,6 +644,7 @@ def main(argv: list[str] | None = None) -> None:
         "sensitivity_rows": len(all_sens_rows),
         "fd_rows": len(all_fd_rows),
         "settings": vars(args),
+        "runtime_environment": runtime_environment,
         "paths": [str(p) for p in point_dirs],
     }
     _write_json(out_dir / "summary.json", summary)

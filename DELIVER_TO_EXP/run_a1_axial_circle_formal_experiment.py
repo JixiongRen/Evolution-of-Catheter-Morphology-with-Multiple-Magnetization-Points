@@ -948,11 +948,11 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--sensitivity-mode",
         choices=("solver_response", "gn_svd", "stationarity_exact", "residual_svd"),
-        default="solver_response",
+        default="residual_svd",
         help="Sensitivity linearization used by the outer IK loop.",
     )
-    parser.add_argument("--sensitivity-solve-mode", choices=("solve", "svd"), default="solve", help="Solve mode for square sensitivity systems.")
-    parser.add_argument("--sensitivity-svd-rcond", type=float, default=1e-10, help="Relative singular-value cutoff for sensitivity solves.")
+    parser.add_argument("--sensitivity-solve-mode", choices=("solve", "svd"), default="svd", help="Solve mode for square sensitivity systems.")
+    parser.add_argument("--sensitivity-svd-rcond", type=float, default=1e-9, help="Relative singular-value cutoff for sensitivity solves.")
     parser.add_argument("--sensitivity-spectral-filter", choices=("hard", "tikhonov", "hybrid"), default="hard", help="Spectral filter used by residual-space sensitivity.")
     parser.add_argument("--sensitivity-spectral-damping", type=float, default=0.0, help="Absolute damping for residual-space spectral filters.")
     parser.add_argument("--ridge-adjoint", type=float, default=0.0, help="Extra ridge used by legacy adjoint sensitivity paths.")
@@ -1054,13 +1054,14 @@ def main(argv: list[str] | None = None) -> None:
         "sensitivity_config": sensitivity_config,
         "p2_config": p2_config,
         "XLA_PYTHON_CLIENT_PREALLOCATE": os.environ.get("XLA_PYTHON_CLIENT_PREALLOCATE"),
+        "JAX_PLATFORMS": os.environ.get("JAX_PLATFORMS"),
     }
     (run_root / "batch_metadata.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
     (run_root / "targets.json").write_text(json.dumps(targets, ensure_ascii=False, indent=2), encoding="utf-8")
     (run_root / "commands.sh").write_text(
         "#!/usr/bin/env bash\n"
         "set -euo pipefail\n"
-        "XLA_PYTHON_CLIENT_PREALLOCATE=false "
+        "XLA_PYTHON_CLIENT_PREALLOCATE=false JAX_PLATFORMS=cuda "
         "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python "
         f"{Path(__file__).resolve()} "
         f"{'--enable-gravity' if enable_gravity else '--disable-gravity'} "

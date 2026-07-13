@@ -137,6 +137,28 @@ def _write_runtime_profile(run_dir: Path, profile: Optional[dict]) -> None:
         _atomic_write_json(run_dir / "runtime_profile.json", profile)
 
 
+def _runtime_environment() -> dict[str, Any]:
+    devices = []
+    for dev in jax.devices():
+        devices.append(
+            {
+                "id": getattr(dev, "id", None),
+                "platform": getattr(dev, "platform", None),
+                "device_kind": getattr(dev, "device_kind", None),
+                "repr": str(dev),
+            }
+        )
+    return {
+        "code_commit": current_git_commit(_REPO_ROOT),
+        "python_executable": sys.executable,
+        "jax_version": getattr(jax, "__version__", None),
+        "jax_enable_x64": bool(jax.config.jax_enable_x64),
+        "jax_platforms_env": os.environ.get("JAX_PLATFORMS"),
+        "xla_python_client_preallocate": os.environ.get("XLA_PYTHON_CLIENT_PREALLOCATE"),
+        "devices": devices,
+    }
+
+
 def build_argparser() -> argparse.ArgumentParser:
     p = fk_cli.build_argparser()
 
@@ -266,11 +288,11 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument(
         "--sensitivity_mode",
         choices=["solver_response", "gn_svd", "stationarity_exact", "residual_svd"],
-        default="solver_response",
+        default="residual_svd",
         help="Implicit sensitivity linearization used by the supervised IK outer loop.",
     )
-    p.add_argument("--sensitivity_solve_mode", choices=["solve", "svd"], default="solve", help="Linear solve mode for square implicit sensitivity systems")
-    p.add_argument("--sensitivity_svd_rcond", type=float, default=1e-10, help="Relative singular-value cutoff for implicit sensitivity diagnostics")
+    p.add_argument("--sensitivity_solve_mode", choices=["solve", "svd"], default="svd", help="Linear solve mode for square implicit sensitivity systems")
+    p.add_argument("--sensitivity_svd_rcond", type=float, default=1e-9, help="Relative singular-value cutoff for implicit sensitivity diagnostics")
     p.add_argument("--sensitivity_spectral_filter", choices=["hard", "tikhonov", "hybrid"], default="hard", help="Residual-space spectral filter for residual_svd sensitivity")
     p.add_argument("--sensitivity_spectral_damping", type=float, default=0.0, help="Absolute damping used by tikhonov or hybrid residual-space filters")
     p.add_argument("--store_accepted_jacobian", action="store_true", help="Store dense FK Jacobian on accepted trials for legacy diagnostics")
@@ -657,6 +679,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     run_dir = _make_run_dir(args.out_dir, args.run_name)
     runtime_profile = _new_runtime_profile(bool(args.runtime_profile))
+    runtime_environment = _runtime_environment()
+    if runtime_profile.get("enabled", False):
+        runtime_profile["environment"] = runtime_environment
     run_config_path = run_dir / "run_config.json"
     poses_dir = (run_dir / "poses")
     poses_trial_dir = (poses_dir / "trial")
@@ -870,6 +895,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "x_ref": x_ref,
                 "sigma_p": sigma_p,
                 "sensitivity_config": sensitivity_config,
+                "runtime_environment": runtime_environment,
                 "sigmas_from_w": {
                     "sigma_I": (1.0 / w_I) if w_I > 0 else None,
                     "sigma_x": (1.0 / w_x) if w_x > 0 else None,
@@ -1679,6 +1705,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "cls": str(cur.cls),
                 "sigma_p": float(sigma_p),
                 "sensitivity_config": sensitivity_config,
+                "runtime_environment": runtime_environment,
                 "sigmas_from_w": {
                     "sigma_I": (1.0 / w_I) if w_I > 0 else None,
                     "sigma_x": (1.0 / w_x) if w_x > 0 else None,
