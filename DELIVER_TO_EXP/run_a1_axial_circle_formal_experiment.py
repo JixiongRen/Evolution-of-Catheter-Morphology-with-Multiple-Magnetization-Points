@@ -171,6 +171,69 @@ def _centerline_path(point_dir: Path) -> Path | None:
     return None
 
 
+def _state_entry_summary(point_dir: Path, run_config: dict[str, Any], section: str) -> dict[str, Any]:
+    """Extract branch-state provenance for a saved solver state."""
+    entry = run_config.get(section, {}) or {}
+    branch_state = entry.get("branch_state", {}) or {}
+    rel_npz = branch_state.get("npz_path")
+    rel_centerline = entry.get("centerline_npy")
+    return {
+        "section": section,
+        "x_m": entry.get("x_m"),
+        "I_A": entry.get("I_A"),
+        "err_true_mm": entry.get("err_true_mm"),
+        "err_flex_mm": entry.get("err_flex_mm"),
+        "centerline_npy": str((point_dir / rel_centerline).resolve()) if rel_centerline else None,
+        "branch_eval_id": branch_state.get("eval_id"),
+        "branch_npz_path": str((point_dir / rel_npz).resolve()) if rel_npz else None,
+        "z_star_hash": branch_state.get("z_star_hash"),
+        "warm_start_hash": branch_state.get("warm_start_hash"),
+        "centerline_hash": branch_state.get("centerline_hash"),
+    }
+
+
+def _state_provenance_summary(point_dir: Path, run_config: dict[str, Any]) -> dict[str, Any]:
+    """Summarize saved-state provenance for audit and replay experiments."""
+    sections = {
+        section: _state_entry_summary(point_dir, run_config, section)
+        for section in ("init", "last_accept", "final")
+    }
+    selected = "final"
+    if not sections["final"].get("z_star_hash"):
+        selected = "last_accept" if sections["last_accept"].get("z_star_hash") else "init"
+    branch_metadata_path = point_dir / "branch_states" / "metadata.json"
+    branch_metadata = _read_json(branch_metadata_path, {}) if branch_metadata_path.exists() else {}
+    runtime_environment = run_config.get("runtime_environment", {}) or {}
+    return {
+        "schema": "state_provenance_v1",
+        "selected_state_source": selected,
+        "selected_state_source_zh": {
+            "final": "最终状态",
+            "last_accept": "最后接受状态",
+            "init": "初始状态",
+        }.get(selected, selected),
+        "selected_state": sections[selected],
+        "states": sections,
+        "branch_metadata_path": str(branch_metadata_path.resolve()) if branch_metadata_path.exists() else None,
+        "branch_metadata": {
+            key: branch_metadata.get(key)
+            for key in (
+                "code_commit",
+                "git_tracked_dirty",
+                "git_untracked_count",
+                "argv_hash",
+                "fk_cfg_hash",
+                "geometry_hash",
+                "material_hash",
+                "magnet_hash",
+                "solver_hash",
+                "sensitivity_hash",
+            )
+        },
+        "runtime_environment": runtime_environment,
+    }
+
+
 def _infer_stop_reason(*, result: dict[str, Any], history: dict[str, Any], outer_max_iter: int, threshold_mm: float) -> str:
     err_true = float(result.get("err_true_mm", math.inf))
     err_flex = float(result.get("err_flex_mm", result.get("err_mm", math.inf)))
@@ -517,6 +580,12 @@ def _run_one_target(
     run_p2_config = run_config.get("p2_outer_solver", p2_config)
     run_channel_gate = run_config.get("control_channel_gate", {})
     gate_policy_label = _gate_policy_label(run_channel_gate)
+    state_provenance = _state_provenance_summary(point_dir, run_config)
+    selected_state = state_provenance["selected_state"]
+    branch_meta = state_provenance["branch_metadata"]
+    runtime_environment = state_provenance["runtime_environment"]
+    devices = runtime_environment.get("devices") or []
+    primary_device = devices[0] if devices else {}
     accepted_count, reject_count, outer_iter_count = _history_counts(history)
     p_des = np.asarray(target["p_des_m"], dtype=float)
     p_flex = np.asarray(result.get("p_tip_flex", result.get("p_tip", [math.nan] * 3)), dtype=float)
@@ -572,6 +641,25 @@ def _run_one_target(
         "artifacts": artifacts,
         "x_bounds": x_bounds,
         "max_abs_current_A": float(np.nanmax(np.abs(np.asarray(I_A, dtype=float)))) if I_A is not None else math.nan,
+        "state_provenance": state_provenance,
+        "state_source": state_provenance.get("selected_state_source"),
+        "state_source_zh": state_provenance.get("selected_state_source_zh"),
+        "z_star_hash": selected_state.get("z_star_hash"),
+        "warm_start_hash": selected_state.get("warm_start_hash"),
+        "centerline_hash": selected_state.get("centerline_hash"),
+        "branch_eval_id": selected_state.get("branch_eval_id"),
+        "branch_npz_path": selected_state.get("branch_npz_path"),
+        "branch_metadata_path": state_provenance.get("branch_metadata_path"),
+        "branch_code_commit": branch_meta.get("code_commit"),
+        "branch_fk_cfg_hash": branch_meta.get("fk_cfg_hash"),
+        "branch_geometry_hash": branch_meta.get("geometry_hash"),
+        "branch_material_hash": branch_meta.get("material_hash"),
+        "branch_magnet_hash": branch_meta.get("magnet_hash"),
+        "branch_solver_hash": branch_meta.get("solver_hash"),
+        "branch_sensitivity_hash": branch_meta.get("sensitivity_hash"),
+        "runtime_platform": primary_device.get("platform"),
+        "runtime_device_kind": primary_device.get("device_kind"),
+        "runtime_device_repr": primary_device.get("repr"),
         "sensitivity_config": run_sensitivity_config,
         "sensitivity_mode": run_sensitivity_config.get("sensitivity_mode"),
         "sensitivity_solve_mode": run_sensitivity_config.get("sensitivity_solve_mode"),
@@ -631,6 +719,24 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "warm_start_source",
         "x_m",
         "max_abs_current_A",
+        "state_source",
+        "state_source_zh",
+        "z_star_hash",
+        "warm_start_hash",
+        "centerline_hash",
+        "branch_eval_id",
+        "branch_npz_path",
+        "branch_metadata_path",
+        "branch_code_commit",
+        "branch_fk_cfg_hash",
+        "branch_geometry_hash",
+        "branch_material_hash",
+        "branch_magnet_hash",
+        "branch_solver_hash",
+        "branch_sensitivity_hash",
+        "runtime_platform",
+        "runtime_device_kind",
+        "runtime_device_repr",
         "sensitivity_mode",
         "sensitivity_solve_mode",
         "sensitivity_svd_rcond",
@@ -751,6 +857,20 @@ def _gate_policy_label(gate_info: dict[str, Any]) -> str:
     if gate_info.get("allowed_channels"):
         return "审计通道门禁"
     return "审计通道全部屏蔽"
+
+
+def _batch_control_gate_label(metadata: dict[str, Any]) -> str:
+    """Return a Chinese label for batch-level control-channel gate settings."""
+    cfg = metadata.get("channel_gate_config", {}) or {}
+    if not cfg.get("file"):
+        return "未启用控制通道门禁，九个控制通道均允许参与外层更新。"
+    limited = "允许有限级通道" if bool(cfg.get("allow_limited", True)) else "禁止有限级通道"
+    return (
+        "已启用控制通道门禁；"
+        f"门禁表 `{cfg.get('file')}`；"
+        f"缺失通道策略 `{cfg.get('missing_policy')}`；"
+        f"{limited}。"
+    )
 
 
 def _run_catheter(
@@ -973,6 +1093,7 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
     lines.append(f"- 数值设置：M=5，{gravity_text}，FK 容差 1e-5，电流限幅 20 A。")
     lines.append(f"- 外层步长限制：单步电流不超过 {float(metadata.get('step_I_max', 5.0)):.6g} A，单步推进不超过 {float(metadata.get('step_x_max', 0.02)) * 1000.0:.6g} mm。")
     lines.append(f"- 推进搜索：本批次使用 0.003001 m 到 {metadata['x_search_max_m']:.3f} m 的局部搜索范围；配置文件中的物理长度上限仍保留为 1 m。")
+    lines.append(f"- 控制通道门禁：{_batch_control_gate_label(metadata)}")
     sens_cfg = metadata.get("sensitivity_config", {})
     lines.append(
         "- 灵敏度设置："
@@ -995,11 +1116,11 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
     lines.append("- A2：末端单磁体沿局部 x 轴径向磁化。")
     if metadata.get("force_formal_20"):
         if experiment_type == "formal_20pt":
-            lines.append("- 运行规则：本轮强制执行完整 20 点正式圆周实验，不使用门控结果阻断。")
+            lines.append("- 阶段门控：本轮强制执行完整 20 点正式圆周实验，不使用代表点结果阻断。")
         else:
-            lines.append("- 运行规则：本轮强制执行指定目标点子集，不作为正式 20 点实验结论。")
+            lines.append("- 阶段门控：本轮强制执行指定目标点子集，不使用代表点结果阻断；本轮不作为正式 20 点实验结论。")
     else:
-        lines.append(f"- 门控规则：上、下、左、右 4 个代表点中至少 3 点达到 {threshold_mm:.1f} mm，才进入该导管 20 点正式实验；否则执行 8 点可达性诊断。")
+        lines.append(f"- 阶段门控：上、下、左、右 4 个代表点中至少 3 点达到 {threshold_mm:.1f} mm，才进入该导管 20 点正式实验；否则执行 8 点可达性诊断。")
     lines.append("")
     lines.append("## 总览结果")
     lines.append("")
@@ -1025,11 +1146,12 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         lines.append("")
         if metadata.get("force_formal_20"):
             if experiment_type == "formal_20pt":
-                lines.append("- 门控结果：本轮强制完整 20 点，未使用门控阻断。")
+                lines.append("- 阶段门控结果：本轮强制完整 20 点，未使用代表点结果阻断。")
             else:
-                lines.append("- 门控结果：本轮运行指定目标点子集，未使用门控阻断。")
+                lines.append("- 阶段门控结果：本轮运行指定目标点子集，未使用代表点结果阻断。")
         else:
-            lines.append(f"- 门控结果：{item['gate_success_count_eps']}/{item['gate_total']} 点达到 {threshold_mm:.1f} mm。")
+            lines.append(f"- 阶段门控结果：{item['gate_success_count_eps']}/{item['gate_total']} 点达到 {threshold_mm:.1f} mm。")
+        lines.append(f"- 控制通道门禁：{_batch_control_gate_label(metadata)}")
         if item["formal_rows"]:
             if experiment_type == "formal_20pt":
                 lines.append("- 决策：已执行 20 点正式圆周实验。")
@@ -1042,12 +1164,13 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         if item.get("overview_plot"):
             lines.append(f"- 总览图：`{item['overview_plot']}`")
         lines.append("")
-        lines.append(f"| 点号 | 阶段 | 决策标签 | 纳入正式统计 | 门禁口径 | 真实误差(mm) | 柔性节点误差(mm) | {threshold_mm:.1f}mm | 3mm | 5mm | 10mm | cls | 外层迭代 | 耗时(s) | 停止原因 |")
-        lines.append("|---:|---|---|---|---|---:|---:|---|---|---|---|---|---:|---:|---|")
+        lines.append(f"| 点号 | 阶段 | 决策标签 | 纳入正式统计 | 控制通道门禁 | 状态来源 | 真实误差(mm) | 柔性节点误差(mm) | {threshold_mm:.1f}mm | 3mm | 5mm | 10mm | cls | 外层迭代 | 耗时(s) | 停止原因 |")
+        lines.append("|---:|---|---|---|---|---|---:|---:|---|---|---|---|---|---:|---:|---|")
         for row in rows:
             lines.append(
                 f"| {row['target_index']} | {row['phase']} | {row.get('point_decision')} | "
                 f"{row.get('formal_statistics_included')} | {row.get('control_gate_policy_label')} | "
+                f"{row.get('state_source_zh')} | "
                 f"{row['err_true_mm']:.3f} | "
                 f"{row['err_flex_mm']:.3f} | {row['success_eps']} | {row['success_3mm']} | "
                 f"{row['success_5mm']} | {row['success_10mm']} | "
@@ -1250,6 +1373,12 @@ def main(argv: list[str] | None = None) -> None:
         "diagnostic_target_indices": [int(targets[pos]["index"]) for pos in diag_indices],
         "gate_positions": gate_indices,
         "diagnostic_positions": diag_indices,
+        "stage_gate_enabled": not bool(args.force_formal_20),
+        "stage_gate_note_zh": (
+            "启用代表点阶段门控，通过后进入正式实验。"
+            if not bool(args.force_formal_20)
+            else "本轮强制运行指定目标集合，不使用代表点结果作为阶段阻断。"
+        ),
         "outer_max_iter": outer_max_iter,
         "per_point_timeout_s": per_point_timeout_s,
         "step_I_max": step_I_max,
@@ -1257,6 +1386,12 @@ def main(argv: list[str] | None = None) -> None:
         "initial_I_A_override": initial_I_A_override,
         "initial_x_m_override": initial_x_m_override,
         "x_search_max_m": x_search_max_m,
+        "effective_x_search_min_m": 0.003001,
+        "effective_x_search_max_m": x_search_max_m,
+        "static_L_protrude_max_m_by_catheter": {
+            key: float(config["catheter_types"][key]["solver_input"]["L_protrude_max_m"])
+            for key in catheter_keys
+        },
         "x_search_note_zh": "本次 x=60 mm 圆周实验采用 0.203 m 局部推进搜索上限；物理配置文件仍保留 1 m 最大长度。",
         "eps_p_m": eps_p_m,
         "sigma_p_m": eps_p_m,
@@ -1267,6 +1402,9 @@ def main(argv: list[str] | None = None) -> None:
         "sensitivity_config": sensitivity_config,
         "p2_config": p2_config,
         "channel_gate_config": channel_gate_config,
+        "control_gate_enabled_requested": bool(channel_gate_file),
+        "control_gate_file": channel_gate_file,
+        "control_gate_note_zh": _batch_control_gate_label({"channel_gate_config": channel_gate_config}),
         "XLA_PYTHON_CLIENT_PREALLOCATE": os.environ.get("XLA_PYTHON_CLIENT_PREALLOCATE"),
         "JAX_PLATFORMS": os.environ.get("JAX_PLATFORMS"),
     }
