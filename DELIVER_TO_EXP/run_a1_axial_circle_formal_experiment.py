@@ -267,6 +267,7 @@ def _build_ik_args(
         "--run_name",
         run_name,
         "--runtime_profile",
+        "--branch_state_capture",
         "--print_devices",
         "--seed",
         str(20260705 + 1000 * (1 if catheter_key == "A1" else 2) + int(target["index"])),

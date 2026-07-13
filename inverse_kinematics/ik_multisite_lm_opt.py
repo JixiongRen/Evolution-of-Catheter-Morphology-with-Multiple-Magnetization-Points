@@ -69,6 +69,7 @@ import forward_kinematics_optimized.fk as fk_cli
 from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from ik_diff import compute_tip_sensitivities_via_lm_adjoint
 from ik_artifacts import extract_centerline_dim, save_centerline, save_history_json
+from ik_branch_state import BranchStateRecorder, current_git_commit, json_sha256
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
@@ -270,6 +271,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--runtime_profile", action="store_true", help="Write runtime_profile.json with FK/IK timing buckets")
     p.add_argument("--warmup_fk_compile", action="store_true", help="Precompile fixed-shape FK residual/Jacobian/one-step solve before IK")
     p.add_argument("--warmup_ik_adjoint", action="store_true", help="Precompute and reuse the first dp/dI adjoint sensitivity")
+    p.add_argument("--branch_state_capture", action="store_true", help="Save every FK candidate state for branch replay diagnostics")
 
     # seed
     p.add_argument("--seed", type=int, default=0, help="Random seed used for initializing currents (I0).")
@@ -346,6 +348,7 @@ class EvalPack:
     z_star_bar: Array
     params: Any
     lm_stats: Any
+    warm_start_z_bar: Optional[Array] = None
 
 
 def _true_rigid_distal_tip(engine: ForwardKinematicsEngine, obs: dict[str, Array]) -> Array:
@@ -468,6 +471,13 @@ def _fk_eval(
     runtime_profile: Optional[dict] = None,
     profile_label: str = "fk_eval",
 ) -> EvalPack:
+    if override_z0_bar is not None:
+        warm_start_z_bar = jnp.asarray(override_z0_bar, dtype=jnp.float64)
+    elif getattr(engine, "_last_z_bar", None) is not None:
+        warm_start_z_bar = jnp.asarray(engine._last_z_bar, dtype=jnp.float64)
+    else:
+        warm_start_z_bar = None
+
     t0 = time.perf_counter()
     z_star_bar, params, _meshes, ok, lm_stats = engine.solve_with_stats(
         coil_currents=I,
@@ -528,6 +538,7 @@ def _fk_eval(
         z_star_bar=jnp.asarray(z_star_bar, dtype=jnp.float64),
         params=params,
         lm_stats=lm_stats,
+        warm_start_z_bar=warm_start_z_bar,
     )
 
 
@@ -834,6 +845,59 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         },
         "outer": [],
     }
+    branch_recorder = BranchStateRecorder(
+        run_dir=run_dir,
+        enabled=bool(args.branch_state_capture),
+        metadata={
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "code_commit": current_git_commit(_REPO_ROOT),
+            "argv_hash": json_sha256(vars(args)),
+            "fk_cfg_hash": json_sha256(cfg),
+            "geometry_hash": json_sha256(
+                {
+                    "flex_lengths": flex_lengths,
+                    "rigid_lengths": rigid_lengths,
+                    "M_list": M_list,
+                    "L1_min": L1_min,
+                    "x_bounds": [x_min, x_max],
+                    "p0_dim": p0_dim,
+                    "Q0": Q0,
+                    "axis_body": axis_body,
+                }
+            ),
+            "material_hash": json_sha256(
+                {
+                    "flex_d_outer": flex_d_outer,
+                    "flex_E": flex_E,
+                    "flex_G": flex_G,
+                    "flex_rho": flex_rho,
+                    "rigid_d_outer": rigid_d_outer,
+                    "rigid_rho": rigid_rho,
+                }
+            ),
+            "magnet_hash": json_sha256(
+                {
+                    "enable_magnetics": enable_magnetics,
+                    "calib_file": calib_file,
+                    "actuation_table_pkl": actuation_table_pkl,
+                    "m_body_list": m_body_list,
+                }
+            ),
+            "solver_hash": json_sha256(
+                {
+                    "max_iter": int(_get("max_iter", args.max_iter)),
+                    "tol": float(_get("tol", args.tol)),
+                    "lm_damping": float(_get("lm_damping", args.lm_damping)),
+                    "jac_method": str(_get("jac_method", args.jac_method)),
+                    "outer_max_iter": int(args.outer_max_iter),
+                    "eps_p": eps_p,
+                    "sigma_p": sigma_p,
+                }
+            ),
+            "branch_gate_note": "A saved state is traceable evidence only; same-branch claims require replay and roundtrip gates.",
+        },
+    )
+    last_branch_eval_id: Optional[str] = None
 
     def _save_pose(*, which: str, iter_idx: int, pack: EvalPack) -> Path:
         t0 = time.perf_counter()
@@ -843,6 +907,49 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         save_centerline(cl, out_path)
         _profile_add(runtime_profile, "io", f"save_pose_{which}", time.perf_counter() - t0)
         return out_path
+
+    def _save_branch_state(
+        *,
+        phase: str,
+        iter_idx: int,
+        pack: EvalPack,
+        status: str,
+        accept: bool,
+        parent_eval_id: Optional[str],
+        pose_path: Optional[Path],
+        outer: Optional[dict[str, Any]] = None,
+    ):
+        t0 = time.perf_counter()
+        centerline = extract_centerline_dim(pack.z_star_bar, M_list=engine.M_list, scales=pack.params.scales)
+        centerline_relpath = str(pose_path.relative_to(run_dir)) if pose_path is not None else None
+        record = branch_recorder.save(
+            phase=phase,
+            iter_idx=int(iter_idx),
+            pack=pack,
+            p_des=p_des,
+            centerline_m=centerline,
+            centerline_relpath=centerline_relpath,
+            status=status,
+            accept=bool(accept),
+            parent_eval_id=parent_eval_id,
+            outer=outer,
+        )
+        if record is not None:
+            _profile_add(runtime_profile, "io", f"branch_state_{phase}", time.perf_counter() - t0)
+        return record
+
+    def _branch_record_fields(record) -> dict[str, Any]:
+        if record is None:
+            return {}
+        return {
+            "branch_state": {
+                "eval_id": record.eval_id,
+                "npz_path": str(record.npz_path.relative_to(run_dir)),
+                "z_star_hash": record.z_hash,
+                "warm_start_hash": record.warm_start_hash,
+                "centerline_hash": record.centerline_hash,
+            }
+        }
 
     def _append_history(*, d: dict) -> None:
         t0 = time.perf_counter()
@@ -924,6 +1031,18 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     z_warm = cur.z_star_bar
 
     init_pose_path = _save_pose(which="accept", iter_idx=0, pack=cur)
+    init_branch_record = _save_branch_state(
+        phase="init",
+        iter_idx=0,
+        pack=cur,
+        status="INIT",
+        accept=True,
+        parent_eval_id=None,
+        pose_path=init_pose_path,
+        outer={"lam": float(lam)},
+    )
+    if init_branch_record is not None:
+        last_branch_eval_id = init_branch_record.eval_id
     init_tip_fields = _tip_report_fields(cur, p_des)
     _update_run_config(
         run_config_path,
@@ -934,6 +1053,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
                 **init_tip_fields,
                 "centerline_npy": str(init_pose_path.relative_to(run_dir)),
+                **_branch_record_fields(init_branch_record),
             },
         },
     )
@@ -963,6 +1083,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "centerline_npy": str(init_pose_path.relative_to(run_dir)),
                 "which": "accept",
             },
+            **_branch_record_fields(init_branch_record),
         }
     )
 
@@ -1197,6 +1318,28 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         trial_pose_path = _save_pose(which="trial", iter_idx=k, pack=trial)
         trial_tip_fields = _tip_report_fields(trial, p_des)
+        trial_outer_info = {
+            "lam": float(lam),
+            "rho": float(rho),
+            "pred_red": float(pred_red),
+            "act_red": float(act_red),
+            "du_eff_norm": float(du_eff_norm),
+            "dI_max_abs": float(dI_max_abs),
+            "dI_norm": float(dI_norm),
+            "dx_m": float(dx_clip),
+            "dx_abs_m": float(dx_abs),
+            "sensitivity": sensitivity_info,
+        }
+        trial_branch_record = _save_branch_state(
+            phase="trial",
+            iter_idx=k,
+            pack=trial,
+            status=status,
+            accept=bool(accept),
+            parent_eval_id=last_branch_eval_id,
+            pose_path=trial_pose_path,
+            outer=trial_outer_info,
+        )
 
         _append_history(
             d={
@@ -1224,6 +1367,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "centerline_npy": str(trial_pose_path.relative_to(run_dir)),
                     "which": "trial",
                 },
+                **_branch_record_fields(trial_branch_record),
             }
         )
 
@@ -1253,6 +1397,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                         "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
                         **cur_tip_fields,
                         "centerline_npy": str(acc_pose_path.relative_to(run_dir)),
+                        **_branch_record_fields(trial_branch_record),
                     }
                 },
             )
@@ -1260,6 +1405,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             # update "previous accepted" reference (for dI/dx residuals)
             I_prev = jnp.asarray(cur.I, dtype=jnp.float64)
             x_prev = float(cur.x)
+            if trial_branch_record is not None:
+                last_branch_eval_id = trial_branch_record.eval_id
 
             if rho >= float(args.rho_good):
                 lam = max(lam * float(args.lam_down), 1e-12)
@@ -1301,6 +1448,16 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             profile_label="final",
         )
         fin_pose_path = _save_pose(which="accept", iter_idx=int(len(history.get("outer", []))), pack=fin_pack)
+        fin_branch_record = _save_branch_state(
+            phase="final",
+            iter_idx=int(len(history.get("outer", []))),
+            pack=fin_pack,
+            status="FINAL",
+            accept=True,
+            parent_eval_id=last_branch_eval_id,
+            pose_path=fin_pose_path,
+            outer={"source": "final_summary"},
+        )
         fin_tip_fields = _tip_report_fields(fin_pack, p_des)
         _update_run_config(
             run_config_path,
@@ -1310,6 +1467,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "I_A": [float(v) for v in np.asarray(jax.device_get(fin_pack.I)).reshape(-1,).tolist()],
                     **fin_tip_fields,
                     "centerline_npy": str(fin_pose_path.relative_to(run_dir)),
+                    **_branch_record_fields(fin_branch_record),
                 }
             },
         )

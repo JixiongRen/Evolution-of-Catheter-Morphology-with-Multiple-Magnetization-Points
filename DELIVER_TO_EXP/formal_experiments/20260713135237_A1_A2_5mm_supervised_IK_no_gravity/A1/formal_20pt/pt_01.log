@@ -1,0 +1,113 @@
+COMMAND_ARGS:
+[
+  "--flex_lengths",
+  "0.1",
+  "--rigid_lengths",
+  "0.003",
+  "--L_protrude",
+  "0.103",
+  "--x0",
+  "0.103",
+  "--x_min",
+  "0.003001",
+  "--x_max",
+  "0.203",
+  "--x_ref",
+  "0.103",
+  "--L1_min",
+  "1e-06",
+  "--M_list",
+  "5",
+  "--flex_d_outer",
+  "0.0015",
+  "--flex_E",
+  "1800000",
+  "--flex_G",
+  "600000",
+  "--flex_rho",
+  "970",
+  "--rigid_d_outer",
+  "0.0015",
+  "--rigid_rho",
+  "7500",
+  "--p0",
+  "0,0,0",
+  "--Q0",
+  "0.70710678,0,0.70710678,0",
+  "--axis_body",
+  "0,0,1",
+  "--enable_magnetics",
+  "--calib_file",
+  "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "--m_body_list",
+  "0,0,0.0061171875",
+  "--max_iter",
+  "100000",
+  "--tol",
+  "1e-05",
+  "--lm_damping",
+  "1e-1",
+  "--jac_method",
+  "fwd",
+  "--p_des",
+  "0.06,0.0951056516295,0.0309016994375",
+  "--eps_p",
+  "0.005",
+  "--sigma_p",
+  "0.005",
+  "--I_max",
+  "20",
+  "--I0=0,0,0,0,0,0,0,0",
+  "--outer_max_iter",
+  "50",
+  "--step_I_max",
+  "5.0",
+  "--step_x_max",
+  "0.02",
+  "--out_dir",
+  "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713135237_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt",
+  "--run_name",
+  "pt_01",
+  "--runtime_profile",
+  "--branch_state_capture",
+  "--print_devices",
+  "--seed",
+  "20261706"
+]
+
+STDOUT_STDERR:
+W0713 13:52:40.989801   74788 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W0713 13:52:40.997922   74759 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+[IK-LM] JAX devices: [CudaDevice(id=0)]
+[IK-LM] ==============================
+[IK-LM] run_dir = /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713135237_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_01
+[IK-LM] p_des = [0.06, 0.0951056516295, 0.0309016994375] (m), eps_p = 5.000 (mm)
+[IK-LM] sigma_p = 5.000e-03 (m)  (r_p = e_p/sigma_p)
+[IK-LM] I bound: [-20.0, 20.0] A (param via tanh)
+[IK-LM] x0=0.103000 m, x in [0.003001, 0.203000] m, x_ref=0.103000 m
+[IK-LM] weights interpreted as inverse scales (w=1/sigma):
+[IK-LM]   w_I =5.000e-02  -> sigma_I =20 A
+[IK-LM]   w_x =2.000e+01  -> sigma_x =0.05 m
+[IK-LM]   w_dI=2.000e-01  -> sigma_dI=5 A
+[IK-LM]   w_dx=2.000e+02  -> sigma_dx=0.005 m
+[IK-LM]   w_Ix=5.000e-04  -> sigma_Ix=2e+03 (A/m)
+[IK-LM] physical step limits: step_I_max=5 A, step_x_max=0.02 m
+[IK-LM] outer LM: max_iter=50, lam_init=1.000e-02, lam_up=10, lam_down=0.3, rho_bad=0.25, rho_good=0.75
+[IK-LM] ==============================
+[IK-LM] iter=000 cls=GOOD  ok_strict=True ||E||=8.308e-06 x=0.103000 p_terminal=[0.102998115590478, 0.0, -6.116549446274371e-27] ||e||=108.852mm cost=2.369768e+02
+[IK-LM] iter=001 lam=1.00e-02 rho=1.252 ACCEPT du_eff=4.06e-01 |dI|_max=0.056A ||dI||=0.109A |dx|=20.000mm pred_red=1.824e+01 act_red=2.283e+01 cls=GOOD  ||E||=9.589e-06 x=0.083000 ||e||=101.505mm cost=2.141449e+02
+[IK-LM] iter=002 lam=3.00e-03 rho=7.446 ACCEPT du_eff=3.91e-01 |dI|_max=4.623A ||dI||=7.707A |dx|=0.417mm pred_red=2.114e+01 act_red=1.574e+02 cls=GOOD  ||E||=9.992e-06 x=0.082583 ||e||=48.985mm cost=5.676359e+01
+[IK-LM] iter=003 lam=9.00e-04 rho=-0.669 REJECT du_eff=5.89e-01 |dI|_max=4.532A ||dI||=8.440A |dx|=20.000mm pred_red=3.297e+01 act_red=-2.204e+01 cls=GOOD  ||E||=9.983e-06 x=0.102583 ||e||=58.878mm cost=7.880696e+01
+[IK-LM] iter=004 lam=9.00e-03 rho=-0.585 REJECT du_eff=5.86e-01 |dI|_max=4.494A ||dI||=8.345A |dx|=20.000mm pred_red=3.297e+01 act_red=-1.928e+01 cls=GOOD  ||E||=9.988e-06 x=0.102583 ||e||=57.707mm cost=7.604347e+01
+[IK-LM] iter=005 lam=9.00e-02 rho=-0.056 REJECT du_eff=5.51e-01 |dI|_max=4.137A ||dI||=7.533A |dx|=19.596mm pred_red=3.276e+01 act_red=-1.819e+00 cls=GOOD  ||E||=9.999e-06 x=0.102179 ||e||=49.861mm cost=5.858288e+01
+[IK-LM] iter=006 lam=9.00e-01 rho=1.069 ACCEPT du_eff=3.10e-01 |dI|_max=2.281A ||dI||=4.153A |dx|=11.043mm pred_red=2.583e+01 act_red=2.761e+01 cls=GOOD  ||E||=9.999e-06 x=0.093626 ||e||=36.260mm cost=2.915668e+01
+[IK-LM] iter=007 lam=2.70e-01 rho=2.143 ACCEPT du_eff=1.76e-01 |dI|_max=0.491A ||dI||=0.992A |dx|=8.408mm pred_red=5.262e+00 act_red=1.128e+01 cls=GOOD  ||E||=9.974e-06 x=0.102034 ||e||=28.637mm cost=1.787961e+01
+[IK-LM] iter=008 lam=8.10e-02 rho=2.422 ACCEPT du_eff=1.68e-01 |dI|_max=0.202A ||dI||=0.385A |dx|=8.317mm pred_red=2.911e+00 act_red=7.049e+00 cls=GOOD  ||E||=9.821e-06 x=0.110351 ||e||=21.669mm cost=1.083022e+01
+[IK-LM] iter=009 lam=2.43e-02 rho=3.935 ACCEPT du_eff=1.10e-01 |dI|_max=0.063A ||dI||=0.100A |dx|=5.427mm pred_red=1.087e+00 act_red=4.276e+00 cls=GOOD  ||E||=9.716e-06 x=0.115778 ||e||=17.162mm cost=6.554303e+00
+[IK-LM] iter=010 lam=7.29e-03 rho=2.915 ACCEPT du_eff=1.03e-01 |dI|_max=0.066A ||dI||=0.109A |dx|=4.999mm pred_red=8.724e-01 act_red=2.543e+00 cls=GOOD  ||E||=9.819e-06 x=0.120777 ||e||=13.053mm cost=4.011601e+00
+[IK-LM] iter=011 lam=2.19e-03 rho=4.167 ACCEPT du_eff=6.76e-02 |dI|_max=0.031A ||dI||=0.060A |dx|=3.247mm pred_red=3.629e-01 act_red=1.512e+00 cls=GOOD  ||E||=9.272e-06 x=0.124024 ||e||=10.392mm cost=2.499623e+00
+[IK-LM] iter=012 lam=6.56e-04 rho=2.976 ACCEPT du_eff=6.27e-02 |dI|_max=0.034A ||dI||=0.062A |dx|=2.973mm pred_red=3.020e-01 act_red=8.990e-01 cls=GOOD  ||E||=9.498e-06 x=0.126997 ||e||=7.964mm cost=1.600609e+00
+[IK-LM] iter=013 lam=1.97e-04 rho=4.182 ACCEPT du_eff=4.15e-02 |dI|_max=0.024A ||dI||=0.048A |dx|=1.943mm pred_red=1.282e-01 act_red=5.363e-01 cls=GOOD  ||E||=8.955e-06 x=0.128940 ||e||=6.382mm cost=1.064271e+00
+[IK-LM] iter=014 lam=5.90e-05 rho=3.003 ACCEPT du_eff=3.83e-02 |dI|_max=0.021A ||dI||=0.042A |dx|=1.774mm pred_red=1.067e-01 act_red=3.205e-01 cls=GOOD  ||E||=9.825e-06 x=0.130715 ||e||=4.939mm cost=7.437514e-01
+[IK-LM] Converged: iter=14, ||e||=4.939mm, x=0.130715
+[IK-LM] Saved result.json
