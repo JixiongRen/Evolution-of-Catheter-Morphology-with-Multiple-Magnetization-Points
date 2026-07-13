@@ -1,0 +1,58 @@
+[reaudit] point=/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713135237_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_13
+{
+  "started": "2026-07-13 21:26:00",
+  "finished": "2026-07-13 21:30:15",
+  "point_count": 1,
+  "sensitivity_rows": 4,
+  "fd_rows": 36,
+  "fd_gate_summary": {
+    "fd_ok": 36,
+    "replay_converged": 36,
+    "branch_consistent": 28,
+    "weak_gate_triggered": 0,
+    "used_in_stats": 28
+  },
+  "settings": {
+    "paths": [
+      "DELIVER_TO_EXP/formal_experiments/20260713135237_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_13"
+    ],
+    "out_dir": "experiment_records_ik_optimize/20260713203859_p1_clean_failed_channel_reaudit/A1_pt13_ch3_4_best_accept_seg4",
+    "selector": "best_accept",
+    "current_steps_a": "0.0625,0.03125,0.015625",
+    "x_steps_mm": "0.5,0.25,0.125",
+    "current_channels": "3,4",
+    "auto_current_channels": 2,
+    "sensitivity_modes": "solver_response,gn_svd,stationarity_exact,residual_svd",
+    "solve_mode": "svd",
+    "ridge": 0.0,
+    "svd_rcond": 1e-09,
+    "spectral_filter": "hard",
+    "spectral_damping": 0.0,
+    "roundtrip_segments": 4,
+    "terminal_gate_mm": 0.25,
+    "centerline_gate_mm": 0.5,
+    "weak_displacement_mm": 0.25,
+    "max_points": 0
+  },
+  "runtime_environment": {
+    "code_commit": "c02dd8922b5ef0f59f8bde0bdf4ec68ab558cc35",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 7399,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "paths": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713135237_A1_A2_5mm_supervised_IK_no_gravity/A1/formal_20pt/pt_13"
+  ]
+}

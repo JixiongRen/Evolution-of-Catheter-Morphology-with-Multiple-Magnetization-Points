@@ -1,0 +1,13 @@
+{
+  "fd_rows": 480,
+  "sensitivity_mode_rows": 64,
+  "summary_files": 16,
+  "channel_groups": 40,
+  "classification_counts": {
+    "同分支误差超限": 18,
+    "可生产使用": 12,
+    "可有限使用": 10
+  },
+  "all_subprocess_exit_zero": true,
+  "subcases": 16
+}
