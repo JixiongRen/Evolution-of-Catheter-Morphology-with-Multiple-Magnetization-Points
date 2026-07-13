@@ -250,6 +250,16 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--ridge_adjoint", type=float, default=0.0, help="Extra ridge added to inner LM damping when computing dp/dI")
     p.add_argument("--fd_x_eps", type=float, default=1e-3, help="Finite difference step for dp/dx [m]")
     p.add_argument("--x_sensitivity_method", choices=["implicit", "fd"], default="implicit", help="How to compute dp/dx in the outer IK linearization")
+    p.add_argument(
+        "--sensitivity_mode",
+        choices=["solver_response", "gn_svd", "stationarity_exact", "residual_svd"],
+        default="solver_response",
+        help="Implicit sensitivity linearization used by the supervised IK outer loop.",
+    )
+    p.add_argument("--sensitivity_solve_mode", choices=["solve", "svd"], default="solve", help="Linear solve mode for square implicit sensitivity systems")
+    p.add_argument("--sensitivity_svd_rcond", type=float, default=1e-10, help="Relative singular-value cutoff for implicit sensitivity diagnostics")
+    p.add_argument("--sensitivity_spectral_filter", choices=["hard", "tikhonov", "hybrid"], default="hard", help="Residual-space spectral filter for residual_svd sensitivity")
+    p.add_argument("--sensitivity_spectral_damping", type=float, default=0.0, help="Absolute damping used by tikhonov or hybrid residual-space filters")
     p.add_argument("--store_accepted_jacobian", action="store_true", help="Store dense FK Jacobian on accepted trials for legacy diagnostics")
     p.add_argument("--sensitivity_conditioning", action="store_true", help="Compute dense conditioning diagnostics for implicit sensitivity")
 
@@ -786,6 +796,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     ridge_adj = float(args.ridge_adjoint)
     fd_x_eps = float(args.fd_x_eps)
     x_sensitivity_method = str(args.x_sensitivity_method)
+    sensitivity_mode = str(args.sensitivity_mode)
+    sensitivity_solve_mode = str(args.sensitivity_solve_mode)
+    sensitivity_svd_rcond = float(args.sensitivity_svd_rcond)
+    sensitivity_spectral_filter = str(args.sensitivity_spectral_filter)
+    sensitivity_spectral_damping = float(args.sensitivity_spectral_damping)
     sensitivity_conditioning = bool(args.sensitivity_conditioning)
 
     # Initialize u from user-specified or randomized I0, x=x0
@@ -1111,6 +1126,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 J_E_z=Jz_local,
                 materialize_jacobian=True,
                 compute_conditioning=sensitivity_conditioning,
+                sensitivity_mode=sensitivity_mode,
+                solve_mode=sensitivity_solve_mode,
+                svd_rcond=sensitivity_svd_rcond,
+                spectral_filter=sensitivity_spectral_filter,
+                spectral_damping=sensitivity_spectral_damping,
             )
             if hasattr(jac_res_cached.J_p_I, "block_until_ready"):
                 jac_res_cached.J_p_I.block_until_ready()
@@ -1134,6 +1154,13 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             "method": "none",
             "stationarity_norm": None,
             "condition_number": None,
+            "effective_rank": None,
+            "sv_min": None,
+            "sv_max": None,
+            "spectral_filter": "none",
+            "spectral_lambda": None,
+            "spectral_cutoff": None,
+            "retained_spectral_energy": None,
         }
         dp_dx = jnp.zeros((3,), dtype=jnp.float64)
         try:
@@ -1154,6 +1181,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     J_E_z=Jz_local,
                     materialize_jacobian=True,
                     compute_conditioning=sensitivity_conditioning,
+                    sensitivity_mode=sensitivity_mode,
+                    solve_mode=sensitivity_solve_mode,
+                    svd_rcond=sensitivity_svd_rcond,
+                    spectral_filter=sensitivity_spectral_filter,
+                    spectral_damping=sensitivity_spectral_damping,
                 )
                 _profile_add(runtime_profile, "sensitivity", "implicit_adjoint", time.perf_counter() - t0)
             Jp_I = jnp.asarray(jac_res.J_p_I, dtype=jnp.float64)  # (3, nI)
@@ -1165,6 +1197,17 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "method": str(jac_res.method),
                 "stationarity_norm": float(jac_res.stationarity_norm),
                 "condition_number": None if jac_res.condition_number is None else float(jac_res.condition_number),
+                "effective_rank": None if jac_res.effective_rank is None else int(jac_res.effective_rank),
+                "sv_min": None if jac_res.sv_min is None else float(jac_res.sv_min),
+                "sv_max": None if jac_res.sv_max is None else float(jac_res.sv_max),
+                "spectral_filter": str(getattr(jac_res, "spectral_filter", "none")),
+                "spectral_lambda": float(getattr(jac_res, "spectral_lambda", 0.0)),
+                "spectral_cutoff": None
+                if getattr(jac_res, "spectral_cutoff", None) is None
+                else float(getattr(jac_res, "spectral_cutoff")),
+                "retained_spectral_energy": None
+                if getattr(jac_res, "retained_spectral_energy", None) is None
+                else float(getattr(jac_res, "retained_spectral_energy")),
             }
         except Exception as e:
             print(f"[IK-LM] WARNING: implicit adjoint failed: {repr(e)}")

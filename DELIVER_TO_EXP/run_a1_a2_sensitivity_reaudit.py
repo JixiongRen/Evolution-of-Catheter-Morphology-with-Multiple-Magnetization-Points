@@ -201,6 +201,8 @@ def _audit_one_point(
     solve_mode: str,
     ridge: float,
     svd_rcond: float,
+    spectral_filter: str,
+    spectral_damping: float,
     terminal_gate_mm: float,
     centerline_gate_mm: float,
     weak_displacement_mm: float,
@@ -237,6 +239,8 @@ def _audit_one_point(
                 sensitivity_mode=str(mode),
                 solve_mode=str(solve_mode),
                 svd_rcond=float(svd_rcond),
+                spectral_filter=str(spectral_filter),
+                spectral_damping=float(spectral_damping),
                 compute_conditioning=True,
             )
             elapsed = time.perf_counter() - t0
@@ -252,6 +256,12 @@ def _audit_one_point(
                     "elapsed_s": elapsed,
                     "effective_rank": sens.effective_rank,
                     "condition_number": sens.condition_number,
+                    "sv_min": sens.sv_min,
+                    "sv_max": sens.sv_max,
+                    "spectral_filter": sens.spectral_filter,
+                    "spectral_lambda": sens.spectral_lambda,
+                    "spectral_cutoff": sens.spectral_cutoff,
+                    "retained_spectral_energy": sens.retained_spectral_energy,
                     "stationarity_norm": sens.stationarity_norm,
                     "terminal_reload_error_mm": terminal_reload_mm,
                     "centerline_reload_max_error_mm": centerline_reload_mm,
@@ -270,6 +280,12 @@ def _audit_one_point(
                     "elapsed_s": time.perf_counter() - t0,
                     "effective_rank": "",
                     "condition_number": "",
+                    "sv_min": "",
+                    "sv_max": "",
+                    "spectral_filter": str(spectral_filter),
+                    "spectral_lambda": "",
+                    "spectral_cutoff": "",
+                    "retained_spectral_energy": "",
                     "stationarity_norm": "",
                     "terminal_reload_error_mm": terminal_reload_mm,
                     "centerline_reload_max_error_mm": centerline_reload_mm,
@@ -354,6 +370,10 @@ def _audit_one_point(
                     "channel": channel,
                     "step": step,
                     "mode": mode,
+                    "spectral_filter": getattr(sens, "spectral_filter", "none"),
+                    "spectral_lambda": getattr(sens, "spectral_lambda", ""),
+                    "spectral_cutoff": getattr(sens, "spectral_cutoff", ""),
+                    "retained_spectral_energy": getattr(sens, "retained_spectral_energy", ""),
                     "fd_ok": True,
                     "fd_valid": fd_strict_ok,
                     "roundtrip_ok": roundtrip_ok,
@@ -409,6 +429,8 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--solve-mode", choices=("solve", "svd"), default="svd")
     parser.add_argument("--ridge", type=float, default=1e-10)
     parser.add_argument("--svd-rcond", type=float, default=1e-10)
+    parser.add_argument("--spectral-filter", choices=("hard", "tikhonov", "hybrid"), default="hard")
+    parser.add_argument("--spectral-damping", type=float, default=0.0)
     parser.add_argument("--terminal-gate-mm", type=float, default=0.25)
     parser.add_argument("--centerline-gate-mm", type=float, default=0.5)
     parser.add_argument("--weak-displacement-mm", type=float, default=0.25)
@@ -445,6 +467,8 @@ def main(argv: list[str] | None = None) -> None:
             solve_mode=str(args.solve_mode),
             ridge=float(args.ridge),
             svd_rcond=float(args.svd_rcond),
+            spectral_filter=str(args.spectral_filter),
+            spectral_damping=float(args.spectral_damping),
             terminal_gate_mm=float(args.terminal_gate_mm),
             centerline_gate_mm=float(args.centerline_gate_mm),
             weak_displacement_mm=float(args.weak_displacement_mm),

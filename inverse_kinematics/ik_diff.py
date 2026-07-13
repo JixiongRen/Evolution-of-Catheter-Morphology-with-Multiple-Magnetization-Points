@@ -128,6 +128,10 @@ class TipSensitivityResult:
     lm_lam: Optional[float] = None
     ridge_used: float = 0.0
     solve_mode: str = "solve"
+    spectral_filter: str = "none"
+    spectral_lambda: float = 0.0
+    spectral_cutoff: Optional[float] = None
+    retained_spectral_energy: Optional[float] = None
 
 
 @dataclass
@@ -152,6 +156,25 @@ class TaskSensitivityResult:
     solve_mode: str
     status: str
     method: str
+    spectral_filter: str = "none"
+    spectral_lambda: float = 0.0
+    spectral_cutoff: Optional[float] = None
+    retained_spectral_energy: Optional[float] = None
+
+
+@dataclass
+class ResidualSpectralSolveResult:
+    """Return bundle for residual-space spectral linear solves."""
+
+    dz_dc: Array
+    sv_min: float
+    sv_max: float
+    effective_rank: int
+    condition_number: float
+    spectral_filter: str
+    spectral_lambda: float
+    spectral_cutoff: float
+    retained_spectral_energy: float
 
 
 def _classify_conditioning(
@@ -201,6 +224,57 @@ def _linear_solve_with_svd_fallback(
     effective_rank = int(jnp.sum(keep))
     condition_number = float(sv_max / jnp.maximum(jnp.min(S), jnp.finfo(S.dtype).tiny))
     return X, sv_min_val, sv_max_val, effective_rank, condition_number, "svd"
+
+
+def _solve_residual_spectral(
+    Jz: Array,
+    B: Array,
+    *,
+    svd_rcond: float,
+    spectral_filter: str = "hard",
+    spectral_damping: float = 0.0,
+) -> ResidualSpectralSolveResult:
+    """Solve ``Jz dz/dc = -B`` with auditable residual-space filtering."""
+    spectral_filter = str(spectral_filter)
+    if spectral_filter not in ("hard", "tikhonov", "hybrid"):
+        raise ValueError("spectral_filter must be 'hard', 'tikhonov', or 'hybrid'")
+
+    U, S, Vh = jnp.linalg.svd(Jz, full_matrices=False)
+    sv_max = jnp.max(S)
+    sv_min = jnp.min(S)
+    cutoff = float(svd_rcond) * sv_max
+    keep = S > cutoff
+    damping = float(spectral_damping)
+    if damping <= 0.0:
+        damping = float(cutoff)
+
+    if spectral_filter == "hard":
+        gains = jnp.where(keep, 1.0 / S, 0.0)
+        lambda_used = 0.0
+    elif spectral_filter == "tikhonov":
+        lambda_used = float(damping)
+        gains = S / (S * S + lambda_used * lambda_used)
+    else:
+        lambda_used = float(damping)
+        gains = jnp.where(keep, S / (S * S + lambda_used * lambda_used), 0.0)
+
+    dz_dc = -(Vh.T @ (gains[:, None] * (U.T @ B)))
+    spectral_energy = jnp.sum(S * S)
+    retained_energy = jnp.sum(jnp.where(keep, S * S, 0.0)) / jnp.maximum(
+        spectral_energy, jnp.finfo(S.dtype).tiny
+    )
+    condition_number = sv_max / jnp.maximum(sv_min, jnp.finfo(S.dtype).tiny)
+    return ResidualSpectralSolveResult(
+        dz_dc=dz_dc,
+        sv_min=float(sv_min),
+        sv_max=float(sv_max),
+        effective_rank=int(jnp.sum(keep)),
+        condition_number=float(condition_number),
+        spectral_filter=str(spectral_filter),
+        spectral_lambda=float(lambda_used),
+        spectral_cutoff=float(cutoff),
+        retained_spectral_energy=float(retained_energy),
+    )
 
 
 def _tip_sensitivity_from_linearized_stationarity(
@@ -286,6 +360,8 @@ def _tip_sensitivity_from_residual_svd(
     Jx: Array,
     B: Array,
     svd_rcond: float,
+    spectral_filter: str = "hard",
+    spectral_damping: float = 0.0,
     compute_conditioning: bool = False,
     weak_normE: float = 1e-1,
     cond_warning: float = 1e8,
@@ -295,20 +371,18 @@ def _tip_sensitivity_from_residual_svd(
     """Compute terminal sensitivity by solving the residual Jacobian directly."""
     z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
     dp_dz = _DP_DZ_REV(z0, params)
-    U, S, Vh = jnp.linalg.svd(Jz, full_matrices=False)
-    sv_max = jnp.max(S)
-    cutoff = float(svd_rcond) * sv_max
-    keep = S > cutoff
-    inv_S = jnp.where(keep, 1.0 / S, 0.0)
-    dz_dc = -(Vh.T @ (inv_S[:, None] * (U.T @ B)))
-    Jp_all = dp_dz @ dz_dc
+    spectral = _solve_residual_spectral(
+        Jz,
+        B,
+        svd_rcond=float(svd_rcond),
+        spectral_filter=str(spectral_filter),
+        spectral_damping=float(spectral_damping),
+    )
+    Jp_all = dp_dz @ spectral.dz_dc
 
-    sv_min = float(jnp.min(S))
-    sv_max_val = float(sv_max)
-    effective_rank = int(jnp.sum(keep))
     condition_number = None
     if bool(compute_conditioning):
-        condition_number = float(sv_max / jnp.maximum(jnp.min(S), jnp.finfo(S.dtype).tiny))
+        condition_number = float(spectral.condition_number)
 
     E = jnp.asarray(lm_stats.E_star, dtype=jnp.float64)
     Jt = jnp.transpose(Jz)
@@ -322,8 +396,10 @@ def _tip_sensitivity_from_residual_svd(
         cond_warning=float(cond_warning),
         cond_bad=float(cond_bad),
     )
-    if effective_rank < int(Jz.shape[1]):
+    if spectral.spectral_filter == "hard" and spectral.effective_rank < int(Jz.shape[1]):
         status = "truncated_svd" if status == "ok" else f"{status}|truncated_svd"
+    elif spectral.spectral_filter != "hard":
+        status = "spectral_filtered" if status == "ok" else f"{status}|spectral_filtered"
 
     I0 = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,)
     nI = int(I0.shape[0])
@@ -339,12 +415,16 @@ def _tip_sensitivity_from_residual_svd(
         condition_number=condition_number,
         status=str(status),
         method="dense_implicit_residual_svd",
-        sv_min=sv_min,
-        sv_max=sv_max_val,
-        effective_rank=effective_rank,
+        sv_min=float(spectral.sv_min),
+        sv_max=float(spectral.sv_max),
+        effective_rank=int(spectral.effective_rank),
         lm_lam=float(lm_stats.lam),
         ridge_used=float(ridge_used),
         solve_mode="residual_svd",
+        spectral_filter=str(spectral.spectral_filter),
+        spectral_lambda=float(spectral.spectral_lambda),
+        spectral_cutoff=float(spectral.spectral_cutoff),
+        retained_spectral_energy=float(spectral.retained_spectral_energy),
     )
 
 
@@ -364,6 +444,8 @@ def compute_tip_sensitivities_via_lm_adjoint(
     sensitivity_mode: str = "solver_response",
     solve_mode: str = "solve",
     svd_rcond: float = 1e-10,
+    spectral_filter: str = "hard",
+    spectral_damping: float = 0.0,
 ) -> TipSensitivityResult:
     """Compute implicit tip sensitivity with respect to currents and protrusion.
 
@@ -398,6 +480,11 @@ def compute_tip_sensitivities_via_lm_adjoint(
             ``"solve"`` or ``"svd"``.
         svd_rcond: Relative singular-value cutoff used when ``solve_mode`` is
             ``"svd"``.
+        spectral_filter: Residual-space filter for ``"residual_svd"``. The
+            default ``"hard"`` preserves the previous truncated SVD behavior.
+        spectral_damping: Absolute damping parameter for residual-space
+            ``"tikhonov"`` and ``"hybrid"`` filters. A non-positive value uses
+            ``svd_rcond * max(singular_value)``.
 
     Returns:
         TipSensitivityResult with ``dp/dI`` and ``dp/dx``.
@@ -457,6 +544,8 @@ def compute_tip_sensitivities_via_lm_adjoint(
             Jx=Jx,
             B=B,
             svd_rcond=float(svd_rcond),
+            spectral_filter=str(spectral_filter),
+            spectral_damping=float(spectral_damping),
             compute_conditioning=compute_conditioning,
             weak_normE=float(weak_normE),
             cond_warning=float(cond_warning),
@@ -594,8 +683,11 @@ def compute_task_sensitivities_via_lm_adjoint(
     specs: Sequence[ObservationSpec],
     ridge: Optional[float] = None,
     J_E_z: Optional[Array] = None,
+    sensitivity_mode: str = "solver_response",
     solve_mode: str = "solve",
     svd_rcond: float = 1e-10,
+    spectral_filter: str = "hard",
+    spectral_damping: float = 0.0,
     compute_conditioning: bool = False,
     weak_normE: float = 1e-1,
     cond_warning: float = 1e8,
@@ -614,6 +706,9 @@ def compute_task_sensitivities_via_lm_adjoint(
     solve_mode = str(solve_mode)
     if solve_mode not in ("solve", "svd"):
         raise ValueError("solve_mode must be 'solve' or 'svd'")
+    sensitivity_mode = str(sensitivity_mode)
+    if sensitivity_mode not in ("solver_response", "gn_svd", "residual_svd"):
+        raise ValueError("sensitivity_mode must be 'solver_response', 'gn_svd', or 'residual_svd'")
     I0 = jnp.asarray(coil_currents, dtype=jnp.float64).reshape(-1,)
     z0 = jnp.asarray(z_star_bar, dtype=jnp.float64).reshape(-1,)
     L1 = jnp.asarray(params.L1_dim, dtype=jnp.float64).reshape(())
@@ -634,43 +729,71 @@ def compute_task_sensitivities_via_lm_adjoint(
     residual = residual_fn(z0)
     Jr_z = jax.jacrev(residual_fn)(z0)
 
-    lam_used = float(lm_stats.lam)
-    if ridge is not None:
-        lam_used = float(lam_used + ridge)
-
     Jt = jnp.transpose(Jz)
-    H = Jt @ Jz
-    nZ = H.shape[0]
-    H = H + lam_used * jnp.eye(nZ, dtype=H.dtype)
+    nZ = int(Jz.shape[1])
+    extra_ridge = 0.0 if ridge is None else float(ridge)
+    lm_lam = float(lm_stats.lam)
 
     sv_min = None
     sv_max = None
     effective_rank = None
-    if solve_mode == "svd":
-        U_svd, S, Vh = jnp.linalg.svd(H, full_matrices=False)
-        sv_max_val = jnp.max(S)
-        cutoff = float(svd_rcond) * sv_max_val
-        keep = S > cutoff
-        inv_S = jnp.where(keep, 1.0 / S, 0.0)
-        U = Vh.T @ (inv_S[:, None] * (U_svd.T @ jnp.transpose(Jr_z)))
-        sv_min = float(jnp.min(S))
-        sv_max = float(sv_max_val)
-        effective_rank = int(jnp.sum(keep))
-        condition_number = float(sv_max_val / jnp.maximum(jnp.min(S), jnp.finfo(S.dtype).tiny))
+    spectral_name = "none"
+    spectral_lambda = 0.0
+    spectral_cutoff = None
+    retained_spectral_energy = None
+    if sensitivity_mode == "residual_svd":
+        spectral = _solve_residual_spectral(
+            Jz,
+            B,
+            svd_rcond=float(svd_rcond),
+            spectral_filter=str(spectral_filter),
+            spectral_damping=float(spectral_damping),
+        )
+        Jr_all = Jr_z @ spectral.dz_dc
+        lam_used = 0.0
+        sv_min = float(spectral.sv_min)
+        sv_max = float(spectral.sv_max)
+        effective_rank = int(spectral.effective_rank)
+        condition_number = float(spectral.condition_number) if bool(compute_conditioning) else None
+        spectral_name = str(spectral.spectral_filter)
+        spectral_lambda = float(spectral.spectral_lambda)
+        spectral_cutoff = float(spectral.spectral_cutoff)
+        retained_spectral_energy = float(spectral.retained_spectral_energy)
+        method = "dense_task_residual_svd"
     else:
-        condition_number = None
-        if bool(compute_conditioning):
-            S = jnp.linalg.svd(H, compute_uv=False)
+        H = Jt @ Jz
+        if sensitivity_mode == "solver_response":
+            lam_used = lm_lam + extra_ridge
+            method = "dense_task_solver_response"
+        else:
+            lam_used = extra_ridge
+            method = "dense_task_gn_without_solver_damping"
+        H = H + float(lam_used) * jnp.eye(nZ, dtype=H.dtype)
+        if solve_mode == "svd":
+            U_svd, S, Vh = jnp.linalg.svd(H, full_matrices=False)
+            sv_max_val = jnp.max(S)
+            cutoff = float(svd_rcond) * sv_max_val
+            keep = S > cutoff
+            inv_S = jnp.where(keep, 1.0 / S, 0.0)
+            U = Vh.T @ (inv_S[:, None] * (U_svd.T @ jnp.transpose(Jr_z)))
             sv_min = float(jnp.min(S))
-            sv_max = float(jnp.max(S))
-            effective_rank = int(jnp.sum(S > float(svd_rcond) * jnp.max(S)))
-        U = jnp.linalg.solve(H, jnp.transpose(Jr_z))
-    JT_B = Jt @ B
-    Jr_all = -jnp.transpose(U) @ JT_B
+            sv_max = float(sv_max_val)
+            effective_rank = int(jnp.sum(keep))
+            condition_number = float(sv_max_val / jnp.maximum(jnp.min(S), jnp.finfo(S.dtype).tiny))
+        else:
+            condition_number = None
+            if bool(compute_conditioning):
+                S = jnp.linalg.svd(H, compute_uv=False)
+                sv_min = float(jnp.min(S))
+                sv_max = float(jnp.max(S))
+                effective_rank = int(jnp.sum(S > float(svd_rcond) * jnp.max(S)))
+            U = jnp.linalg.solve(H, jnp.transpose(Jr_z))
+        JT_B = Jt @ B
+        Jr_all = -jnp.transpose(U) @ JT_B
 
     E = jnp.asarray(lm_stats.E_star, dtype=jnp.float64)
     stationarity_norm = float(jnp.linalg.norm(Jt @ E))
-    if bool(compute_conditioning):
+    if bool(compute_conditioning) and sensitivity_mode != "residual_svd":
         condition_number = float(jnp.linalg.cond(H))
     normE = float(getattr(lm_stats, "normE", jnp.linalg.norm(E)))
     status = _classify_conditioning(
@@ -681,12 +804,14 @@ def compute_task_sensitivities_via_lm_adjoint(
         cond_warning=float(cond_warning),
         cond_bad=float(cond_bad),
     )
-    if solve_mode == "svd" and effective_rank is not None and effective_rank < int(nZ):
+    if sensitivity_mode == "residual_svd" and spectral_name == "hard" and effective_rank is not None and effective_rank < int(nZ):
+        status = "truncated_svd"
+    elif sensitivity_mode == "residual_svd" and spectral_name != "hard":
+        status = "spectral_filtered" if status == "ok" else f"{status}|spectral_filtered"
+    elif solve_mode == "svd" and effective_rank is not None and effective_rank < int(nZ):
         status = "truncated_svd"
 
     nI = int(I0.shape[0])
-    lm_lam = float(lm_stats.lam)
-    extra_ridge = 0.0 if ridge is None else float(ridge)
     return TaskSensitivityResult(
         residual=residual,
         J_r_I=Jr_all[:, :nI],
@@ -705,5 +830,9 @@ def compute_task_sensitivities_via_lm_adjoint(
         ridge_used=extra_ridge,
         solve_mode=solve_mode,
         status=str(status),
-        method="dense_task_implicit_diagnostic",
+        method=str(method),
+        spectral_filter=str(spectral_name),
+        spectral_lambda=float(spectral_lambda),
+        spectral_cutoff=spectral_cutoff,
+        retained_spectral_energy=retained_spectral_energy,
     )
