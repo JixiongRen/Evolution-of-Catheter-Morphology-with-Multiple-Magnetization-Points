@@ -1,0 +1,151 @@
+{
+  "success": true,
+  "success_flex_eps": false,
+  "success_true_eps": true,
+  "p_des": [
+    0.06,
+    0.0951056516295,
+    0.0309016994375
+  ],
+  "p_tip": [
+    0.05907813144890381,
+    0.0917524166623572,
+    0.029918340016292396
+  ],
+  "p_tip_flex": [
+    0.05990331459327164,
+    0.08895326834215708,
+    0.02922275288275406
+  ],
+  "p_tip_true": [
+    0.05907813144890381,
+    0.0917524166623572,
+    0.029918340016292396
+  ],
+  "p_tip_m": [
+    0.05907813144890381,
+    0.0917524166623572,
+    0.029918340016292396
+  ],
+  "p_tip_flex_m": [
+    0.05990331459327164,
+    0.08895326834215708,
+    0.02922275288275406
+  ],
+  "p_tip_true_m": [
+    0.05907813144890381,
+    0.0917524166623572,
+    0.029918340016292396
+  ],
+  "err_m": 0.0036140036139504714,
+  "err_mm": 3.614003613950471,
+  "err_flex_m": 0.006378089817174406,
+  "err_flex_mm": 6.3780898171744065,
+  "err_true_m": 0.0036140036139504714,
+  "err_true_mm": 3.614003613950471,
+  "I": [
+    0.7376872631369191,
+    -4.947495441111605,
+    -1.1431887209127471,
+    4.125855798209272,
+    1.586811439511061,
+    -3.9922855838884086,
+    -0.6520868279435557,
+    4.316456558258033
+  ],
+  "x": 0.132096634845044,
+  "normE": 9.993157299705414e-06,
+  "cls": "GOOD",
+  "sigma_p": 0.005,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "residual_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 0.0,
+    "sensitivity_conditioning": false
+  },
+  "runtime_environment": {
+    "code_commit": "676af5b276e6dba8feac0a198444ce77b7beac1a",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 7357,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "p2_outer_solver": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  },
+  "control_channel_gate": {
+    "enabled": false,
+    "source": null,
+    "key": null,
+    "missing_policy": "block_all",
+    "allow_limited": true,
+    "allowed_mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "allowed_channels": [
+      "I0",
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7",
+      "x"
+    ],
+    "blocked_channels": [],
+    "channel_reasons": [
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled"
+    ],
+    "matched_rows": 0
+  }
+}
