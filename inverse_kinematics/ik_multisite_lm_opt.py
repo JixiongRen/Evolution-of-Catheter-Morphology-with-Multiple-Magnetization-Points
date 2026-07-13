@@ -205,6 +205,19 @@ def build_argparser() -> argparse.ArgumentParser:
         default=1e-10,
         help="Treat |act_red| below this threshold as numerical noise when pred_red is tiny.",
     )
+    p.add_argument("--p2_trust_region", action="store_true", help="Enable conservative P2 trust-region acceptance checks.")
+    p.add_argument("--p2_terminal_error_first", action="store_true", help="Require terminal error improvement before regularization-only improvements.")
+    p.add_argument("--p2_reliable_subspace", action="store_true", help="Project the outer LM step onto task-space reliable singular directions.")
+    p.add_argument("--p2_reliable_task_rcond", type=float, default=1e-3, help="Relative cutoff for task-space reliable singular directions.")
+    p.add_argument("--p2_min_full_task_rank", type=int, default=2, help="Minimum task-space rank required for a full control update.")
+    p.add_argument("--p2_max_backtracks", type=int, default=0, help="Maximum number of backtracking retries for a rejected candidate.")
+    p.add_argument("--p2_backtrack_shrink", type=float, default=0.5, help="Step shrink ratio used by P2 backtracking.")
+    p.add_argument(
+        "--p2_disable_Ix_jacobian_below_dx",
+        type=float,
+        default=-1.0,
+        help="Disable the r_Ix current Jacobian when |x-x_prev| is below this threshold [m]. Negative keeps legacy behavior.",
+    )
 
     # Regularization weights (now interpreted as inverse scales)
     p.add_argument(
@@ -792,6 +805,16 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     step_x_max = float(args.step_x_max)
     if step_I_max <= 0 or step_x_max <= 0:
         raise ValueError("--step_I_max and --step_x_max must be > 0")
+    p2_trust_region = bool(args.p2_trust_region)
+    p2_terminal_error_first = bool(args.p2_terminal_error_first)
+    p2_reliable_subspace = bool(args.p2_reliable_subspace)
+    p2_reliable_task_rcond = float(args.p2_reliable_task_rcond)
+    p2_min_full_task_rank = int(args.p2_min_full_task_rank)
+    p2_max_backtracks = max(0, int(args.p2_max_backtracks))
+    p2_backtrack_shrink = float(args.p2_backtrack_shrink)
+    p2_disable_Ix_jacobian_below_dx = float(args.p2_disable_Ix_jacobian_below_dx)
+    if not (0.0 < p2_backtrack_shrink < 1.0):
+        raise ValueError("--p2_backtrack_shrink must be in (0, 1)")
 
     ridge_adj = float(args.ridge_adjoint)
     fd_x_eps = float(args.fd_x_eps)
@@ -855,6 +878,16 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "sigma_Ix": (1.0 / w_Ix) if w_Ix > 0 else None,
                 },
                 "step_limits": {"step_I_max": step_I_max, "step_x_max": step_x_max},
+                "p2_outer_solver": {
+                    "trust_region": p2_trust_region,
+                    "terminal_error_first": p2_terminal_error_first,
+                    "reliable_subspace": p2_reliable_subspace,
+                    "reliable_task_rcond": p2_reliable_task_rcond,
+                    "min_full_task_rank": p2_min_full_task_rank,
+                    "max_backtracks": p2_max_backtracks,
+                    "backtrack_shrink": p2_backtrack_shrink,
+                    "disable_Ix_jacobian_below_dx": p2_disable_Ix_jacobian_below_dx,
+                },
             },
             indent=2,
         ),
@@ -1268,6 +1301,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         J_p_uI = Jp_I * dI_du.reshape(1, -1)  # (3,n)
         J_p_ux = dp_dx.reshape(3, 1) * float(dx_du)  # (3,1)
         J_top = jnp.concatenate([J_p_uI, J_p_ux], axis=1) / float(sigma_p)  # scale r_p by 1/sigma_p
+        task_svals = jnp.linalg.svd(J_top, compute_uv=False)
+        task_sv_max = float(jnp.max(task_svals)) if task_svals.size else 0.0
+        task_cutoff = task_sv_max * max(float(p2_reliable_task_rcond), 0.0)
+        task_rank = int(jnp.sum(task_svals > max(task_cutoff, 1e-12)))
+        p2_force_reliable = bool(p2_reliable_subspace or task_rank < int(p2_min_full_task_rank) or sensitivity_info.get("status") == "failed")
 
         # r_I = w_I * I
         J_I_uI = float(w_I) * jnp.diag(dI_du)
@@ -1293,7 +1331,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         # NOTE: We ignore d(denom)/du_x for robustness (treat denom as constant).
         dx_to_prev = float(x_u) - float(x_prev)
         denom = max(abs(dx_to_prev), float(dx_floor))
-        J_Ix_uI = (float(w_Ix) / denom) * jnp.diag(dI_du)
+        ix_jacobian_enabled = not (p2_disable_Ix_jacobian_below_dx >= 0.0 and abs(dx_to_prev) <= p2_disable_Ix_jacobian_below_dx)
+        if ix_jacobian_enabled:
+            J_Ix_uI = (float(w_Ix) / denom) * jnp.diag(dI_du)
+        else:
+            J_Ix_uI = jnp.zeros((n_coils, n_coils), dtype=jnp.float64)
         J_Ix_ux = jnp.zeros((n_coils, 1), dtype=jnp.float64)
         J_Ix = jnp.concatenate([J_Ix_uI, J_Ix_ux], axis=1)
 
@@ -1311,145 +1353,217 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         A = H + float(lam) * D
 
         try:
-            du = -jnp.linalg.solve(A, g)
+            if p2_force_reliable:
+                U_task, S_task, Vh_task = jnp.linalg.svd(J_top, full_matrices=False)
+                reliable_dim = int(jnp.sum(S_task > max(task_cutoff, 1e-12)))
+                if reliable_dim <= 0:
+                    du = jnp.zeros((n_coils + 1,), dtype=jnp.float64)
+                else:
+                    V_rel = Vh_task[:reliable_dim, :].T
+                    J_rel = J @ V_rel
+                    H_rel = J_rel.T @ J_rel
+                    g_rel = J_rel.T @ r
+                    diag_rel = jnp.clip(jnp.diag(H_rel), a_min=1e-12)
+                    A_rel = H_rel + float(lam) * jnp.diag(diag_rel)
+                    du = V_rel @ (-jnp.linalg.solve(A_rel, g_rel))
+            else:
+                reliable_dim = n_coils + 1
+                du = -jnp.linalg.solve(A, g)
         except Exception as e:
             print(f"[IK-LM] ERROR: linear solve failed at iter={k}: {repr(e)}")
             lam = min(lam * float(args.lam_up), 1e12)
             continue
 
-        # 4) Physical step clipping in (I,x), then map back to u
-        u_prop = u + du
-        I_prop, x_prop, _, _ = _u_to_Ix(u_prop, I_max=I_max, x_min=x_min, x_max=x_max)
+        # 4) Physical trust-region evaluation in (I, x).
+        max_backtracks = p2_max_backtracks if p2_trust_region else 0
+        accept = False
+        trial = None
+        trial_branch_record = None
+        u_trial = u
+        dI_clip = jnp.zeros((n_coils,), dtype=jnp.float64)
+        dx_clip = 0.0
+        dI_norm = 0.0
+        dI_max_abs = 0.0
+        dx_abs = 0.0
+        du_eff_norm = 0.0
+        rho = 0.0
+        pred_red = 0.0
+        act_red = 0.0
+        terminal_improved = False
+        cost_improved = False
+        stop_outer_loop = False
 
-        dI_prop = jnp.asarray(I_prop - cur.I, dtype=jnp.float64)
-        dx_prop = float(x_prop - cur.x)
+        for backtrack_idx in range(max_backtracks + 1):
+            backtrack_scale = float(p2_backtrack_shrink) ** int(backtrack_idx)
+            u_prop = u + backtrack_scale * du
+            I_prop, x_prop, _, _ = _u_to_Ix(u_prop, I_max=I_max, x_min=x_min, x_max=x_max)
 
-        dI_clip = jnp.clip(dI_prop, -float(step_I_max), float(step_I_max))
-        dx_clip = float(jnp.clip(dx_prop, -float(step_x_max), float(step_x_max)))
+            dI_prop = jnp.asarray(I_prop - cur.I, dtype=jnp.float64)
+            dx_prop = float(x_prop - cur.x)
 
-        I_trial = jnp.asarray(cur.I + dI_clip, dtype=jnp.float64)
-        I_trial = jnp.clip(I_trial, -float(I_max), float(I_max))
-        x_trial = float(cur.x + dx_clip)
-        x_trial = min(max(x_trial, float(x_min)), float(x_max))
+            dI_clip = jnp.clip(dI_prop, -float(step_I_max), float(step_I_max))
+            dx_clip = float(jnp.clip(dx_prop, -float(step_x_max), float(step_x_max)))
 
-        u_trial = _Ix_to_u(I_trial, x_trial, I_max=I_max, x_min=x_min, x_max=x_max)
-        du_eff = u_trial - u
+            I_trial = jnp.asarray(cur.I + dI_clip, dtype=jnp.float64)
+            I_trial = jnp.clip(I_trial, -float(I_max), float(I_max))
+            x_trial = float(cur.x + dx_clip)
+            x_trial = min(max(x_trial, float(x_min)), float(x_max))
 
-        dI_norm = float(jnp.linalg.norm(dI_clip))
-        dI_max_abs = float(jnp.max(jnp.abs(dI_clip)))
-        dx_abs = abs(dx_clip)
-        du_eff_norm = float(jnp.linalg.norm(du_eff))
+            u_trial = _Ix_to_u(I_trial, x_trial, I_max=I_max, x_min=x_min, x_max=x_max)
+            du_eff = u_trial - u
 
-        r_lin = r + J @ du_eff
-        pred_red = 0.5 * float(jnp.dot(r, r) - jnp.dot(r_lin, r_lin))
+            dI_norm = float(jnp.linalg.norm(dI_clip))
+            dI_max_abs = float(jnp.max(jnp.abs(dI_clip)))
+            dx_abs = abs(dx_clip)
+            du_eff_norm = float(jnp.linalg.norm(du_eff))
 
-        if (dI_max_abs <= float(args.step_I_tol)) and (dx_abs <= float(args.step_x_tol)):
-            print(
-                f"[IK-LM] stop: effective step is zero (|dI|_max={dI_max_abs:.3e}A, |dx|={dx_abs:.3e}m). "
-                f"Likely parameter saturation / clipping / numerical floor."
+            r_lin = r + J @ du_eff
+            pred_red = 0.5 * float(jnp.dot(r, r) - jnp.dot(r_lin, r_lin))
+
+            if (dI_max_abs <= float(args.step_I_tol)) and (dx_abs <= float(args.step_x_tol)):
+                if backtrack_idx == 0:
+                    print(
+                        f"[IK-LM] stop: effective step is zero (|dI|_max={dI_max_abs:.3e}A, |dx|={dx_abs:.3e}m). "
+                        f"Likely parameter saturation / clipping / numerical floor."
+                    )
+                    stop_outer_loop = True
+                break
+
+            if pred_red <= float(args.pred_red_tol):
+                if backtrack_idx == 0:
+                    print(f"[IK-LM] stop: pred_red={pred_red:.3e} <= pred_red_tol={float(args.pred_red_tol):.3e}")
+                    stop_outer_loop = True
+                break
+
+            # 5) Evaluate candidate.
+            trial = _fk_eval(
+                engine,
+                I=I_trial,
+                x=x_trial,
+                p_des=p_des,
+                sigma_p=sigma_p,
+                tol_good=tol_good,
+                tol_weak=tol_weak,
+                tol_bad=tol_bad,
+                penalty_bad=penalty_bad,
+                w_I=w_I,
+                w_x=w_x,
+                x_ref=x_ref,
+                I_prev=I_prev,
+                x_prev=x_prev,
+                w_dI=w_dI,
+                w_dx=w_dx,
+                w_Ix=w_Ix,
+                dx_floor=dx_floor,
+                override_z0_bar=z_warm,
+                stats_include_jacobian=False,
+                runtime_profile=runtime_profile,
+                profile_label="trial",
             )
-            break
 
-        if pred_red <= float(args.pred_red_tol):
-            print(f"[IK-LM] stop: pred_red={pred_red:.3e} <= pred_red_tol={float(args.pred_red_tol):.3e}")
-            break
+            act_red = float(cur.cost - trial.cost)
+            rho = act_red / max(pred_red, 1e-18)
+            terminal_improved = bool(trial.err < cur.err)
+            cost_improved = bool(trial.cost < cur.cost)
 
-        # 5) Evaluate candidate
-        trial = _fk_eval(
-            engine,
-            I=I_trial,
-            x=x_trial,
-            p_des=p_des,
-            sigma_p=sigma_p,
-            tol_good=tol_good,
-            tol_weak=tol_weak,
-            tol_bad=tol_bad,
-            penalty_bad=penalty_bad,
-            w_I=w_I,
-            w_x=w_x,
-            x_ref=x_ref,
-            I_prev=I_prev,
-            x_prev=x_prev,
-            w_dI=w_dI,
-            w_dx=w_dx,
-            w_Ix=w_Ix,
-            dx_floor=dx_floor,
-            override_z0_bar=z_warm,
-            stats_include_jacobian=False,
-            runtime_profile=runtime_profile,
-            profile_label="trial",
-        )
+            if p2_terminal_error_first:
+                accept = bool(terminal_improved and trial.cls != "REJECT")
+            elif (pred_red <= 10.0 * float(args.pred_red_tol)) and (abs(act_red) <= float(args.act_red_tol)):
+                accept = bool(trial.cls != "REJECT")
+            else:
+                accept = bool(cost_improved and (rho > 0.0) and trial.cls != "REJECT")
+            status = "ACCEPT" if accept else "REJECT"
 
-        act_red = float(cur.cost - trial.cost)
-        rho = act_red / max(pred_red, 1e-18)
-
-        if (pred_red <= 10.0 * float(args.pred_red_tol)) and (abs(act_red) <= float(args.act_red_tol)):
-            accept = (trial.cls != "REJECT")
-        else:
-            accept = (trial.cost < cur.cost) and (rho > 0.0) and (trial.cls != "REJECT")
-        status = "ACCEPT" if accept else "REJECT"
-
-        trial_pose_path = _save_pose(which="trial", iter_idx=k, pack=trial)
-        trial_tip_fields = _tip_report_fields(trial, p_des)
-        trial_outer_info = {
-            "lam": float(lam),
-            "rho": float(rho),
-            "pred_red": float(pred_red),
-            "act_red": float(act_red),
-            "du_eff_norm": float(du_eff_norm),
-            "dI_max_abs": float(dI_max_abs),
-            "dI_norm": float(dI_norm),
-            "dx_m": float(dx_clip),
-            "dx_abs_m": float(dx_abs),
-            "sensitivity": sensitivity_info,
-        }
-        trial_branch_record = _save_branch_state(
-            phase="trial",
-            iter_idx=k,
-            pack=trial,
-            status=status,
-            accept=bool(accept),
-            parent_eval_id=last_branch_eval_id,
-            pose_path=trial_pose_path,
-            outer=trial_outer_info,
-        )
-
-        _append_history(
-            d={
-                "iter": int(k),
-                "status": str(status),
-                "accept": bool(accept),
+            trial_pose_path = _save_pose(which="trial", iter_idx=k * 100 + backtrack_idx, pack=trial)
+            trial_tip_fields = _tip_report_fields(trial, p_des)
+            trial_outer_info = {
                 "lam": float(lam),
                 "rho": float(rho),
                 "pred_red": float(pred_red),
                 "act_red": float(act_red),
+                "terminal_improved": bool(terminal_improved),
+                "cost_improved": bool(cost_improved),
                 "du_eff_norm": float(du_eff_norm),
                 "dI_max_abs": float(dI_max_abs),
                 "dI_norm": float(dI_norm),
                 "dx_m": float(dx_clip),
                 "dx_abs_m": float(dx_abs),
-                "x_m": float(trial.x),
-                "I_A": [float(v) for v in np.asarray(jax.device_get(I_trial)).reshape(-1,).tolist()],
-                "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
-                **trial_tip_fields,
-                "cost": float(trial.cost),
-                "cls": str(trial.cls),
-                "normE": float(trial.normE),
+                "backtrack_index": int(backtrack_idx),
+                "backtrack_scale": float(backtrack_scale),
+                "task_rank": int(task_rank),
+                "task_singular_values": [float(v) for v in np.asarray(jax.device_get(task_svals)).reshape(-1,).tolist()],
+                "reliable_subspace_enabled": bool(p2_force_reliable),
+                "reliable_subspace_dim": int(reliable_dim),
+                "ix_jacobian_enabled": bool(ix_jacobian_enabled),
+                "p2_terminal_error_first": bool(p2_terminal_error_first),
                 "sensitivity": sensitivity_info,
-                "pose": {
-                    "centerline_npy": str(trial_pose_path.relative_to(run_dir)),
-                    "which": "trial",
-                },
-                **_branch_record_fields(trial_branch_record),
             }
-        )
+            trial_branch_record = _save_branch_state(
+                phase="trial",
+                iter_idx=k * 100 + backtrack_idx,
+                pack=trial,
+                status=status,
+                accept=bool(accept),
+                parent_eval_id=last_branch_eval_id,
+                pose_path=trial_pose_path,
+                outer=trial_outer_info,
+            )
 
-        print(
-            f"[IK-LM] iter={k:03d} lam={lam:.2e} rho={rho:.3f} {status} "
-            f"du_eff={du_eff_norm:.2e} |dI|_max={dI_max_abs:.3f}A ||dI||={dI_norm:.3f}A |dx|={dx_abs*1e3:.3f}mm "
-            f"pred_red={pred_red:.3e} act_red={act_red:.3e} "
-            f"cls={trial.cls:<5s} ||E||={trial.normE:.3e} x={trial.x:.6f} ||e||={trial.err*1e3:.3f}mm cost={trial.cost:.6e}"
-        )
+            _append_history(
+                d={
+                    "iter": int(k),
+                    "backtrack_index": int(backtrack_idx),
+                    "backtrack_scale": float(backtrack_scale),
+                    "status": str(status),
+                    "accept": bool(accept),
+                    "lam": float(lam),
+                    "rho": float(rho),
+                    "pred_red": float(pred_red),
+                    "act_red": float(act_red),
+                    "terminal_improved": bool(terminal_improved),
+                    "cost_improved": bool(cost_improved),
+                    "task_rank": int(task_rank),
+                    "task_singular_values": [float(v) for v in np.asarray(jax.device_get(task_svals)).reshape(-1,).tolist()],
+                    "reliable_subspace_enabled": bool(p2_force_reliable),
+                    "reliable_subspace_dim": int(reliable_dim),
+                    "ix_jacobian_enabled": bool(ix_jacobian_enabled),
+                    "du_eff_norm": float(du_eff_norm),
+                    "dI_max_abs": float(dI_max_abs),
+                    "dI_norm": float(dI_norm),
+                    "dx_m": float(dx_clip),
+                    "dx_abs_m": float(dx_abs),
+                    "x_m": float(trial.x),
+                    "I_A": [float(v) for v in np.asarray(jax.device_get(I_trial)).reshape(-1,).tolist()],
+                    "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
+                    **trial_tip_fields,
+                    "cost": float(trial.cost),
+                    "cls": str(trial.cls),
+                    "normE": float(trial.normE),
+                    "sensitivity": sensitivity_info,
+                    "pose": {
+                        "centerline_npy": str(trial_pose_path.relative_to(run_dir)),
+                        "which": "trial",
+                    },
+                    **_branch_record_fields(trial_branch_record),
+                }
+            )
+
+            print(
+                f"[IK-LM] iter={k:03d}.{backtrack_idx} lam={lam:.2e} rho={rho:.3f} {status} "
+                f"rank={task_rank} rel_dim={reliable_dim} scale={backtrack_scale:.3f} "
+                f"du_eff={du_eff_norm:.2e} |dI|_max={dI_max_abs:.3f}A ||dI||={dI_norm:.3f}A |dx|={dx_abs*1e3:.3f}mm "
+                f"pred_red={pred_red:.3e} act_red={act_red:.3e} terr={terminal_improved} "
+                f"cls={trial.cls:<5s} ||E||={trial.normE:.3e} x={trial.x:.6f} ||e||={trial.err*1e3:.3f}mm cost={trial.cost:.6e}"
+            )
+
+            if accept:
+                break
+
+        if stop_outer_loop:
+            break
+        if trial is None:
+            lam = min(lam * float(args.lam_up), 1e12)
+            continue
 
         # 6) Update lambda and state
         if accept:
@@ -1573,6 +1687,16 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "sigma_Ix": (1.0 / w_Ix) if w_Ix > 0 else None,
                 },
                 "step_limits": {"step_I_max": step_I_max, "step_x_max": step_x_max},
+                "p2_outer_solver": {
+                    "trust_region": p2_trust_region,
+                    "terminal_error_first": p2_terminal_error_first,
+                    "reliable_subspace": p2_reliable_subspace,
+                    "reliable_task_rcond": p2_reliable_task_rcond,
+                    "min_full_task_rank": p2_min_full_task_rank,
+                    "max_backtracks": p2_max_backtracks,
+                    "backtrack_shrink": p2_backtrack_shrink,
+                    "disable_Ix_jacobian_below_dx": p2_disable_Ix_jacobian_below_dx,
+                },
             },
             indent=2,
         ),

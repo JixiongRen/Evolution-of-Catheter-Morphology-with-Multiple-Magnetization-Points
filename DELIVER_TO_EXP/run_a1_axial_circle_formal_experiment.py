@@ -195,6 +195,7 @@ def _build_ik_args(
     sensitivity_spectral_damping: float,
     ridge_adjoint: float,
     sensitivity_conditioning: bool,
+    p2_config: dict[str, Any],
 ) -> list[str]:
     shared = cfg["shared"]
     catheter = cfg["catheter"]
@@ -284,6 +285,16 @@ def _build_ik_args(
         f"{float(sensitivity_spectral_damping):.12g}",
         "--ridge_adjoint",
         f"{float(ridge_adjoint):.12g}",
+        "--p2_max_backtracks",
+        str(int(p2_config["max_backtracks"])),
+        "--p2_backtrack_shrink",
+        f"{float(p2_config['backtrack_shrink']):.12g}",
+        "--p2_reliable_task_rcond",
+        f"{float(p2_config['reliable_task_rcond']):.12g}",
+        "--p2_min_full_task_rank",
+        str(int(p2_config["min_full_task_rank"])),
+        "--p2_disable_Ix_jacobian_below_dx",
+        f"{float(p2_config['disable_Ix_jacobian_below_dx']):.12g}",
         "--out_dir",
         str(phase_dir),
         "--run_name",
@@ -296,6 +307,12 @@ def _build_ik_args(
     ]
     if sensitivity_conditioning:
         args.append("--sensitivity_conditioning")
+    if bool(p2_config["trust_region"]):
+        args.append("--p2_trust_region")
+    if bool(p2_config["terminal_error_first"]):
+        args.append("--p2_terminal_error_first")
+    if bool(p2_config["reliable_subspace"]):
+        args.append("--p2_reliable_subspace")
     if enable_gravity:
         insert_at = args.index("--enable_magnetics")
         args[insert_at:insert_at] = [
@@ -397,6 +414,7 @@ def _run_one_target(
     per_point_timeout_s: float,
     eps_p_m: float,
     sensitivity_config: dict[str, Any],
+    p2_config: dict[str, Any],
 ) -> dict[str, Any]:
     run_name = f"pt_{int(target['index']):02d}"
     log_path = phase_dir / f"{run_name}.log"
@@ -420,6 +438,7 @@ def _run_one_target(
         sensitivity_spectral_damping=float(sensitivity_config["sensitivity_spectral_damping"]),
         ridge_adjoint=float(sensitivity_config["ridge_adjoint"]),
         sensitivity_conditioning=bool(sensitivity_config["sensitivity_conditioning"]),
+        p2_config=p2_config,
     )
     phase_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.perf_counter()
@@ -453,6 +472,7 @@ def _run_one_target(
     history = _read_json(point_dir / "history.json", {})
     run_config = _read_json(point_dir / "run_config.json", {})
     run_sensitivity_config = run_config.get("sensitivity_config", sensitivity_config)
+    run_p2_config = run_config.get("p2_outer_solver", p2_config)
     accepted_count, reject_count, outer_iter_count = _history_counts(history)
     p_des = np.asarray(target["p_des_m"], dtype=float)
     p_flex = np.asarray(result.get("p_tip_flex", result.get("p_tip", [math.nan] * 3)), dtype=float)
@@ -512,6 +532,11 @@ def _run_one_target(
         "sensitivity_spectral_damping": run_sensitivity_config.get("sensitivity_spectral_damping"),
         "x_sensitivity_method": run_sensitivity_config.get("x_sensitivity_method"),
         "ridge_adjoint": run_sensitivity_config.get("ridge_adjoint"),
+        "p2_config": run_p2_config,
+        "p2_trust_region": run_p2_config.get("trust_region"),
+        "p2_terminal_error_first": run_p2_config.get("terminal_error_first"),
+        "p2_reliable_subspace": run_p2_config.get("reliable_subspace"),
+        "p2_max_backtracks": run_p2_config.get("max_backtracks"),
     }
     if timed_out:
         summary["stop_reason"] = "auto_timeout"
@@ -551,6 +576,10 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "sensitivity_spectral_damping",
         "x_sensitivity_method",
         "ridge_adjoint",
+        "p2_trust_region",
+        "p2_terminal_error_first",
+        "p2_reliable_subspace",
+        "p2_max_backtracks",
         "run_dir",
     ]
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -613,6 +642,7 @@ def _run_catheter(
     force_formal_20: bool,
     eps_p_m: float,
     sensitivity_config: dict[str, Any],
+    p2_config: dict[str, Any],
     initial_I_A_override: list[float] | None = None,
     initial_x_m_override: float | None = None,
 ) -> dict[str, Any]:
@@ -640,6 +670,7 @@ def _run_catheter(
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
                 sensitivity_config=sensitivity_config,
+                p2_config=p2_config,
             )
             gate_rows.append(row)
             rows.append(row)
@@ -674,6 +705,7 @@ def _run_catheter(
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
                 sensitivity_config=sensitivity_config,
+                p2_config=p2_config,
             )
             formal_rows.append(row)
             rows.append(row)
@@ -707,6 +739,7 @@ def _run_catheter(
                 per_point_timeout_s=per_point_timeout_s,
                 eps_p_m=eps_p_m,
                 sensitivity_config=sensitivity_config,
+                p2_config=p2_config,
             )
             diag_rows.append(row)
             rows.append(row)
@@ -784,6 +817,14 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         f"奇异值阈值 `{sens_cfg.get('sensitivity_svd_rcond')}`，"
         f"谱滤波 `{sens_cfg.get('sensitivity_spectral_filter')}`，"
         f"推进灵敏度 `{sens_cfg.get('x_sensitivity_method')}`。"
+    )
+    p2_cfg = metadata.get("p2_config", {})
+    lines.append(
+        "- 外层优化器设置："
+        f"信赖域 `{p2_cfg.get('trust_region')}`，"
+        f"真实末端优先 `{p2_cfg.get('terminal_error_first')}`，"
+        f"可靠子空间 `{p2_cfg.get('reliable_subspace')}`，"
+        f"最大回溯次数 `{p2_cfg.get('max_backtracks')}`。"
     )
     lines.append(f"- 自动超时：单个目标点超过 {metadata['per_point_timeout_s'] / 60.0:.1f} 分钟未自然退出时，标记为 auto_timeout，不计入成功。")
     lines.append("- A1：末端单磁体沿局部 z 轴轴向磁化。")
@@ -916,6 +957,14 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--sensitivity-spectral-damping", type=float, default=0.0, help="Absolute damping for residual-space spectral filters.")
     parser.add_argument("--ridge-adjoint", type=float, default=0.0, help="Extra ridge used by legacy adjoint sensitivity paths.")
     parser.add_argument("--sensitivity-conditioning", action="store_true", help="Record dense conditioning diagnostics for sensitivity solves.")
+    parser.add_argument("--p2-trust-region", action="store_true", help="Enable conservative P2 trust-region checks in the IK outer loop.")
+    parser.add_argument("--p2-terminal-error-first", action="store_true", help="Use terminal-error-first acceptance in the IK outer loop.")
+    parser.add_argument("--p2-reliable-subspace", action="store_true", help="Project IK updates to task-space reliable directions.")
+    parser.add_argument("--p2-reliable-task-rcond", type=float, default=1e-3, help="Relative task singular-value cutoff for reliable subspace.")
+    parser.add_argument("--p2-min-full-task-rank", type=int, default=2, help="Minimum task rank required for full IK update.")
+    parser.add_argument("--p2-max-backtracks", type=int, default=0, help="Maximum IK backtracking retries.")
+    parser.add_argument("--p2-backtrack-shrink", type=float, default=0.5, help="IK backtracking shrink ratio.")
+    parser.add_argument("--p2-disable-Ix-jacobian-below-dx", type=float, default=-1.0, help="Disable r_Ix current Jacobian below this insertion change [m].")
     return parser
 
 
@@ -963,6 +1012,16 @@ def main(argv: list[str] | None = None) -> None:
         "ridge_adjoint": float(args.ridge_adjoint),
         "sensitivity_conditioning": bool(args.sensitivity_conditioning),
     }
+    p2_config = {
+        "trust_region": bool(args.p2_trust_region),
+        "terminal_error_first": bool(args.p2_terminal_error_first),
+        "reliable_subspace": bool(args.p2_reliable_subspace),
+        "reliable_task_rcond": float(args.p2_reliable_task_rcond),
+        "min_full_task_rank": int(args.p2_min_full_task_rank),
+        "max_backtracks": int(args.p2_max_backtracks),
+        "backtrack_shrink": float(args.p2_backtrack_shrink),
+        "disable_Ix_jacobian_below_dx": float(args.p2_disable_Ix_jacobian_below_dx),
+    }
     metadata = {
         "run_id": run_id,
         "experiment_name": f"A1_A2_{threshold_tag}_supervised_IK_{gravity_suffix}",
@@ -993,6 +1052,7 @@ def main(argv: list[str] | None = None) -> None:
         "tol": 1e-5,
         "enable_gravity": enable_gravity,
         "sensitivity_config": sensitivity_config,
+        "p2_config": p2_config,
         "XLA_PYTHON_CLIENT_PREALLOCATE": os.environ.get("XLA_PYTHON_CLIENT_PREALLOCATE"),
     }
     (run_root / "batch_metadata.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -1017,6 +1077,14 @@ def main(argv: list[str] | None = None) -> None:
         f"--sensitivity-spectral-damping {float(sensitivity_config['sensitivity_spectral_damping']):.12g} "
         f"--ridge-adjoint {float(sensitivity_config['ridge_adjoint']):.12g} "
         f"{'--sensitivity-conditioning' if sensitivity_config['sensitivity_conditioning'] else ''} "
+        f"{'--p2-trust-region' if p2_config['trust_region'] else ''} "
+        f"{'--p2-terminal-error-first' if p2_config['terminal_error_first'] else ''} "
+        f"{'--p2-reliable-subspace' if p2_config['reliable_subspace'] else ''} "
+        f"--p2-reliable-task-rcond {float(p2_config['reliable_task_rcond']):.12g} "
+        f"--p2-min-full-task-rank {int(p2_config['min_full_task_rank'])} "
+        f"--p2-max-backtracks {int(p2_config['max_backtracks'])} "
+        f"--p2-backtrack-shrink {float(p2_config['backtrack_shrink']):.12g} "
+        f"--p2-disable-Ix-jacobian-below-dx {float(p2_config['disable_Ix_jacobian_below_dx']):.12g} "
         f"{'--initial-I-A ' + ','.join(f'{float(v):.12g}' for v in initial_I_A_override) if initial_I_A_override is not None else ''} "
         f"{'--initial-x-m ' + f'{initial_x_m_override:.12g}' if initial_x_m_override is not None else ''} "
         f"{'--force-formal-20' if args.force_formal_20 else ''}\n",
@@ -1040,6 +1108,7 @@ def main(argv: list[str] | None = None) -> None:
             force_formal_20=bool(args.force_formal_20),
             eps_p_m=eps_p_m,
             sensitivity_config=sensitivity_config,
+            p2_config=p2_config,
             initial_I_A_override=initial_I_A_override,
             initial_x_m_override=initial_x_m_override,
         )
