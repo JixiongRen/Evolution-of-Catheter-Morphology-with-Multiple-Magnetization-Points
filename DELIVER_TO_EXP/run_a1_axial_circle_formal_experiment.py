@@ -69,7 +69,7 @@ def _parse_vector_field(value: Any) -> list[float]:
 
 
 def _load_branch_seed_registry(path: str | None) -> dict[str, dict[int, dict[str, Any]]]:
-    """Load per-target branch seeds from a registry CSV."""
+    """Load per-target control seeds, optionally with branch states."""
     if path is None:
         return {}
     csv_path = Path(path).expanduser().resolve()
@@ -82,19 +82,24 @@ def _load_branch_seed_registry(path: str | None) -> dict[str, dict[int, dict[str
             if not catheter:
                 continue
             target_index = int(float(row.get("target_index", -1)))
-            branch_path = Path(str(row.get("branch_npz_path", ""))).expanduser().resolve()
-            if not branch_path.exists():
-                continue
             I_A = _parse_vector_field(row.get("I_A_json") or row.get("I_A"))
             if len(I_A) != 8:
                 continue
             x_m = float(row["x_m"])
+            branch_text = str(row.get("branch_npz_path", "")).strip()
+            branch_path = Path(branch_text).expanduser().resolve() if branch_text else None
+            if branch_path is not None and not branch_path.exists():
+                continue
+            seed_type = str(row.get("seed_type", "")).strip()
+            if not seed_type:
+                seed_type = "branch_state" if branch_path is not None else "control_only"
             item = {
                 "catheter_type": catheter,
                 "target_index": target_index,
                 "I_A": I_A,
                 "x_m": x_m,
-                "branch_npz_path": str(branch_path),
+                "branch_npz_path": str(branch_path) if branch_path is not None else None,
+                "seed_type": seed_type,
                 "err_true_mm": float(row.get("err_true_mm", "nan")),
                 "z_star_hash": row.get("z_star_hash", ""),
                 "source_run_root": row.get("source_run_root", ""),
@@ -1243,8 +1248,12 @@ def _run_catheter(
             if target_seed is not None:
                 run_I = [float(v) for v in target_seed["I_A"]]
                 run_x = float(target_seed["x_m"])
-                run_branch_state_npz = str(target_seed["branch_npz_path"])
-                run_source = f"branch_seed_registry_pt_{int(target['index']):02d}"
+                if target_seed.get("branch_npz_path"):
+                    run_branch_state_npz = str(target_seed["branch_npz_path"])
+                else:
+                    run_branch_state_npz = None
+                seed_type = str(target_seed.get("seed_type", "branch_state"))
+                run_source = f"{seed_type}_registry_pt_{int(target['index']):02d}"
             if two_stage_gate:
                 row, stage_rows = _run_one_target_two_stage(
                     catheter_key=catheter_key,
@@ -1296,7 +1305,6 @@ def _run_catheter(
                     channel_gate_config=channel_gate_config,
                     initial_branch_state_npz=run_branch_state_npz,
                 )
-            warm_branch_state_npz = None
             formal_rows.append(row)
             rows.append(row)
             print(
@@ -1308,8 +1316,10 @@ def _run_catheter(
                 warm_I = [float(v) for v in row["I_A"]]
                 warm_x = float(row["x_m"])
                 warm_source = f"last_success_pt_{row['target_index']:02d}"
+                warm_branch_state_npz = str(row["branch_npz_path"]) if row.get("branch_npz_path") else None
             elif warm_I is None:
                 warm_source = "cold_start_after_failure"
+                warm_branch_state_npz = None
             else:
                 warm_source = "last_success_before_failed_point"
     else:

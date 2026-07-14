@@ -1,0 +1,5 @@
+A1 small_regression pt_03: true_err=17.626 mm eps=False cls=GOOD wall=1301.4s
+A1 small_regression pt_07: true_err=13.384 mm eps=False cls=GOOD wall=1504.4s
+A1 small_regression pt_12: true_err=nan mm eps=False cls=None wall=1801.2s
+summary: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714180728_A1_A2_5mm_supervised_IK_no_gravity/summary.json
+report: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714180728_A1_A2_5mm_supervised_IK_no_gravity_report.md

@@ -1,0 +1,14 @@
+{
+  "protocol": "state_snapshot_created",
+  "terminal_reload_gate_mm": 0.1,
+  "centerline_reload_gate_mm": 0.5,
+  "roundtrip_terminal_gate_mm": 0.25,
+  "roundtrip_centerline_gate_mm": 0.5,
+  "same_branch_requires": [
+    "terminal_reload",
+    "stepwise_trajectory",
+    "centerline_geometry",
+    "control_roundtrip"
+  ],
+  "status": "snapshots_ready_for_replay"
+}

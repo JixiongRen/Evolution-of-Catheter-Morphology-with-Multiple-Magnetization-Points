@@ -1,0 +1,20 @@
+{
+  "catheter": "A1",
+  "scan_root": "DELIVER_TO_EXP/formal_experiments",
+  "max_error_mm": 10.0,
+  "target_indices_requested": [
+    3,
+    7,
+    12
+  ],
+  "candidate_rows": 8,
+  "covered_targets": 3,
+  "control_only_targets": 3,
+  "branch_state_targets": 0,
+  "skipped_missing_control": 0,
+  "target_indices": [
+    3,
+    7,
+    12
+  ]
+}
