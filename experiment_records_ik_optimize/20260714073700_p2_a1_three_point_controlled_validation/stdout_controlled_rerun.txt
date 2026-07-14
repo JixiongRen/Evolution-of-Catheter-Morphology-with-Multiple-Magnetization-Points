@@ -1,0 +1,9 @@
+controlled_rerun_start=2026-07-14T08:02:18+08:00
+controlled_rerun_git_commit=419f0180933ae0c036c5554e8b6376cb29abffcc
+A1 small_regression pt_01: true_err=27.787 mm eps=False cls=GOOD wall=146.8s
+A1 small_regression pt_12: true_err=81.688 mm eps=False cls=GOOD wall=87.5s
+A1 small_regression pt_13: true_err=70.820 mm eps=False cls=GOOD wall=147.4s
+summary: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714080219_A1_A2_5mm_supervised_IK_no_gravity/summary.json
+report: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714080219_A1_A2_5mm_supervised_IK_no_gravity_report.md
+controlled_rerun_root=/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714080219_A1_A2_5mm_supervised_IK_no_gravity
+controlled_rerun_end=2026-07-14T08:08:45+08:00

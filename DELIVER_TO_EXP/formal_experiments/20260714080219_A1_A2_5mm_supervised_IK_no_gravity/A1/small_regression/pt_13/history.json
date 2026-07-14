@@ -1,0 +1,1068 @@
+{
+  "meta": {
+    "run_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714080219_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13",
+    "timestamp": "2026-07-14 08:06:19",
+    "p_des": [
+      0.06,
+      -0.0587785252292,
+      -0.0809016994375
+    ],
+    "eps_p_m": 0.005,
+    "sigma_p_m": 0.005,
+    "sensitivity_config": {
+      "x_sensitivity_method": "implicit",
+      "sensitivity_mode": "gn_svd",
+      "sensitivity_solve_mode": "svd",
+      "sensitivity_svd_rcond": 1e-09,
+      "sensitivity_spectral_filter": "hard",
+      "sensitivity_spectral_damping": 0.0,
+      "ridge_adjoint": 1e-10,
+      "sensitivity_conditioning": false
+    },
+    "control_channel_gate": {
+      "enabled": true,
+      "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+      "key": "A1_pt13",
+      "missing_policy": "block_all",
+      "allow_limited": true,
+      "allowed_mask": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "allowed_channels": [
+        "I0",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I7"
+      ],
+      "blocked_channels": [
+        "I1",
+        "I6",
+        "x"
+      ],
+      "channel_reasons": [
+        "audited_allowed:可有限使用",
+        "audited_blocked:禁用",
+        "audited_allowed:可有限使用",
+        "audited_allowed:可有限使用",
+        "audited_allowed:可有限使用",
+        "audited_allowed:可有限使用",
+        "audited_blocked:禁用",
+        "audited_allowed:可有限使用",
+        "audited_blocked:禁用"
+      ],
+      "safe_step_abs_max": [
+        0.25,
+        null,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        null,
+        0.25,
+        null
+      ],
+      "matched_rows": 9
+    },
+    "initial_branch_state": {
+      "enabled": false,
+      "requested_control_hash": "b04ba995dc4ba0c9b2abe3b4096e073eceec0fcfefc930a58bdac3c5395ea0d2"
+    }
+  },
+  "outer": [
+    {
+      "iter": 0,
+      "status": "INIT",
+      "accept": true,
+      "lam": 0.01,
+      "rho": null,
+      "pred_red": null,
+      "act_red": null,
+      "du_eff_norm": 0.0,
+      "dI_max_abs": 0.0,
+      "dI_norm": 0.0,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.10299999999999998,
+      "I_A": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dI_A": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "p_tip_m": [
+        0.102998115590478,
+        0.0,
+        -3.616037349725393e-27
+      ],
+      "p_tip_flex_m": [
+        0.09999817404052593,
+        0.0,
+        -3.359595344676349e-27
+      ],
+      "p_tip_true_m": [
+        0.102998115590478,
+        0.0,
+        -3.616037349725393e-27
+      ],
+      "err_m": 0.10885236765604778,
+      "err_mm": 108.85236765604778,
+      "err_flex_m": 0.10770261801168758,
+      "err_flex_mm": 107.70261801168758,
+      "err_true_m": 0.10885236765604778,
+      "err_true_mm": 108.85236765604778,
+      "cost": 236.97675888654794,
+      "cls": "GOOD",
+      "normE": 8.307684751434808e-06,
+      "pose": {
+        "centerline_npy": "poses/accept/centerline_iter_0000.npy",
+        "which": "accept"
+      },
+      "branch_state": {
+        "eval_id": "eval_000000",
+        "npz_path": "branch_states/states/eval_000000_init_iter_0000.npz",
+        "z_star_hash": "4550b2e029d14b3afe3a95a63e06b148107bf3c0b7cf1a247c3a94829a1cf0b5",
+        "warm_start_hash": null,
+        "centerline_hash": "ccb7c54456f50a3e7c2a9ec0c9edea664026f7ca9b95e01bddcdeeb050aa27cb"
+      }
+    },
+    {
+      "iter": 1,
+      "backtrack_index": 0,
+      "backtrack_scale": 1.0,
+      "status": "ACCEPT",
+      "accept": true,
+      "lam": 0.01,
+      "rho": 1.1667932960005283,
+      "pred_red": 81.10687508053041,
+      "act_red": 94.6349581035152,
+      "terminal_improved": true,
+      "cost_improved": true,
+      "task_rank": 1,
+      "task_singular_values": [
+        212.32485376282528,
+        0.003403179572423044,
+        0.0016415158815309542
+      ],
+      "reliable_subspace_enabled": true,
+      "reliable_subspace_dim": 1,
+      "ix_jacobian_enabled": false,
+      "control_channel_gate": {
+        "enabled": true,
+        "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+        "key": "A1_pt13",
+        "missing_policy": "block_all",
+        "allow_limited": true,
+        "allowed_mask": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false
+        ],
+        "allowed_channels": [
+          "I0",
+          "I2",
+          "I3",
+          "I4",
+          "I5",
+          "I7"
+        ],
+        "blocked_channels": [
+          "I1",
+          "I6",
+          "x"
+        ],
+        "channel_reasons": [
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用"
+        ],
+        "safe_step_abs_max": [
+          0.25,
+          null,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          null,
+          0.25,
+          null
+        ],
+        "matched_rows": 9,
+        "active_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          7
+        ],
+        "blocked_indices": [
+          1,
+          6,
+          8
+        ],
+        "active_dim": 6,
+        "effective_step_I_max_A": [
+          0.25,
+          5.0,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          5.0,
+          0.25
+        ],
+        "effective_step_x_max_m": 0.02
+      },
+      "du_eff_norm": 0.030620216654196026,
+      "dI_max_abs": 0.25,
+      "dI_norm": 0.6123724356957945,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.10299999999999998,
+      "I_A": [
+        0.25,
+        0.0,
+        0.25,
+        0.25,
+        -0.25,
+        -0.25,
+        0.0,
+        -0.25
+      ],
+      "dI_A": [
+        0.25,
+        0.0,
+        0.25,
+        0.25,
+        -0.25,
+        -0.25,
+        0.0,
+        -0.25
+      ],
+      "p_tip_m": [
+        0.09833862169524331,
+        -0.008878827657503153,
+        -0.024736602442890897
+      ],
+      "p_tip_flex_m": [
+        0.0957343983976628,
+        -0.008436605631567992,
+        -0.023314469433716713
+      ],
+      "p_tip_true_m": [
+        0.09833862169524331,
+        -0.008878827657503153,
+        -0.024736602442890897
+      ],
+      "err_m": 0.08434659359838806,
+      "err_mm": 84.34659359838805,
+      "err_flex_m": 0.08442478994422177,
+      "err_flex_mm": 84.42478994422177,
+      "err_true_m": 0.08434659359838806,
+      "err_true_mm": 84.34659359838805,
+      "cost": 142.34180078303274,
+      "cls": "GOOD",
+      "normE": 9.774743003437582e-06,
+      "sensitivity": {
+        "x_method": "implicit",
+        "sensitivity_mode": "gn_svd",
+        "sensitivity_solve_mode": "svd",
+        "sensitivity_svd_rcond": 1e-09,
+        "sensitivity_spectral_filter": "hard",
+        "sensitivity_spectral_damping": 0.0,
+        "ridge_adjoint": 1e-10,
+        "jz_source": "computed",
+        "status": "truncated_svd",
+        "method": "dense_implicit_gn_residual_spectrum",
+        "stationarity_norm": 1.6048492077166432e-06,
+        "condition_number": null,
+        "effective_rank": 276,
+        "sv_min": 2.112446518456759e-06,
+        "sv_max": 83522.74424321357,
+        "spectral_filter": "hard",
+        "spectral_lambda": 0.0,
+        "spectral_cutoff": 8.352274424321358e-05,
+        "retained_spectral_energy": 1.0
+      },
+      "pose": {
+        "centerline_npy": "poses/trial/centerline_iter_0100.npy",
+        "which": "trial"
+      },
+      "branch_state": {
+        "eval_id": "eval_000001",
+        "npz_path": "branch_states/states/eval_000001_trial_iter_0100.npz",
+        "z_star_hash": "17727dc11987c6d9f6cbcd6ee23e3c74b296c086822e22026982931c105c3e88",
+        "warm_start_hash": "4550b2e029d14b3afe3a95a63e06b148107bf3c0b7cf1a247c3a94829a1cf0b5",
+        "centerline_hash": "b8639061473b719a8ee6c407d1ccc11832b7cb1d8ab5558be20066be6f9a5227"
+      }
+    },
+    {
+      "iter": 2,
+      "backtrack_index": 0,
+      "backtrack_scale": 1.0,
+      "status": "REJECT",
+      "accept": false,
+      "lam": 0.003,
+      "rho": -0.45397564507914334,
+      "pred_red": 78.33852584735725,
+      "act_red": -35.56378280610315,
+      "terminal_improved": false,
+      "cost_improved": false,
+      "task_rank": 2,
+      "task_singular_values": [
+        330.27726574456585,
+        113.9688509822716,
+        0.001476316350844184
+      ],
+      "reliable_subspace_enabled": true,
+      "reliable_subspace_dim": 2,
+      "ix_jacobian_enabled": false,
+      "control_channel_gate": {
+        "enabled": true,
+        "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+        "key": "A1_pt13",
+        "missing_policy": "block_all",
+        "allow_limited": true,
+        "allowed_mask": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false
+        ],
+        "allowed_channels": [
+          "I0",
+          "I2",
+          "I3",
+          "I4",
+          "I5",
+          "I7"
+        ],
+        "blocked_channels": [
+          "I1",
+          "I6",
+          "x"
+        ],
+        "channel_reasons": [
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用"
+        ],
+        "safe_step_abs_max": [
+          0.25,
+          null,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          null,
+          0.25,
+          null
+        ],
+        "matched_rows": 9,
+        "active_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          7
+        ],
+        "blocked_indices": [
+          1,
+          6,
+          8
+        ],
+        "active_dim": 6,
+        "effective_step_I_max_A": [
+          0.25,
+          5.0,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          5.0,
+          0.25
+        ],
+        "effective_step_x_max_m": 0.02
+      },
+      "du_eff_norm": 0.02752373153477677,
+      "dI_max_abs": 0.25,
+      "dI_norm": 0.5502760101413194,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.10299999999999998,
+      "I_A": [
+        0.5,
+        0.0,
+        0.2633215215483734,
+        0.4794040636097925,
+        -0.5,
+        -0.5,
+        0.0,
+        -0.5
+      ],
+      "dI_A": [
+        0.25,
+        0.0,
+        0.013321521548373405,
+        0.22940406360979249,
+        -0.25,
+        -0.25,
+        0.0,
+        -0.25
+      ],
+      "p_tip_m": [
+        0.09212753426801659,
+        0.01726772771990317,
+        -0.0353188999504452
+      ],
+      "p_tip_flex_m": [
+        0.09003063236781701,
+        0.016347825515495625,
+        -0.03338065768737109
+      ],
+      "p_tip_true_m": [
+        0.09212753426801659,
+        0.01726772771990317,
+        -0.0353188999504452
+      ],
+      "err_m": 0.09430271817301242,
+      "err_mm": 94.30271817301242,
+      "err_flex_m": 0.09382993587146643,
+      "err_flex_mm": 93.82993587146643,
+      "err_true_m": 0.09430271817301242,
+      "err_true_mm": 94.30271817301242,
+      "cost": 177.9055835891359,
+      "cls": "GOOD",
+      "normE": 9.965305922399907e-06,
+      "sensitivity": {
+        "x_method": "implicit",
+        "sensitivity_mode": "gn_svd",
+        "sensitivity_solve_mode": "svd",
+        "sensitivity_svd_rcond": 1e-09,
+        "sensitivity_spectral_filter": "hard",
+        "sensitivity_spectral_damping": 0.0,
+        "ridge_adjoint": 1e-10,
+        "jz_source": "computed",
+        "status": "truncated_svd",
+        "method": "dense_implicit_gn_residual_spectrum",
+        "stationarity_norm": 0.12350994908010458,
+        "condition_number": null,
+        "effective_rank": 275,
+        "sv_min": 2.382361364774835e-06,
+        "sv_max": 83521.44352532824,
+        "spectral_filter": "hard",
+        "spectral_lambda": 0.0,
+        "spectral_cutoff": 8.352144352532824e-05,
+        "retained_spectral_energy": 1.0
+      },
+      "pose": {
+        "centerline_npy": "poses/trial/centerline_iter_0200.npy",
+        "which": "trial"
+      },
+      "branch_state": {
+        "eval_id": "eval_000002",
+        "npz_path": "branch_states/states/eval_000002_trial_iter_0200.npz",
+        "z_star_hash": "bb60d076095bb2f0eb3c13270c903a889c5a0133ba77644bf604600b79d70fa5",
+        "warm_start_hash": "17727dc11987c6d9f6cbcd6ee23e3c74b296c086822e22026982931c105c3e88",
+        "centerline_hash": "4301685278a1134654831a6fa90790a58af72051b57a2d06d192f0496ff614cb"
+      }
+    },
+    {
+      "iter": 2,
+      "backtrack_index": 1,
+      "backtrack_scale": 0.5,
+      "status": "REJECT",
+      "accept": false,
+      "lam": 0.003,
+      "rho": -0.46105168004239677,
+      "pred_red": 62.72282920818574,
+      "act_red": -28.91846578344635,
+      "terminal_improved": false,
+      "cost_improved": false,
+      "task_rank": 2,
+      "task_singular_values": [
+        330.27726574456585,
+        113.9688509822716,
+        0.001476316350844184
+      ],
+      "reliable_subspace_enabled": true,
+      "reliable_subspace_dim": 2,
+      "ix_jacobian_enabled": false,
+      "control_channel_gate": {
+        "enabled": true,
+        "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+        "key": "A1_pt13",
+        "missing_policy": "block_all",
+        "allow_limited": true,
+        "allowed_mask": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false
+        ],
+        "allowed_channels": [
+          "I0",
+          "I2",
+          "I3",
+          "I4",
+          "I5",
+          "I7"
+        ],
+        "blocked_channels": [
+          "I1",
+          "I6",
+          "x"
+        ],
+        "channel_reasons": [
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用"
+        ],
+        "safe_step_abs_max": [
+          0.25,
+          null,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          null,
+          0.25,
+          null
+        ],
+        "matched_rows": 9,
+        "active_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          7
+        ],
+        "blocked_indices": [
+          1,
+          6,
+          8
+        ],
+        "active_dim": 6,
+        "effective_step_I_max_A": [
+          0.25,
+          5.0,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          5.0,
+          0.25
+        ],
+        "effective_step_x_max_m": 0.02
+      },
+      "du_eff_norm": 0.021907193839017458,
+      "dI_max_abs": 0.25,
+      "dI_norm": 0.43799720064787134,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.10299999999999998,
+      "I_A": [
+        0.5,
+        0.0,
+        0.2566607892462365,
+        0.36471403174678335,
+        -0.3809743834000948,
+        -0.44100676290475116,
+        0.0,
+        -0.5
+      ],
+      "dI_A": [
+        0.25,
+        0.0,
+        0.006660789246236476,
+        0.11471403174678335,
+        -0.13097438340009482,
+        -0.19100676290475116,
+        0.0,
+        -0.25
+      ],
+      "p_tip_m": [
+        0.09272838364080281,
+        0.014777891492509874,
+        -0.0352961730952412
+      ],
+      "p_tip_flex_m": [
+        0.09058430337851113,
+        0.013995172622811627,
+        -0.03334931106565184
+      ],
+      "p_tip_true_m": [
+        0.09272838364080281,
+        0.014777891492509874,
+        -0.0352961730952412
+      ],
+      "err_m": 0.0925286851178156,
+      "err_mm": 92.5286851178156,
+      "err_flex_m": 0.09215552263468409,
+      "err_flex_mm": 92.15552263468409,
+      "err_true_m": 0.0925286851178156,
+      "err_true_mm": 92.5286851178156,
+      "cost": 171.2602665664791,
+      "cls": "GOOD",
+      "normE": 9.992924086937359e-06,
+      "sensitivity": {
+        "x_method": "implicit",
+        "sensitivity_mode": "gn_svd",
+        "sensitivity_solve_mode": "svd",
+        "sensitivity_svd_rcond": 1e-09,
+        "sensitivity_spectral_filter": "hard",
+        "sensitivity_spectral_damping": 0.0,
+        "ridge_adjoint": 1e-10,
+        "jz_source": "computed",
+        "status": "truncated_svd",
+        "method": "dense_implicit_gn_residual_spectrum",
+        "stationarity_norm": 0.12350994908010458,
+        "condition_number": null,
+        "effective_rank": 275,
+        "sv_min": 2.382361364774835e-06,
+        "sv_max": 83521.44352532824,
+        "spectral_filter": "hard",
+        "spectral_lambda": 0.0,
+        "spectral_cutoff": 8.352144352532824e-05,
+        "retained_spectral_energy": 1.0
+      },
+      "pose": {
+        "centerline_npy": "poses/trial/centerline_iter_0201.npy",
+        "which": "trial"
+      },
+      "branch_state": {
+        "eval_id": "eval_000003",
+        "npz_path": "branch_states/states/eval_000003_trial_iter_0201.npz",
+        "z_star_hash": "5b2dcc41d105596b96b3a22e990ad476f24b47c5a350255d1c0b7213d845bb08",
+        "warm_start_hash": "17727dc11987c6d9f6cbcd6ee23e3c74b296c086822e22026982931c105c3e88",
+        "centerline_hash": "b18f77cc95439ca410e616eb106ac9079b31db2dc4ffef8cc31e7e7b08577547"
+      }
+    },
+    {
+      "iter": 2,
+      "backtrack_index": 2,
+      "backtrack_scale": 0.25,
+      "status": "REJECT",
+      "accept": false,
+      "lam": 0.003,
+      "rho": -0.08321454210908258,
+      "pred_red": 46.12655627499336,
+      "act_red": -3.8384002594924027,
+      "terminal_improved": false,
+      "cost_improved": false,
+      "task_rank": 2,
+      "task_singular_values": [
+        330.27726574456585,
+        113.9688509822716,
+        0.001476316350844184
+      ],
+      "reliable_subspace_enabled": true,
+      "reliable_subspace_dim": 2,
+      "ix_jacobian_enabled": false,
+      "control_channel_gate": {
+        "enabled": true,
+        "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+        "key": "A1_pt13",
+        "missing_policy": "block_all",
+        "allow_limited": true,
+        "allowed_mask": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false
+        ],
+        "allowed_channels": [
+          "I0",
+          "I2",
+          "I3",
+          "I4",
+          "I5",
+          "I7"
+        ],
+        "blocked_channels": [
+          "I1",
+          "I6",
+          "x"
+        ],
+        "channel_reasons": [
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用"
+        ],
+        "safe_step_abs_max": [
+          0.25,
+          null,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          null,
+          0.25,
+          null
+        ],
+        "matched_rows": 9,
+        "active_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          7
+        ],
+        "blocked_indices": [
+          1,
+          6,
+          8
+        ],
+        "active_dim": 6,
+        "effective_step_I_max_A": [
+          0.25,
+          5.0,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          5.0,
+          0.25
+        ],
+        "effective_step_x_max_m": 0.02
+      },
+      "du_eff_norm": 0.018828894977604097,
+      "dI_max_abs": 0.25,
+      "dI_norm": 0.37644737419707053,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.10299999999999998,
+      "I_A": [
+        0.5,
+        0.0,
+        0.2533304016487988,
+        0.3073595443700806,
+        -0.3154905750522718,
+        -0.3455112622349136,
+        0.0,
+        -0.5
+      ],
+      "dI_A": [
+        0.25,
+        0.0,
+        0.0033304016487987753,
+        0.05735954437008062,
+        -0.0654905750522718,
+        -0.09551126223491357,
+        0.0,
+        -0.25
+      ],
+      "p_tip_m": [
+        0.09399632251316814,
+        0.005177841276619356,
+        -0.03549508067836165
+      ],
+      "p_tip_flex_m": [
+        0.09175978961970224,
+        0.004908114923601842,
+        -0.0335138767392353
+      ],
+      "p_tip_true_m": [
+        0.09399632251316814,
+        0.005177841276619356,
+        -0.03549508067836165
+      ],
+      "err_m": 0.08548641873528082,
+      "err_mm": 85.48641873528082,
+      "err_flex_m": 0.08550016439003137,
+      "err_flex_mm": 85.50016439003137,
+      "err_true_m": 0.08548641873528082,
+      "err_true_mm": 85.48641873528082,
+      "cost": 146.18020104252514,
+      "cls": "GOOD",
+      "normE": 9.98736731680988e-06,
+      "sensitivity": {
+        "x_method": "implicit",
+        "sensitivity_mode": "gn_svd",
+        "sensitivity_solve_mode": "svd",
+        "sensitivity_svd_rcond": 1e-09,
+        "sensitivity_spectral_filter": "hard",
+        "sensitivity_spectral_damping": 0.0,
+        "ridge_adjoint": 1e-10,
+        "jz_source": "computed",
+        "status": "truncated_svd",
+        "method": "dense_implicit_gn_residual_spectrum",
+        "stationarity_norm": 0.12350994908010458,
+        "condition_number": null,
+        "effective_rank": 275,
+        "sv_min": 2.382361364774835e-06,
+        "sv_max": 83521.44352532824,
+        "spectral_filter": "hard",
+        "spectral_lambda": 0.0,
+        "spectral_cutoff": 8.352144352532824e-05,
+        "retained_spectral_energy": 1.0
+      },
+      "pose": {
+        "centerline_npy": "poses/trial/centerline_iter_0202.npy",
+        "which": "trial"
+      },
+      "branch_state": {
+        "eval_id": "eval_000004",
+        "npz_path": "branch_states/states/eval_000004_trial_iter_0202.npz",
+        "z_star_hash": "e16d14897e4895a808b305388da09ae83086d67c94bda4cdba8a0898a8c00e32",
+        "warm_start_hash": "17727dc11987c6d9f6cbcd6ee23e3c74b296c086822e22026982931c105c3e88",
+        "centerline_hash": "6f810edfdd44a9a91788b459f33f9b41ad0b40665c20076e9ad0116e141c1e46"
+      }
+    },
+    {
+      "iter": 2,
+      "backtrack_index": 3,
+      "backtrack_scale": 0.125,
+      "status": "ACCEPT",
+      "accept": true,
+      "lam": 0.003,
+      "rho": 1.2913211432588534,
+      "pred_red": 32.5414376910214,
+      "act_red": 42.0214465224565,
+      "terminal_improved": true,
+      "cost_improved": true,
+      "task_rank": 2,
+      "task_singular_values": [
+        330.27726574456585,
+        113.9688509822716,
+        0.001476316350844184
+      ],
+      "reliable_subspace_enabled": true,
+      "reliable_subspace_dim": 2,
+      "ix_jacobian_enabled": false,
+      "control_channel_gate": {
+        "enabled": true,
+        "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+        "key": "A1_pt13",
+        "missing_policy": "block_all",
+        "allow_limited": true,
+        "allowed_mask": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false
+        ],
+        "allowed_channels": [
+          "I0",
+          "I2",
+          "I3",
+          "I4",
+          "I5",
+          "I7"
+        ],
+        "blocked_channels": [
+          "I1",
+          "I6",
+          "x"
+        ],
+        "channel_reasons": [
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用"
+        ],
+        "safe_step_abs_max": [
+          0.25,
+          null,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          null,
+          0.25,
+          null
+        ],
+        "matched_rows": 9,
+        "active_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          7
+        ],
+        "blocked_indices": [
+          1,
+          6,
+          8
+        ],
+        "active_dim": 6,
+        "effective_step_I_max_A": [
+          0.25,
+          5.0,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          5.0,
+          0.25
+        ],
+        "effective_step_x_max_m": 0.02
+      },
+      "du_eff_norm": 0.012764723366714203,
+      "dI_max_abs": 0.20247647874835795,
+      "dI_norm": 0.2552201079690751,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.10299999999999998,
+      "I_A": [
+        0.45247647874835795,
+        0.0,
+        0.2516652025692779,
+        0.2786803453532208,
+        -0.2827460456164935,
+        -0.29775732915746084,
+        0.0,
+        -0.39128757186838425
+      ],
+      "dI_A": [
+        0.20247647874835795,
+        0.0,
+        0.0016652025692778794,
+        0.028680345353220782,
+        -0.032746045616493524,
+        -0.04775732915746084,
+        0.0,
+        -0.14128757186838425
+      ],
+      "p_tip_m": [
+        0.09284157074521356,
+        -0.027418915448552503,
+        -0.026555495727083236
+      ],
+      "p_tip_flex_m": [
+        0.09068191339465945,
+        -0.026011611457036895,
+        -0.025020772196276433
+      ],
+      "p_tip_true_m": [
+        0.09284157074521356,
+        -0.027418915448552503,
+        -0.026555495727083236
+      ],
+      "err_m": 0.07082022135196603,
+      "err_mm": 70.82022135196603,
+      "err_flex_m": 0.07167794972687679,
+      "err_flex_mm": 71.67794972687679,
+      "err_true_m": 0.07082022135196603,
+      "err_true_mm": 70.82022135196603,
+      "cost": 100.32035426057624,
+      "cls": "GOOD",
+      "normE": 9.992938554519295e-06,
+      "sensitivity": {
+        "x_method": "implicit",
+        "sensitivity_mode": "gn_svd",
+        "sensitivity_solve_mode": "svd",
+        "sensitivity_svd_rcond": 1e-09,
+        "sensitivity_spectral_filter": "hard",
+        "sensitivity_spectral_damping": 0.0,
+        "ridge_adjoint": 1e-10,
+        "jz_source": "computed",
+        "status": "truncated_svd",
+        "method": "dense_implicit_gn_residual_spectrum",
+        "stationarity_norm": 0.12350994908010458,
+        "condition_number": null,
+        "effective_rank": 275,
+        "sv_min": 2.382361364774835e-06,
+        "sv_max": 83521.44352532824,
+        "spectral_filter": "hard",
+        "spectral_lambda": 0.0,
+        "spectral_cutoff": 8.352144352532824e-05,
+        "retained_spectral_energy": 1.0
+      },
+      "pose": {
+        "centerline_npy": "poses/trial/centerline_iter_0203.npy",
+        "which": "trial"
+      },
+      "branch_state": {
+        "eval_id": "eval_000005",
+        "npz_path": "branch_states/states/eval_000005_trial_iter_0203.npz",
+        "z_star_hash": "abac03e7e2e6cc4e93e8d0780752446f4f8d401e7bbb3a58f0d128ac2a7464ba",
+        "warm_start_hash": "17727dc11987c6d9f6cbcd6ee23e3c74b296c086822e22026982931c105c3e88",
+        "centerline_hash": "8753efa376c28716740b35a726c48f0cb2502ef6f780fb6075fc15f3c33d0189"
+      }
+    }
+  ]
+}

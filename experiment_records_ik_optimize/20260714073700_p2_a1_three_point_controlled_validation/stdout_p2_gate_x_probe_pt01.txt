@@ -1,0 +1,7 @@
+p2_gate_x_probe_pt01_start=2026-07-14T08:14:25+08:00
+p2_gate_x_probe_pt01_git_commit=419f0180933ae0c036c5554e8b6376cb29abffcc
+A1 smoke pt_01: true_err=4.383 mm eps=True cls=GOOD wall=143.3s
+summary: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714081426_A1_A2_5mm_supervised_IK_no_gravity/summary.json
+report: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714081426_A1_A2_5mm_supervised_IK_no_gravity_report.md
+p2_gate_x_probe_pt01_root=/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714081426_A1_A2_5mm_supervised_IK_no_gravity
+p2_gate_x_probe_pt01_end=2026-07-14T08:16:51+08:00

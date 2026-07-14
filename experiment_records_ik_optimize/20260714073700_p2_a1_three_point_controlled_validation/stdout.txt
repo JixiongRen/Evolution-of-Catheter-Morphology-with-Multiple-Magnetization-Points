@@ -1,0 +1,26 @@
+started_at=2026-07-14T07:39:23+08:00
+git_commit=1d72580d4c6542578b119337906265ce2a7ab191
+jax_device_check=begin
+{
+  "default_backend": "gpu",
+  "devices": [
+    "cuda:0"
+  ]
+}
+baseline_start=2026-07-14T07:39:25+08:00
+A1 small_regression pt_01: true_err=3.639 mm eps=True cls=GOOD wall=128.7s
+A1 small_regression pt_12: true_err=50.589 mm eps=False cls=GOOD wall=298.9s
+A1 small_regression pt_13: true_err=69.830 mm eps=False cls=GOOD wall=504.3s
+summary: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714073926_A1_A2_5mm_supervised_IK_no_gravity/summary.json
+report: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714073926_A1_A2_5mm_supervised_IK_no_gravity_report.md
+baseline_root=/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714073926_A1_A2_5mm_supervised_IK_no_gravity
+baseline_end=2026-07-14T07:55:02+08:00
+controlled_start=2026-07-14T07:55:02+08:00
+A1 small_regression pt_01: true_err=108.852 mm eps=False cls=GOOD wall=75.9s
+A1 small_regression pt_12: true_err=108.852 mm eps=False cls=GOOD wall=74.8s
+A1 small_regression pt_13: true_err=108.852 mm eps=False cls=GOOD wall=74.6s
+summary: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714075503_A1_A2_5mm_supervised_IK_no_gravity/summary.json
+report: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714075503_A1_A2_5mm_supervised_IK_no_gravity_report.md
+controlled_root=/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714075503_A1_A2_5mm_supervised_IK_no_gravity
+controlled_end=2026-07-14T07:58:52+08:00
+finished_at=2026-07-14T07:58:52+08:00

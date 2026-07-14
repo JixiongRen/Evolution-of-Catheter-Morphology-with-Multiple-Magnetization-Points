@@ -1,0 +1,6 @@
+{
+  "default_backend": "gpu",
+  "devices": [
+    "cuda:0"
+  ]
+}

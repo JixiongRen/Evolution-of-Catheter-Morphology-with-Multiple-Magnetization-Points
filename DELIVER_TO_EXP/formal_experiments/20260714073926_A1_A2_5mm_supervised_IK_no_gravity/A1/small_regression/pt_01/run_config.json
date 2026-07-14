@@ -1,0 +1,345 @@
+{
+  "argv": {
+    "config": null,
+    "flex_lengths": "0.1",
+    "rigid_lengths": "0.003",
+    "L_protrude": 0.103,
+    "L1_min": 1e-06,
+    "M_list": "5",
+    "flex_d_outer": "0.0015",
+    "flex_E": "1800000",
+    "flex_G": "600000",
+    "flex_rho": "970",
+    "rigid_d_outer": "0.0015",
+    "rigid_rho": "7500",
+    "p0": "0,0,0",
+    "Q0": "0.70710678,0,0.70710678,0",
+    "axis_body": "0,0,1",
+    "enable_gravity": false,
+    "g_world": "0,0,-9.81",
+    "enable_magnetics": true,
+    "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+    "actuation_table_pkl": null,
+    "coil_currents": null,
+    "m_body_list": "0,0,0.0061171875",
+    "max_iter": 100000,
+    "tol": 1e-05,
+    "lm_damping": 0.1,
+    "jac_method": "fwd",
+    "scale_mode": "optimized",
+    "plot": false,
+    "p_des": "0.06,0.0951056516295,0.0309016994375",
+    "eps_p": 0.005,
+    "sigma_p": 0.005,
+    "I_min": null,
+    "I_max": 20.0,
+    "I0": "0,0,0,0,0,0,0,0",
+    "x0": 0.103,
+    "x_min": 0.003001,
+    "x_max": 0.203,
+    "x_ref": 0.103,
+    "outer_max_iter": 50,
+    "lam_init": 0.01,
+    "lam_up": 10.0,
+    "lam_down": 0.3,
+    "rho_good": 0.75,
+    "rho_bad": 0.25,
+    "step_I_max": 5.0,
+    "step_x_max": 0.02,
+    "pred_red_tol": 1e-10,
+    "step_I_tol": 1e-06,
+    "step_x_tol": 1e-09,
+    "act_red_tol": 1e-10,
+    "p2_trust_region": false,
+    "p2_terminal_error_first": false,
+    "p2_reliable_subspace": false,
+    "p2_reliable_task_rcond": 0.001,
+    "p2_min_full_task_rank": 2,
+    "p2_max_backtracks": 0,
+    "p2_backtrack_shrink": 0.5,
+    "p2_disable_Ix_jacobian_below_dx": -1.0,
+    "channel_gate_file": null,
+    "channel_gate_key": null,
+    "channel_gate_missing_policy": "block_all",
+    "channel_gate_allow_limited": true,
+    "w_I": 0.05,
+    "w_x": 20.0,
+    "w_dI": 0.2,
+    "w_dx": 200.0,
+    "w_Ix": 0.0005,
+    "dx_floor": 0.001,
+    "ridge_adjoint": 1e-10,
+    "fd_x_eps": 0.001,
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "gn_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "store_accepted_jacobian": false,
+    "sensitivity_conditioning": false,
+    "tol_E_good": null,
+    "tol_E_weak": 0.01,
+    "tol_E_bad": 0.1,
+    "penalty_bad": 1000.0,
+    "out_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714073926_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression",
+    "run_name": "pt_01",
+    "print_devices": true,
+    "runtime_profile": true,
+    "warmup_fk_compile": false,
+    "warmup_ik_adjoint": false,
+    "branch_state_capture": true,
+    "initial_branch_state_npz": null,
+    "seed": 20261706
+  },
+  "fk_cfg": {},
+  "p_des": [
+    0.06,
+    0.0951056516295,
+    0.0309016994375
+  ],
+  "seed": 20261706,
+  "I_min": -20.0,
+  "I_max": 20.0,
+  "x0": 0.103,
+  "x_bounds": [
+    0.003001,
+    0.203
+  ],
+  "x_ref": 0.103,
+  "sigma_p": 0.005,
+  "initial_control_hash": "b04ba995dc4ba0c9b2abe3b4096e073eceec0fcfefc930a58bdac3c5395ea0d2",
+  "initial_branch_state": {
+    "enabled": false,
+    "requested_control_hash": "b04ba995dc4ba0c9b2abe3b4096e073eceec0fcfefc930a58bdac3c5395ea0d2"
+  },
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "gn_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 1e-10,
+    "sensitivity_conditioning": false
+  },
+  "runtime_environment": {
+    "code_commit": "1d72580d4c6542578b119337906265ce2a7ab191",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 9813,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "p2_outer_solver": {
+    "trust_region": false,
+    "terminal_error_first": false,
+    "reliable_subspace": false,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 0,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": -1.0
+  },
+  "control_channel_gate": {
+    "enabled": false,
+    "source": null,
+    "key": null,
+    "missing_policy": "block_all",
+    "allow_limited": true,
+    "allowed_mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "allowed_channels": [
+      "I0",
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7",
+      "x"
+    ],
+    "blocked_channels": [],
+    "channel_reasons": [
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled"
+    ],
+    "safe_step_abs_max": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "matched_rows": 0
+  },
+  "init": {
+    "x_m": 0.10299999999999998,
+    "I_A": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "p_tip_m": [
+      0.102998115590478,
+      0.0,
+      -3.616037349725393e-27
+    ],
+    "p_tip_flex_m": [
+      0.09999817404052593,
+      0.0,
+      -3.359595344676349e-27
+    ],
+    "p_tip_true_m": [
+      0.102998115590478,
+      0.0,
+      -3.616037349725393e-27
+    ],
+    "err_m": 0.10885236765605749,
+    "err_mm": 108.8523676560575,
+    "err_flex_m": 0.10770261801169739,
+    "err_flex_mm": 107.7026180116974,
+    "err_true_m": 0.10885236765605749,
+    "err_true_mm": 108.8523676560575,
+    "centerline_npy": "poses/accept/centerline_iter_0000.npy",
+    "branch_state": {
+      "eval_id": "eval_000000",
+      "npz_path": "branch_states/states/eval_000000_init_iter_0000.npz",
+      "z_star_hash": "4550b2e029d14b3afe3a95a63e06b148107bf3c0b7cf1a247c3a94829a1cf0b5",
+      "warm_start_hash": null,
+      "centerline_hash": "ccb7c54456f50a3e7c2a9ec0c9edea664026f7ca9b95e01bddcdeeb050aa27cb"
+    }
+  },
+  "last_accept": {
+    "iter": 11,
+    "x_m": 0.13207216871354585,
+    "I_A": [
+      0.5019253515405375,
+      -2.1019127190263864,
+      -0.4456021621536087,
+      1.9172863254217718,
+      0.553392799972535,
+      -2.0075349678663548,
+      -0.35433840643994297,
+      1.9207483970664088
+    ],
+    "p_tip_m": [
+      0.059143592705091425,
+      0.09175170399893656,
+      0.02977950466668114
+    ],
+    "p_tip_flex_m": [
+      0.05997216834465966,
+      0.08898293282209192,
+      0.028974911384593564
+    ],
+    "p_tip_true_m": [
+      0.059143592705091425,
+      0.09175170399893656,
+      0.02977950466668114
+    ],
+    "err_m": 0.003638917320713383,
+    "err_mm": 3.638917320713383,
+    "err_flex_m": 0.006418798360787668,
+    "err_flex_mm": 6.418798360787668,
+    "err_true_m": 0.003638917320713383,
+    "err_true_mm": 3.638917320713383,
+    "centerline_npy": "poses/accept/centerline_iter_0011.npy",
+    "branch_state": {
+      "eval_id": "eval_000011",
+      "npz_path": "branch_states/states/eval_000011_trial_iter_1100.npz",
+      "z_star_hash": "12c4f160776254eb994710702b0dd06b09ec5c5ddf92553e26bba3c3e4574f20",
+      "warm_start_hash": "febb30a5a3735ce3ce81752f77dee24f21858411062af01daa8ece132a708ba4",
+      "centerline_hash": "f8ce20d2cf0d72070e5fa82ce51f4c0d517958c2c448b77b04d0234917ef3796"
+    }
+  },
+  "final": {
+    "x_m": 0.13207216871354585,
+    "I_A": [
+      0.5019253515405375,
+      -2.1019127190263864,
+      -0.4456021621536087,
+      1.9172863254217718,
+      0.553392799972535,
+      -2.0075349678663548,
+      -0.354338406439943,
+      1.9207483970664092
+    ],
+    "p_tip_m": [
+      0.059143592705091425,
+      0.09175170399893656,
+      0.02977950466668114
+    ],
+    "p_tip_flex_m": [
+      0.05997216834465966,
+      0.08898293282209192,
+      0.028974911384593564
+    ],
+    "p_tip_true_m": [
+      0.059143592705091425,
+      0.09175170399893656,
+      0.02977950466668114
+    ],
+    "err_m": 0.003638917320713383,
+    "err_mm": 3.638917320713383,
+    "err_flex_m": 0.006418798360787668,
+    "err_flex_mm": 6.418798360787668,
+    "err_true_m": 0.003638917320713383,
+    "err_true_mm": 3.638917320713383,
+    "centerline_npy": "poses/accept/centerline_iter_0012.npy",
+    "branch_state": {
+      "eval_id": "eval_000012",
+      "npz_path": "branch_states/states/eval_000012_final_iter_0012.npz",
+      "z_star_hash": "12c4f160776254eb994710702b0dd06b09ec5c5ddf92553e26bba3c3e4574f20",
+      "warm_start_hash": "12c4f160776254eb994710702b0dd06b09ec5c5ddf92553e26bba3c3e4574f20",
+      "centerline_hash": "f8ce20d2cf0d72070e5fa82ce51f4c0d517958c2c448b77b04d0234917ef3796"
+    }
+  }
+}
