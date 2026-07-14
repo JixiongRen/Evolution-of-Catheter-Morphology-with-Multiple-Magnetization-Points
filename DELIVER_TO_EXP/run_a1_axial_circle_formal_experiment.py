@@ -711,6 +711,100 @@ def _run_one_target(
     return summary
 
 
+def _run_one_target_two_stage(
+    *,
+    catheter_key: str,
+    cfg: dict[str, Any],
+    target: dict[str, Any],
+    phase_dir: Path,
+    phase: str,
+    experiment_type: str,
+    experiment_type_zh: str,
+    formal_statistics_included: bool,
+    initial_I_A: list[float] | None,
+    initial_x_m: float,
+    x_search_max_m: float,
+    enable_gravity: bool,
+    warm_start_source: str,
+    outer_max_iter: int,
+    per_point_timeout_s: float,
+    eps_p_m: float,
+    step_I_max: float,
+    step_x_max: float,
+    sensitivity_config: dict[str, Any],
+    p2_config: dict[str, Any],
+    channel_gate_config: dict[str, Any],
+    initial_branch_state_npz: str | None = None,
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Run basin seeking first, then refine from the selected basin state."""
+    target_index = int(target["index"])
+    basin_config = {**channel_gate_config, "stage": "basin"}
+    refine_config = {**channel_gate_config, "stage": "refine"}
+    basin_row = _run_one_target(
+        catheter_key=catheter_key,
+        cfg=cfg,
+        target=target,
+        phase_dir=phase_dir.parent / f"{phase}_basin",
+        phase=f"{phase}_basin",
+        experiment_type=experiment_type,
+        experiment_type_zh=experiment_type_zh,
+        formal_statistics_included=False,
+        initial_I_A=initial_I_A,
+        initial_x_m=initial_x_m,
+        x_search_max_m=x_search_max_m,
+        enable_gravity=enable_gravity,
+        warm_start_source=f"{warm_start_source}_basin",
+        outer_max_iter=outer_max_iter,
+        per_point_timeout_s=per_point_timeout_s,
+        eps_p_m=eps_p_m,
+        step_I_max=step_I_max,
+        step_x_max=step_x_max,
+        sensitivity_config=sensitivity_config,
+        p2_config=p2_config,
+        channel_gate_config=basin_config,
+        initial_branch_state_npz=initial_branch_state_npz,
+    )
+    stage_rows = [basin_row]
+    basin_I = basin_row.get("I_A")
+    basin_x = basin_row.get("x_m")
+    basin_branch = basin_row.get("branch_npz_path")
+    if basin_I is None or basin_x is None or basin_branch is None:
+        basin_row["two_stage_status"] = "basin_without_refine_state"
+        basin_row["point_decision"] = "两阶段入盆状态不可用于精修"
+        return basin_row, stage_rows
+
+    refine_row = _run_one_target(
+        catheter_key=catheter_key,
+        cfg=cfg,
+        target=target,
+        phase_dir=phase_dir.parent / f"{phase}_refine",
+        phase=f"{phase}_refine",
+        experiment_type=experiment_type,
+        experiment_type_zh=experiment_type_zh,
+        formal_statistics_included=formal_statistics_included,
+        initial_I_A=[float(v) for v in basin_I],
+        initial_x_m=float(basin_x),
+        x_search_max_m=x_search_max_m,
+        enable_gravity=enable_gravity,
+        warm_start_source=f"two_stage_basin_pt_{target_index:02d}",
+        outer_max_iter=outer_max_iter,
+        per_point_timeout_s=per_point_timeout_s,
+        eps_p_m=eps_p_m,
+        step_I_max=step_I_max,
+        step_x_max=step_x_max,
+        sensitivity_config=sensitivity_config,
+        p2_config=p2_config,
+        channel_gate_config=refine_config,
+        initial_branch_state_npz=str(basin_branch),
+    )
+    refine_row["two_stage_status"] = "refine_completed"
+    refine_row["two_stage_basin_err_true_mm"] = basin_row.get("err_true_mm")
+    refine_row["two_stage_basin_success_eps"] = basin_row.get("success_eps")
+    refine_row["two_stage_basin_run_dir"] = basin_row.get("run_dir")
+    refine_row["two_stage_basin_branch_npz_path"] = basin_branch
+    return refine_row, stage_rows
+
+
 def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fields = [
@@ -787,6 +881,11 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "control_gate_basin_channels",
         "control_gate_blocked_channels",
         "control_gate_channel_reasons",
+        "two_stage_status",
+        "two_stage_basin_err_true_mm",
+        "two_stage_basin_success_eps",
+        "two_stage_basin_run_dir",
+        "two_stage_basin_branch_npz_path",
         "run_dir",
     ]
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -927,6 +1026,7 @@ def _run_catheter(
     initial_I_A_override: list[float] | None = None,
     initial_x_m_override: float | None = None,
     initial_branch_state_npz_override: str | None = None,
+    two_stage_gate: bool = False,
 ) -> dict[str, Any]:
     cfg = _catheter_solver_cfg(config, catheter_key)
     catheter_root = run_root / catheter_key
@@ -988,30 +1088,57 @@ def _run_catheter(
         phase_name = _forced_phase_name(experiment_type)
         phase_dir = catheter_root / phase_name
         for target in targets:
-            row = _run_one_target(
-                catheter_key=catheter_key,
-                cfg=cfg,
-                target=target,
-                phase_dir=phase_dir,
-                phase=phase_name,
-                experiment_type=experiment_type,
-                experiment_type_zh=experiment_type_zh,
-                formal_statistics_included=experiment_type == "formal_20pt" and phase_name == "formal_20pt",
-                initial_I_A=warm_I,
-                initial_x_m=warm_x,
-                x_search_max_m=x_search_max_m,
-                enable_gravity=enable_gravity,
-                warm_start_source=warm_source,
-                outer_max_iter=outer_max_iter,
-                per_point_timeout_s=per_point_timeout_s,
-                eps_p_m=eps_p_m,
-                step_I_max=step_I_max,
-                step_x_max=step_x_max,
-                sensitivity_config=sensitivity_config,
-                p2_config=p2_config,
-                channel_gate_config=channel_gate_config,
-                initial_branch_state_npz=warm_branch_state_npz,
-            )
+            if two_stage_gate:
+                row, stage_rows = _run_one_target_two_stage(
+                    catheter_key=catheter_key,
+                    cfg=cfg,
+                    target=target,
+                    phase_dir=phase_dir,
+                    phase=phase_name,
+                    experiment_type=experiment_type,
+                    experiment_type_zh=experiment_type_zh,
+                    formal_statistics_included=experiment_type == "formal_20pt" and phase_name == "formal_20pt",
+                    initial_I_A=warm_I,
+                    initial_x_m=warm_x,
+                    x_search_max_m=x_search_max_m,
+                    enable_gravity=enable_gravity,
+                    warm_start_source=warm_source,
+                    outer_max_iter=outer_max_iter,
+                    per_point_timeout_s=per_point_timeout_s,
+                    eps_p_m=eps_p_m,
+                    step_I_max=step_I_max,
+                    step_x_max=step_x_max,
+                    sensitivity_config=sensitivity_config,
+                    p2_config=p2_config,
+                    channel_gate_config=channel_gate_config,
+                    initial_branch_state_npz=warm_branch_state_npz,
+                )
+                rows.extend(stage_rows)
+            else:
+                row = _run_one_target(
+                    catheter_key=catheter_key,
+                    cfg=cfg,
+                    target=target,
+                    phase_dir=phase_dir,
+                    phase=phase_name,
+                    experiment_type=experiment_type,
+                    experiment_type_zh=experiment_type_zh,
+                    formal_statistics_included=experiment_type == "formal_20pt" and phase_name == "formal_20pt",
+                    initial_I_A=warm_I,
+                    initial_x_m=warm_x,
+                    x_search_max_m=x_search_max_m,
+                    enable_gravity=enable_gravity,
+                    warm_start_source=warm_source,
+                    outer_max_iter=outer_max_iter,
+                    per_point_timeout_s=per_point_timeout_s,
+                    eps_p_m=eps_p_m,
+                    step_I_max=step_I_max,
+                    step_x_max=step_x_max,
+                    sensitivity_config=sensitivity_config,
+                    p2_config=p2_config,
+                    channel_gate_config=channel_gate_config,
+                    initial_branch_state_npz=warm_branch_state_npz,
+                )
             warm_branch_state_npz = None
             formal_rows.append(row)
             rows.append(row)
@@ -1065,6 +1192,9 @@ def _run_catheter(
     _write_rows_csv(catheter_root / "all_points_summary.csv", rows)
     overview_rows = formal_rows if formal_rows else diag_rows if diag_rows else gate_rows
     overview_plot = _plot_phase_overview(run_root, overview_rows, targets, f"{catheter_key}_target_circle_true_tip_overview")
+    auxiliary_rows = [
+        row for row in rows if row not in gate_rows and row not in formal_rows and row not in diag_rows
+    ]
     return {
         "catheter_type": catheter_key,
         "decision": decision,
@@ -1075,6 +1205,7 @@ def _run_catheter(
         "gate_rows": gate_rows,
         "formal_rows": formal_rows,
         "diagnostic_rows": diag_rows,
+        "auxiliary_rows": auxiliary_rows,
         "all_rows_csv": str((catheter_root / "all_points_summary.csv").resolve()),
         "overview_plot": overview_plot,
     }
@@ -1151,6 +1282,7 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         f"可靠子空间 `{p2_cfg.get('reliable_subspace')}`，"
         f"最大回溯次数 `{p2_cfg.get('max_backtracks')}`。"
     )
+    lines.append(f"- 两阶段门禁：`{metadata.get('two_stage_gate')}`。开启时先使用入盆通道，再从入盆状态切回精修通道。")
     lines.append(f"- 自动超时：单个目标点超过 {metadata['per_point_timeout_s'] / 60.0:.1f} 分钟未自然退出时，标记为 auto_timeout，不计入成功。")
     lines.append("- A1：末端单磁体沿局部 z 轴轴向磁化。")
     lines.append("- A2：末端单磁体沿局部 x 轴径向磁化。")
@@ -1308,6 +1440,7 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--p2-max-backtracks", type=int, default=0, help="Maximum IK backtracking retries.")
     parser.add_argument("--p2-backtrack-shrink", type=float, default=0.5, help="IK backtracking shrink ratio.")
     parser.add_argument("--p2-disable-Ix-jacobian-below-dx", type=float, default=-1.0, help="Disable r_Ix current Jacobian below this insertion change [m].")
+    parser.add_argument("--two-stage-gate", action="store_true", help="Run basin-stage gate first and refine-stage gate second for each forced target.")
     parser.add_argument("--channel-gate-file", type=str, default=None, help="CSV file with audited control-channel classifications.")
     parser.add_argument(
         "--channel-gate-missing-policy",
@@ -1448,6 +1581,7 @@ def main(argv: list[str] | None = None) -> None:
         "eps_p_m": eps_p_m,
         "sigma_p_m": eps_p_m,
         "force_formal_20": bool(args.force_formal_20),
+        "two_stage_gate": bool(args.two_stage_gate),
         "M": 5,
         "tol": 1e-5,
         "enable_gravity": enable_gravity,
@@ -1492,6 +1626,7 @@ def main(argv: list[str] | None = None) -> None:
         f"--p2-max-backtracks {int(p2_config['max_backtracks'])} "
         f"--p2-backtrack-shrink {float(p2_config['backtrack_shrink']):.12g} "
         f"--p2-disable-Ix-jacobian-below-dx {float(p2_config['disable_Ix_jacobian_below_dx']):.12g} "
+        f"{'--two-stage-gate' if args.two_stage_gate else ''} "
         f"{'--channel-gate-file ' + channel_gate_file if channel_gate_file else ''} "
         f"{'--channel-gate-missing-policy ' + channel_gate_config['missing_policy'] if channel_gate_file else ''} "
         f"{'--channel-gate-stage ' + channel_gate_config['stage'] if channel_gate_file else ''} "
@@ -1529,12 +1664,14 @@ def main(argv: list[str] | None = None) -> None:
             initial_I_A_override=initial_I_A_override,
             initial_x_m_override=initial_x_m_override,
             initial_branch_state_npz_override=initial_branch_state_npz_override,
+            two_stage_gate=bool(args.two_stage_gate),
         )
     metadata["total_wall_s"] = float(time.perf_counter() - t0)
 
     all_rows: list[dict[str, Any]] = []
     for key in catheter_keys:
         all_rows.extend(results[key]["gate_rows"])
+        all_rows.extend(results[key].get("auxiliary_rows", []))
         all_rows.extend(results[key]["formal_rows"])
         all_rows.extend(results[key]["diagnostic_rows"])
     _write_rows_csv(run_root / "summary.csv", all_rows)

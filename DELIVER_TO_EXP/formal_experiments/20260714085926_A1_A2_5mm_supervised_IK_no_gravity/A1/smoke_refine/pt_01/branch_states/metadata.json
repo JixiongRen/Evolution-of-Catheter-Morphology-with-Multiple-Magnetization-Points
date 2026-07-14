@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-07-14 08:59:55",
+  "code_commit": "01cd4613af461b38acda6f9a0886b36075828b48",
+  "git_tracked_dirty": true,
+  "git_untracked_count": 9924,
+  "argv_hash": "503ca47d2360255286694903f857dd6b487a07a53209d4b954b48af3f825b3c8",
+  "fk_cfg_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "geometry_hash": "23dceb2577e66334ce48808c92ded3a72278be81b90159130b90776a75f1510a",
+  "material_hash": "c384103bf12248388d2d03533bf3367def8401326d8f6280d6813aedaf7fca21",
+  "magnet_hash": "54d146631da33cbee204170011211eb5555e214205f0478e835701a07d23660c",
+  "solver_hash": "5c02cae6bc5074914528e91844f58ea75ce37f560e31d94f64e63493ce9c3289",
+  "sensitivity_hash": "e924f20be5880fea6791488f5848ca1b47ce22943e5f7c3c1e0e6a4c2362f3ae",
+  "initial_control_hash": "bc8013abd3199bded2d2e49c9c1afe78c5c4f0641f5ee66073a8661893bcbe9b",
+  "initial_branch_state": {
+    "enabled": true,
+    "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714085926_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke_basin/pt_01/branch_states/states/eval_000000_init_iter_0000.npz",
+    "z_star_shape": [
+      286
+    ],
+    "z_star_hash": "99f645b6c28f945acfad7a18e900714dd59b6e06427468231e8c68bd0ef2470e",
+    "available_fields": [
+      "E_star",
+      "I_A",
+      "centerline_m",
+      "flex_tip_m",
+      "scales",
+      "target_m",
+      "terminal_true_m",
+      "warm_start_z_bar",
+      "x_m",
+      "z_star_bar"
+    ],
+    "source_I_A": [
+      0.62639234388,
+      -1.1503165813900003,
+      0.06129948407980001,
+      0.9572736725220001,
+      0.0378554144393,
+      -1.00715393572,
+      -0.758089331436,
+      1.04269296916
+    ],
+    "source_x_m": 0.131494942707,
+    "source_control_hash": "8669609104216b93357533be30b6c936298684679ff181dcbef735294d6dcc11",
+    "source_terminal_true_m": [
+      0.05897043487436832,
+      0.0910761314739226,
+      0.029516944140408927
+    ],
+    "source_flex_tip_m": [
+      0.05983221900581732,
+      0.08834317285697714,
+      0.02862909774415205
+    ],
+    "source_target_m": [
+      0.06,
+      0.0951056516295,
+      0.0309016994375
+    ],
+    "requested_control_hash": "bc8013abd3199bded2d2e49c9c1afe78c5c4f0641f5ee66073a8661893bcbe9b",
+    "source_vs_requested_I_inf_A": 2.220446049250313e-16,
+    "source_vs_requested_x_abs_m": 0.0
+  },
+  "branch_gate_note": "A saved state is traceable evidence only; same-branch claims require replay and roundtrip gates."
+}
