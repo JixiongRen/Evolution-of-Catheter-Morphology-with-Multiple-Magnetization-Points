@@ -1,0 +1,16 @@
+{
+  "experiment_id": "20260714142436_p2_outer_step_diagnostics",
+  "scope": "outer IK diagnostic logging",
+  "solver_behavior_changed": false,
+  "fk_physics_changed": false,
+  "ik_acceptance_rule_changed": false,
+  "verification": {
+    "py_compile": "passed",
+    "command": "XLA_PYTHON_CLIENT_PREALLOCATE=false /home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python -m py_compile inverse_kinematics/ik_multisite_lm_opt.py"
+  },
+  "new_fields": [
+    "step_collapse_source",
+    "step_diagnostics"
+  ],
+  "next_use": "attribute A1/A2 outer-iteration stagnation to LM tiny step, physical clipping, control bounds, channel gate, or prediction failure"
+}
