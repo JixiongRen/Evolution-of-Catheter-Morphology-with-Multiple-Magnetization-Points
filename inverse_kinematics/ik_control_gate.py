@@ -6,6 +6,7 @@ import csv
 from dataclasses import dataclass
 import math
 from pathlib import Path
+import re
 from typing import Any, Iterable
 
 
@@ -76,7 +77,14 @@ def _default_reason(channel_idx: int, n_coils: int, missing_policy: str) -> str:
 
 def _row_matches_key(row: dict[str, str], key: str) -> bool:
     run = str(row.get("run", row.get("point_key", ""))).strip()
-    return bool(run == key or run.startswith(f"{key}_"))
+    run_norm = _canonical_gate_key(run)
+    key_norm = _canonical_gate_key(str(key).strip())
+    return bool(run_norm == key_norm or run_norm.startswith(f"{key_norm}_"))
+
+
+def _canonical_gate_key(value: str) -> str:
+    """Normalize point-key variants such as A1_pt13 and A1_pt_13."""
+    return re.sub(r"_pt_?(\d+)", lambda match: f"_pt{int(match.group(1)):02d}", str(value).strip())
 
 
 def _row_channel_index(row: dict[str, str], n_coils: int) -> int | None:

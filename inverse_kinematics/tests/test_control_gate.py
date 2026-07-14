@@ -90,6 +90,27 @@ def test_control_gate_loads_summary_decision_rows(tmp_path: Path) -> None:
     assert gate.safe_step_abs_max[5] == 0.125
 
 
+def test_control_gate_matches_underscored_point_keys(tmp_path: Path) -> None:
+    table = tmp_path / "gate_underscored.csv"
+    table.write_text(
+        "\n".join(
+            [
+                "run,point,kind,channel,classification,limited_safe_step_abs_max",
+                "A1_pt_13,pt_13,I,5,可有限使用,0.25",
+                "A1_pt_13,pt_13,x,-1,禁用,",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    gate = load_control_gate(table, key="A1_pt13", n_coils=8, allow_limited=True)
+
+    assert gate.matched_rows == 2
+    assert gate.allowed_mask[5]
+    assert not gate.allowed_mask[-1]
+    assert gate.safe_step_abs_max[5] == 0.25
+
+
 def test_control_gate_disabled_allows_legacy_full_update() -> None:
     gate = load_control_gate(None, key=None, n_coils=8)
 
