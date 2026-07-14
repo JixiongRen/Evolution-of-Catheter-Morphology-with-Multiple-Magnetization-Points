@@ -1156,6 +1156,54 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         save_history_json(history, history_path)
         _profile_add(runtime_profile, "io", "save_history", time.perf_counter() - t0)
 
+    def _write_result(pack: EvalPack, I_values: Array, x_value: float, *, profile_label: str = "save_result") -> None:
+        """Write the point result summary for both normal and init-converged exits."""
+        result_tip_fields = _tip_report_fields(pack, p_des)
+        t0_result = time.perf_counter()
+        (run_dir / "result.json").write_text(
+            json.dumps(
+                {
+                    "success": bool(pack.err <= eps_p and pack.cls != "REJECT"),
+                    "success_flex_eps": bool(result_tip_fields["err_flex_m"] <= eps_p and pack.cls != "REJECT"),
+                    "success_true_eps": bool(result_tip_fields["err_true_m"] <= eps_p and pack.cls != "REJECT"),
+                    "p_des": [float(v) for v in p_des.tolist()],
+                    "p_tip": result_tip_fields["p_tip_m"],
+                    "p_tip_flex": result_tip_fields["p_tip_flex_m"],
+                    "p_tip_true": result_tip_fields["p_tip_true_m"],
+                    **result_tip_fields,
+                    "I": [float(v) for v in np.asarray(jax.device_get(I_values)).reshape(-1,).tolist()],
+                    "x": float(x_value),
+                    "normE": float(pack.normE),
+                    "cls": str(pack.cls),
+                    "sigma_p": float(sigma_p),
+                    "sensitivity_config": sensitivity_config,
+                    "runtime_environment": runtime_environment,
+                    "sigmas_from_w": {
+                        "sigma_I": (1.0 / w_I) if w_I > 0 else None,
+                        "sigma_x": (1.0 / w_x) if w_x > 0 else None,
+                        "sigma_dI": (1.0 / w_dI) if w_dI > 0 else None,
+                        "sigma_dx": (1.0 / w_dx) if w_dx > 0 else None,
+                        "sigma_Ix": (1.0 / w_Ix) if w_Ix > 0 else None,
+                    },
+                    "step_limits": {"step_I_max": step_I_max, "step_x_max": step_x_max},
+                    "p2_outer_solver": {
+                        "trust_region": p2_trust_region,
+                        "terminal_error_first": p2_terminal_error_first,
+                        "reliable_subspace": p2_reliable_subspace,
+                        "reliable_task_rcond": p2_reliable_task_rcond,
+                        "min_full_task_rank": p2_min_full_task_rank,
+                        "max_backtracks": p2_max_backtracks,
+                        "backtrack_shrink": p2_backtrack_shrink,
+                        "disable_Ix_jacobian_below_dx": p2_disable_Ix_jacobian_below_dx,
+                    },
+                    "control_channel_gate": control_gate_info,
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        _profile_add(runtime_profile, "io", profile_label, time.perf_counter() - t0_result)
+
     def _safe_sigma(w: float) -> str:
         if w <= 0:
             return "inf"
@@ -1299,7 +1347,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     if cur.err <= eps_p and cur.cls != "REJECT":
         print(f"[IK-LM] Converged at init: ||e||={cur.err*1e3:.3f}mm")
+        _write_result(cur, cur.I, cur.x, profile_label="save_result_init_converged")
         _write_runtime_profile(run_dir, runtime_profile)
+        print("[IK-LM] Saved result.json")
         return
 
     jac_res_cached: Optional[Any] = None
@@ -1843,51 +1893,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         )
     except Exception as e:
         print(f"[IK-LM] WARNING: failed to save final snapshot: {repr(e)}")
-    t0 = time.perf_counter()
-    result_tip_fields = _tip_report_fields(cur, p_des)
-    (run_dir / "result.json").write_text(
-        json.dumps(
-            {
-                "success": bool(cur.err <= eps_p and cur.cls != "REJECT"),
-                "success_flex_eps": bool(result_tip_fields["err_flex_m"] <= eps_p and cur.cls != "REJECT"),
-                "success_true_eps": bool(result_tip_fields["err_true_m"] <= eps_p and cur.cls != "REJECT"),
-                "p_des": [float(v) for v in p_des.tolist()],
-                "p_tip": result_tip_fields["p_tip_m"],
-                "p_tip_flex": result_tip_fields["p_tip_flex_m"],
-                "p_tip_true": result_tip_fields["p_tip_true_m"],
-                **result_tip_fields,
-                "I": [float(v) for v in I_fin.tolist()],
-                "x": float(x_fin),
-                "normE": float(cur.normE),
-                "cls": str(cur.cls),
-                "sigma_p": float(sigma_p),
-                "sensitivity_config": sensitivity_config,
-                "runtime_environment": runtime_environment,
-                "sigmas_from_w": {
-                    "sigma_I": (1.0 / w_I) if w_I > 0 else None,
-                    "sigma_x": (1.0 / w_x) if w_x > 0 else None,
-                    "sigma_dI": (1.0 / w_dI) if w_dI > 0 else None,
-                    "sigma_dx": (1.0 / w_dx) if w_dx > 0 else None,
-                    "sigma_Ix": (1.0 / w_Ix) if w_Ix > 0 else None,
-                },
-                "step_limits": {"step_I_max": step_I_max, "step_x_max": step_x_max},
-                "p2_outer_solver": {
-                    "trust_region": p2_trust_region,
-                    "terminal_error_first": p2_terminal_error_first,
-                    "reliable_subspace": p2_reliable_subspace,
-                    "reliable_task_rcond": p2_reliable_task_rcond,
-                    "min_full_task_rank": p2_min_full_task_rank,
-                    "max_backtracks": p2_max_backtracks,
-                    "backtrack_shrink": p2_backtrack_shrink,
-                    "disable_Ix_jacobian_below_dx": p2_disable_Ix_jacobian_below_dx,
-                },
-                "control_channel_gate": control_gate_info,
-            },
-            indent=2,
-        ),
-        encoding="utf-8",
-    )
-    _profile_add(runtime_profile, "io", "save_result", time.perf_counter() - t0)
+    _write_result(cur, I_fin, x_fin)
     _write_runtime_profile(run_dir, runtime_profile)
     print("[IK-LM] Saved result.json")
 

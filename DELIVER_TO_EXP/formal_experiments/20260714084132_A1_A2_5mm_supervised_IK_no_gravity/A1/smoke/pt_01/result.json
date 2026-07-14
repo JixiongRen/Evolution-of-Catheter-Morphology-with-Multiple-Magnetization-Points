@@ -1,0 +1,163 @@
+{
+  "success": true,
+  "success_flex_eps": false,
+  "success_true_eps": true,
+  "p_des": [
+    0.06,
+    0.0951056516295,
+    0.0309016994375
+  ],
+  "p_tip": [
+    0.05897043487436832,
+    0.0910761314739226,
+    0.029516944140408927
+  ],
+  "p_tip_flex": [
+    0.05983221900581732,
+    0.08834317285697714,
+    0.02862909774415205
+  ],
+  "p_tip_true": [
+    0.05897043487436832,
+    0.0910761314739226,
+    0.029516944140408927
+  ],
+  "p_tip_m": [
+    0.05897043487436832,
+    0.0910761314739226,
+    0.029516944140408927
+  ],
+  "p_tip_flex_m": [
+    0.05983221900581732,
+    0.08834317285697714,
+    0.02862909774415205
+  ],
+  "p_tip_true_m": [
+    0.05897043487436832,
+    0.0910761314739226,
+    0.029516944140408927
+  ],
+  "err_m": 0.004383444338068319,
+  "err_mm": 4.383444338068319,
+  "err_flex_m": 0.007136104544318216,
+  "err_flex_mm": 7.136104544318216,
+  "err_true_m": 0.004383444338068319,
+  "err_true_mm": 4.383444338068319,
+  "I": [
+    0.62639234388,
+    -1.1503165813900003,
+    0.06129948407980001,
+    0.9572736725220001,
+    0.0378554144393,
+    -1.00715393572,
+    -0.758089331436,
+    1.04269296916
+  ],
+  "x": 0.131494942707,
+  "normE": 9.641720810499995e-06,
+  "cls": "GOOD",
+  "sigma_p": 0.005,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "gn_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 1e-10,
+    "sensitivity_conditioning": false
+  },
+  "runtime_environment": {
+    "code_commit": "6ae088099be156aa97d370ced11f8a2642527bd7",
+    "git_tracked_dirty": true,
+    "git_untracked_count": 9910,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "p2_outer_solver": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  },
+  "control_channel_gate": {
+    "enabled": true,
+    "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+    "key": "A1_pt01",
+    "missing_policy": "block_all",
+    "allow_limited": true,
+    "allowed_mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false
+    ],
+    "allowed_channels": [
+      "I0",
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7"
+    ],
+    "blocked_channels": [
+      "x"
+    ],
+    "channel_reasons": [
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_blocked:\u7981\u7528"
+    ],
+    "safe_step_abs_max": [
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      null
+    ],
+    "matched_rows": 9
+  }
+}
