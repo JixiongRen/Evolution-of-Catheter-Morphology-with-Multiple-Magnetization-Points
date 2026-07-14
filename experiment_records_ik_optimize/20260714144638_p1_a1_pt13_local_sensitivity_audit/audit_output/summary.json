@@ -1,0 +1,63 @@
+{
+  "started": "2026-07-14 14:47:32",
+  "finished": "2026-07-14 14:52:54",
+  "point_count": 1,
+  "sensitivity_rows": 3,
+  "fd_rows": 54,
+  "fd_gate_summary": {
+    "fd_ok": 54,
+    "replay_converged": 54,
+    "branch_consistent": 36,
+    "weak_gate_triggered": 21,
+    "used_in_stats": 21
+  },
+  "settings": {
+    "paths": [
+      "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714142837_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13"
+    ],
+    "out_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714144638_p1_a1_pt13_local_sensitivity_audit/audit_output",
+    "protocol_version": "p1a_reaudit_v2",
+    "resume": false,
+    "selector": "best_accept",
+    "current_steps_a": "0.25,0.125,0.0625",
+    "x_steps_mm": "0.5,0.25,0.125",
+    "current_channels": "auto",
+    "auto_current_channels": 3,
+    "sensitivity_modes": "solver_response,gn_svd,stationarity_exact",
+    "solve_mode": "svd",
+    "ridge": 1e-10,
+    "svd_rcond": 1e-09,
+    "spectral_filter": "hard",
+    "spectral_damping": 0.0,
+    "roundtrip_segments": 2,
+    "terminal_gate_mm": 0.25,
+    "centerline_gate_mm": 0.5,
+    "weak_displacement_mm": 0.25,
+    "health_gate": "warn",
+    "point_timeout_s": 2400.0,
+    "max_points": 0
+  },
+  "runtime_environment": {
+    "code_commit": "aca7a51a2fe84202009c99a668df587098eb0435",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 10709,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "paths": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714142837_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_13"
+  ],
+  "protocol_version": "p1a_reaudit_v2",
+  "completed_points": 1
+}
