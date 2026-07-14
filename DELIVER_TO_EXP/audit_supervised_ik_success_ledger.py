@@ -63,6 +63,14 @@ def _int_or_none(value: Any) -> int | None:
         return None
 
 
+def _success_within_mm(value: Any, threshold_mm: float = 5.0) -> bool:
+    """Return whether a millimeter error value satisfies the threshold."""
+    error = _float_or_none(value)
+    if error is None:
+        return False
+    return error <= threshold_mm
+
+
 def _experiment_root(summary_path: Path) -> Path:
     parts = summary_path.parts
     if "formal_experiments" not in parts:
@@ -106,7 +114,7 @@ def _classify_row(row: dict[str, Any]) -> tuple[str, str, str]:
 
 def _evidence_quality(row: dict[str, Any], category: str) -> tuple[str, str]:
     """Return conservative evidence quality labels."""
-    required = ["warm_start_source", "err_true_mm", "success_5mm", "catheter_type", "target_index"]
+    required = ["warm_start_source", "err_true_mm", "catheter_type", "target_index"]
     missing = [name for name in required if name not in row]
     if missing:
         return "旧格式或证据不足", "缺少字段：" + ",".join(missing)
@@ -122,7 +130,10 @@ def _evidence_quality(row: dict[str, Any], category: str) -> tuple[str, str]:
 def _row_to_record(summary_path: Path, row: dict[str, Any]) -> dict[str, Any]:
     category, category_zh, category_reason = _classify_row(row)
     quality, quality_reason = _evidence_quality(row, category)
-    success_5mm = _truthy(row.get("success_5mm"))
+    success_5mm_raw_field = _truthy(row.get("success_5mm"))
+    success_true_tip_5mm = _success_within_mm(row.get("err_true_mm"), threshold_mm=5.0)
+    success_flex_tip_5mm = _success_within_mm(row.get("err_flex_mm"), threshold_mm=5.0)
+    success_convention_drift = bool(success_5mm_raw_field != success_true_tip_5mm)
     algorithm_stats = _truthy(row.get("algorithm_statistics_included"))
     formal_stats = _truthy(row.get("formal_statistics_included"))
     timed_out = _truthy(row.get("timed_out"))
@@ -132,25 +143,25 @@ def _row_to_record(summary_path: Path, row: dict[str, Any]) -> dict[str, Any]:
     branch_loaded = _truthy(row.get("initial_branch_state_enabled")) or _truthy(row.get("branch_state_warm_start"))
     strict_cold = bool(
         category == "cold_start"
-        and success_5mm
+        and success_true_tip_5mm
         and not timed_out
         and not branch_loaded
         and quality == "算法证据"
     )
     cold_restart = bool(
         category == "cold_restart_after_failure"
-        and success_5mm
+        and success_true_tip_5mm
         and not timed_out
         and not branch_loaded
         and quality == "算法证据"
     )
     continuation_success = bool(
         category in {"neighbor_continuation", "stale_success_continuation"}
-        and success_5mm
+        and success_true_tip_5mm
         and not timed_out
         and not branch_loaded
     )
-    branch_reload_success = bool(category == "branch_state_reload" and success_5mm and not timed_out)
+    branch_reload_success = bool(category == "branch_state_reload" and success_true_tip_5mm and not timed_out)
 
     exp_root = _experiment_root(summary_path)
     run_dir = str(row.get("run_dir") or "")
@@ -164,7 +175,11 @@ def _row_to_record(summary_path: Path, row: dict[str, Any]) -> dict[str, Any]:
         "target_index": row.get("target_index"),
         "err_true_mm": row.get("err_true_mm"),
         "err_flex_mm": row.get("err_flex_mm"),
-        "success_5mm": success_5mm,
+        "success_5mm": success_true_tip_5mm,
+        "success_true_tip_5mm": success_true_tip_5mm,
+        "success_flex_tip_5mm": success_flex_tip_5mm,
+        "success_5mm_raw_field": success_5mm_raw_field,
+        "success_5mm_convention_drift": success_convention_drift,
         "success_10mm": _truthy(row.get("success_10mm")),
         "classification": category,
         "classification_zh": category_zh,
@@ -298,7 +313,10 @@ def _summary_tables(records: list[dict[str, Any]]) -> tuple[list[dict[str, Any]]
                 "experiment_id": experiment_id,
                 "catheter_type": catheter,
                 "n_rows": len(items),
-                "n_success_5mm_raw": sum(1 for item in items if item["success_5mm"]),
+                "n_success_5mm_raw_field": sum(1 for item in items if item["success_5mm_raw_field"]),
+                "n_success_true_tip_5mm": sum(1 for item in items if item["success_true_tip_5mm"]),
+                "n_success_flex_tip_5mm": sum(1 for item in items if item["success_flex_tip_5mm"]),
+                "n_success_5mm_convention_drift": sum(1 for item in items if item["success_5mm_convention_drift"]),
                 "n_strict_cold_start_success": sum(1 for item in items if item["strict_cold_start_success"]),
                 "n_cold_restart_success": sum(1 for item in items if item["cold_restart_success"]),
                 "n_continuation_success": sum(1 for item in items if item["continuation_success"]),
@@ -316,7 +334,10 @@ def _summary_tables(records: list[dict[str, Any]]) -> tuple[list[dict[str, Any]]
         "n_records": len(records),
         "n_experiment_catheter_groups": len(grouped),
         "classification_counts": dict(Counter(str(item["classification"]) for item in records)),
-        "raw_success_5mm": sum(1 for item in records if item["success_5mm"]),
+        "raw_success_5mm": sum(1 for item in records if item["success_5mm_raw_field"]),
+        "success_true_tip_5mm": sum(1 for item in records if item["success_true_tip_5mm"]),
+        "success_flex_tip_5mm": sum(1 for item in records if item["success_flex_tip_5mm"]),
+        "success_5mm_convention_drift": sum(1 for item in records if item["success_5mm_convention_drift"]),
         "strict_cold_start_success": sum(1 for item in records if item["strict_cold_start_success"]),
         "cold_restart_success": sum(1 for item in records if item["cold_restart_success"]),
         "continuation_success": sum(1 for item in records if item["continuation_success"]),
@@ -341,7 +362,10 @@ def _write_record(path: Path, summary: dict[str, Any], source_paths: list[Path])
         "",
         "## 三、总览结果",
         "",
-        f"- 原始 5 mm 成功行数：{summary['raw_success_5mm']}",
+        f"- 原始 `success_5mm` 字段成功行数：{summary['raw_success_5mm']}",
+        f"- 真实末端 5 mm 成功行数：{summary['success_true_tip_5mm']}",
+        f"- 柔性末端 5 mm 成功行数：{summary['success_flex_tip_5mm']}",
+        f"- 原始字段与真实末端口径漂移行数：{summary['success_5mm_convention_drift']}",
         f"- 严格冷启动成功行数：{summary['strict_cold_start_success']}",
         f"- 失败后冷重启成功行数：{summary['cold_restart_success']}",
         f"- 邻点或旧成功点延拓成功行数：{summary['continuation_success']}",
@@ -358,10 +382,12 @@ def _write_record(path: Path, summary: dict[str, Any], source_paths: list[Path])
             "",
             "## 四、解释原则",
             "",
-            "1. 只有未加载外部分支状态、初值来源为标准冷启动，并且真实末端误差进入 5 mm 的结果，才计入严格冷启动成功。",
-            "2. `last_success_*` 和 `last_success_before_failed_point` 只证明邻点延拓或路径依赖有效，不证明独立点冷启动可达。",
-            "3. 加载历史分支状态得到的结果只说明该平衡分支存在，不能计入冷启动成功率。",
-            "4. 缺少关键字段的旧格式结果被标为证据不足或旧格式推断，不作为严格成功证据。",
+            "1. 台账脚本在本地重新计算真实末端 5 mm 成功字段，不再直接沿用上游 `success_5mm` 作为正式成功判据。",
+            "2. 只有未加载外部分支状态、初值来源为标准冷启动，并且真实末端误差进入 5 mm 的结果，才计入严格冷启动成功。",
+            "3. 柔性段末端成功字段仅作为几何约定对照，不能作为正式成功判据。",
+            "4. `last_success_*` 和 `last_success_before_failed_point` 只证明邻点延拓或路径依赖有效，不证明独立点冷启动可达。",
+            "5. 加载历史分支状态得到的结果只说明该平衡分支存在，不能计入冷启动成功率。",
+            "6. 缺少关键字段的旧格式结果被标为证据不足或旧格式推断，不作为严格成功证据。",
             "",
             "## 五、输出文件",
             "",
@@ -376,15 +402,16 @@ def _write_record(path: Path, summary: dict[str, Any], source_paths: list[Path])
 
 def _plot_overview(out_dir: Path, summary: dict[str, Any]) -> None:
     """Plot a Chinese summary chart for success evidence classes."""
-    labels = ["原始5mm成功", "严格冷启动", "失败后冷重启", "邻点/旧成功点延拓", "分支状态重放"]
+    labels = ["原始字段成功", "真实末端成功", "严格冷启动", "失败后冷重启", "邻点/旧成功点延拓", "分支状态重放"]
     values = [
         summary["raw_success_5mm"],
+        summary["success_true_tip_5mm"],
         summary["strict_cold_start_success"],
         summary["cold_restart_success"],
         summary["continuation_success"],
         summary["branch_reload_success"],
     ]
-    colors = ["#6B7280", "#2563EB", "#059669", "#D97706", "#DC2626"]
+    colors = ["#6B7280", "#0F766E", "#2563EB", "#059669", "#D97706", "#DC2626"]
     font = _font()
     fig, ax = plt.subplots(figsize=(10.5, 5.5))
     bars = ax.bar(range(len(labels)), values, color=colors, alpha=0.88)
@@ -448,6 +475,10 @@ def main() -> int:
     _write_csv(
         args.out_dir / "branch_loop_stall_rows.csv",
         [record for record in records if record.get("branch_loop_stall_detected")],
+    )
+    _write_csv(
+        args.out_dir / "success_convention_drift_rows.csv",
+        [record for record in records if record.get("success_5mm_convention_drift")],
     )
     _write_csv(args.out_dir / "success_ledger_summary.csv", summary_rows)
     (args.out_dir / "success_ledger_summary.json").write_text(

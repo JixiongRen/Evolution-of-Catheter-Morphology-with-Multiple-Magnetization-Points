@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+PY=/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python
+RUN=DELIVER_TO_EXP/run_a1_axial_circle_formal_experiment.py
+COMMON="--disable-gravity --eps-p-mm 5 --force-formal-20 --catheters A1 --target-indices 13 --per-point-timeout-s 900 --p2-trust-region --p2-terminal-error-first --p2-reliable-subspace --p2-max-backtracks 3"
+I_2810="2.91705600384217,7.596279636896001,1.6219165447766297,-3.0698419184870174,-3.094379908720095,4.995507834721822,-2.2362418574009153,-12.10113482992334"
+X_2810="0.1286594133256834"
+XLA_PYTHON_CLIENT_PREALLOCATE=false JAX_PLATFORMS=cuda $PY $RUN $COMMON --outer-max-iter 0 --initial-I-A "$I_2810" --initial-x-m "$X_2810"
+XLA_PYTHON_CLIENT_PREALLOCATE=false JAX_PLATFORMS=cuda $PY $RUN $COMMON --outer-max-iter 50 --initial-I-A "$I_2810" --initial-x-m "$X_2810"
