@@ -90,6 +90,54 @@ def test_control_gate_loads_summary_decision_rows(tmp_path: Path) -> None:
     assert gate.safe_step_abs_max[5] == 0.125
 
 
+def test_control_gate_marks_single_step_channels_as_basin_only(tmp_path: Path) -> None:
+    table = tmp_path / "gate_summary.csv"
+    table.write_text(
+        "\n".join(
+            [
+                "point_key,kind,channel,decision,limited_safe_step_abs_max",
+                "A1_pt12,I,7,单步可用,0.125",
+                "A1_pt12,x,-1,单步可用,0.0005",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    gate = load_control_gate(table, key="A1_pt12", n_coils=8, allow_limited=True)
+
+    assert not gate.allowed_mask[7]
+    assert not gate.allowed_mask[-1]
+    assert gate.basin_mask[7]
+    assert gate.basin_mask[-1]
+    assert gate.channel_roles[7] == "入盆可用"
+    assert gate.channel_roles[-1] == "入盆可用"
+    assert gate.basin_step_abs_max[7] == 0.125
+    assert gate.basin_step_abs_max[-1] == 0.0005
+
+
+def test_control_gate_marks_x_weak_response_as_basin_only(tmp_path: Path) -> None:
+    table = tmp_path / "gate_summary.csv"
+    table.write_text(
+        "\n".join(
+            [
+                "point_key,kind,channel,classification,decision",
+                "A1_pt01,x,-1,禁用,弱响应",
+                "A1_pt01,I,1,禁用,弱响应",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    gate = load_control_gate(table, key="A1_pt01", n_coils=8, allow_limited=True)
+
+    assert not gate.allowed_mask[-1]
+    assert gate.basin_mask[-1]
+    assert gate.channel_roles[-1] == "入盆可用"
+    assert not gate.allowed_mask[1]
+    assert not gate.basin_mask[1]
+    assert gate.channel_roles[1] == "禁用"
+
+
 def test_control_gate_matches_underscored_point_keys(tmp_path: Path) -> None:
     table = tmp_path / "gate_underscored.csv"
     table.write_text(
@@ -116,4 +164,6 @@ def test_control_gate_disabled_allows_legacy_full_update() -> None:
 
     assert not gate.enabled
     assert gate.allowed_mask == (True, True, True, True, True, True, True, True, True)
+    assert gate.basin_mask == (True, True, True, True, True, True, True, True, True)
     assert gate.safe_step_abs_max == (None, None, None, None, None, None, None, None, None)
+    assert gate.basin_step_abs_max == (None, None, None, None, None, None, None, None, None)

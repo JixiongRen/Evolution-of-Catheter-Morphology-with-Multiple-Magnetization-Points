@@ -13,6 +13,12 @@ from typing import Any, Iterable
 PRODUCTION_CLASS = "可生产使用"
 LIMITED_CLASS = "可有限使用"
 LIMITED_DECISION_CLASS = "有限使用候选"
+BASIN_CLASS = "入盆可用"
+SINGLE_STEP_CLASS = "单步可用"
+WEAK_RESPONSE_CLASS = "弱响应"
+BLOCKED_ROLE = "禁用"
+REFINE_ROLE = "精修可用"
+BASIN_ROLE = "入盆可用"
 
 
 @dataclass(frozen=True)
@@ -25,8 +31,11 @@ class ControlGate:
     missing_policy: str
     allow_limited: bool
     allowed_mask: tuple[bool, ...]
+    basin_mask: tuple[bool, ...]
+    channel_roles: tuple[str, ...]
     channel_reasons: tuple[str, ...]
     safe_step_abs_max: tuple[float | None, ...]
+    basin_step_abs_max: tuple[float | None, ...]
     matched_rows: int
 
     def as_dict(self) -> dict[str, Any]:
@@ -38,10 +47,14 @@ class ControlGate:
             "missing_policy": self.missing_policy,
             "allow_limited": bool(self.allow_limited),
             "allowed_mask": [bool(v) for v in self.allowed_mask],
+            "basin_mask": [bool(v) for v in self.basin_mask],
+            "channel_roles": list(self.channel_roles),
             "allowed_channels": channel_names_from_mask(self.allowed_mask),
+            "basin_channels": channel_names_from_mask(self.basin_mask),
             "blocked_channels": channel_names_from_mask(tuple(not v for v in self.allowed_mask)),
             "channel_reasons": list(self.channel_reasons),
             "safe_step_abs_max": [None if v is None else float(v) for v in self.safe_step_abs_max],
+            "basin_step_abs_max": [None if v is None else float(v) for v in self.basin_step_abs_max],
             "matched_rows": int(self.matched_rows),
         }
 
@@ -110,6 +123,23 @@ def _is_allowed_class(classification: str, *, allow_limited: bool) -> bool:
     return False
 
 
+def _is_basin_class(row: dict[str, str], *, channel_idx: int, n_coils: int, allow_limited: bool) -> bool:
+    """Return whether an audited channel can be used during basin seeking."""
+    labels = {
+        str(row.get("classification", "")).strip(),
+        str(row.get("decision", "")).strip(),
+        str(row.get("role", "")).strip(),
+        str(row.get("stage_role", "")).strip(),
+    }
+    if any(_is_allowed_class(label, allow_limited=allow_limited) for label in labels):
+        return True
+    if BASIN_CLASS in labels or SINGLE_STEP_CLASS in labels:
+        return True
+    if channel_idx == int(n_coils) and WEAK_RESPONSE_CLASS in labels:
+        return True
+    return False
+
+
 def _row_classification(row: dict[str, str]) -> str:
     """Return a channel classification from detailed or summary audit rows."""
     return str(row.get("classification", row.get("decision", ""))).strip()
@@ -121,6 +151,8 @@ def _row_safe_step_abs(row: dict[str, str]) -> float | None:
     for key in (
         "safe_step_abs",
         "safe_step_abs_max",
+        "basin_safe_step_abs_max",
+        "basin_step_abs_max",
         "limited_safe_step_abs_max",
         "limited_safe_step_abs_min",
     ):
@@ -161,8 +193,11 @@ def load_control_gate(
             missing_policy=missing_policy,
             allow_limited=bool(allow_limited),
             allowed_mask=allowed,
+            basin_mask=allowed,
+            channel_roles=tuple(REFINE_ROLE for _ in allowed),
             channel_reasons=tuple("gate_disabled" for _ in allowed),
             safe_step_abs_max=tuple(None for _ in allowed),
+            basin_step_abs_max=tuple(None for _ in allowed),
             matched_rows=0,
         )
     if key is None or str(key).strip() == "":
@@ -182,8 +217,11 @@ def load_control_gate(
                 matched.append(row)
 
     allowed = _default_allowed_mask(n_coils, missing_policy)
+    basin_allowed = _default_allowed_mask(n_coils, missing_policy)
     reasons = [_default_reason(idx, n_coils, missing_policy) for idx in range(n_coils + 1)]
+    roles = [REFINE_ROLE if flag else BLOCKED_ROLE for flag in allowed]
     safe_steps: list[float | None] = [None for _ in range(n_coils + 1)]
+    basin_safe_steps: list[float | None] = [None for _ in range(n_coils + 1)]
     grouped: dict[int, list[dict[str, str]]] = {}
     for row in matched:
         idx = _row_channel_index(row, n_coils)
@@ -194,15 +232,33 @@ def load_control_gate(
     for idx, rows in grouped.items():
         classes = [_row_classification(row) for row in rows]
         allowed_count = sum(1 for cls in classes if _is_allowed_class(cls, allow_limited=allow_limited))
+        basin_count = sum(
+            1
+            for row in rows
+            if _is_basin_class(row, channel_idx=idx, n_coils=n_coils, allow_limited=allow_limited)
+        )
         if rows and allowed_count == len(rows):
             allowed[idx] = True
+            basin_allowed[idx] = True
+            roles[idx] = REFINE_ROLE
             reasons[idx] = f"audited_allowed:{'|'.join(sorted(set(classes)))}"
             row_safe_steps = [value for row in rows if (value := _row_safe_step_abs(row)) is not None]
             safe_steps[idx] = min(row_safe_steps) if row_safe_steps else None
+            basin_safe_steps[idx] = safe_steps[idx]
+        elif rows and basin_count == len(rows):
+            allowed[idx] = False
+            basin_allowed[idx] = True
+            roles[idx] = BASIN_ROLE
+            reasons[idx] = f"audited_basin_only:{'|'.join(sorted(set(classes)))}"
+            row_safe_steps = [value for row in rows if (value := _row_safe_step_abs(row)) is not None]
+            basin_safe_steps[idx] = min(row_safe_steps) if row_safe_steps else None
         else:
             allowed[idx] = False
+            basin_allowed[idx] = False
+            roles[idx] = BLOCKED_ROLE
             reasons[idx] = f"audited_blocked:{'|'.join(sorted(set(classes)))}"
             safe_steps[idx] = None
+            basin_safe_steps[idx] = None
 
     return ControlGate(
         enabled=True,
@@ -211,7 +267,10 @@ def load_control_gate(
         missing_policy=str(missing_policy),
         allow_limited=bool(allow_limited),
         allowed_mask=tuple(bool(v) for v in allowed),
+        basin_mask=tuple(bool(v) for v in basin_allowed),
+        channel_roles=tuple(roles),
         channel_reasons=tuple(reasons),
         safe_step_abs_max=tuple(safe_steps),
+        basin_step_abs_max=tuple(basin_safe_steps),
         matched_rows=len(matched),
     )
