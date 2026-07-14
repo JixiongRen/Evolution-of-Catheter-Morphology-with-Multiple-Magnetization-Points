@@ -1,0 +1,102 @@
+{
+  "run_id": "20260714085145",
+  "experiment_name": "A1_A2_5mm_supervised_IK_no_gravity",
+  "run_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714085145_A1_A2_5mm_supervised_IK_no_gravity",
+  "report_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714085145_A1_A2_5mm_supervised_IK_no_gravity_report.md",
+  "git_commit": "de81847f0232e8059f8e198f257a9dc0263e8bc3",
+  "git_tracked_dirty": true,
+  "git_untracked_count": 9904,
+  "config_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/catheter_physical_configs.yaml",
+  "config_sha256": "b558ae5948710e91cf79092323a5ec4f3ce606f4a7ed9970c068cd21a1827317",
+  "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "calib_sha256": "0693bc324c74bc37e4e3a3b53054fde58cb34f0725b5c8455f50e5fedb19eff8",
+  "target_center_m": [
+    0.06,
+    0.0,
+    0.0
+  ],
+  "target_radius_m": 0.1,
+  "target_count": 1,
+  "experiment_type": "smoke",
+  "experiment_type_zh": "烟测",
+  "catheter_keys": [
+    "A1"
+  ],
+  "requested_target_indices": [
+    1
+  ],
+  "gate_target_indices": [
+    1
+  ],
+  "diagnostic_target_indices": [
+    1
+  ],
+  "gate_positions": [
+    0
+  ],
+  "diagnostic_positions": [
+    0
+  ],
+  "stage_gate_enabled": false,
+  "stage_gate_note_zh": "本轮强制运行指定目标集合，不使用代表点结果作为阶段阻断。",
+  "outer_max_iter": 50,
+  "per_point_timeout_s": 2700.0,
+  "step_I_max": 5.0,
+  "step_x_max": 0.02,
+  "initial_I_A_override": [
+    0.6263923438803144,
+    -1.1503165813929086,
+    0.0612994840797745,
+    0.9572736725219656,
+    0.037855414439303375,
+    -1.0071539357231238,
+    -0.758089331436383,
+    1.0426929691587934
+  ],
+  "initial_x_m_override": 0.13149494270684564,
+  "initial_branch_state_npz_override": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714082312_A1_A2_5mm_supervised_IK_no_gravity/A1/smoke/pt_01/branch_states/states/eval_000014_final_iter_0014.npz",
+  "x_search_max_m": 0.203,
+  "effective_x_search_min_m": 0.003001,
+  "effective_x_search_max_m": 0.203,
+  "static_L_protrude_max_m_by_catheter": {
+    "A1": 1.003
+  },
+  "x_search_note_zh": "本次 x=60 mm 圆周实验采用 0.203 m 局部推进搜索上限；物理配置文件仍保留 1 m 最大长度。",
+  "eps_p_m": 0.005,
+  "sigma_p_m": 0.005,
+  "force_formal_20": true,
+  "M": 5,
+  "tol": 1e-05,
+  "enable_gravity": false,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "gn_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 1e-10,
+    "sensitivity_conditioning": false
+  },
+  "p2_config": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  },
+  "channel_gate_config": {
+    "file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+    "missing_policy": "block_all",
+    "allow_limited": true,
+    "stage": "basin"
+  },
+  "control_gate_enabled_requested": true,
+  "control_gate_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+  "control_gate_note_zh": "已启用控制通道门禁；门禁表 `/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv`；缺失通道策略 `block_all`；允许有限级通道。",
+  "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+  "JAX_PLATFORMS": "cuda"
+}

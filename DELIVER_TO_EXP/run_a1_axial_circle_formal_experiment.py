@@ -402,6 +402,7 @@ def _build_ik_args(
         )
         if not bool(channel_gate_config.get("allow_limited", True)):
             args.append("--no-channel_gate_allow_limited")
+        args.extend(["--channel_gate_stage", str(channel_gate_config.get("stage", "refine"))])
     if initial_branch_state_npz:
         args.extend(["--initial_branch_state_npz", str(initial_branch_state_npz)])
     if sensitivity_conditioning:
@@ -692,9 +693,13 @@ def _run_one_target(
         "control_gate_key": run_channel_gate.get("key"),
         "control_gate_missing_policy": run_channel_gate.get("missing_policy"),
         "control_gate_allow_limited": run_channel_gate.get("allow_limited"),
+        "control_gate_stage": run_channel_gate.get("stage"),
+        "control_gate_active_channels": run_channel_gate.get("active_channels"),
+        "control_gate_active_blocked_channels": run_channel_gate.get("active_blocked_channels"),
         "control_gate_matched_rows": run_channel_gate.get("matched_rows"),
         "control_gate_policy_label": gate_policy_label,
         "control_gate_allowed_channels": run_channel_gate.get("allowed_channels"),
+        "control_gate_basin_channels": run_channel_gate.get("basin_channels"),
         "control_gate_blocked_channels": run_channel_gate.get("blocked_channels"),
         "control_gate_channel_reasons": run_channel_gate.get("channel_reasons"),
     }
@@ -773,9 +778,13 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "control_gate_key",
         "control_gate_missing_policy",
         "control_gate_allow_limited",
+        "control_gate_stage",
         "control_gate_matched_rows",
         "control_gate_policy_label",
+        "control_gate_active_channels",
+        "control_gate_active_blocked_channels",
         "control_gate_allowed_channels",
+        "control_gate_basin_channels",
         "control_gate_blocked_channels",
         "control_gate_channel_reasons",
         "run_dir",
@@ -1312,6 +1321,12 @@ def build_argparser() -> argparse.ArgumentParser:
         default=True,
         help="Allow limited-use channels from the audit table.",
     )
+    parser.add_argument(
+        "--channel-gate-stage",
+        choices=("refine", "basin"),
+        default="refine",
+        help="Select refined local-update channels or basin-seeking channels from the gate.",
+    )
     return parser
 
 
@@ -1384,6 +1399,7 @@ def main(argv: list[str] | None = None) -> None:
         "file": channel_gate_file,
         "missing_policy": str(args.channel_gate_missing_policy),
         "allow_limited": bool(args.channel_gate_allow_limited),
+        "stage": str(args.channel_gate_stage),
     }
     metadata = {
         "run_id": run_id,
@@ -1478,6 +1494,7 @@ def main(argv: list[str] | None = None) -> None:
         f"--p2-disable-Ix-jacobian-below-dx {float(p2_config['disable_Ix_jacobian_below_dx']):.12g} "
         f"{'--channel-gate-file ' + channel_gate_file if channel_gate_file else ''} "
         f"{'--channel-gate-missing-policy ' + channel_gate_config['missing_policy'] if channel_gate_file else ''} "
+        f"{'--channel-gate-stage ' + channel_gate_config['stage'] if channel_gate_file else ''} "
         f"{'--no-channel-gate-allow-limited' if channel_gate_file and not channel_gate_config['allow_limited'] else ''} "
         f"{'--initial-I-A ' + ','.join(f'{float(v):.12g}' for v in initial_I_A_override) if initial_I_A_override is not None else ''} "
         f"{'--initial-x-m ' + f'{initial_x_m_override:.12g}' if initial_x_m_override is not None else ''} "

@@ -70,7 +70,7 @@ from forward_kinematics_optimized.fk_engine import ForwardKinematicsEngine
 from ik_diff import compute_tip_sensitivities_via_lm_adjoint
 from ik_artifacts import extract_centerline_dim, save_centerline, save_history_json
 from ik_branch_state import BranchStateRecorder, array_sha256, current_git_commit, git_tracked_dirty, git_untracked_count, json_sha256
-from ik_control_gate import load_control_gate
+from ik_control_gate import channel_names_from_mask, load_control_gate
 
 jax.config.update("jax_enable_x64", True)
 Array = jnp.ndarray
@@ -299,6 +299,12 @@ def build_argparser() -> argparse.ArgumentParser:
         action=argparse.BooleanOptionalAction,
         default=True,
         help="Allow channels classified as limited-use by the audit table.",
+    )
+    p.add_argument(
+        "--channel_gate_stage",
+        choices=("refine", "basin"),
+        default="refine",
+        help="Select refined local-update channels or basin-seeking channels from a tri-state gate.",
     )
 
     # Regularization weights (now interpreted as inverse scales)
@@ -967,10 +973,23 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         missing_policy=str(args.channel_gate_missing_policy),
     )
     control_gate_info = control_gate.as_dict()
+    channel_gate_stage = str(args.channel_gate_stage)
+    active_gate_mask = control_gate.basin_mask if channel_gate_stage == "basin" else control_gate.allowed_mask
+    active_gate_safe_steps = (
+        control_gate.basin_step_abs_max if channel_gate_stage == "basin" else control_gate.safe_step_abs_max
+    )
+    control_gate_info.update(
+        {
+            "stage": channel_gate_stage,
+            "active_mask": [bool(v) for v in active_gate_mask],
+            "active_channels": channel_names_from_mask(active_gate_mask),
+            "active_blocked_channels": channel_names_from_mask(tuple(not v for v in active_gate_mask)),
+        }
+    )
     safe_steps_np = np.asarray(
         [
             np.inf if value is None else float(value)
-            for value in control_gate.safe_step_abs_max
+            for value in active_gate_safe_steps
         ],
         dtype=float,
     )
@@ -1225,8 +1244,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     if control_gate.enabled:
         print(
             "[IK-LM] control channel gate enabled: "
-            f"key={control_gate.key}, allowed={control_gate_info['allowed_channels']}, "
-            f"blocked={control_gate_info['blocked_channels']}"
+            f"key={control_gate.key}, stage={control_gate_info['stage']}, "
+            f"active={control_gate_info['active_channels']}, "
+            f"blocked={control_gate_info['active_blocked_channels']}"
         )
     print(
         f"[IK-LM] outer LM: max_iter={int(args.outer_max_iter)}, lam_init={float(args.lam_init):.3e}, "
@@ -1532,7 +1552,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         J_pen = jnp.zeros((1, n_coils + 1), dtype=jnp.float64)
 
         J_full = jnp.concatenate([J_top, J_I, J_x, J_dI, J_dx, J_Ix, J_pen], axis=0)
-        control_mask_np = np.asarray(control_gate.allowed_mask, dtype=bool)
+        control_mask_np = np.asarray(active_gate_mask, dtype=bool)
         if control_mask_np.shape[0] != n_coils + 1:
             raise ValueError("Control gate mask length does not match control dimension")
         active_idx_np = np.flatnonzero(control_mask_np)
