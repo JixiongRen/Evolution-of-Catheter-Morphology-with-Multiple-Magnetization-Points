@@ -1,0 +1,35 @@
+{
+  "gn_svd": {
+    "rows": 10,
+    "used_rows": 6,
+    "branch_consistent_rows": 7,
+    "weak_rows": 1,
+    "branch_failed_rows": 3,
+    "relative_error_median": 0.10260322321386874,
+    "relative_error_max": 0.1757222761691834,
+    "angle_deg_median": 5.128758832110629,
+    "angle_deg_max": 5.771545300001664
+  },
+  "solver_response": {
+    "rows": 10,
+    "used_rows": 6,
+    "branch_consistent_rows": 7,
+    "weak_rows": 1,
+    "branch_failed_rows": 3,
+    "relative_error_median": 0.9985408636216584,
+    "relative_error_max": 0.9987350168290118,
+    "angle_deg_median": 28.541042186418103,
+    "angle_deg_max": 66.94246417415778
+  },
+  "stationarity_exact": {
+    "rows": 10,
+    "used_rows": 6,
+    "branch_consistent_rows": 7,
+    "weak_rows": 1,
+    "branch_failed_rows": 3,
+    "relative_error_median": 0.999998888861173,
+    "relative_error_max": 1.0000001194677222,
+    "angle_deg_median": 53.785760377563065,
+    "angle_deg_max": 97.55453718254523
+  }
+}

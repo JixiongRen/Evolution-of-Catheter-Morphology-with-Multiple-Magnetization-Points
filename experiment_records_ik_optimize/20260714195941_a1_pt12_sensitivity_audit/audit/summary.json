@@ -1,0 +1,63 @@
+{
+  "started": "2026-07-14 19:59:52",
+  "finished": "2026-07-14 20:04:40",
+  "point_count": 1,
+  "sensitivity_rows": 3,
+  "fd_rows": 30,
+  "fd_gate_summary": {
+    "fd_ok": 30,
+    "replay_converged": 30,
+    "branch_consistent": 21,
+    "weak_gate_triggered": 3,
+    "used_in_stats": 18
+  },
+  "settings": {
+    "paths": [
+      "DELIVER_TO_EXP/formal_experiments/20260714192447_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_12"
+    ],
+    "out_dir": "experiment_records_ik_optimize/20260714195941_a1_pt12_sensitivity_audit/audit",
+    "protocol_version": "p1a_reaudit_v2",
+    "resume": false,
+    "selector": "last_accept",
+    "current_steps_a": "0.25,0.125",
+    "x_steps_mm": "0.5,0.25",
+    "current_channels": "auto",
+    "auto_current_channels": 2,
+    "sensitivity_modes": "solver_response,gn_svd,stationarity_exact",
+    "solve_mode": "svd",
+    "ridge": 1e-10,
+    "svd_rcond": 1e-09,
+    "spectral_filter": "hard",
+    "spectral_damping": 0.0,
+    "roundtrip_segments": 3,
+    "terminal_gate_mm": 0.25,
+    "centerline_gate_mm": 0.5,
+    "weak_displacement_mm": 0.1,
+    "health_gate": "warn",
+    "point_timeout_s": 1800.0,
+    "max_points": 0
+  },
+  "runtime_environment": {
+    "code_commit": "2767472c2315ea087bd16b6dd3c15fcb164a3e99",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 10708,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "paths": [
+    "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714192447_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_12"
+  ],
+  "protocol_version": "p1a_reaudit_v2",
+  "completed_points": 1
+}
