@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T11:42:35",
+  "generated_at": "2026-07-14T11:46:41",
   "n_records": 40,
   "n_experiment_catheter_groups": 2,
   "classification_counts": {
@@ -13,5 +13,6 @@
   "strict_cold_start_success": 0,
   "cold_restart_success": 2,
   "continuation_success": 8,
-  "branch_reload_success": 0
+  "branch_reload_success": 0,
+  "branch_loop_stall": 0
 }

@@ -154,6 +154,7 @@ def _row_to_record(summary_path: Path, row: dict[str, Any]) -> dict[str, Any]:
 
     exp_root = _experiment_root(summary_path)
     run_dir = str(row.get("run_dir") or "")
+    branch_loop = _branch_loop_summary(Path(run_dir), row) if run_dir else {}
     return {
         "experiment_id": exp_root.name,
         "summary_path": str(summary_path.resolve()),
@@ -194,7 +195,72 @@ def _row_to_record(summary_path: Path, row: dict[str, Any]) -> dict[str, Any]:
         "branch_npz_path": row.get("branch_npz_path"),
         "branch_solver_hash": row.get("branch_solver_hash"),
         "branch_sensitivity_hash": row.get("branch_sensitivity_hash"),
+        "branch_loop_stall_detected": branch_loop.get("detected", False),
+        "branch_loop_reason": branch_loop.get("reason"),
+        "branch_loop_repeated_hash_count": branch_loop.get("repeated_hash_count"),
+        "branch_loop_final_error_mm": branch_loop.get("final_error_mm"),
+        "branch_loop_best_error_mm": branch_loop.get("best_error_mm"),
+        "branch_loop_error_gap_mm": branch_loop.get("error_gap_mm"),
         "run_dir": run_dir,
+    }
+
+
+def _branch_loop_summary(run_dir: Path, row: dict[str, Any]) -> dict[str, Any]:
+    """Detect repeated-branch stagnation from saved branch-state manifests."""
+    manifest_path = run_dir / "branch_states" / "branch_state_manifest.jsonl"
+    if not manifest_path.exists():
+        return {
+            "detected": False,
+            "reason": "no_branch_manifest",
+            "repeated_hash_count": 0,
+            "final_error_mm": _float_or_none(row.get("err_true_mm")),
+            "best_error_mm": _float_or_none(row.get("best_err_true_mm") or row.get("err_true_mm")),
+            "error_gap_mm": None,
+        }
+    entries: list[dict[str, Any]] = []
+    try:
+        with manifest_path.open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    entries.append(json.loads(line))
+    except Exception as exc:
+        return {
+            "detected": False,
+            "reason": f"manifest_parse_failed:{exc}",
+            "repeated_hash_count": 0,
+            "final_error_mm": _float_or_none(row.get("err_true_mm")),
+            "best_error_mm": _float_or_none(row.get("best_err_true_mm") or row.get("err_true_mm")),
+            "error_gap_mm": None,
+        }
+    final_hash = str(row.get("centerline_hash") or "")
+    hash_counts = Counter(str(item.get("centerline_hash") or "") for item in entries if item.get("centerline_hash"))
+    repeated_count = int(hash_counts.get(final_hash, 0)) if final_hash else 0
+    errors = [
+        value
+        for value in (_float_or_none(item.get("terminal_error_mm")) for item in entries)
+        if value is not None
+    ]
+    final_error = _float_or_none(row.get("err_true_mm"))
+    best_error = min(errors) if errors else _float_or_none(row.get("best_err_true_mm") or row.get("err_true_mm"))
+    error_gap = None
+    if final_error is not None and best_error is not None:
+        error_gap = max(0.0, float(final_error) - float(best_error))
+    stop_reason = str(row.get("ik_stop_reason") or row.get("report_stop_reason") or row.get("stop_reason") or "")
+    detected = bool(
+        repeated_count >= 2
+        and error_gap is not None
+        and error_gap <= 0.1
+        and stop_reason == "effective_step_below_tolerance"
+    )
+    reason = "branch_hash_repeats_with_step_collapse" if detected else "not_detected"
+    return {
+        "detected": detected,
+        "reason": reason,
+        "repeated_hash_count": repeated_count,
+        "final_error_mm": final_error,
+        "best_error_mm": best_error,
+        "error_gap_mm": error_gap,
     }
 
 
@@ -237,6 +303,7 @@ def _summary_tables(records: list[dict[str, Any]]) -> tuple[list[dict[str, Any]]
                 "n_cold_restart_success": sum(1 for item in items if item["cold_restart_success"]),
                 "n_continuation_success": sum(1 for item in items if item["continuation_success"]),
                 "n_branch_reload_success": sum(1 for item in items if item["branch_reload_success"]),
+                "n_branch_loop_stall": sum(1 for item in items if item["branch_loop_stall_detected"]),
                 "n_algorithm_evidence": sum(1 for item in items if item["evidence_quality"] == "算法证据"),
                 "n_path_dependent_evidence": sum(1 for item in items if item["evidence_quality"] == "路径依赖证据"),
                 "n_process_evidence": sum(1 for item in items if item["evidence_quality"] == "流程证据"),
@@ -254,6 +321,7 @@ def _summary_tables(records: list[dict[str, Any]]) -> tuple[list[dict[str, Any]]
         "cold_restart_success": sum(1 for item in records if item["cold_restart_success"]),
         "continuation_success": sum(1 for item in records if item["continuation_success"]),
         "branch_reload_success": sum(1 for item in records if item["branch_reload_success"]),
+        "branch_loop_stall": sum(1 for item in records if item["branch_loop_stall_detected"]),
     }
     return rows, aggregate
 
@@ -278,6 +346,7 @@ def _write_record(path: Path, summary: dict[str, Any], source_paths: list[Path])
         f"- 失败后冷重启成功行数：{summary['cold_restart_success']}",
         f"- 邻点或旧成功点延拓成功行数：{summary['continuation_success']}",
         f"- 分支状态重放成功行数：{summary['branch_reload_success']}",
+        f"- 后验分支回环停滞行数：{summary['branch_loop_stall']}",
         "",
         "分类计数：",
         "",
@@ -376,6 +445,10 @@ def main() -> int:
     summary_rows, aggregate = _summary_tables(records)
 
     _write_csv(args.out_dir / "success_ledger.csv", records)
+    _write_csv(
+        args.out_dir / "branch_loop_stall_rows.csv",
+        [record for record in records if record.get("branch_loop_stall_detected")],
+    )
     _write_csv(args.out_dir / "success_ledger_summary.csv", summary_rows)
     (args.out_dir / "success_ledger_summary.json").write_text(
         json.dumps(aggregate, ensure_ascii=False, indent=2), encoding="utf-8"
