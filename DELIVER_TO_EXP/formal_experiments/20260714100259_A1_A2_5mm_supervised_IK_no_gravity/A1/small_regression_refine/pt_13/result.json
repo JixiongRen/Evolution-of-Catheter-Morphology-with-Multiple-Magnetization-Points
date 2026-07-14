@@ -1,0 +1,231 @@
+{
+  "success": false,
+  "success_flex_eps": false,
+  "success_true_eps": false,
+  "p_des": [
+    0.06,
+    -0.0587785252292,
+    -0.0809016994375
+  ],
+  "p_tip": [
+    0.05523231922827404,
+    -0.046010752682724726,
+    -0.059314936000226734
+  ],
+  "p_tip_flex": [
+    0.053006890802913056,
+    -0.04646556750645745,
+    -0.05735518815630682
+  ],
+  "p_tip_true": [
+    0.05523231922827404,
+    -0.046010752682724726,
+    -0.059314936000226734
+  ],
+  "p_tip_m": [
+    0.05523231922827404,
+    -0.046010752682724726,
+    -0.059314936000226734
+  ],
+  "p_tip_flex_m": [
+    0.053006890802913056,
+    -0.04646556750645745,
+    -0.05735518815630682
+  ],
+  "p_tip_true_m": [
+    0.05523231922827404,
+    -0.046010752682724726,
+    -0.059314936000226734
+  ],
+  "err_m": 0.025529104007708754,
+  "err_mm": 25.529104007708753,
+  "err_flex_m": 0.027476366165120614,
+  "err_flex_mm": 27.476366165120613,
+  "err_true_m": 0.025529104007708754,
+  "err_true_mm": 25.529104007708753,
+  "I": [
+    -1.0082580777771397,
+    -1.15031657431,
+    0.21550447952641377,
+    0.4858820934677549,
+    -0.4370348635152337,
+    -1.1971414157306761,
+    -2.5827455282000003,
+    2.4036496325773467
+  ],
+  "x": 0.11143568532,
+  "normE": 9.978365523367735e-06,
+  "cls": "GOOD",
+  "sigma_p": 0.005,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "gn_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 1e-10,
+    "sensitivity_conditioning": false
+  },
+  "runtime_environment": {
+    "code_commit": "0e236c32d614e64fedd6d668587905a9a947d877",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 10943,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "p2_outer_solver": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  },
+  "control_channel_gate": {
+    "enabled": true,
+    "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+    "key": "A1_pt13",
+    "missing_policy": "block_all",
+    "allow_limited": true,
+    "allowed_mask": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      false
+    ],
+    "basin_mask": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "channel_roles": [
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7981\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u5165\u76c6\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u5165\u76c6\u53ef\u7528"
+    ],
+    "allowed_channels": [
+      "I0",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I7"
+    ],
+    "basin_channels": [
+      "I0",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7",
+      "x"
+    ],
+    "blocked_channels": [
+      "I1",
+      "I6",
+      "x"
+    ],
+    "channel_reasons": [
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_blocked:\u7981\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_basin_only:\u7981\u7528",
+      "audited_allowed:\u53ef\u6709\u9650\u4f7f\u7528",
+      "audited_basin_only:\u7981\u7528"
+    ],
+    "safe_step_abs_max": [
+      0.25,
+      null,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      null,
+      0.25,
+      null
+    ],
+    "basin_step_abs_max": [
+      0.25,
+      null,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      null,
+      0.25,
+      null
+    ],
+    "matched_rows": 9,
+    "stage": "refine",
+    "active_mask": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      false
+    ],
+    "active_channels": [
+      "I0",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I7"
+    ],
+    "active_blocked_channels": [
+      "I1",
+      "I6",
+      "x"
+    ]
+  }
+}

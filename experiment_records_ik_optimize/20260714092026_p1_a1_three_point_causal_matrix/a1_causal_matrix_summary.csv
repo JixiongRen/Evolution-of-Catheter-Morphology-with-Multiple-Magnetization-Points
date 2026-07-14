@@ -1,0 +1,16 @@
+case,target_index,phase,err_true_mm,success_eps,stop_reason,evidence_role_zh,algorithm_statistics_included,outer_iter_count,wall_s
+p2_no_gate,1,small_regression,3.614003614056286,True,reached_threshold_true_tip,算法验证,True,11,167.00125731201842
+p2_no_gate,12,small_regression,50.477882889536176,False,reject_stall,算法验证,True,50,874.1032397109957
+p2_no_gate,13,small_regression,5.778240145735482,False,reached_10mm_only,算法验证,True,12,292.8573331020016
+p2_refine_gate,1,small_regression,27.786860212865864,False,reject_stall,算法验证,True,20,170.1775222599972
+p2_refine_gate,12,small_regression,81.68760211689846,False,early_stop_or_plateau,算法验证,True,1,101.34002136599156
+p2_refine_gate,13,small_regression,70.82022132371772,False,early_stop_or_plateau,算法验证,True,2,175.00469856301788
+p2_basin_gate,1,small_regression,4.383444332816459,True,reached_threshold_true_tip,算法验证,True,13,164.22837376399548
+p2_basin_gate,12,small_regression,58.23464580282842,False,early_stop_or_plateau,算法验证,True,1,136.87477136900998
+p2_basin_gate,13,small_regression,75.79200298708427,False,early_stop_or_plateau,算法验证,True,2,228.58589517397922
+p2_two_stage_gate,1,small_regression_refine,4.383444323299217,True,reached_threshold_true_tip,热启动零迭代流程验证,False,0,23.300525633007055
+p2_two_stage_gate,12,small_regression_refine,56.0204627656838,False,reject_stall,热启动流程验证,False,50,479.1378220219922
+p2_two_stage_gate,13,small_regression_refine,25.529104007727973,False,max_outer_iter,热启动流程验证,False,50,265.4711797229829
+p2_two_stage_gate_aux,1,small_regression_basin,4.383444323299217,True,reached_threshold_true_tip,阶段辅助行,False,13,169.90386098300223
+p2_two_stage_gate_aux,12,small_regression_basin,58.23464647559992,False,early_stop_or_plateau,阶段辅助行,False,1,144.49015718902228
+p2_two_stage_gate_aux,13,small_regression_basin,75.79200331512713,False,early_stop_or_plateau,阶段辅助行,False,2,229.43312778801192

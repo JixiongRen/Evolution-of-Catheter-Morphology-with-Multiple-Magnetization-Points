@@ -1,0 +1,472 @@
+{
+  "meta": {
+    "run_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714100259_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression_basin/pt_12",
+    "timestamp": "2026-07-14 10:06:16",
+    "p_des": [
+      0.06,
+      -0.0809016994375,
+      -0.0587785252292
+    ],
+    "eps_p_m": 0.005,
+    "sigma_p_m": 0.005,
+    "sensitivity_config": {
+      "x_sensitivity_method": "implicit",
+      "sensitivity_mode": "gn_svd",
+      "sensitivity_solve_mode": "svd",
+      "sensitivity_svd_rcond": 1e-09,
+      "sensitivity_spectral_filter": "hard",
+      "sensitivity_spectral_damping": 0.0,
+      "ridge_adjoint": 1e-10,
+      "sensitivity_conditioning": false
+    },
+    "control_channel_gate": {
+      "enabled": true,
+      "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+      "key": "A1_pt12",
+      "missing_policy": "block_all",
+      "allow_limited": true,
+      "allowed_mask": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "basin_mask": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "channel_roles": [
+        "精修可用",
+        "禁用",
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "入盆可用",
+        "入盆可用"
+      ],
+      "allowed_channels": [
+        "I0",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6"
+      ],
+      "basin_channels": [
+        "I0",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6",
+        "I7",
+        "x"
+      ],
+      "blocked_channels": [
+        "I1",
+        "I7",
+        "x"
+      ],
+      "channel_reasons": [
+        "audited_allowed:可有限使用",
+        "audited_blocked:禁用",
+        "audited_allowed:可有限使用",
+        "audited_allowed:可有限使用",
+        "audited_allowed:可有限使用",
+        "audited_allowed:可有限使用",
+        "audited_allowed:可有限使用",
+        "audited_basin_only:禁用",
+        "audited_basin_only:禁用"
+      ],
+      "safe_step_abs_max": [
+        0.25,
+        null,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        null,
+        null
+      ],
+      "basin_step_abs_max": [
+        0.25,
+        null,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        null,
+        null
+      ],
+      "matched_rows": 9,
+      "stage": "basin",
+      "active_mask": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "active_channels": [
+        "I0",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6",
+        "I7",
+        "x"
+      ],
+      "active_blocked_channels": [
+        "I1"
+      ]
+    },
+    "initial_branch_state": {
+      "enabled": false,
+      "requested_control_hash": "59e93187863d84f152af8ac0838f5842509443df63905cd9f0ecda3467294760"
+    }
+  },
+  "outer": [
+    {
+      "iter": 0,
+      "status": "INIT",
+      "accept": true,
+      "lam": 0.01,
+      "rho": null,
+      "pred_red": null,
+      "act_red": null,
+      "du_eff_norm": 0.0,
+      "dI_max_abs": 0.0,
+      "dI_norm": 0.0,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.131494942744,
+      "I_A": [
+        0.626392347366,
+        -1.15031657431,
+        0.061299498554,
+        0.957273681182,
+        0.037855419897,
+        -1.0071539383500003,
+        -0.758089323591,
+        1.04269296887
+      ],
+      "dI_A": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "p_tip_m": [
+        0.09913206342485477,
+        -0.07304596389643514,
+        -0.008188295155285403
+      ],
+      "p_tip_flex_m": [
+        0.09806032201114594,
+        -0.07029894304596522,
+        -0.00763580357707481
+      ],
+      "p_tip_true_m": [
+        0.09913206342485477,
+        -0.07304596389643514,
+        -0.008188295155285403
+      ],
+      "err_m": 0.06443913677036354,
+      "err_mm": 64.43913677036355,
+      "err_flex_m": 0.06462650023540735,
+      "err_flex_mm": 64.62650023540735,
+      "err_true_m": 0.06443913677036354,
+      "err_true_mm": 64.43913677036355,
+      "cost": 83.05468873701912,
+      "cls": "GOOD",
+      "normE": 9.987237052040433e-06,
+      "pose": {
+        "centerline_npy": "poses/accept/centerline_iter_0000.npy",
+        "which": "accept"
+      },
+      "branch_state": {
+        "eval_id": "eval_000000",
+        "npz_path": "branch_states/states/eval_000000_init_iter_0000.npz",
+        "z_star_hash": "c04a4736e0d3d4b88d46dca4f502ddf5fff6fe6f68f94bf5acca8c4de8ea16b7",
+        "warm_start_hash": null,
+        "centerline_hash": "cc354692a4e565b4e25b0412289d21d32028267e853cdbdc66d33411099a289d"
+      }
+    },
+    {
+      "iter": 1,
+      "backtrack_index": 0,
+      "backtrack_scale": 1.0,
+      "status": "ACCEPT",
+      "accept": true,
+      "lam": 0.01,
+      "rho": 0.29662471813160063,
+      "pred_red": 45.240040312771065,
+      "act_red": 13.419314206037967,
+      "terminal_improved": true,
+      "cost_improved": true,
+      "task_rank": 3,
+      "task_singular_values": [
+        155.34208776234684,
+        56.46110294329751,
+        8.476229272357315
+      ],
+      "reliable_subspace_enabled": true,
+      "reliable_subspace_dim": 3,
+      "ix_jacobian_enabled": false,
+      "control_channel_gate": {
+        "enabled": true,
+        "source": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714070559_p1b_representative_sensitivity_audit/audit_output/a1_representative_channel_gate.csv",
+        "key": "A1_pt12",
+        "missing_policy": "block_all",
+        "allow_limited": true,
+        "allowed_mask": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        "basin_mask": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "channel_roles": [
+          "精修可用",
+          "禁用",
+          "精修可用",
+          "精修可用",
+          "精修可用",
+          "精修可用",
+          "精修可用",
+          "入盆可用",
+          "入盆可用"
+        ],
+        "allowed_channels": [
+          "I0",
+          "I2",
+          "I3",
+          "I4",
+          "I5",
+          "I6"
+        ],
+        "basin_channels": [
+          "I0",
+          "I2",
+          "I3",
+          "I4",
+          "I5",
+          "I6",
+          "I7",
+          "x"
+        ],
+        "blocked_channels": [
+          "I1",
+          "I7",
+          "x"
+        ],
+        "channel_reasons": [
+          "audited_allowed:可有限使用",
+          "audited_blocked:禁用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_allowed:可有限使用",
+          "audited_basin_only:禁用",
+          "audited_basin_only:禁用"
+        ],
+        "safe_step_abs_max": [
+          0.25,
+          null,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          null,
+          null
+        ],
+        "basin_step_abs_max": [
+          0.25,
+          null,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          null,
+          null
+        ],
+        "matched_rows": 9,
+        "stage": "basin",
+        "active_mask": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "active_channels": [
+          "I0",
+          "I2",
+          "I3",
+          "I4",
+          "I5",
+          "I6",
+          "I7",
+          "x"
+        ],
+        "active_blocked_channels": [
+          "I1"
+        ],
+        "active_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "blocked_indices": [
+          1
+        ],
+        "active_dim": 8,
+        "effective_step_I_max_A": [
+          0.25,
+          5.0,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          5.0
+        ],
+        "effective_step_x_max_m": 0.02
+      },
+      "du_eff_norm": 0.22038094255603605,
+      "dI_max_abs": 1.9319674473635038,
+      "dI_norm": 2.026696380238602,
+      "dx_m": -0.00919247874028603,
+      "dx_abs_m": 0.00919247874028603,
+      "x_m": 0.12230246400371397,
+      "I_A": [
+        0.376392347366,
+        -1.15031657431,
+        0.311299498554,
+        0.707273681182,
+        -0.212144580103,
+        -0.7571539383500003,
+        -0.508089323591,
+        2.9746604162335037
+      ],
+      "dI_A": [
+        -0.25,
+        0.0,
+        0.25,
+        -0.25,
+        -0.25,
+        0.25,
+        0.25,
+        1.9319674473635038
+      ],
+      "p_tip_m": [
+        0.08722720255818872,
+        -0.07088763440344131,
+        -0.008284248400212402
+      ],
+      "p_tip_flex_m": [
+        0.08610224224424196,
+        -0.06841012213910914,
+        -0.0070207622263720355
+      ],
+      "p_tip_true_m": [
+        0.08722720255818872,
+        -0.07088763440344131,
+        -0.008284248400212402
+      ],
+      "err_m": 0.058234646475559794,
+      "err_mm": 58.23464647555979,
+      "err_flex_m": 0.05929782951032584,
+      "err_flex_mm": 59.29782951032584,
+      "err_true_m": 0.058234646475559794,
+      "err_true_mm": 58.23464647555979,
+      "cost": 69.63537453098115,
+      "cls": "GOOD",
+      "normE": 9.991882833887298e-06,
+      "sensitivity": {
+        "x_method": "implicit",
+        "sensitivity_mode": "gn_svd",
+        "sensitivity_solve_mode": "svd",
+        "sensitivity_svd_rcond": 1e-09,
+        "sensitivity_spectral_filter": "hard",
+        "sensitivity_spectral_damping": 0.0,
+        "ridge_adjoint": 1e-10,
+        "jz_source": "computed",
+        "status": "truncated_svd",
+        "method": "dense_implicit_gn_residual_spectrum",
+        "stationarity_norm": 0.030631553579241185,
+        "condition_number": null,
+        "effective_rank": 274,
+        "sv_min": 1.8540199868914999e-06,
+        "sv_max": 107321.00493075441,
+        "spectral_filter": "hard",
+        "spectral_lambda": 0.0,
+        "spectral_cutoff": 0.00010732100493075441,
+        "retained_spectral_energy": 1.0
+      },
+      "pose": {
+        "centerline_npy": "poses/trial/centerline_iter_0100.npy",
+        "which": "trial"
+      },
+      "branch_state": {
+        "eval_id": "eval_000001",
+        "npz_path": "branch_states/states/eval_000001_trial_iter_0100.npz",
+        "z_star_hash": "ae266de28a5df81ede4e82b9966ee49fd292349f76009469b6e63f7c55b6c344",
+        "warm_start_hash": "c04a4736e0d3d4b88d46dca4f502ddf5fff6fe6f68f94bf5acca8c4de8ea16b7",
+        "centerline_hash": "1698eaf0c466ba12bf3d57d95da36f4a5456a30e48af5cd499483645e06558dd"
+      }
+    }
+  ]
+}
