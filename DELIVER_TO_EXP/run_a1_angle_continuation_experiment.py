@@ -82,6 +82,12 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--channel-gate-missing-policy", choices=("block_all", "allow_x_only", "allow_all"), default="block_all")
     parser.add_argument("--channel-gate-stage", choices=("refine", "basin"), default="refine")
     parser.add_argument("--channel-gate-allow-limited", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--p2-terminal-only-step", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--p2-reliable-subspace", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--p2-reliable-task-rcond", type=float, default=0.001)
+    parser.add_argument("--p2-hold-lam-on-terminal-accept", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--p2-stall-rescue-max", type=int, default=2)
+    parser.add_argument("--p2-stall-rescue-lam-factor", type=float, default=1e-2)
     parser.add_argument("--stop-on-failure", action="store_true")
     return parser
 
@@ -121,11 +127,15 @@ def main() -> None:
     p2_config = {
         "trust_region": True,
         "terminal_error_first": True,
-        "reliable_subspace": True,
-        "reliable_task_rcond": 0.001,
+        "terminal_only_step": bool(args.p2_terminal_only_step),
+        "reliable_subspace": bool(args.p2_reliable_subspace),
+        "reliable_task_rcond": float(args.p2_reliable_task_rcond),
         "min_full_task_rank": 2,
         "max_backtracks": 3,
         "backtrack_shrink": 0.5,
+        "hold_lam_on_terminal_accept": bool(args.p2_hold_lam_on_terminal_accept),
+        "stall_rescue_max": int(args.p2_stall_rescue_max),
+        "stall_rescue_lam_factor": float(args.p2_stall_rescue_lam_factor),
         "disable_Ix_jacobian_below_dx": 0.001,
     }
     channel_gate_config = {

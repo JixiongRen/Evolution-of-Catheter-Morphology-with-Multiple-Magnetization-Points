@@ -437,6 +437,10 @@ def _build_ik_args(
         f"{float(p2_config['reliable_task_rcond']):.12g}",
         "--p2_min_full_task_rank",
         str(int(p2_config["min_full_task_rank"])),
+        "--p2_stall_rescue_max",
+        str(int(p2_config.get("stall_rescue_max", 0))),
+        "--p2_stall_rescue_lam_factor",
+        f"{float(p2_config.get('stall_rescue_lam_factor', 1e-2)):.12g}",
         "--p2_disable_Ix_jacobian_below_dx",
         f"{float(p2_config['disable_Ix_jacobian_below_dx']):.12g}",
         "--out_dir",
@@ -471,8 +475,12 @@ def _build_ik_args(
         args.append("--p2_trust_region")
     if bool(p2_config["terminal_error_first"]):
         args.append("--p2_terminal_error_first")
+    if bool(p2_config.get("terminal_only_step", False)):
+        args.append("--p2_terminal_only_step")
     if bool(p2_config["reliable_subspace"]):
         args.append("--p2_reliable_subspace")
+    if bool(p2_config.get("hold_lam_on_terminal_accept", False)):
+        args.append("--p2_hold_lam_on_terminal_accept")
     if enable_gravity:
         insert_at = args.index("--enable_magnetics")
         args[insert_at:insert_at] = [
@@ -1620,11 +1628,20 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--sensitivity-conditioning", action="store_true", help="Record dense conditioning diagnostics for sensitivity solves.")
     parser.add_argument("--p2-trust-region", action="store_true", help="Enable conservative P2 trust-region checks in the IK outer loop.")
     parser.add_argument("--p2-terminal-error-first", action="store_true", help="Use terminal-error-first acceptance in the IK outer loop.")
+    parser.add_argument("--p2-terminal-only-step", action="store_true", help="Build IK updates from terminal position residuals only.")
     parser.add_argument("--p2-reliable-subspace", action="store_true", help="Project IK updates to task-space reliable directions.")
     parser.add_argument("--p2-reliable-task-rcond", type=float, default=1e-3, help="Relative task singular-value cutoff for reliable subspace.")
     parser.add_argument("--p2-min-full-task-rank", type=int, default=2, help="Minimum task rank required for full IK update.")
     parser.add_argument("--p2-max-backtracks", type=int, default=0, help="Maximum IK backtracking retries.")
     parser.add_argument("--p2-backtrack-shrink", type=float, default=0.5, help="IK backtracking shrink ratio.")
+    parser.add_argument(
+        "--p2-hold-lam-on-terminal-accept",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Do not increase LM damping after terminal-error-first accepts a terminal-improving step.",
+    )
+    parser.add_argument("--p2-stall-rescue-max", type=int, default=0, help="Maximum damping-reset rescues after IK step collapse.")
+    parser.add_argument("--p2-stall-rescue-lam-factor", type=float, default=1e-2, help="Damping multiplier used by IK step-collapse rescue.")
     parser.add_argument("--p2-disable-Ix-jacobian-below-dx", type=float, default=-1.0, help="Disable r_Ix current Jacobian below this insertion change [m].")
     parser.add_argument("--two-stage-gate", action="store_true", help="Run basin-stage gate first and refine-stage gate second for each forced target.")
     parser.add_argument("--channel-gate-file", type=str, default=None, help="CSV file with audited control-channel classifications.")
@@ -1710,11 +1727,15 @@ def main(argv: list[str] | None = None) -> None:
     p2_config = {
         "trust_region": bool(args.p2_trust_region),
         "terminal_error_first": bool(args.p2_terminal_error_first),
+        "terminal_only_step": bool(args.p2_terminal_only_step),
         "reliable_subspace": bool(args.p2_reliable_subspace),
         "reliable_task_rcond": float(args.p2_reliable_task_rcond),
         "min_full_task_rank": int(args.p2_min_full_task_rank),
         "max_backtracks": int(args.p2_max_backtracks),
         "backtrack_shrink": float(args.p2_backtrack_shrink),
+        "hold_lam_on_terminal_accept": bool(args.p2_hold_lam_on_terminal_accept),
+        "stall_rescue_max": int(args.p2_stall_rescue_max),
+        "stall_rescue_lam_factor": float(args.p2_stall_rescue_lam_factor),
         "disable_Ix_jacobian_below_dx": float(args.p2_disable_Ix_jacobian_below_dx),
     }
     channel_gate_file = None if args.channel_gate_file is None else str(Path(args.channel_gate_file).resolve())
@@ -1815,11 +1836,15 @@ def main(argv: list[str] | None = None) -> None:
         f"{'--sensitivity-conditioning' if sensitivity_config['sensitivity_conditioning'] else ''} "
         f"{'--p2-trust-region' if p2_config['trust_region'] else ''} "
         f"{'--p2-terminal-error-first' if p2_config['terminal_error_first'] else ''} "
+        f"{'--p2-terminal-only-step' if p2_config.get('terminal_only_step') else ''} "
         f"{'--p2-reliable-subspace' if p2_config['reliable_subspace'] else ''} "
         f"--p2-reliable-task-rcond {float(p2_config['reliable_task_rcond']):.12g} "
         f"--p2-min-full-task-rank {int(p2_config['min_full_task_rank'])} "
         f"--p2-max-backtracks {int(p2_config['max_backtracks'])} "
         f"--p2-backtrack-shrink {float(p2_config['backtrack_shrink']):.12g} "
+        f"{'--p2-hold-lam-on-terminal-accept' if p2_config.get('hold_lam_on_terminal_accept') else ''} "
+        f"--p2-stall-rescue-max {int(p2_config.get('stall_rescue_max', 0))} "
+        f"--p2-stall-rescue-lam-factor {float(p2_config.get('stall_rescue_lam_factor', 1e-2)):.12g} "
         f"--p2-disable-Ix-jacobian-below-dx {float(p2_config['disable_Ix_jacobian_below_dx']):.12g} "
         f"{'--two-stage-gate' if args.two_stage_gate else ''} "
         f"{'--channel-gate-file ' + channel_gate_file if channel_gate_file else ''} "

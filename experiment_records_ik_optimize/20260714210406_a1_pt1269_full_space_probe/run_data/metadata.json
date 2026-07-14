@@ -1,0 +1,22 @@
+{
+  "catheter": "A1",
+  "start_index": 12.75,
+  "end_index": 12.5,
+  "segments": 4,
+  "center_x_m": 0.06,
+  "radius_m": 0.1,
+  "eps_p_m": 0.005,
+  "outer_max_iter": 25,
+  "per_point_timeout_s": 1200.0,
+  "step_I_max": 5.0,
+  "step_x_max": 0.02,
+  "initial_branch_state_npz": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/experiment_records_ik_optimize/20260714201739_a1_pt13_to_pt12_angle_continuation/run_data/angle_continuation/pt_1275/branch_states/states/eval_000003_final_iter_0003.npz",
+  "channel_gate_config": {
+    "file": null,
+    "missing_policy": "block_all",
+    "allow_limited": true,
+    "stage": "refine"
+  },
+  "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+  "JAX_PLATFORMS": "cuda"
+}

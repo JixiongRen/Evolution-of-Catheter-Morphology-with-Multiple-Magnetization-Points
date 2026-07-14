@@ -275,11 +275,29 @@ def build_argparser() -> argparse.ArgumentParser:
     )
     p.add_argument("--p2_trust_region", action="store_true", help="Enable conservative P2 trust-region acceptance checks.")
     p.add_argument("--p2_terminal_error_first", action="store_true", help="Require terminal error improvement before regularization-only improvements.")
+    p.add_argument("--p2_terminal_only_step", action="store_true", help="Build the outer LM step from terminal position residuals only.")
     p.add_argument("--p2_reliable_subspace", action="store_true", help="Project the outer LM step onto task-space reliable singular directions.")
     p.add_argument("--p2_reliable_task_rcond", type=float, default=1e-3, help="Relative cutoff for task-space reliable singular directions.")
     p.add_argument("--p2_min_full_task_rank", type=int, default=2, help="Minimum task-space rank required for a full control update.")
     p.add_argument("--p2_max_backtracks", type=int, default=0, help="Maximum number of backtracking retries for a rejected candidate.")
     p.add_argument("--p2_backtrack_shrink", type=float, default=0.5, help="Step shrink ratio used by P2 backtracking.")
+    p.add_argument(
+        "--p2_hold_lam_on_terminal_accept",
+        action="store_true",
+        help="Keep outer LM damping unchanged when terminal-error-first accepts a terminal-improving step with poor rho.",
+    )
+    p.add_argument(
+        "--p2_stall_rescue_max",
+        type=int,
+        default=0,
+        help="Maximum damping-reset rescues when the outer step collapses before reaching the terminal threshold.",
+    )
+    p.add_argument(
+        "--p2_stall_rescue_lam_factor",
+        type=float,
+        default=1e-2,
+        help="Multiplier applied to outer LM damping during a step-collapse rescue.",
+    )
     p.add_argument(
         "--p2_disable_Ix_jacobian_below_dx",
         type=float,
@@ -899,14 +917,20 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         raise ValueError("--step_I_max and --step_x_max must be > 0")
     p2_trust_region = bool(args.p2_trust_region)
     p2_terminal_error_first = bool(args.p2_terminal_error_first)
+    p2_terminal_only_step = bool(args.p2_terminal_only_step)
     p2_reliable_subspace = bool(args.p2_reliable_subspace)
     p2_reliable_task_rcond = float(args.p2_reliable_task_rcond)
     p2_min_full_task_rank = int(args.p2_min_full_task_rank)
     p2_max_backtracks = max(0, int(args.p2_max_backtracks))
     p2_backtrack_shrink = float(args.p2_backtrack_shrink)
+    p2_hold_lam_on_terminal_accept = bool(args.p2_hold_lam_on_terminal_accept)
+    p2_stall_rescue_max = max(0, int(args.p2_stall_rescue_max))
+    p2_stall_rescue_lam_factor = float(args.p2_stall_rescue_lam_factor)
     p2_disable_Ix_jacobian_below_dx = float(args.p2_disable_Ix_jacobian_below_dx)
     if not (0.0 < p2_backtrack_shrink < 1.0):
         raise ValueError("--p2_backtrack_shrink must be in (0, 1)")
+    if not (0.0 < p2_stall_rescue_lam_factor < 1.0):
+        raise ValueError("--p2_stall_rescue_lam_factor must be in (0, 1)")
 
     ridge_adj = float(args.ridge_adjoint)
     fd_x_eps = float(args.fd_x_eps)
@@ -1031,11 +1055,15 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "p2_outer_solver": {
                     "trust_region": p2_trust_region,
                     "terminal_error_first": p2_terminal_error_first,
+                    "terminal_only_step": p2_terminal_only_step,
                     "reliable_subspace": p2_reliable_subspace,
                     "reliable_task_rcond": p2_reliable_task_rcond,
                     "min_full_task_rank": p2_min_full_task_rank,
                     "max_backtracks": p2_max_backtracks,
                     "backtrack_shrink": p2_backtrack_shrink,
+                    "hold_lam_on_terminal_accept": p2_hold_lam_on_terminal_accept,
+                    "stall_rescue_max": p2_stall_rescue_max,
+                    "stall_rescue_lam_factor": p2_stall_rescue_lam_factor,
                     "disable_Ix_jacobian_below_dx": p2_disable_Ix_jacobian_below_dx,
                 },
                 "control_channel_gate": control_gate_info,
@@ -1306,11 +1334,15 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "p2_outer_solver": {
                         "trust_region": p2_trust_region,
                         "terminal_error_first": p2_terminal_error_first,
+                        "terminal_only_step": p2_terminal_only_step,
                         "reliable_subspace": p2_reliable_subspace,
                         "reliable_task_rcond": p2_reliable_task_rcond,
                         "min_full_task_rank": p2_min_full_task_rank,
                         "max_backtracks": p2_max_backtracks,
                         "backtrack_shrink": p2_backtrack_shrink,
+                        "hold_lam_on_terminal_accept": p2_hold_lam_on_terminal_accept,
+                        "stall_rescue_max": p2_stall_rescue_max,
+                        "stall_rescue_lam_factor": p2_stall_rescue_lam_factor,
                         "disable_Ix_jacobian_below_dx": p2_disable_Ix_jacobian_below_dx,
                     },
                     "control_channel_gate": control_gate_info,
@@ -1513,6 +1545,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     outer_stop_reason: Optional[str] = None
     outer_stop_detail: dict[str, Any] = {}
+    stall_rescue_count = 0
 
     for k in range(1, int(args.outer_max_iter) + 1):
         # 1) Sensitivities dp/dI and dp/dx (at current accepted state)
@@ -1710,8 +1743,10 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         r = cur.r
 
         # 3) LM step in u
-        g = J.T @ r
-        H = J.T @ J
+        J_step = J_top_active if p2_terminal_only_step else J
+        r_step = cur.r[:3] if p2_terminal_only_step else r
+        g = J_step.T @ r_step
+        H = J_step.T @ J_step
         diagH = jnp.clip(jnp.diag(H), a_min=1e-12)
         D = jnp.diag(diagH)
         A = H + float(lam) * D
@@ -1724,9 +1759,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     du_active = jnp.zeros((int(active_idx_np.size),), dtype=jnp.float64)
                 else:
                     V_rel = Vh_task[:reliable_dim, :].T
-                    J_rel = J @ V_rel
+                    J_rel = J_step @ V_rel
                     H_rel = J_rel.T @ J_rel
-                    g_rel = J_rel.T @ r
+                    g_rel = J_rel.T @ r_step
                     diag_rel = jnp.clip(jnp.diag(H_rel), a_min=1e-12)
                     A_rel = H_rel + float(lam) * jnp.diag(diag_rel)
                     du_active = V_rel @ (-jnp.linalg.solve(A_rel, g_rel))
@@ -1757,6 +1792,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         terminal_improved = False
         cost_improved = False
         stop_outer_loop = False
+        rescued_this_iter = False
 
         for backtrack_idx in range(max_backtracks + 1):
             backtrack_scale = float(p2_backtrack_shrink) ** int(backtrack_idx)
@@ -1804,7 +1840,77 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             )
 
             if (dI_max_abs <= float(args.step_I_tol)) and (dx_abs <= float(args.step_x_tol)):
-                if backtrack_idx == 0:
+                can_rescue_step_collapse = bool(
+                    backtrack_idx == 0
+                    and p2_terminal_error_first
+                    and cur.err > eps_p
+                    and p2_stall_rescue_max > 0
+                    and stall_rescue_count < p2_stall_rescue_max
+                    and step_diagnostics["collapse_source"] == "tiny_lm_step_or_high_damping"
+                    and lam > 1e-12
+                )
+                if can_rescue_step_collapse:
+                    old_lam = float(lam)
+                    lam = max(old_lam * float(p2_stall_rescue_lam_factor), 1e-12)
+                    stall_rescue_count += 1
+                    rescued_this_iter = True
+                    rescue_detail = {
+                        "iter": int(k),
+                        "backtrack_index": int(backtrack_idx),
+                        "rescue_count": int(stall_rescue_count),
+                        "rescue_max": int(p2_stall_rescue_max),
+                        "old_lam": float(old_lam),
+                        "new_lam": float(lam),
+                        "lam_factor": float(p2_stall_rescue_lam_factor),
+                        "err_true_m": float(cur.err),
+                        "eps_p_m": float(eps_p),
+                        "step_collapse_source": step_diagnostics["collapse_source"],
+                        "step_diagnostics": step_diagnostics,
+                    }
+                    print(
+                        f"[IK-LM] rescue: collapsed terminal step at iter={k}, "
+                        f"lam {old_lam:.3e} -> {lam:.3e}; relinearizing."
+                    )
+                    _append_history(
+                        d={
+                            "iter": int(k),
+                            "backtrack_index": int(backtrack_idx),
+                            "backtrack_scale": float(backtrack_scale),
+                            "status": "RESCUE",
+                            "accept": False,
+                            "rescue_reason": "effective_step_below_tolerance",
+                            "rescue_detail": rescue_detail,
+                            "lam": float(lam),
+                            "old_lam": float(old_lam),
+                            "rho": None,
+                            "pred_red": None,
+                            "act_red": None,
+                            "terminal_improved": False,
+                            "cost_improved": False,
+                            "task_rank": int(task_rank),
+                            "task_singular_values": [float(v) for v in np.asarray(jax.device_get(task_svals)).reshape(-1,).tolist()],
+                            "reliable_subspace_enabled": bool(p2_force_reliable),
+                            "reliable_subspace_dim": int(reliable_dim),
+                            "ix_jacobian_enabled": bool(ix_jacobian_enabled),
+                            "control_channel_gate": control_gate_iter,
+                            "du_eff_norm": float(du_eff_norm),
+                            "dI_max_abs": float(dI_max_abs),
+                            "dI_norm": float(dI_norm),
+                            "dx_m": float(dx_clip),
+                            "dx_abs_m": float(dx_abs),
+                            "step_collapse_source": step_diagnostics["collapse_source"],
+                            "step_diagnostics": step_diagnostics,
+                            "x_m": float(cur.x),
+                            "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+                            "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
+                            **_tip_report_fields(cur, p_des),
+                            "cost": float(cur.cost),
+                            "cls": str(cur.cls),
+                            "normE": float(cur.normE),
+                            "sensitivity": sensitivity_info,
+                        }
+                    )
+                elif backtrack_idx == 0:
                     outer_stop_reason = "effective_step_below_tolerance"
                     outer_stop_detail = {
                         "iter": int(k),
@@ -1988,6 +2094,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "reliable_subspace_dim": int(reliable_dim),
                 "ix_jacobian_enabled": bool(ix_jacobian_enabled),
                 "p2_terminal_error_first": bool(p2_terminal_error_first),
+                "p2_terminal_only_step": bool(p2_terminal_only_step),
                 "pred_red_gate_bypassed": bool(pred_red_gate_bypassed),
                 "control_channel_gate": control_gate_iter,
                 "step_collapse_source": step_diagnostics["collapse_source"],
@@ -2061,6 +2168,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         if stop_outer_loop:
             break
+        if rescued_this_iter:
+            continue
         if trial is None:
             lam = min(lam * float(args.lam_up), 1e12)
             continue
@@ -2097,6 +2206,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
             if rho >= float(args.rho_good):
                 lam = max(lam * float(args.lam_down), 1e-12)
+            elif p2_terminal_error_first and p2_hold_lam_on_terminal_accept and terminal_improved:
+                lam = float(lam)
             elif rho <= float(args.rho_bad):
                 lam = min(lam * float(args.lam_up), 1e12)
 
