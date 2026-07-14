@@ -1,0 +1,18 @@
+{
+  "catheter": "A1",
+  "scan_root": "DELIVER_TO_EXP/formal_experiments",
+  "source_rows": 176,
+  "rows_with_error_le_threshold": 71,
+  "rows_missing_reusable_branch_state": 39,
+  "rows_missing_gpu_runtime_evidence": 39,
+  "rows_with_weak_or_bad_fk": 1,
+  "candidate_rows": 32,
+  "covered_targets": 2,
+  "success_5mm_targets": 2,
+  "success_10mm_targets": 2,
+  "max_error_mm": 10.0,
+  "target_indices": [
+    1,
+    13
+  ]
+}
