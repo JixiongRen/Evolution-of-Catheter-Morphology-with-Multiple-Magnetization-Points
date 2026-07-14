@@ -1,0 +1,173 @@
+diff --git a/inverse_kinematics/ik_multisite_lm_opt.py b/inverse_kinematics/ik_multisite_lm_opt.py
+index 7328e361..d2c452c4 100644
+--- a/inverse_kinematics/ik_multisite_lm_opt.py
++++ b/inverse_kinematics/ik_multisite_lm_opt.py
+@@ -1169,6 +1169,94 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
+             }
+         }
+ 
++    def _outer_step_diagnostics(
++        *,
++        I_current: Array,
++        x_current: float,
++        dI_requested: Array,
++        dx_requested: float,
++        dI_after_step_clip: Array,
++        dx_after_step_clip: float,
++        I_trial: Array,
++        x_trial: float,
++        du_requested: Array,
++        du_effective: Array,
++        backtrack_scale: float,
++    ) -> dict[str, Any]:
++        """Return physical-step diagnostics without changing solver behavior."""
++        I_current_np = np.asarray(jax.device_get(I_current), dtype=float).reshape(-1)
++        dI_req_np = np.asarray(jax.device_get(dI_requested), dtype=float).reshape(-1)
++        dI_step_np = np.asarray(jax.device_get(dI_after_step_clip), dtype=float).reshape(-1)
++        I_trial_np = np.asarray(jax.device_get(I_trial), dtype=float).reshape(-1)
++        I_after_step_clip_np = I_current_np + dI_step_np
++        dI_actual_np = I_trial_np - I_current_np
++        dI_bound_adjust_np = dI_actual_np - dI_step_np
++        du_requested_np = np.asarray(jax.device_get(du_requested), dtype=float).reshape(-1)
++        du_effective_np = np.asarray(jax.device_get(du_effective), dtype=float).reshape(-1)
++        dx_req = float(dx_requested)
++        dx_step = float(dx_after_step_clip)
++        x_after_step_clip = float(x_current) + dx_step
++        dx_actual = float(x_trial) - float(x_current)
++        dx_bound_adjust = dx_actual - dx_step
++        eps = 1e-12
++        dI_step_clip_mask = np.abs(dI_req_np) > (np.asarray(I_step_limits_np, dtype=float).reshape(-1) + eps)
++        dx_step_clip_active = abs(dx_req) > (float(x_step_limit) + eps)
++        I_bound_clip_mask = np.abs(dI_bound_adjust_np) > eps
++        x_bound_clip_active = abs(dx_bound_adjust) > eps
++        gate_I_limit_mask = np.asarray(I_step_limits_np, dtype=float).reshape(-1) < (float(step_I_max) - eps)
++        gate_x_limit_active = float(x_step_limit) < (float(step_x_max) - eps)
++        gate_step_clip_active = bool(np.any(dI_step_clip_mask & gate_I_limit_mask) or (dx_step_clip_active and gate_x_limit_active))
++        effective_step_below_tol = bool(
++            np.max(np.abs(dI_actual_np)) <= float(args.step_I_tol) and abs(dx_actual) <= float(args.step_x_tol)
++        )
++        requested_step_below_tol = bool(
++            np.max(np.abs(dI_req_np)) <= float(args.step_I_tol) and abs(dx_req) <= float(args.step_x_tol)
++        )
++        if effective_step_below_tol and requested_step_below_tol:
++            collapse_source = "tiny_lm_step_or_high_damping"
++        elif effective_step_below_tol and (np.any(I_bound_clip_mask) or x_bound_clip_active):
++            collapse_source = "control_bound_saturation"
++        elif effective_step_below_tol and (np.any(dI_step_clip_mask) or dx_step_clip_active):
++            collapse_source = "physical_step_or_gate_clipping"
++        elif effective_step_below_tol:
++            collapse_source = "unknown_effective_step_floor"
++        elif gate_step_clip_active:
++            collapse_source = "gate_limited_nonzero_step"
++        elif np.any(dI_step_clip_mask) or dx_step_clip_active:
++            collapse_source = "trust_region_limited_nonzero_step"
++        elif np.any(I_bound_clip_mask) or x_bound_clip_active:
++            collapse_source = "control_bound_limited_nonzero_step"
++        else:
++            collapse_source = "not_collapsed"
++        return {
++            "backtrack_scale": float(backtrack_scale),
++            "du_requested_norm": float(np.linalg.norm(du_requested_np)),
++            "du_effective_norm": float(np.linalg.norm(du_effective_np)),
++            "dI_requested_A": [float(v) for v in dI_req_np.tolist()],
++            "dI_after_step_clip_A": [float(v) for v in dI_step_np.tolist()],
++            "dI_actual_A": [float(v) for v in dI_actual_np.tolist()],
++            "dI_bound_adjust_A": [float(v) for v in dI_bound_adjust_np.tolist()],
++            "dI_requested_max_abs_A": float(np.max(np.abs(dI_req_np))) if dI_req_np.size else 0.0,
++            "dI_actual_max_abs_A": float(np.max(np.abs(dI_actual_np))) if dI_actual_np.size else 0.0,
++            "dx_requested_m": dx_req,
++            "dx_after_step_clip_m": dx_step,
++            "dx_actual_m": dx_actual,
++            "dx_bound_adjust_m": dx_bound_adjust,
++            "x_after_step_clip_m": x_after_step_clip,
++            "dI_step_clip_active": bool(np.any(dI_step_clip_mask)),
++            "dx_step_clip_active": bool(dx_step_clip_active),
++            "I_bound_clip_active": bool(np.any(I_bound_clip_mask)),
++            "x_bound_clip_active": bool(x_bound_clip_active),
++            "gate_step_clip_active": bool(gate_step_clip_active),
++            "effective_step_below_tolerance": effective_step_below_tol,
++            "requested_step_below_tolerance": requested_step_below_tol,
++            "collapse_source": collapse_source,
++            "step_I_tol_A": float(args.step_I_tol),
++            "step_x_tol_m": float(args.step_x_tol),
++            "I_step_limits_A": [float(v) for v in np.asarray(I_step_limits_np, dtype=float).reshape(-1).tolist()],
++            "x_step_limit_m": float(x_step_limit),
++        }
++
+     def _append_history(*, d: dict) -> None:
+         t0 = time.perf_counter()
+         history["outer"].append(d)
+@@ -1693,6 +1781,19 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
+             dI_max_abs = float(jnp.max(jnp.abs(dI_clip)))
+             dx_abs = abs(dx_clip)
+             du_eff_norm = float(jnp.linalg.norm(du_eff))
++            step_diagnostics = _outer_step_diagnostics(
++                I_current=cur.I,
++                x_current=float(cur.x),
++                dI_requested=dI_prop,
++                dx_requested=dx_prop,
++                dI_after_step_clip=dI_clip,
++                dx_after_step_clip=dx_clip,
++                I_trial=I_trial,
++                x_trial=x_trial,
++                du_requested=backtrack_scale * du,
++                du_effective=du_eff,
++                backtrack_scale=backtrack_scale,
++            )
+ 
+             r_lin = r + J_full @ du_eff
+             pred_red = 0.5 * float(jnp.dot(r, r) - jnp.dot(r_lin, r_lin))
+@@ -1710,6 +1811,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
+                         "task_rank": int(task_rank),
+                         "reliable_subspace_enabled": bool(p2_force_reliable),
+                         "reliable_subspace_dim": int(reliable_dim),
++                        "step_collapse_source": step_diagnostics["collapse_source"],
++                        "step_diagnostics": step_diagnostics,
+                     }
+                     print(
+                         f"[IK-LM] stop: effective step is zero (|dI|_max={dI_max_abs:.3e}A, |dx|={dx_abs:.3e}m). "
+@@ -1741,6 +1844,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
+                             "dI_norm": float(dI_norm),
+                             "dx_m": float(dx_clip),
+                             "dx_abs_m": float(dx_abs),
++                            "step_collapse_source": step_diagnostics["collapse_source"],
++                            "step_diagnostics": step_diagnostics,
+                             "x_m": float(cur.x),
+                             "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+                             "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
+@@ -1767,6 +1872,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
+                         "task_rank": int(task_rank),
+                         "reliable_subspace_enabled": bool(p2_force_reliable),
+                         "reliable_subspace_dim": int(reliable_dim),
++                        "step_collapse_source": step_diagnostics["collapse_source"],
++                        "step_diagnostics": step_diagnostics,
+                     }
+                     print(f"[IK-LM] stop: pred_red={pred_red:.3e} <= pred_red_tol={float(args.pred_red_tol):.3e}")
+                     _append_history(
+@@ -1795,6 +1902,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
+                             "dI_norm": float(dI_norm),
+                             "dx_m": float(dx_clip),
+                             "dx_abs_m": float(dx_abs),
++                            "step_collapse_source": step_diagnostics["collapse_source"],
++                            "step_diagnostics": step_diagnostics,
+                             "x_m": float(cur.x),
+                             "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+                             "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
+@@ -1870,6 +1979,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
+                 "ix_jacobian_enabled": bool(ix_jacobian_enabled),
+                 "p2_terminal_error_first": bool(p2_terminal_error_first),
+                 "control_channel_gate": control_gate_iter,
++                "step_collapse_source": step_diagnostics["collapse_source"],
++                "step_diagnostics": step_diagnostics,
+                 "sensitivity": sensitivity_info,
+             }
+             trial_branch_record = _save_branch_state(
+@@ -1907,6 +2018,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
+                     "dI_norm": float(dI_norm),
+                     "dx_m": float(dx_clip),
+                     "dx_abs_m": float(dx_abs),
++                    "step_collapse_source": step_diagnostics["collapse_source"],
++                    "step_diagnostics": step_diagnostics,
+                     "x_m": float(trial.x),
+                     "I_A": [float(v) for v in np.asarray(jax.device_get(I_trial)).reshape(-1,).tolist()],
+                     "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
