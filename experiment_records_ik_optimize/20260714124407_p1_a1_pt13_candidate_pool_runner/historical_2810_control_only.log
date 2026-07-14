@@ -1,0 +1,7 @@
+A1 smoke pt_13: true_err=180.966 mm eps=False cls=GOOD wall=98.6s
+summary: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714135156_A1_A2_5mm_supervised_IK_no_gravity/summary.json
+report: /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714135156_A1_A2_5mm_supervised_IK_no_gravity_report.md
+COMMAND:
+/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_axial_circle_formal_experiment.py --disable-gravity --eps-p-mm 5 --force-formal-20 --catheters A1 --target-indices 13 --per-point-timeout-s 900 --outer-max-iter 0 --p2-trust-region --p2-terminal-error-first --p2-reliable-subspace --p2-max-backtracks 3 --initial-I-A 2.91705600384217,7.596279636896001,1.62191654477663,-3.069841918487017,-3.094379908720095,4.995507834721822,-2.236241857400915,-12.10113482992334 --initial-x-m 0.1286594133256834
+
+STDOUT_STDERR:

@@ -190,11 +190,11 @@ def _command(candidate: Candidate, *, timeout_s: float) -> list[str]:
         "3",
     ]
     if candidate.initial_I_A is not None:
-        cmd.extend(["--initial-I-A", _vec_csv(candidate.initial_I_A)])
+        cmd.append(f"--initial-I-A={_vec_csv(candidate.initial_I_A)}")
     if candidate.initial_x_m is not None:
-        cmd.extend(["--initial-x-m", f"{float(candidate.initial_x_m):.16g}"])
+        cmd.append(f"--initial-x-m={float(candidate.initial_x_m):.16g}")
     if candidate.initial_branch_state_npz is not None:
-        cmd.extend(["--initial-branch-state-npz", str(candidate.initial_branch_state_npz)])
+        cmd.append(f"--initial-branch-state-npz={candidate.initial_branch_state_npz}")
     return cmd
 
 
@@ -230,6 +230,32 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _read_csv(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    with path.open("r", encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def _merge_rows(existing: list[dict[str, Any]], updates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Replace rows with the same candidate name while preserving row order."""
+    by_name = {str(row.get("candidate")): row for row in updates}
+    merged: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for row in existing:
+        name = str(row.get("candidate"))
+        if name in by_name:
+            merged.append(by_name[name])
+            seen.add(name)
+        else:
+            merged.append(row)
+    for row in updates:
+        name = str(row.get("candidate"))
+        if name not in seen:
+            merged.append(row)
+    return merged
 
 
 def _write_commands(path: Path, candidates: list[Candidate], *, timeout_s: float) -> None:
@@ -303,7 +329,9 @@ def _is_float(value: Any) -> bool:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true", help="Only write commands and source tables.")
+    parser.add_argument("--write-commands-only", action="store_true", help="Only rebuild commands.sh without changing summaries.")
     parser.add_argument("--candidate", action="append", default=[], help="Run only selected candidate names.")
+    parser.add_argument("--merge-existing", action="store_true", help="Merge selected candidate results into the existing summary.")
     parser.add_argument("--timeout-s", type=float, default=900.0, help="Per-target timeout passed to the formal runner.")
     args = parser.parse_args(argv)
 
@@ -312,7 +340,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.candidate:
         wanted = set(args.candidate)
         candidates = [candidate for candidate in candidates if candidate.name in wanted]
-    _write_commands(OUT_DIR / "commands.sh", candidates, timeout_s=float(args.timeout_s))
+    all_candidates = _build_candidates()
+    _write_commands(OUT_DIR / "commands.sh", all_candidates, timeout_s=float(args.timeout_s))
+    if args.candidate:
+        _write_commands(OUT_DIR / "commands_selected.sh", candidates, timeout_s=float(args.timeout_s))
+    if args.write_commands_only:
+        print(json.dumps({"out_dir": str(OUT_DIR), "n_candidates": len(all_candidates), "commands_only": True}, ensure_ascii=False, indent=2))
+        return 0
     candidate_rows: list[dict[str, Any]] = []
     formal_root = REPO / "DELIVER_TO_EXP" / "formal_experiments"
     for candidate in candidates:
@@ -351,7 +385,10 @@ def main(argv: list[str] | None = None) -> int:
                 "candidate_log": str(log_path.resolve()),
             }
         )
-    _write_csv(OUT_DIR / "candidate_pool_run_summary.csv", candidate_rows)
+    summary_path = OUT_DIR / "candidate_pool_run_summary.csv"
+    if args.merge_existing:
+        candidate_rows = _merge_rows(_read_csv(summary_path), candidate_rows)
+    _write_csv(summary_path, candidate_rows)
     _write_record(OUT_DIR / "record.md", candidate_rows, dry_run=bool(args.dry_run))
     print(json.dumps({"out_dir": str(OUT_DIR), "n_candidates": len(candidate_rows), "dry_run": bool(args.dry_run)}, ensure_ascii=False, indent=2))
     return 0

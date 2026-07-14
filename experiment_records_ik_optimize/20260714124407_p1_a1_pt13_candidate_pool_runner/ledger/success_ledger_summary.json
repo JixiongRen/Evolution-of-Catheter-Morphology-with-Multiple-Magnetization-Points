@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-07-14T14:12:27",
+  "n_records": 8,
+  "n_experiment_catheter_groups": 1,
+  "classification_counts": {
+    "cold_start": 1,
+    "manual_initial_state": 5,
+    "cold_restart_after_failure": 1,
+    "branch_state_reload": 1
+  },
+  "raw_success_5mm": 0,
+  "success_true_tip_5mm": 0,
+  "success_flex_tip_5mm": 0,
+  "success_5mm_convention_drift": 0,
+  "strict_cold_start_success": 0,
+  "cold_restart_success": 0,
+  "continuation_success": 0,
+  "branch_reload_success": 0,
+  "branch_loop_stall": 4,
+  "invalid_numeric_errors": 1,
+  "missing_core_stop_reason": 1,
+  "gpu_invalid": 0,
+  "run_valid_for_statistics": 0
+}

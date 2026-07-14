@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -66,9 +67,15 @@ def _int_or_none(value: Any) -> int | None:
 def _success_within_mm(value: Any, threshold_mm: float = 5.0) -> bool:
     """Return whether a millimeter error value satisfies the threshold."""
     error = _float_or_none(value)
-    if error is None:
+    if error is None or not math.isfinite(error):
         return False
     return error <= threshold_mm
+
+
+def _finite_error(value: Any) -> bool:
+    """Return whether an error field is present and finite."""
+    error = _float_or_none(value)
+    return bool(error is not None and math.isfinite(error))
 
 
 def _experiment_root(summary_path: Path) -> Path:
@@ -141,27 +148,33 @@ def _row_to_record(summary_path: Path, row: dict[str, Any]) -> dict[str, Any]:
         row.get("runtime_device_repr") or ""
     ).lower()
     branch_loaded = _truthy(row.get("initial_branch_state_enabled")) or _truthy(row.get("branch_state_warm_start"))
+    numeric_errors_valid = _finite_error(row.get("err_true_mm")) and _finite_error(row.get("err_flex_mm"))
+    core_stop_reason_present = bool(str(row.get("ik_stop_reason") or "").strip())
+    run_valid_for_statistics = bool(
+        algorithm_stats and formal_stats and gpu_valid and numeric_errors_valid and core_stop_reason_present and not timed_out
+    )
+    run_valid_for_diagnostics = bool(gpu_valid and numeric_errors_valid and core_stop_reason_present and not timed_out)
     strict_cold = bool(
         category == "cold_start"
         and success_true_tip_5mm
-        and not timed_out
+        and run_valid_for_statistics
         and not branch_loaded
         and quality == "算法证据"
     )
     cold_restart = bool(
         category == "cold_restart_after_failure"
         and success_true_tip_5mm
-        and not timed_out
+        and run_valid_for_statistics
         and not branch_loaded
         and quality == "算法证据"
     )
     continuation_success = bool(
         category in {"neighbor_continuation", "stale_success_continuation"}
         and success_true_tip_5mm
-        and not timed_out
+        and run_valid_for_diagnostics
         and not branch_loaded
     )
-    branch_reload_success = bool(category == "branch_state_reload" and success_true_tip_5mm and not timed_out)
+    branch_reload_success = bool(category == "branch_state_reload" and success_true_tip_5mm and run_valid_for_diagnostics)
 
     exp_root = _experiment_root(summary_path)
     run_dir = str(row.get("run_dir") or "")
@@ -205,6 +218,10 @@ def _row_to_record(summary_path: Path, row: dict[str, Any]) -> dict[str, Any]:
         "runtime_platform": row.get("runtime_platform"),
         "runtime_device_kind": row.get("runtime_device_kind"),
         "gpu_valid": gpu_valid,
+        "numeric_errors_valid": numeric_errors_valid,
+        "core_stop_reason_present": core_stop_reason_present,
+        "run_valid_for_statistics": run_valid_for_statistics,
+        "run_valid_for_diagnostics": run_valid_for_diagnostics,
         "centerline_hash": row.get("centerline_hash"),
         "z_star_hash": row.get("z_star_hash"),
         "branch_npz_path": row.get("branch_npz_path"),
@@ -322,6 +339,10 @@ def _summary_tables(records: list[dict[str, Any]]) -> tuple[list[dict[str, Any]]
                 "n_continuation_success": sum(1 for item in items if item["continuation_success"]),
                 "n_branch_reload_success": sum(1 for item in items if item["branch_reload_success"]),
                 "n_branch_loop_stall": sum(1 for item in items if item["branch_loop_stall_detected"]),
+                "n_invalid_numeric_errors": sum(1 for item in items if not item["numeric_errors_valid"]),
+                "n_missing_core_stop_reason": sum(1 for item in items if not item["core_stop_reason_present"]),
+                "n_gpu_invalid": sum(1 for item in items if not item["gpu_valid"]),
+                "n_run_valid_for_statistics": sum(1 for item in items if item["run_valid_for_statistics"]),
                 "n_algorithm_evidence": sum(1 for item in items if item["evidence_quality"] == "算法证据"),
                 "n_path_dependent_evidence": sum(1 for item in items if item["evidence_quality"] == "路径依赖证据"),
                 "n_process_evidence": sum(1 for item in items if item["evidence_quality"] == "流程证据"),
@@ -343,6 +364,10 @@ def _summary_tables(records: list[dict[str, Any]]) -> tuple[list[dict[str, Any]]
         "continuation_success": sum(1 for item in records if item["continuation_success"]),
         "branch_reload_success": sum(1 for item in records if item["branch_reload_success"]),
         "branch_loop_stall": sum(1 for item in records if item["branch_loop_stall_detected"]),
+        "invalid_numeric_errors": sum(1 for item in records if not item["numeric_errors_valid"]),
+        "missing_core_stop_reason": sum(1 for item in records if not item["core_stop_reason_present"]),
+        "gpu_invalid": sum(1 for item in records if not item["gpu_valid"]),
+        "run_valid_for_statistics": sum(1 for item in records if item["run_valid_for_statistics"]),
     }
     return rows, aggregate
 
@@ -371,6 +396,10 @@ def _write_record(path: Path, summary: dict[str, Any], source_paths: list[Path])
         f"- 邻点或旧成功点延拓成功行数：{summary['continuation_success']}",
         f"- 分支状态重放成功行数：{summary['branch_reload_success']}",
         f"- 后验分支回环停滞行数：{summary['branch_loop_stall']}",
+        f"- 可进入正式统计的有效运行行数：{summary['run_valid_for_statistics']}",
+        f"- 数值异常行数：{summary['invalid_numeric_errors']}",
+        f"- 缺少核心停止原因行数：{summary['missing_core_stop_reason']}",
+        f"- GPU 无效行数：{summary['gpu_invalid']}",
         "",
         "分类计数：",
         "",
@@ -383,7 +412,7 @@ def _write_record(path: Path, summary: dict[str, Any], source_paths: list[Path])
             "## 四、解释原则",
             "",
             "1. 台账脚本在本地重新计算真实末端 5 mm 成功字段，不再直接沿用上游 `success_5mm` 作为正式成功判据。",
-            "2. 只有未加载外部分支状态、初值来源为标准冷启动，并且真实末端误差进入 5 mm 的结果，才计入严格冷启动成功。",
+            "2. 只有未加载外部分支状态、初值来源为标准冷启动、真实末端误差进入 5 mm、GPU 有效、数值有限、核心停止原因存在，并且进入算法统计的结果，才计入严格冷启动成功。",
             "3. 柔性段末端成功字段仅作为几何约定对照，不能作为正式成功判据。",
             "4. `last_success_*` 和 `last_success_before_failed_point` 只证明邻点延拓或路径依赖有效，不证明独立点冷启动可达。",
             "5. 加载历史分支状态得到的结果只说明该平衡分支存在，不能计入冷启动成功率。",
