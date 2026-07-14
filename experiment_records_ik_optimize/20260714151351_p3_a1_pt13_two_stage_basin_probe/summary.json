@@ -1,0 +1,21 @@
+{
+  "experiment": "p3_a1_pt13_two_stage_basin_probe",
+  "catheter": "A1",
+  "target_index": 13,
+  "purpose": "Test whether adding the basin-only I3 channel before local refinement can escape the 49 mm stagnation branch.",
+  "output_root": "DELIVER_TO_EXP/formal_experiments/20260714151447_A1_A2_5mm_supervised_IK_no_gravity",
+  "baseline_stagnation_error_mm": 49.205800649658045,
+  "previous_refine_only_error_mm": 46.109911082896346,
+  "basin_true_tip_error_mm": 47.15233271058201,
+  "final_true_tip_error_mm": 46.871633435130974,
+  "success_threshold_mm": 5.0,
+  "success_5mm": false,
+  "basin_outer_iter_count": 25,
+  "basin_accept_count": 25,
+  "basin_reject_count": 10,
+  "refine_outer_iter_count": 25,
+  "refine_accept_count": 17,
+  "refine_reject_count": 56,
+  "final_report_stop_reason": "reject_stall",
+  "interpretation_zh": "I3入盆没有把49 mm停滞分支带入更好吸引域；下一步应从历史5.78 mm接近成功分支继续精修。"
+}

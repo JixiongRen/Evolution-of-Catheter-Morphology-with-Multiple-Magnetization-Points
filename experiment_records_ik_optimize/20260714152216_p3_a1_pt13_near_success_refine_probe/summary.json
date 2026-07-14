@@ -1,0 +1,31 @@
+{
+  "experiment": "p3_a1_pt13_near_success_refine_probe",
+  "catheter": "A1",
+  "target_index": 13,
+  "purpose": "Refine A1-pt13 from a historical near-success branch to resolve the cross-flow evidence conflict.",
+  "output_root": "DELIVER_TO_EXP/formal_experiments/20260714152311_A1_A2_5mm_supervised_IK_no_gravity",
+  "initial_true_tip_error_mm": 5.778240145717013,
+  "final_true_tip_error_mm": 4.7156899859817285,
+  "best_true_tip_error_mm": 4.715689985995395,
+  "success_threshold_mm": 5.0,
+  "success_5mm": true,
+  "outer_iter_count": 1,
+  "accept_count": 2,
+  "reject_count": 0,
+  "wall_s": 98.001158072002,
+  "ik_stop_reason": "reached_threshold_true_tip",
+  "fk_class": "GOOD",
+  "normE": 9.994052008264245e-06,
+  "final_x_m": 0.1344393137537826,
+  "final_I_A": [
+    -6.281130343602524,
+    -6.823049980435422,
+    -0.7768489951615764,
+    1.023661599122025,
+    2.2508982990575994,
+    -1.4885690397597615,
+    5.461698344536688,
+    9.734293458910464
+  ],
+  "interpretation_zh": "A1-pt13不是物理不可达；从接近成功分支继承后可以稳定压入5 mm，主要根因是分支选择和初值继承。"
+}
