@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import csv
 import hashlib
 import json
@@ -48,6 +49,60 @@ def _vec_csv(values: list[float] | tuple[float, ...] | np.ndarray) -> str:
 
 def _m_body_csv(values: list[list[float]]) -> str:
     return "; ".join(_vec_csv(v) for v in values)
+
+
+def _parse_vector_field(value: Any) -> list[float]:
+    """Parse a vector stored in a CSV field."""
+    if value is None or str(value).strip() == "":
+        return []
+    if isinstance(value, (list, tuple)):
+        return [float(v) for v in value]
+    text = str(value).strip()
+    for parser in (json.loads, ast.literal_eval):
+        try:
+            parsed = parser(text)
+            if isinstance(parsed, (list, tuple)):
+                return [float(v) for v in parsed]
+        except (TypeError, ValueError, SyntaxError):
+            pass
+    return [float(v.strip()) for v in text.split(",") if v.strip()]
+
+
+def _load_branch_seed_registry(path: str | None) -> dict[str, dict[int, dict[str, Any]]]:
+    """Load per-target branch seeds from a registry CSV."""
+    if path is None:
+        return {}
+    csv_path = Path(path).expanduser().resolve()
+    if not csv_path.exists():
+        raise FileNotFoundError(f"Branch seed registry does not exist: {csv_path}")
+    registry: dict[str, dict[int, dict[str, Any]]] = {}
+    with csv_path.open("r", encoding="utf-8", newline="") as fh:
+        for row in csv.DictReader(fh):
+            catheter = str(row.get("catheter_type", "")).strip()
+            if not catheter:
+                continue
+            target_index = int(float(row.get("target_index", -1)))
+            branch_path = Path(str(row.get("branch_npz_path", ""))).expanduser().resolve()
+            if not branch_path.exists():
+                continue
+            I_A = _parse_vector_field(row.get("I_A_json") or row.get("I_A"))
+            if len(I_A) != 8:
+                continue
+            x_m = float(row["x_m"])
+            item = {
+                "catheter_type": catheter,
+                "target_index": target_index,
+                "I_A": I_A,
+                "x_m": x_m,
+                "branch_npz_path": str(branch_path),
+                "err_true_mm": float(row.get("err_true_mm", "nan")),
+                "z_star_hash": row.get("z_star_hash", ""),
+                "source_run_root": row.get("source_run_root", ""),
+            }
+            current = registry.setdefault(catheter, {}).get(target_index)
+            if current is None or float(item["err_true_mm"]) < float(current.get("err_true_mm", math.inf)):
+                registry[catheter][target_index] = item
+    return registry
 
 
 def _sha256(path: Path) -> str | None:
@@ -1117,6 +1172,7 @@ def _run_catheter(
     initial_I_A_override: list[float] | None = None,
     initial_x_m_override: float | None = None,
     initial_branch_state_npz_override: str | None = None,
+    branch_seed_registry: dict[int, dict[str, Any]] | None = None,
     two_stage_gate: bool = False,
 ) -> dict[str, Any]:
     cfg = _catheter_solver_cfg(config, catheter_key)
@@ -1179,6 +1235,16 @@ def _run_catheter(
         phase_name = _forced_phase_name(experiment_type)
         phase_dir = catheter_root / phase_name
         for target in targets:
+            target_seed = None if branch_seed_registry is None else branch_seed_registry.get(int(target["index"]))
+            run_I = warm_I
+            run_x = warm_x
+            run_source = warm_source
+            run_branch_state_npz = warm_branch_state_npz
+            if target_seed is not None:
+                run_I = [float(v) for v in target_seed["I_A"]]
+                run_x = float(target_seed["x_m"])
+                run_branch_state_npz = str(target_seed["branch_npz_path"])
+                run_source = f"branch_seed_registry_pt_{int(target['index']):02d}"
             if two_stage_gate:
                 row, stage_rows = _run_one_target_two_stage(
                     catheter_key=catheter_key,
@@ -1189,11 +1255,11 @@ def _run_catheter(
                     experiment_type=experiment_type,
                     experiment_type_zh=experiment_type_zh,
                     formal_statistics_included=experiment_type == "formal_20pt" and phase_name == "formal_20pt",
-                    initial_I_A=warm_I,
-                    initial_x_m=warm_x,
+                    initial_I_A=run_I,
+                    initial_x_m=run_x,
                     x_search_max_m=x_search_max_m,
                     enable_gravity=enable_gravity,
-                    warm_start_source=warm_source,
+                    warm_start_source=run_source,
                     outer_max_iter=outer_max_iter,
                     per_point_timeout_s=per_point_timeout_s,
                     eps_p_m=eps_p_m,
@@ -1202,7 +1268,7 @@ def _run_catheter(
                     sensitivity_config=sensitivity_config,
                     p2_config=p2_config,
                     channel_gate_config=channel_gate_config,
-                    initial_branch_state_npz=warm_branch_state_npz,
+                    initial_branch_state_npz=run_branch_state_npz,
                 )
                 rows.extend(stage_rows)
             else:
@@ -1215,11 +1281,11 @@ def _run_catheter(
                     experiment_type=experiment_type,
                     experiment_type_zh=experiment_type_zh,
                     formal_statistics_included=experiment_type == "formal_20pt" and phase_name == "formal_20pt",
-                    initial_I_A=warm_I,
-                    initial_x_m=warm_x,
+                    initial_I_A=run_I,
+                    initial_x_m=run_x,
                     x_search_max_m=x_search_max_m,
                     enable_gravity=enable_gravity,
-                    warm_start_source=warm_source,
+                    warm_start_source=run_source,
                     outer_max_iter=outer_max_iter,
                     per_point_timeout_s=per_point_timeout_s,
                     eps_p_m=eps_p_m,
@@ -1228,7 +1294,7 @@ def _run_catheter(
                     sensitivity_config=sensitivity_config,
                     p2_config=p2_config,
                     channel_gate_config=channel_gate_config,
-                    initial_branch_state_npz=warm_branch_state_npz,
+                    initial_branch_state_npz=run_branch_state_npz,
                 )
             warm_branch_state_npz = None
             formal_rows.append(row)
@@ -1359,6 +1425,13 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         lines.append(f"- 初始分支状态：首个运行点从 `{metadata['initial_branch_state_npz_override']}` 读取内部平衡状态作为正运动学初值。")
     else:
         lines.append("- 初始分支状态：未使用外部保存的内部平衡状态。")
+    if metadata.get("branch_seed_registry_csv"):
+        lines.append(
+            f"- 分支种子登记表：`{metadata['branch_seed_registry_csv']}`；"
+            f"各导管可用种子数量 `{metadata.get('branch_seed_registry_counts')}`。"
+        )
+    else:
+        lines.append("- 分支种子登记表：未启用。")
     lines.append(f"- 控制通道门禁：{_batch_control_gate_label(metadata)}")
     sens_cfg = metadata.get("sensitivity_config", {})
     lines.append(
@@ -1521,6 +1594,7 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--initial-I-A", type=str, default=None, help="Comma-separated initial 8-coil currents for the first target.")
     parser.add_argument("--initial-x-m", type=float, default=None, help="Initial insertion depth for the first target.")
     parser.add_argument("--initial-branch-state-npz", type=str, default=None, help="Saved branch-state npz used to seed the first target FK solve.")
+    parser.add_argument("--branch-seed-registry-csv", type=str, default=None, help="CSV registry of per-target branch-state seeds.")
     parser.add_argument("--x-sensitivity-method", choices=("implicit", "fd"), default="implicit", help="Method used for insertion-depth sensitivity.")
     parser.add_argument(
         "--sensitivity-mode",
@@ -1607,6 +1681,10 @@ def main(argv: list[str] | None = None) -> None:
     initial_branch_state_npz_override = None
     if args.initial_branch_state_npz is not None:
         initial_branch_state_npz_override = str(Path(args.initial_branch_state_npz).expanduser().resolve())
+    branch_seed_registry_csv = None
+    if args.branch_seed_registry_csv is not None:
+        branch_seed_registry_csv = str(Path(args.branch_seed_registry_csv).expanduser().resolve())
+    branch_seed_registry = _load_branch_seed_registry(branch_seed_registry_csv)
     x_search_max_m = 0.203
     calib_path = REPO / config["shared_physical_parameters"]["actuation"]["default_calib_file"]
     sensitivity_config = {
@@ -1672,6 +1750,11 @@ def main(argv: list[str] | None = None) -> None:
         "initial_I_A_override": initial_I_A_override,
         "initial_x_m_override": initial_x_m_override,
         "initial_branch_state_npz_override": initial_branch_state_npz_override,
+        "branch_seed_registry_csv": branch_seed_registry_csv,
+        "branch_seed_registry_counts": {
+            key: len(branch_seed_registry.get(key, {}))
+            for key in catheter_keys
+        },
         "x_search_max_m": x_search_max_m,
         "effective_x_search_min_m": 0.003001,
         "effective_x_search_max_m": x_search_max_m,
@@ -1736,6 +1819,7 @@ def main(argv: list[str] | None = None) -> None:
         f"{'--initial-I-A ' + ','.join(f'{float(v):.12g}' for v in initial_I_A_override) if initial_I_A_override is not None else ''} "
         f"{'--initial-x-m ' + f'{initial_x_m_override:.12g}' if initial_x_m_override is not None else ''} "
         f"{'--initial-branch-state-npz ' + initial_branch_state_npz_override if initial_branch_state_npz_override is not None else ''} "
+        f"{'--branch-seed-registry-csv ' + branch_seed_registry_csv if branch_seed_registry_csv is not None else ''} "
         f"{'--force-formal-20' if args.force_formal_20 else ''}\n",
         encoding="utf-8",
     )
@@ -1766,6 +1850,7 @@ def main(argv: list[str] | None = None) -> None:
             initial_I_A_override=initial_I_A_override,
             initial_x_m_override=initial_x_m_override,
             initial_branch_state_npz_override=initial_branch_state_npz_override,
+            branch_seed_registry=branch_seed_registry.get(catheter_key, {}),
             two_stage_gate=bool(args.two_stage_gate),
         )
     metadata["total_wall_s"] = float(time.perf_counter() - t0)

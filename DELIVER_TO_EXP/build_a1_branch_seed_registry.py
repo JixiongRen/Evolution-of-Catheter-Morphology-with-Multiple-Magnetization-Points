@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import csv
 import json
+import math
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +25,57 @@ def _parse_float(value: Any, default: float = float("inf")) -> float:
         return float(value)
     except (TypeError, ValueError):
         return default
+
+
+def _parse_vector(value: Any) -> list[float]:
+    """Parse a vector saved by CSV or JSON summaries."""
+    if value is None or str(value).strip() == "":
+        return []
+    if isinstance(value, (list, tuple)):
+        return [float(v) for v in value]
+    text = str(value).strip()
+    for parser in (json.loads, ast.literal_eval):
+        try:
+            parsed = parser(text)
+            if isinstance(parsed, (list, tuple)):
+                return [float(v) for v in parsed]
+        except (ValueError, SyntaxError, TypeError):
+            pass
+    return [float(v.strip()) for v in text.split(",") if v.strip()]
+
+
+def _load_point_detail(row: dict[str, Any]) -> dict[str, Any]:
+    """Load per-point detail when the aggregate CSV omits control fields."""
+    run_dir = str(row.get("run_dir", "")).strip()
+    if not run_dir:
+        return {}
+    point_dir = Path(run_dir)
+    for name in ("formal_point_summary.json", "result.json"):
+        path = point_dir / name
+        if not path.exists():
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if isinstance(data, dict):
+            return data
+    return {}
+
+
+def _control_from_row(row: dict[str, Any]) -> tuple[list[float], float]:
+    """Resolve control variables from aggregate or per-point summaries."""
+    I_A = _parse_vector(row.get("I_A"))
+    x_m = _parse_float(row.get("x_m"), default=float("nan"))
+    if len(I_A) == 8 and not math.isnan(x_m):
+        return I_A, x_m
+
+    detail = _load_point_detail(row)
+    if len(I_A) != 8:
+        I_A = _parse_vector(detail.get("I_A") or detail.get("I"))
+    if math.isnan(x_m):
+        x_m = _parse_float(detail.get("x_m", detail.get("x")), default=float("nan"))
+    return I_A, x_m
 
 
 def _read_rows(root: Path, catheter: str) -> list[dict[str, Any]]:
@@ -55,13 +108,15 @@ def _is_candidate(row: dict[str, Any], max_error_mm: float) -> bool:
 
 
 def _candidate_record(row: dict[str, Any]) -> dict[str, Any]:
+    I_A, x_m = _control_from_row(row)
     return {
         "catheter_type": row.get("catheter_type", "A1"),
         "target_index": int(float(row.get("target_index", -1))),
         "err_true_mm": _parse_float(row.get("err_true_mm")),
         "success_5mm": _parse_bool(row.get("success_5mm")),
         "success_10mm": _parse_bool(row.get("success_10mm")),
-        "x_m": _parse_float(row.get("x_m"), default=float("nan")),
+        "I_A_json": json.dumps(I_A),
+        "x_m": x_m,
         "max_abs_current_A": _parse_float(row.get("max_abs_current_A"), default=float("nan")),
         "cls": row.get("cls", ""),
         "normE": _parse_float(row.get("normE"), default=float("nan")),
@@ -130,6 +185,7 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "err_true_mm",
         "success_5mm",
         "success_10mm",
+        "I_A_json",
         "x_m",
         "max_abs_current_A",
         "cls",
