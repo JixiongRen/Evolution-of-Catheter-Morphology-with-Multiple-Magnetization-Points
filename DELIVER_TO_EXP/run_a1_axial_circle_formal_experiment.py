@@ -604,18 +604,53 @@ def _run_one_target(
     success_3mm = bool((not timed_out) and np.isfinite(err_true_mm) and err_true_mm <= 3.0)
     success_5mm = bool((not timed_out) and np.isfinite(err_true_mm) and err_true_mm <= 5.0)
     success_10mm = bool((not timed_out) and np.isfinite(err_true_mm) and err_true_mm <= 10.0)
+    branch_state_warm_start = _truthy(run_initial_branch_state.get("enabled"))
+    control_warm_start = not str(warm_start_source or "").startswith("cold_start")
+    zero_iter_pass = bool(success_eps and int(outer_iter_count) == 0)
+    auxiliary_row = str(phase).endswith("_basin")
+    final_decision_row = not auxiliary_row
+    evidence_role, evidence_role_zh = _evidence_role(
+        auxiliary_row=auxiliary_row,
+        final_decision_row=final_decision_row,
+        branch_state_warm_start=branch_state_warm_start,
+        zero_iter_pass=zero_iter_pass,
+    )
+    algorithm_statistics_included = bool(
+        final_decision_row
+        and not branch_state_warm_start
+        and not zero_iter_pass
+        and not timed_out
+        and return_code in (0, None)
+    )
     artifacts = _plot_point_artifacts(point_dir, target, result, history)
     centerline = _centerline_path(point_dir)
     I_A = result.get("I")
     x_m = result.get("x")
     x_bounds = run_config.get("x_bounds", [math.nan, math.nan])
+    point_decision = "纳入正式统计" if formal_statistics_included else f"{experiment_type_zh}，不纳入正式20点统计"
+    if auxiliary_row:
+        point_decision = f"{experiment_type_zh}阶段辅助行，不进入最终成功率统计"
+    elif zero_iter_pass:
+        point_decision = "零迭代通过，仅用于流程或落盘口径验证，不进入算法成功统计"
+    elif branch_state_warm_start:
+        point_decision = "热启动流程验证，不进入冷启动算法成功统计"
     summary = {
         "catheter_type": catheter_key,
         "phase": phase,
         "experiment_type": experiment_type,
         "experiment_type_zh": experiment_type_zh,
         "formal_statistics_included": bool(formal_statistics_included),
-        "point_decision": "纳入正式统计" if formal_statistics_included else f"{experiment_type_zh}，不纳入正式20点统计",
+        "point_decision": point_decision,
+        "run_type": evidence_role,
+        "evidence_role": evidence_role,
+        "evidence_role_zh": evidence_role_zh,
+        "warm_start_enabled": bool(control_warm_start),
+        "branch_state_warm_start": bool(branch_state_warm_start),
+        "zero_iter_pass": bool(zero_iter_pass),
+        "no_op_pass": bool(zero_iter_pass),
+        "auxiliary_row": bool(auxiliary_row),
+        "final_decision_row": bool(final_decision_row),
+        "algorithm_statistics_included": bool(algorithm_statistics_included),
         "target_index": int(target["index"]),
         "theta_rad": float(target["theta_rad"]),
         "p_des": [float(v) for v in p_des.tolist()],
@@ -814,6 +849,16 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "experiment_type_zh",
         "formal_statistics_included",
         "point_decision",
+        "run_type",
+        "evidence_role",
+        "evidence_role_zh",
+        "warm_start_enabled",
+        "branch_state_warm_start",
+        "zero_iter_pass",
+        "no_op_pass",
+        "auxiliary_row",
+        "final_decision_row",
+        "algorithm_statistics_included",
         "target_index",
         "theta_rad",
         "err_true_mm",
@@ -963,6 +1008,38 @@ def _experiment_type_zh(experiment_type: str) -> str:
         "gate_or_diagnostic": "门控或诊断实验",
     }
     return labels.get(experiment_type, str(experiment_type))
+
+
+def _truthy(value: Any) -> bool:
+    """Return a conservative boolean value for serialized flags."""
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return False
+    if isinstance(value, (int, float)):
+        return bool(value)
+    return str(value).strip().lower() in {"1", "true", "yes", "y"}
+
+
+def _evidence_role(
+    *,
+    auxiliary_row: bool,
+    final_decision_row: bool,
+    branch_state_warm_start: bool,
+    zero_iter_pass: bool,
+) -> tuple[str, str]:
+    """Classify the evidential role of one IK run."""
+    if auxiliary_row:
+        return "stage_auxiliary", "阶段辅助行"
+    if branch_state_warm_start and zero_iter_pass:
+        return "warm_start_zero_iter_flow_validation", "热启动零迭代流程验证"
+    if branch_state_warm_start:
+        return "warm_start_flow_validation", "热启动流程验证"
+    if zero_iter_pass:
+        return "zero_iter_record_validation", "零迭代记录验证"
+    if final_decision_row:
+        return "algorithm_validation", "算法验证"
+    return "diagnostic", "诊断记录"
 
 
 def _select_target_positions(targets: list[dict[str, Any]], requested_indices: list[int]) -> list[int]:
@@ -1215,6 +1292,7 @@ def _summarize_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
     if not rows:
         return {
             "count": 0,
+            "algorithm_count": 0,
             "success_count_eps": 0,
             "success_count_3mm": 0,
             "success_count_5mm": 0,
@@ -1223,13 +1301,16 @@ def _summarize_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "err_true_mm_max": math.nan,
             "wall_s_total": 0.0,
         }
-    errs = np.asarray([row["err_true_mm"] for row in rows], dtype=float)
+    eligible_rows = [row for row in rows if _truthy(row.get("algorithm_statistics_included", True))]
+    stat_rows = eligible_rows if eligible_rows else rows
+    errs = np.asarray([row["err_true_mm"] for row in stat_rows], dtype=float)
     return {
         "count": int(len(rows)),
-        "success_count_eps": int(sum(1 for row in rows if row["success_eps"])),
-        "success_count_3mm": int(sum(1 for row in rows if row["success_3mm"])),
-        "success_count_5mm": int(sum(1 for row in rows if row["success_5mm"])),
-        "success_count_10mm": int(sum(1 for row in rows if row["success_10mm"])),
+        "algorithm_count": int(len(eligible_rows)),
+        "success_count_eps": int(sum(1 for row in eligible_rows if row["success_eps"])),
+        "success_count_3mm": int(sum(1 for row in eligible_rows if row["success_3mm"])),
+        "success_count_5mm": int(sum(1 for row in eligible_rows if row["success_5mm"])),
+        "success_count_10mm": int(sum(1 for row in eligible_rows if row["success_10mm"])),
         "err_true_mm_mean": float(np.nanmean(errs)),
         "err_true_mm_max": float(np.nanmax(errs)),
         "err_true_mm_min": float(np.nanmin(errs)),
@@ -1296,8 +1377,8 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
     lines.append("")
     lines.append("## 总览结果")
     lines.append("")
-    lines.append(f"| 导管 | 门控阈值成功数 | 决策 | 本批次运行点数 | {threshold_mm:.1f}mm 成功数 | 3mm 成功数 | 5mm 成功数 | 10mm 成功数 | 最大真实误差(mm) | 平均真实误差(mm) | 总耗时(s) |")
-    lines.append("|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|")
+    lines.append(f"| 导管 | 门控阈值成功数 | 决策 | 本批次运行点数 | 算法统计点数 | {threshold_mm:.1f}mm 成功数 | 3mm 成功数 | 5mm 成功数 | 10mm 成功数 | 最大真实误差(mm) | 平均真实误差(mm) | 总耗时(s) |")
+    lines.append("|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     catheter_keys = list(metadata.get("catheter_keys", ["A1", "A2"]))
     for key in catheter_keys:
         item = results[key]
@@ -1305,7 +1386,7 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         stats = _summarize_rows(rows)
         lines.append(
             f"| {key} | {item['gate_success_count_eps']}/{item['gate_total']} | {item['decision']} | "
-            f"{stats['count']} | {stats['success_count_eps']} | {stats['success_count_3mm']} | "
+            f"{stats['count']} | {stats['algorithm_count']} | {stats['success_count_eps']} | {stats['success_count_3mm']} | "
             f"{stats['success_count_5mm']} | {stats['success_count_10mm']} | "
             f"{stats['err_true_mm_max']:.3f} | {stats['err_true_mm_mean']:.3f} | {stats['wall_s_total']:.1f} |"
         )
@@ -1336,11 +1417,12 @@ def _write_report(report_path: Path, run_root: Path, metadata: dict[str, Any], r
         if item.get("overview_plot"):
             lines.append(f"- 总览图：`{item['overview_plot']}`")
         lines.append("")
-        lines.append(f"| 点号 | 阶段 | 决策标签 | 纳入正式统计 | 控制通道门禁 | 状态来源 | 真实误差(mm) | 柔性节点误差(mm) | {threshold_mm:.1f}mm | 3mm | 5mm | 10mm | cls | 外层迭代 | 耗时(s) | 停止原因 |")
-        lines.append("|---:|---|---|---|---|---|---:|---:|---|---|---|---|---|---:|---:|---|")
+        lines.append(f"| 点号 | 阶段 | 证据角色 | 算法统计 | 决策标签 | 纳入正式统计 | 控制通道门禁 | 状态来源 | 真实误差(mm) | 柔性节点误差(mm) | {threshold_mm:.1f}mm | 3mm | 5mm | 10mm | cls | 外层迭代 | 耗时(s) | 停止原因 |")
+        lines.append("|---:|---|---|---|---|---|---|---|---:|---:|---|---|---|---|---|---:|---:|---|")
         for row in rows:
             lines.append(
-                f"| {row['target_index']} | {row['phase']} | {row.get('point_decision')} | "
+                f"| {row['target_index']} | {row['phase']} | {row.get('evidence_role_zh')} | "
+                f"{row.get('algorithm_statistics_included')} | {row.get('point_decision')} | "
                 f"{row.get('formal_statistics_included')} | {row.get('control_gate_policy_label')} | "
                 f"{row.get('state_source_zh')} | "
                 f"{row['err_true_mm']:.3f} | "
@@ -1379,22 +1461,28 @@ def _write_output_index(run_root: Path, metadata: dict[str, Any], results: dict[
         "",
         "## 总览图",
         "",
-        "- `A1_target_circle_true_tip_overview.png`：A1 真实末端落点与目标圆总览。",
-        "- `A2_target_circle_true_tip_overview.png`：A2 真实末端落点与目标圆总览。",
-        "",
-        "## 分点输出",
-        "",
-        "每个点目录均包含 `result.json`、`history.json`、`runtime_profile.json`、`formal_point_summary.json`、`diagnostics.png`、`posture_evolution.png` 和 `poses/` 中心线数据。",
-        "",
-        "## 结论索引",
-        "",
     ]
+    for key in metadata.get("catheter_keys", ["A1", "A2"]):
+        overview = results.get(key, {}).get("overview_plot")
+        if overview:
+            lines.append(f"- `{Path(overview).name}`：{key} 真实末端落点与目标圆总览。")
+    lines.extend(
+        [
+            "",
+            "## 分点输出",
+            "",
+            "每个点目录均包含 `result.json`、`history.json`、`runtime_profile.json`、`formal_point_summary.json`、`diagnostics.png`、`posture_evolution.png` 和 `poses/` 中心线数据。",
+            "",
+            "## 结论索引",
+            "",
+        ]
+    )
     for key in metadata.get("catheter_keys", ["A1", "A2"]):
         item = results[key]
         rows = item["formal_rows"] if item["formal_rows"] else item["diagnostic_rows"]
         stats = _summarize_rows(rows)
         lines.append(
-            f"- {key}：决策 `{item['decision']}`，运行点数 {stats['count']}，"
+            f"- {key}：决策 `{item['decision']}`，运行点数 {stats['count']}，算法统计点数 {stats['algorithm_count']}，"
             f"{threshold_mm:.1f} mm 成功 {stats['success_count_eps']}，"
             f"最大误差 {stats['err_true_mm_max']:.3f} mm，平均误差 {stats['err_true_mm_mean']:.3f} mm。"
         )
