@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-07-14 14:28:47",
+  "code_commit": "f5c6c72521d708882baf206ccb893c1082467136",
+  "git_tracked_dirty": false,
+  "git_untracked_count": 10714,
+  "argv_hash": "6145e75a74300256052f1aaac752372db307a3e29fbe891e88d7c1b3bc95e5d3",
+  "fk_cfg_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "geometry_hash": "23dceb2577e66334ce48808c92ded3a72278be81b90159130b90776a75f1510a",
+  "material_hash": "c384103bf12248388d2d03533bf3367def8401326d8f6280d6813aedaf7fca21",
+  "magnet_hash": "54d146631da33cbee204170011211eb5555e214205f0478e835701a07d23660c",
+  "solver_hash": "dbbf1fd935875ec0fb669bbe28fe0fab4823fe6729a5f94f1dff56558a6f2bd8",
+  "sensitivity_hash": "61433c6eefe3ffebdc277266c76705eca81d30356d360fa3d759411757e47dee",
+  "initial_control_hash": "b04ba995dc4ba0c9b2abe3b4096e073eceec0fcfefc930a58bdac3c5395ea0d2",
+  "initial_branch_state": {
+    "enabled": false,
+    "requested_control_hash": "b04ba995dc4ba0c9b2abe3b4096e073eceec0fcfefc930a58bdac3c5395ea0d2"
+  },
+  "branch_gate_note": "A saved state is traceable evidence only; same-branch claims require replay and roundtrip gates."
+}

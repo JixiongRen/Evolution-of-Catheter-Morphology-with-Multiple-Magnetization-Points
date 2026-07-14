@@ -1,0 +1,25 @@
+{
+  "experiment_id": "20260714142738_a1_pt13_step_diagnostic_smoke",
+  "formal_run_root": "DELIVER_TO_EXP/formal_experiments/20260714142837_A1_A2_5mm_supervised_IK_no_gravity",
+  "catheter": "A1",
+  "target_index": 13,
+  "gravity": false,
+  "outer_max_iter": 8,
+  "gpu_valid": true,
+  "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "wall_s": 723.3746357330238,
+  "err_true_mm": 49.2058006497014,
+  "success_5mm": false,
+  "fk_normE": 9.998587929469874e-06,
+  "fk_class": "GOOD",
+  "outer_iter_count": 8,
+  "accept_count": 4,
+  "reject_count": 22,
+  "history_rows": 26,
+  "history_rows_with_step_diagnostics": 25,
+  "observed_step_collapse_sources": [
+    "not_collapsed",
+    "trust_region_limited_nonzero_step"
+  ],
+  "primary_interpretation": "A1-pt13 cold-start failure is not caused by current/insertion boundary clipping or channel gating. After reaching about 49.2 mm, nonzero trial steps do not improve true terminal error, pointing to local sensitivity/model direction failure or branch-local optimizer stagnation."
+}
