@@ -1,0 +1,9 @@
+candidate,candidate_zh,purpose_zh,target_indices,outer_max_iter,countable_as_cold_start,diagnostic_only,initial_branch_state_npz,status
+cold_start,标准冷启动,标准初始形态直接求解 A1-pt13,13,50,True,False,,dry_run
+pt01_forward_control,pt01 前向控制量候选,使用 A1-pt01 成功控制量作为 A1-pt13 初值,13,50,False,False,,dry_run
+reverse_neighbor_pt14_to_pt13,反向邻点候选 pt14->pt13,先运行 pt14，再以顺序热启动机制反向进入 pt13,"14,13",50,False,False,,dry_run
+pt01_perturb_seed1,pt01 确定性扰动候选 1,在 pt01 控制量附近加入 0.5 A 确定性扰动,13,50,False,False,,dry_run
+pt01_perturb_seed2,pt01 确定性扰动候选 2,在 pt01 控制量附近加入 0.5 A 确定性扰动,13,50,False,False,,dry_run
+historical_5778_control_only,历史 5.778 mm 控制量重放,只给定历史近阈值控制量，不加载分支状态,13,0,False,True,,dry_run
+historical_5778_branch_state,历史 5.778 mm 分支状态重放,给定历史控制量并加载历史平衡分支状态,13,0,False,True,/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714092428_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_13/branch_states/states/eval_000043_final_iter_0043.npz,dry_run
+historical_2810_control_only,历史 2.810 mm 控制量重放,只给定更早历史成功控制量，不加载分支状态,13,0,False,True,,dry_run
