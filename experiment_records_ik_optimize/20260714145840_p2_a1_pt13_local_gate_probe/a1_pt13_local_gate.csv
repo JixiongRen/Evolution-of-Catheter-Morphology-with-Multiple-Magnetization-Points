@@ -1,0 +1,5 @@
+run,point,kind,channel,classification,decision,used_rows,relative_error_p90,limited_safe_step_abs_max,basin_safe_step_abs_max,source_protocol,source_experiment
+A1_pt_13,pt_13,I,0,可有限使用,同分支精修候选,2,0.07612707244543342,0.125,0.125,p1a_reaudit_v2,experiment_records_ik_optimize/20260714144638_p1_a1_pt13_local_sensitivity_audit
+A1_pt_13,pt_13,I,6,可有限使用,同分支精修候选,3,0.06642277545509606,0.25,0.25,p1a_reaudit_v2,experiment_records_ik_optimize/20260714144638_p1_a1_pt13_local_sensitivity_audit
+A1_pt_13,pt_13,x,-1,可有限使用,同分支精修候选,1,0.018647085566303387,0.0005,0.0005,p1a_reaudit_v2,experiment_records_ik_optimize/20260714144638_p1_a1_pt13_local_sensitivity_audit
+A1_pt_13,pt_13,I,3,入盆可用,仅入盆候选,1,0.14764713206360477,,0.25,p1a_reaudit_v2,experiment_records_ik_optimize/20260714144638_p1_a1_pt13_local_sensitivity_audit

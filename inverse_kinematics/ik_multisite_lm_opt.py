@@ -1797,6 +1797,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
             r_lin = r + J_full @ du_eff
             pred_red = 0.5 * float(jnp.dot(r, r) - jnp.dot(r_lin, r_lin))
+            pred_red_gate_bypassed = bool(
+                p2_terminal_error_first
+                and pred_red <= float(args.pred_red_tol)
+                and not bool(step_diagnostics["effective_step_below_tolerance"])
+            )
 
             if (dI_max_abs <= float(args.step_I_tol)) and (dx_abs <= float(args.step_x_tol)):
                 if backtrack_idx == 0:
@@ -1859,7 +1864,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     stop_outer_loop = True
                 break
 
-            if pred_red <= float(args.pred_red_tol):
+            if pred_red <= float(args.pred_red_tol) and not pred_red_gate_bypassed:
                 if backtrack_idx == 0:
                     outer_stop_reason = "predicted_reduction_below_tolerance"
                     outer_stop_detail = {
@@ -1916,6 +1921,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     )
                     stop_outer_loop = True
                 break
+            if pred_red_gate_bypassed:
+                print(
+                    f"[IK-LM] bypass pred_red gate for terminal-error-first mode: "
+                    f"pred_red={pred_red:.3e}, evaluating nonzero physical step."
+                )
 
             # 5) Evaluate candidate.
             trial = _fk_eval(
@@ -1978,6 +1988,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "reliable_subspace_dim": int(reliable_dim),
                 "ix_jacobian_enabled": bool(ix_jacobian_enabled),
                 "p2_terminal_error_first": bool(p2_terminal_error_first),
+                "pred_red_gate_bypassed": bool(pred_red_gate_bypassed),
                 "control_channel_gate": control_gate_iter,
                 "step_collapse_source": step_diagnostics["collapse_source"],
                 "step_diagnostics": step_diagnostics,
@@ -2007,6 +2018,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "act_red": float(act_red),
                     "terminal_improved": bool(terminal_improved),
                     "cost_improved": bool(cost_improved),
+                    "pred_red_gate_bypassed": bool(pred_red_gate_bypassed),
                     "task_rank": int(task_rank),
                     "task_singular_values": [float(v) for v in np.asarray(jax.device_get(task_svals)).reshape(-1,).tolist()],
                     "reliable_subspace_enabled": bool(p2_force_reliable),

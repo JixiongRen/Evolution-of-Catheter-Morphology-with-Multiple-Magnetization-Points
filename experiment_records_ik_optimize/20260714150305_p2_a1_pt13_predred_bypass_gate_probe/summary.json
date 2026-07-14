@@ -1,0 +1,33 @@
+{
+  "experiment": "p2_a1_pt13_predred_bypass_gate_probe",
+  "catheter": "A1",
+  "target_index": 13,
+  "purpose": "Validate bypassing the predicted-reduction early stop when terminal-error-first mode has a nonzero physical step.",
+  "output_root": "DELIVER_TO_EXP/formal_experiments/20260714150407_A1_A2_5mm_supervised_IK_no_gravity",
+  "initial_true_tip_error_mm": 49.205800649658045,
+  "final_true_tip_error_mm": 46.109911082896346,
+  "best_true_tip_error_mm": 46.109911082852676,
+  "improvement_mm": 3.0958895668053694,
+  "success_threshold_mm": 5.0,
+  "success_5mm": false,
+  "outer_iter_count": 25,
+  "accept_count": 22,
+  "reject_count": 41,
+  "wall_s": 174.70259266599896,
+  "ik_stop_reason": "max_outer_iter",
+  "report_stop_reason": "reject_stall",
+  "fk_class": "GOOD",
+  "normE": 9.99184962113211e-06,
+  "final_x_m": 0.111383806258,
+  "final_I_A": [
+    1.2221809420599996,
+    1.76202811891,
+    -0.17097792041999926,
+    -0.379075411582,
+    0.0298130825657999,
+    0.3683673987959995,
+    -1.1587271004259225,
+    -2.44401483255
+  ],
+  "interpretation_zh": "预测下降门禁绕过修正确实释放了真实末端误差下降的候选步，但当前I0/I6/x局部可靠子空间仍不足以让A1-pt13进入5 mm阈值。"
+}
