@@ -634,6 +634,14 @@ def _run_one_target(
         point_decision = "零迭代通过，仅用于流程或落盘口径验证，不进入算法成功统计"
     elif branch_state_warm_start:
         point_decision = "热启动流程验证，不进入冷启动算法成功统计"
+    report_stop_reason = _infer_stop_reason(
+        result=result,
+        history=history,
+        outer_max_iter=outer_max_iter,
+        threshold_mm=threshold_mm,
+    )
+    ik_stop_reason = result.get("outer_stop_reason")
+    ik_stop_detail = result.get("outer_stop_detail", {})
     summary = {
         "catheter_type": catheter_key,
         "phase": phase,
@@ -673,7 +681,10 @@ def _run_one_target(
         "accept_count": int(accepted_count),
         "reject_count": int(reject_count),
         "wall_s": wall_s,
-        "stop_reason": _infer_stop_reason(result=result, history=history, outer_max_iter=outer_max_iter, threshold_mm=threshold_mm),
+        "stop_reason": report_stop_reason,
+        "report_stop_reason": report_stop_reason,
+        "ik_stop_reason": ik_stop_reason,
+        "ik_stop_detail": ik_stop_detail,
         "warm_start_source": warm_start_source,
         "initial_branch_state": run_initial_branch_state,
         "initial_branch_state_enabled": run_initial_branch_state.get("enabled"),
@@ -874,6 +885,9 @@ def _write_rows_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "reject_count",
         "wall_s",
         "stop_reason",
+        "report_stop_reason",
+        "ik_stop_reason",
+        "ik_stop_detail",
         "warm_start_source",
         "initial_branch_state_enabled",
         "initial_branch_state_path",

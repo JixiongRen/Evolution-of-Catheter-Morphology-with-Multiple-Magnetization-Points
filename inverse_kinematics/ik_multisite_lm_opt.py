@@ -1175,7 +1175,15 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         save_history_json(history, history_path)
         _profile_add(runtime_profile, "io", "save_history", time.perf_counter() - t0)
 
-    def _write_result(pack: EvalPack, I_values: Array, x_value: float, *, profile_label: str = "save_result") -> None:
+    def _write_result(
+        pack: EvalPack,
+        I_values: Array,
+        x_value: float,
+        *,
+        outer_stop_reason: str,
+        outer_stop_detail: Optional[dict[str, Any]] = None,
+        profile_label: str = "save_result",
+    ) -> None:
         """Write the point result summary for both normal and init-converged exits."""
         result_tip_fields = _tip_report_fields(pack, p_des)
         t0_result = time.perf_counter()
@@ -1194,6 +1202,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "x": float(x_value),
                     "normE": float(pack.normE),
                     "cls": str(pack.cls),
+                    "outer_stop_reason": str(outer_stop_reason),
+                    "outer_stop_detail": outer_stop_detail or {},
                     "sigma_p": float(sigma_p),
                     "sensitivity_config": sensitivity_config,
                     "runtime_environment": runtime_environment,
@@ -1367,7 +1377,14 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
     if cur.err <= eps_p and cur.cls != "REJECT":
         print(f"[IK-LM] Converged at init: ||e||={cur.err*1e3:.3f}mm")
-        _write_result(cur, cur.I, cur.x, profile_label="save_result_init_converged")
+        _write_result(
+            cur,
+            cur.I,
+            cur.x,
+            outer_stop_reason="initial_converged",
+            outer_stop_detail={"err_true_m": float(cur.err), "eps_p_m": float(eps_p)},
+            profile_label="save_result_init_converged",
+        )
         _write_runtime_profile(run_dir, runtime_profile)
         print("[IK-LM] Saved result.json")
         return
@@ -1405,6 +1422,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         except Exception as e:
             jac_res_cached = None
             print(f"[IK-LM] WARNING: warmup implicit adjoint failed: {repr(e)}")
+
+    outer_stop_reason: Optional[str] = None
+    outer_stop_detail: dict[str, Any] = {}
 
     for k in range(1, int(args.outer_max_iter) + 1):
         # 1) Sensitivities dp/dI and dp/dx (at current accepted state)
@@ -1567,6 +1587,12 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         }
         if active_idx_np.size == 0:
             print("[IK-LM] stop: control gate blocks every channel; no admissible outer update.")
+            outer_stop_reason = "control_gate_blocks_all_channels"
+            outer_stop_detail = {
+                "iter": int(k),
+                "active_dim": int(active_idx_np.size),
+                "blocked_indices": [int(v) for v in blocked_idx_np.tolist()],
+            }
             _append_history(
                 d={
                     "iter": int(k),
@@ -1673,16 +1699,112 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
             if (dI_max_abs <= float(args.step_I_tol)) and (dx_abs <= float(args.step_x_tol)):
                 if backtrack_idx == 0:
+                    outer_stop_reason = "effective_step_below_tolerance"
+                    outer_stop_detail = {
+                        "iter": int(k),
+                        "backtrack_index": int(backtrack_idx),
+                        "dI_max_abs_A": float(dI_max_abs),
+                        "step_I_tol_A": float(args.step_I_tol),
+                        "dx_abs_m": float(dx_abs),
+                        "step_x_tol_m": float(args.step_x_tol),
+                        "task_rank": int(task_rank),
+                        "reliable_subspace_enabled": bool(p2_force_reliable),
+                        "reliable_subspace_dim": int(reliable_dim),
+                    }
                     print(
                         f"[IK-LM] stop: effective step is zero (|dI|_max={dI_max_abs:.3e}A, |dx|={dx_abs:.3e}m). "
                         f"Likely parameter saturation / clipping / numerical floor."
+                    )
+                    _append_history(
+                        d={
+                            "iter": int(k),
+                            "backtrack_index": int(backtrack_idx),
+                            "backtrack_scale": float(backtrack_scale),
+                            "status": "STOP",
+                            "accept": False,
+                            "stop_reason": outer_stop_reason,
+                            "stop_detail": outer_stop_detail,
+                            "lam": float(lam),
+                            "rho": None,
+                            "pred_red": None,
+                            "act_red": None,
+                            "terminal_improved": False,
+                            "cost_improved": False,
+                            "task_rank": int(task_rank),
+                            "task_singular_values": [float(v) for v in np.asarray(jax.device_get(task_svals)).reshape(-1,).tolist()],
+                            "reliable_subspace_enabled": bool(p2_force_reliable),
+                            "reliable_subspace_dim": int(reliable_dim),
+                            "ix_jacobian_enabled": bool(ix_jacobian_enabled),
+                            "control_channel_gate": control_gate_iter,
+                            "du_eff_norm": float(du_eff_norm),
+                            "dI_max_abs": float(dI_max_abs),
+                            "dI_norm": float(dI_norm),
+                            "dx_m": float(dx_clip),
+                            "dx_abs_m": float(dx_abs),
+                            "x_m": float(cur.x),
+                            "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+                            "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
+                            **_tip_report_fields(cur, p_des),
+                            "cost": float(cur.cost),
+                            "cls": str(cur.cls),
+                            "normE": float(cur.normE),
+                            "sensitivity": sensitivity_info,
+                        }
                     )
                     stop_outer_loop = True
                 break
 
             if pred_red <= float(args.pred_red_tol):
                 if backtrack_idx == 0:
+                    outer_stop_reason = "predicted_reduction_below_tolerance"
+                    outer_stop_detail = {
+                        "iter": int(k),
+                        "backtrack_index": int(backtrack_idx),
+                        "pred_red": float(pred_red),
+                        "pred_red_tol": float(args.pred_red_tol),
+                        "dI_max_abs_A": float(dI_max_abs),
+                        "dx_abs_m": float(dx_abs),
+                        "task_rank": int(task_rank),
+                        "reliable_subspace_enabled": bool(p2_force_reliable),
+                        "reliable_subspace_dim": int(reliable_dim),
+                    }
                     print(f"[IK-LM] stop: pred_red={pred_red:.3e} <= pred_red_tol={float(args.pred_red_tol):.3e}")
+                    _append_history(
+                        d={
+                            "iter": int(k),
+                            "backtrack_index": int(backtrack_idx),
+                            "backtrack_scale": float(backtrack_scale),
+                            "status": "STOP",
+                            "accept": False,
+                            "stop_reason": outer_stop_reason,
+                            "stop_detail": outer_stop_detail,
+                            "lam": float(lam),
+                            "rho": None,
+                            "pred_red": float(pred_red),
+                            "act_red": None,
+                            "terminal_improved": False,
+                            "cost_improved": False,
+                            "task_rank": int(task_rank),
+                            "task_singular_values": [float(v) for v in np.asarray(jax.device_get(task_svals)).reshape(-1,).tolist()],
+                            "reliable_subspace_enabled": bool(p2_force_reliable),
+                            "reliable_subspace_dim": int(reliable_dim),
+                            "ix_jacobian_enabled": bool(ix_jacobian_enabled),
+                            "control_channel_gate": control_gate_iter,
+                            "du_eff_norm": float(du_eff_norm),
+                            "dI_max_abs": float(dI_max_abs),
+                            "dI_norm": float(dI_norm),
+                            "dx_m": float(dx_clip),
+                            "dx_abs_m": float(dx_abs),
+                            "x_m": float(cur.x),
+                            "I_A": [float(v) for v in np.asarray(jax.device_get(cur.I)).reshape(-1,).tolist()],
+                            "dI_A": [float(v) for v in np.asarray(jax.device_get(dI_clip)).reshape(-1,).tolist()],
+                            **_tip_report_fields(cur, p_des),
+                            "cost": float(cur.cost),
+                            "cls": str(cur.cls),
+                            "normE": float(cur.normE),
+                            "sensitivity": sensitivity_info,
+                        }
+                    )
                     stop_outer_loop = True
                 break
 
@@ -1855,9 +1977,23 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
             if cur.err <= eps_p and cur.cls != "REJECT":
                 print(f"[IK-LM] Converged: iter={k}, ||e||={cur.err*1e3:.3f}mm, x={cur.x:.6f}")
+                outer_stop_reason = "reached_threshold_true_tip"
+                outer_stop_detail = {"iter": int(k), "err_true_m": float(cur.err), "eps_p_m": float(eps_p)}
                 break
         else:
             lam = min(lam * float(args.lam_up), 1e12)
+
+    if outer_stop_reason is None:
+        if cur.err <= eps_p and cur.cls != "REJECT":
+            outer_stop_reason = "reached_threshold_true_tip"
+            outer_stop_detail = {"err_true_m": float(cur.err), "eps_p_m": float(eps_p)}
+        else:
+            outer_stop_reason = "max_outer_iter"
+            outer_stop_detail = {
+                "outer_max_iter": int(args.outer_max_iter),
+                "err_true_m": float(cur.err),
+                "eps_p_m": float(eps_p),
+            }
 
     # Final summary
     I_fin, x_fin, _, _ = _u_to_Ix(u, I_max=I_max, x_min=x_min, x_max=x_max)
@@ -1913,7 +2049,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         )
     except Exception as e:
         print(f"[IK-LM] WARNING: failed to save final snapshot: {repr(e)}")
-    _write_result(cur, I_fin, x_fin)
+    _write_result(cur, I_fin, x_fin, outer_stop_reason=outer_stop_reason, outer_stop_detail=outer_stop_detail)
     _write_runtime_profile(run_dir, runtime_profile)
     print("[IK-LM] Saved result.json")
 
