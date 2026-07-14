@@ -1,0 +1,2 @@
+A1 angle 12.750: err=4.133 mm success=True cls=GOOD wall=116.4s
+A1 angle 12.500: err=11.074 mm success=False cls=GOOD wall=978.8s
