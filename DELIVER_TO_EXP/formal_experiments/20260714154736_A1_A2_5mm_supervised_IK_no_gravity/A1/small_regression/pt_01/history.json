@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "run_dir": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714154736_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_01",
+    "timestamp": "2026-07-14 15:49:49",
+    "p_des": [
+      0.06,
+      0.0951056516295,
+      0.0309016994375
+    ],
+    "eps_p_m": 0.005,
+    "sigma_p_m": 0.005,
+    "sensitivity_config": {
+      "x_sensitivity_method": "implicit",
+      "sensitivity_mode": "gn_svd",
+      "sensitivity_solve_mode": "svd",
+      "sensitivity_svd_rcond": 1e-09,
+      "sensitivity_spectral_filter": "hard",
+      "sensitivity_spectral_damping": 0.0,
+      "ridge_adjoint": 1e-10,
+      "sensitivity_conditioning": false
+    },
+    "control_channel_gate": {
+      "enabled": false,
+      "source": null,
+      "key": null,
+      "missing_policy": "block_all",
+      "allow_limited": true,
+      "allowed_mask": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "basin_mask": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "channel_roles": [
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "精修可用",
+        "精修可用"
+      ],
+      "allowed_channels": [
+        "I0",
+        "I1",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6",
+        "I7",
+        "x"
+      ],
+      "basin_channels": [
+        "I0",
+        "I1",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6",
+        "I7",
+        "x"
+      ],
+      "blocked_channels": [],
+      "channel_reasons": [
+        "gate_disabled",
+        "gate_disabled",
+        "gate_disabled",
+        "gate_disabled",
+        "gate_disabled",
+        "gate_disabled",
+        "gate_disabled",
+        "gate_disabled",
+        "gate_disabled"
+      ],
+      "safe_step_abs_max": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "basin_step_abs_max": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "matched_rows": 0,
+      "stage": "refine",
+      "active_mask": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "active_channels": [
+        "I0",
+        "I1",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6",
+        "I7",
+        "x"
+      ],
+      "active_blocked_channels": []
+    },
+    "initial_branch_state": {
+      "enabled": true,
+      "path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260714092428_A1_A2_5mm_supervised_IK_no_gravity/A1/small_regression/pt_01/branch_states/states/eval_000012_final_iter_0012.npz",
+      "z_star_shape": [
+        286
+      ],
+      "z_star_hash": "ace50a369841f4fe3e5c0706809fbe3986c34aa6ab401cd53573c31d5d200020",
+      "available_fields": [
+        "E_star",
+        "I_A",
+        "centerline_m",
+        "flex_tip_m",
+        "scales",
+        "target_m",
+        "terminal_true_m",
+        "warm_start_z_bar",
+        "x_m",
+        "z_star_bar"
+      ],
+      "source_I_A": [
+        0.7376872701709714,
+        -4.947495433964284,
+        -1.1431887099933202,
+        4.1258558095441416,
+        1.5868114245211706,
+        -3.9922855991738446,
+        -0.6520868323262559,
+        4.31645655646366
+      ],
+      "source_x_m": 0.13209663485598064,
+      "source_control_hash": "2518206ed8aacbdbe4771f822038b666db2565c83869a87e8eb9118c2bb16190",
+      "source_terminal_true_m": [
+        0.05907813144713689,
+        0.09175241665974271,
+        0.02991834002652243
+      ],
+      "source_flex_tip_m": [
+        0.05990331459160036,
+        0.08895326833742949,
+        0.029222752901601062
+      ],
+      "source_target_m": [
+        0.06,
+        0.0951056516295,
+        0.0309016994375
+      ],
+      "requested_control_hash": "ba295fa3250a65f32d5b38704423db68ab83b8ecb03e86ce90c3cd6673fb060e",
+      "source_vs_requested_I_inf_A": 4.283684518213704e-12,
+      "source_vs_requested_x_abs_m": 1.9373391779708982e-14
+    }
+  },
+  "outer": [
+    {
+      "iter": 0,
+      "status": "INIT",
+      "accept": true,
+      "lam": 0.01,
+      "rho": null,
+      "pred_red": null,
+      "act_red": null,
+      "du_eff_norm": 0.0,
+      "dI_max_abs": 0.0,
+      "dI_norm": 0.0,
+      "dx_m": 0.0,
+      "dx_abs_m": 0.0,
+      "x_m": 0.132096634856,
+      "I_A": [
+        0.737687270171,
+        -4.94749543396,
+        -1.14318870999,
+        4.12585580954,
+        1.58681142452,
+        -3.99228559917,
+        -0.6520868323259998,
+        4.31645655646
+      ],
+      "dI_A": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "p_tip_m": [
+        0.05907813144713689,
+        0.09175241665974271,
+        0.02991834002652243
+      ],
+      "p_tip_flex_m": [
+        0.05990331459160036,
+        0.08895326833742949,
+        0.029222752901601062
+      ],
+      "p_tip_true_m": [
+        0.05907813144713689,
+        0.09175241665974271,
+        0.02991834002652243
+      ],
+      "err_m": 0.003614003614043463,
+      "err_mm": 3.614003614043463,
+      "err_flex_m": 0.006378089816798814,
+      "err_flex_mm": 6.3780898167988145,
+      "err_true_m": 0.003614003614043463,
+      "err_true_mm": 3.614003614043463,
+      "cost": 0.36230142920690644,
+      "cls": "GOOD",
+      "normE": 9.993157015891079e-06,
+      "pose": {
+        "centerline_npy": "poses/accept/centerline_iter_0000.npy",
+        "which": "accept"
+      },
+      "branch_state": {
+        "eval_id": "eval_000000",
+        "npz_path": "branch_states/states/eval_000000_init_iter_0000.npz",
+        "z_star_hash": "ace50a369841f4fe3e5c0706809fbe3986c34aa6ab401cd53573c31d5d200020",
+        "warm_start_hash": "ace50a369841f4fe3e5c0706809fbe3986c34aa6ab401cd53573c31d5d200020",
+        "centerline_hash": "16e2d5f06ee5842178177ce598264b8bf3995a660ade9d2d1594ad6f75ccdfbc"
+      }
+    }
+  ]
+}

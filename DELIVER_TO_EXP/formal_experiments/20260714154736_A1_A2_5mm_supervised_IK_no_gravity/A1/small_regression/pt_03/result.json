@@ -1,0 +1,316 @@
+{
+  "success": false,
+  "success_flex_eps": false,
+  "success_true_eps": false,
+  "p_des": [
+    0.06,
+    0.0587785252292,
+    0.0809016994375
+  ],
+  "p_tip": [
+    0.05319770161189149,
+    0.06201881868077722,
+    0.050220330893368574
+  ],
+  "p_tip_flex": [
+    0.053527836837791075,
+    0.061238182466559835,
+    0.04734255087507658
+  ],
+  "p_tip_true": [
+    0.05319770161189149,
+    0.06201881868077722,
+    0.050220330893368574
+  ],
+  "p_tip_m": [
+    0.05319770161189149,
+    0.06201881868077722,
+    0.050220330893368574
+  ],
+  "p_tip_flex_m": [
+    0.053527836837791075,
+    0.061238182466559835,
+    0.04734255087507658
+  ],
+  "p_tip_true_m": [
+    0.05319770161189149,
+    0.06201881868077722,
+    0.050220330893368574
+  ],
+  "err_m": 0.03159299195635031,
+  "err_mm": 31.59299195635031,
+  "err_flex_m": 0.03426594901587226,
+  "err_flex_mm": 34.26594901587226,
+  "err_true_m": 0.03159299195635031,
+  "err_true_mm": 31.59299195635031,
+  "I": [
+    -13.669692262662654,
+    -17.68497414500322,
+    -17.242720777088692,
+    -7.128155640531136,
+    16.429510696897207,
+    9.384058305743796,
+    4.176306353322929,
+    18.07315707946768
+  ],
+  "x": 0.11411972126744462,
+  "normE": 9.999999790093525e-06,
+  "cls": "GOOD",
+  "outer_stop_reason": "effective_step_below_tolerance",
+  "outer_stop_detail": {
+    "iter": 29,
+    "backtrack_index": 0,
+    "dI_max_abs_A": 4.7105545863956877e-07,
+    "step_I_tol_A": 1e-06,
+    "dx_abs_m": 6.1396182582385e-10,
+    "step_x_tol_m": 1e-09,
+    "task_rank": 3,
+    "reliable_subspace_enabled": true,
+    "reliable_subspace_dim": 3,
+    "step_collapse_source": "tiny_lm_step_or_high_damping",
+    "step_diagnostics": {
+      "backtrack_scale": 1.0,
+      "du_requested_norm": 4.156639823767143e-08,
+      "du_effective_norm": 4.1566398154213966e-08,
+      "dI_requested_A": [
+        8.720402533413107e-08,
+        2.6458316426669626e-08,
+        -3.319560804015964e-08,
+        -4.7105545863956877e-07,
+        3.896505873512979e-08,
+        3.33432177868076e-07,
+        -2.667923899579705e-07,
+        -1.2844925123545181e-08
+      ],
+      "dI_after_step_clip_A": [
+        8.720402533413107e-08,
+        2.6458316426669626e-08,
+        -3.319560804015964e-08,
+        -4.7105545863956877e-07,
+        3.896505873512979e-08,
+        3.33432177868076e-07,
+        -2.667923899579705e-07,
+        -1.2844925123545181e-08
+      ],
+      "dI_actual_A": [
+        8.720402533413107e-08,
+        2.6458316426669626e-08,
+        -3.319560804015964e-08,
+        -4.7105545863956877e-07,
+        3.896505873512979e-08,
+        3.33432177868076e-07,
+        -2.667923899579705e-07,
+        -1.2844925123545181e-08
+      ],
+      "dI_bound_adjust_A": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dI_requested_max_abs_A": 4.7105545863956877e-07,
+      "dI_actual_max_abs_A": 4.7105545863956877e-07,
+      "dx_requested_m": 6.1396182582385e-10,
+      "dx_after_step_clip_m": 6.1396182582385e-10,
+      "dx_actual_m": 6.1396182582385e-10,
+      "dx_bound_adjust_m": 0.0,
+      "x_after_step_clip_m": 0.11411972188140644,
+      "dI_step_clip_active": false,
+      "dx_step_clip_active": false,
+      "I_bound_clip_active": false,
+      "x_bound_clip_active": false,
+      "gate_step_clip_active": false,
+      "effective_step_below_tolerance": true,
+      "requested_step_below_tolerance": true,
+      "collapse_source": "tiny_lm_step_or_high_damping",
+      "step_I_tol_A": 1e-06,
+      "step_x_tol_m": 1e-09,
+      "I_step_limits_A": [
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      "x_step_limit_m": 0.02
+    }
+  },
+  "sigma_p": 0.005,
+  "sensitivity_config": {
+    "x_sensitivity_method": "implicit",
+    "sensitivity_mode": "gn_svd",
+    "sensitivity_solve_mode": "svd",
+    "sensitivity_svd_rcond": 1e-09,
+    "sensitivity_spectral_filter": "hard",
+    "sensitivity_spectral_damping": 0.0,
+    "ridge_adjoint": 1e-10,
+    "sensitivity_conditioning": false
+  },
+  "runtime_environment": {
+    "code_commit": "349876dfcf90db6b1c207be6706e800251a56eda",
+    "git_tracked_dirty": false,
+    "git_untracked_count": 10983,
+    "python_executable": "/home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python",
+    "jax_version": "0.8.1",
+    "jax_enable_x64": true,
+    "jax_platforms_env": "cuda",
+    "xla_python_client_preallocate": "false",
+    "devices": [
+      {
+        "id": 0,
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "repr": "cuda:0"
+      }
+    ]
+  },
+  "sigmas_from_w": {
+    "sigma_I": 20.0,
+    "sigma_x": 0.05,
+    "sigma_dI": 5.0,
+    "sigma_dx": 0.005,
+    "sigma_Ix": 2000.0
+  },
+  "step_limits": {
+    "step_I_max": 5.0,
+    "step_x_max": 0.02
+  },
+  "p2_outer_solver": {
+    "trust_region": true,
+    "terminal_error_first": true,
+    "reliable_subspace": true,
+    "reliable_task_rcond": 0.001,
+    "min_full_task_rank": 2,
+    "max_backtracks": 3,
+    "backtrack_shrink": 0.5,
+    "disable_Ix_jacobian_below_dx": 0.001
+  },
+  "control_channel_gate": {
+    "enabled": false,
+    "source": null,
+    "key": null,
+    "missing_policy": "block_all",
+    "allow_limited": true,
+    "allowed_mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "basin_mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "channel_roles": [
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528",
+      "\u7cbe\u4fee\u53ef\u7528"
+    ],
+    "allowed_channels": [
+      "I0",
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7",
+      "x"
+    ],
+    "basin_channels": [
+      "I0",
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7",
+      "x"
+    ],
+    "blocked_channels": [],
+    "channel_reasons": [
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled",
+      "gate_disabled"
+    ],
+    "safe_step_abs_max": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "basin_step_abs_max": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "matched_rows": 0,
+    "stage": "refine",
+    "active_mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "active_channels": [
+      "I0",
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7",
+      "x"
+    ],
+    "active_blocked_channels": []
+  }
+}
