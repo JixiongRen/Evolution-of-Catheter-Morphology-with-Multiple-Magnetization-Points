@@ -1,0 +1,2 @@
+point_key,kind,channel,decision,limited_safe_step_abs_max,notes
+A1_pt13,x,-1,有限使用候选,0.000125,"Empirical x micro-search, not production sensitivity approval"

@@ -1,0 +1,42 @@
+paper_or_method:
+  type: string
+  description: Main paper, method family, or technical direction.
+representative_sources:
+  type: array
+  description: Important papers, books, or surveys with title, authors, year, venue, DOI or URL when available.
+robot_type:
+  type: string
+  description: Robot class studied, such as magnetic continuum robot, catheter, guidewire, soft robot, or Cosserat rod robot.
+actuation:
+  type: string
+  description: Magnetic actuation setup, permanent magnets, electromagnets, external magnetic field, coils, or hybrid actuation.
+model:
+  type: string
+  description: Mathematical model used, such as Cosserat rod, PCC, FEM, data-driven surrogate, or hybrid model.
+ik_or_planning_algorithm:
+  type: string
+  description: Inverse kinematics, inverse statics, trajectory planning, or control algorithm.
+optimization_variables:
+  type: string
+  description: Variables optimized, such as magnetic field, coil currents, insertion depth, shape state, curvature, or waypoints.
+constraints:
+  type: string
+  description: Physical, geometric, actuation, obstacle, stability, or equilibrium constraints.
+sensitivity_or_jacobian:
+  type: string
+  description: How gradients, Jacobians, sensitivities, or adjoints are computed.
+strengths:
+  type: string
+  description: Main advantages of the method.
+limitations:
+  type: string
+  description: Main limitations or failure modes.
+relevance_to_current_project:
+  type: string
+  description: How the method maps to multi-magnet catheter IK in this repository.
+implementation_notes:
+  type: string
+  description: Practical guidance for implementing or testing this method in the current codebase.
+uncertain:
+  type: array
+  description: Field names whose values are uncertain.

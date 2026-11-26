@@ -7,6 +7,13 @@
 !/docs/efficiency_optimization_experiment/**
 !/docs/ik_optimization/
 !/docs/ik_optimization/**
+# Sources for the report generators and literature research configurations.
+!/docs/*.py
+!/docs/report_section_3_2_1_fk.md
+!/docs/ik_*research/
+/docs/ik_*research/*
+!/docs/ik_*research/fields.yaml
+!/docs/ik_*research/outline.yaml
 /calib/
 /callback_snaps/
 /ik_out/
@@ -43,3 +50,38 @@ experiment_records_*/**/*.svg
 experiment_records_*/**/history.json
 experiment_records_*/**/trace.jsonl
 experiment_records_*/**/trace_controls.csv
+
+# IK experiment runners write snapshots, process markers and console output here.
+experiment_records_ik_optimize/*/runs/**/*_snapshot/
+experiment_records_ik_optimize/*/runs/**/*_epoch.txt
+experiment_records_ik_optimize/*/run_data/
+experiment_records_ik_optimize/*/pid
+experiment_records_ik_optimize/*/stdout.txt
+experiment_records_ik_optimize/*/stderr.txt
+experiment_records_ik_optimize/*/run_status.txt
+experiment_records_ik_optimize/*/*_run_root.txt
+experiment_records_ik_optimize/*_channel_visualization/*.pdf
+experiment_records_ik_optimize/*_channel_visualization/*.png
+
+# Generated delivery artifacts. Batch settings, targets, commands and reports stay visible.
+/DELIVER_TO_EXP/figures_initial_postures/
+/DELIVER_TO_EXP/supervised_ik_demos/
+/DELIVER_TO_EXP/archive/*_supervised_ik_demos_pre_formal/*/
+/DELIVER_TO_EXP/formal_*/**/*.npy
+/DELIVER_TO_EXP/formal_*/**/*.npz
+/DELIVER_TO_EXP/formal_*/**/*.log
+/DELIVER_TO_EXP/formal_*/**/*.png
+/DELIVER_TO_EXP/formal_*/**/*.svg
+/DELIVER_TO_EXP/formal_*/**/*.jsonl
+/DELIVER_TO_EXP/formal_experiments/**/pt_[0-9]*/
+/DELIVER_TO_EXP/formal_experiments/**/*_report.md
+/DELIVER_TO_EXP/formal_experiments/**/OUTPUT_INDEX.md
+/DELIVER_TO_EXP/formal_experiments/**/all_points_summary.csv
+/DELIVER_TO_EXP/formal_*/**/summary.csv
+/DELIVER_TO_EXP/formal_*/**/summary.json
+/DELIVER_TO_EXP/formal_diagnostics/**/*_summary.csv
+/DELIVER_TO_EXP/formal_diagnostics/**/*_audit.csv
+/DELIVER_TO_EXP/formal_diagnostics/**/branch_trials.csv
+/DELIVER_TO_EXP/formal_diagnostics/**/sensitivity_columns.csv
+/DELIVER_TO_EXP/formal_diagnostics/**/sample_results.csv
+/DELIVER_TO_EXP/formal_diagnostics/**/runtime_environment.json

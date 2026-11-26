@@ -1,0 +1,39 @@
+paper_or_method:
+  type: string
+  description: Main paper, method family, or technical direction.
+representative_sources:
+  type: array
+  description: Important papers or surveys with title, authors, year, venue, DOI, and URL when available.
+problem_addressed:
+  type: string
+  description: Which of initialization, gradient continuity, or computational cost the method addresses.
+model_context:
+  type: string
+  description: Robot model and physical context, such as Cosserat rod, magnetic catheter, hard-magnetic soft robot, or continuum manipulator.
+algorithm:
+  type: string
+  description: Concrete algorithmic idea and optimization structure.
+gradient_or_sensitivity:
+  type: string
+  description: How derivatives, adjoints, Jacobians, or KKT sensitivities are computed or avoided.
+initialization_strategy:
+  type: string
+  description: How the method generates or improves initial guesses.
+runtime_strategy:
+  type: string
+  description: How the method reduces online computation.
+strengths:
+  type: string
+  description: Main advantages.
+limitations:
+  type: string
+  description: Main risks or failure modes.
+mapping_to_current_code:
+  type: string
+  description: How the method can be implemented in the current repository.
+implementation_priority:
+  type: string
+  description: Suggested priority level and short rationale.
+uncertain:
+  type: array
+  description: Field names whose values are uncertain.

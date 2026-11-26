@@ -1,0 +1,18 @@
+topic: docs/ik_literature_research
+execution:
+  output_dir: docs/ik_literature_research/results
+  batch_size: 4
+  items_per_agent: 1
+items:
+  - name: Magnetic continuum robot inverse kinematics
+    category: IK algorithms
+    description: Classical and recent inverse kinematics, inverse statics, and control algorithms for magnetic continuum robots and magnetically actuated soft robots.
+  - name: Magnetic catheter and guidewire trajectory planning
+    category: Planning and control
+    description: Trajectory planning, path following, and closed-loop control methods for magnetic catheters, magnetic guidewires, and endovascular magnetic robots.
+  - name: Cosserat rod inverse statics optimization
+    category: Mechanics and numerical methods
+    description: Cosserat rod based inverse statics, shooting methods, collocation, reduced-order models, sensitivity analysis, and optimal control for continuum robots.
+  - name: Data-driven and hybrid IK for magnetic soft robots
+    category: Learning and surrogate models
+    description: Neural networks, Gaussian processes, learned forward models, differentiable simulators, and hybrid model-learning methods for magnetic soft robot IK and planning.

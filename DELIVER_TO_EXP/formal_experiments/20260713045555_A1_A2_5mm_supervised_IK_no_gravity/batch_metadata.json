@@ -1,0 +1,64 @@
+{
+  "run_id": "20260713045555",
+  "experiment_name": "A1_A2_5mm_supervised_IK_no_gravity",
+  "run_root": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713045555_A1_A2_5mm_supervised_IK_no_gravity",
+  "report_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713045555_A1_A2_5mm_supervised_IK_no_gravity_report.md",
+  "git_commit": "e4babc9065e77ec4f446a6884604c891c288877d",
+  "config_path": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/catheter_physical_configs.yaml",
+  "config_sha256": "b558ae5948710e91cf79092323a5ec4f3ce606f4a7ed9970c068cd21a1827317",
+  "calib_file": "/home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/calib/mpem_calibration_file_sp=40_order=1.yaml",
+  "calib_sha256": "0693bc324c74bc37e4e3a3b53054fde58cb34f0725b5c8455f50e5fedb19eff8",
+  "target_center_m": [
+    0.06,
+    0.0,
+    0.0
+  ],
+  "target_radius_m": 0.1,
+  "target_count": 3,
+  "catheter_keys": [
+    "A2"
+  ],
+  "requested_target_indices": [
+    6,
+    7,
+    8
+  ],
+  "gate_indices": [
+    0,
+    5,
+    10,
+    15
+  ],
+  "diagnostic_indices": [
+    0,
+    2,
+    5,
+    7,
+    10,
+    12,
+    15,
+    17
+  ],
+  "outer_max_iter": 50,
+  "per_point_timeout_s": 7200.0,
+  "initial_I_A_override": [
+    4.71132582358,
+    1.55504678688,
+    -2.78249017799,
+    -2.8248382608,
+    4.21302426588,
+    -0.438647087905,
+    -4.60115238743,
+    -3.78825265379
+  ],
+  "initial_x_m_override": 0.130351858822,
+  "x_search_max_m": 0.203,
+  "x_search_note_zh": "本次 x=60 mm 圆周实验采用 0.203 m 局部推进搜索上限；物理配置文件仍保留 1 m 最大长度。",
+  "eps_p_m": 0.005,
+  "sigma_p_m": 0.005,
+  "force_formal_20": true,
+  "M": 5,
+  "tol": 1e-05,
+  "enable_gravity": false,
+  "XLA_PYTHON_CLIENT_PREALLOCATE": "false"
+}

@@ -1,0 +1,15 @@
+topic: docs/ik_bilevel_optimization_research
+execution:
+  output_dir: docs/ik_bilevel_optimization_research/results
+  batch_size: 3
+  items_per_agent: 1
+items:
+  - name: Bilevel inverse statics initialization for magnetic continuum robots
+    category: Initialization and global search
+    description: Methods for high-quality initial guesses in magnetic continuum robot inverse statics, including continuation, workspace maps, lookup tables, learned warm starts, multi-start ranking, and homotopy over target pose, currents, or insertion length.
+  - name: Continuous gradients and implicit sensitivity for nested Cosserat IK
+    category: Sensitivity and differentiation
+    description: Methods for accurate and stable gradients between a forward equilibrium solver and an outer inverse solver, including implicit differentiation, adjoint sensitivity, differentiating through Newton or LM fixed points, KKT derivatives, custom VJP, and automatic differentiation for Cosserat rod inverse statics.
+  - name: Computational reduction for bilevel magnetic catheter IK
+    category: Runtime reduction
+    description: Methods to reduce the number and cost of forward equilibrium solves in magnetic catheter inverse kinematics, including reduced-order models, surrogate screening, trust-region SQP, active-set reuse, Jacobian reuse, continuation, batching, MPC receding horizon, and coarse-to-fine discretization.

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -euo pipefail
+XLA_PYTHON_CLIENT_PREALLOCATE=false /home/ub22/miniconda3/envs/evolution_of_mcrs/bin/python /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/run_a1_a2_diagnostic_closure.py --source-run /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_experiments/20260713063500_A1_A2_5mm_supervised_IK_no_gravity_merged_complete40 --out-root /home/ub22/Evolution-of-Catheter-Morphology-with-Multiple-Magnetization-Points/DELIVER_TO_EXP/formal_diagnostics/closure_branch --branch-point A1:01 --fd-eps-A 0.001 --fd-eps-x-m 0.0001 --current-indices 0,1,2,3,4,5,6,7

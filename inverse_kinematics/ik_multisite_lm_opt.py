@@ -459,6 +459,11 @@ def _classify_equilibrium(*, ok_strict: bool, normE: float, tol_good: float, tol
     return "BAD"
 
 
+def _equilibrium_usable(cls: str) -> bool:
+    """Return whether an FK state can be accepted by the outer IK loop."""
+    return str(cls) in ("GOOD", "WEAK")
+
+
 @dataclass
 class EvalPack:
     """Bundle of FK evaluation used by outer LM."""
@@ -1306,9 +1311,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         (run_dir / "result.json").write_text(
             json.dumps(
                 {
-                    "success": bool(pack.err <= eps_p and pack.cls != "REJECT"),
-                    "success_flex_eps": bool(result_tip_fields["err_flex_m"] <= eps_p and pack.cls != "REJECT"),
-                    "success_true_eps": bool(result_tip_fields["err_true_m"] <= eps_p and pack.cls != "REJECT"),
+                    "success": bool(pack.err <= eps_p and _equilibrium_usable(pack.cls)),
+                    "success_flex_eps": bool(result_tip_fields["err_flex_m"] <= eps_p and _equilibrium_usable(pack.cls)),
+                    "success_true_eps": bool(result_tip_fields["err_true_m"] <= eps_p and _equilibrium_usable(pack.cls)),
                     "p_des": [float(v) for v in p_des.tolist()],
                     "p_tip": result_tip_fields["p_tip_m"],
                     "p_tip_flex": result_tip_fields["p_tip_flex_m"],
@@ -1495,7 +1500,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         f"x={cur.x:.6f} p_terminal={cur.p_tip_true.tolist()} ||e||={cur.err*1e3:.3f}mm cost={cur.cost:.6e}"
     )
 
-    if cur.err <= eps_p and cur.cls != "REJECT":
+    if cur.err <= eps_p and _equilibrium_usable(cur.cls):
         print(f"[IK-LM] Converged at init: ||e||={cur.err*1e3:.3f}mm")
         _write_result(
             cur,
@@ -1831,8 +1836,13 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 backtrack_scale=backtrack_scale,
             )
 
-            r_lin = r + J_full @ du_eff
-            pred_red = 0.5 * float(jnp.dot(r, r) - jnp.dot(r_lin, r_lin))
+            use_terminal_merit = bool(p2_terminal_error_first or p2_terminal_only_step)
+            r_top_current = cur.r[:3]
+            r_lin_full = r + J_full @ du_eff
+            r_lin_top = r_top_current + J_top @ du_eff
+            pred_red_full = 0.5 * float(jnp.dot(r, r) - jnp.dot(r_lin_full, r_lin_full))
+            pred_red_terminal = 0.5 * float(jnp.dot(r_top_current, r_top_current) - jnp.dot(r_lin_top, r_lin_top))
+            pred_red = float(pred_red_terminal if use_terminal_merit else pred_red_full)
             pred_red_gate_bypassed = bool(
                 p2_terminal_error_first
                 and pred_red <= float(args.pred_red_tol)
@@ -2059,17 +2069,20 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 profile_label="trial",
             )
 
-            act_red = float(cur.cost - trial.cost)
+            act_red_full = float(cur.cost - trial.cost)
+            act_red_terminal = 0.5 * float(jnp.dot(cur.r[:3], cur.r[:3]) - jnp.dot(trial.r[:3], trial.r[:3]))
+            act_red = float(act_red_terminal if use_terminal_merit else act_red_full)
             rho = act_red / max(pred_red, 1e-18)
             terminal_improved = bool(trial.err < cur.err)
             cost_improved = bool(trial.cost < cur.cost)
+            equilibrium_usable = _equilibrium_usable(trial.cls)
 
             if p2_terminal_error_first:
-                accept = bool(terminal_improved and trial.cls != "REJECT")
+                accept = bool(terminal_improved and equilibrium_usable)
             elif (pred_red <= 10.0 * float(args.pred_red_tol)) and (abs(act_red) <= float(args.act_red_tol)):
-                accept = bool(trial.cls != "REJECT")
+                accept = bool(equilibrium_usable)
             else:
-                accept = bool(cost_improved and (rho > 0.0) and trial.cls != "REJECT")
+                accept = bool(cost_improved and (rho > 0.0) and equilibrium_usable)
             status = "ACCEPT" if accept else "REJECT"
 
             trial_pose_path = _save_pose(which="trial", iter_idx=k * 100 + backtrack_idx, pack=trial)
@@ -2079,6 +2092,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                 "rho": float(rho),
                 "pred_red": float(pred_red),
                 "act_red": float(act_red),
+                "merit_mode": "terminal" if use_terminal_merit else "full",
+                "pred_red_terminal": float(pred_red_terminal),
+                "act_red_terminal": float(act_red_terminal),
+                "pred_red_full": float(pred_red_full),
+                "act_red_full": float(act_red_full),
                 "terminal_improved": bool(terminal_improved),
                 "cost_improved": bool(cost_improved),
                 "du_eff_norm": float(du_eff_norm),
@@ -2123,6 +2141,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
                     "rho": float(rho),
                     "pred_red": float(pred_red),
                     "act_red": float(act_red),
+                    "merit_mode": "terminal" if use_terminal_merit else "full",
+                    "pred_red_terminal": float(pred_red_terminal),
+                    "act_red_terminal": float(act_red_terminal),
+                    "pred_red_full": float(pred_red_full),
+                    "act_red_full": float(act_red_full),
                     "terminal_improved": bool(terminal_improved),
                     "cost_improved": bool(cost_improved),
                     "pred_red_gate_bypassed": bool(pred_red_gate_bypassed),
@@ -2211,7 +2234,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             elif rho <= float(args.rho_bad):
                 lam = min(lam * float(args.lam_up), 1e12)
 
-            if cur.err <= eps_p and cur.cls != "REJECT":
+            if cur.err <= eps_p and _equilibrium_usable(cur.cls):
                 print(f"[IK-LM] Converged: iter={k}, ||e||={cur.err*1e3:.3f}mm, x={cur.x:.6f}")
                 outer_stop_reason = "reached_threshold_true_tip"
                 outer_stop_detail = {"iter": int(k), "err_true_m": float(cur.err), "eps_p_m": float(eps_p)}
@@ -2220,7 +2243,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
             lam = min(lam * float(args.lam_up), 1e12)
 
     if outer_stop_reason is None:
-        if cur.err <= eps_p and cur.cls != "REJECT":
+        if cur.err <= eps_p and _equilibrium_usable(cur.cls):
             outer_stop_reason = "reached_threshold_true_tip"
             outer_stop_detail = {"err_true_m": float(cur.err), "eps_p_m": float(eps_p)}
         else:
